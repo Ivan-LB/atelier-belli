@@ -80,7 +80,7 @@ export default function PortfolioPage() {
       supportLink: "https://ivanlorenzanabelli.github.io/fingo-support/",
       appStoreLink: "https://apps.apple.com/mx/app/fingo-group-choice-made-easy/id6747301883?l=en-GB",
       buttonGradient: "bg-gradient-to-r from-pink-500 via-red-500 to-orange-400",
-      cardGlowGradient: "linear-gradient(100deg, rgba(236,72,153,0.25), rgba(239,68,68,0.25), rgba(249,115,22,0.25))",
+      cardGlowGradient: "linear-gradient(100deg, rgba(236, 72, 153, 0.35), rgba(239, 68, 68, 0.35), rgba(249, 115, 22, 0.35))",
     },
     {
       logo: "/Savely-Logo.png",
@@ -91,17 +91,17 @@ export default function PortfolioPage() {
       supportLink: "https://ivanlorenzanabelli.github.io/savely-support/",
       appStoreLink: "https://apps.apple.com/app/idSAVELY_APP_ID",
       buttonGradient: "bg-gradient-to-r from-green-400 via-emerald-500 to-teal-600",
-      cardGlowGradient: "linear-gradient(100deg, rgba(52, 211, 153, 0.25), rgba(45, 212, 191, 0.25), rgba(6, 182, 212, 0.25))",
+      cardGlowGradient: "linear-gradient(100deg, rgba(67,163,71,0.35), rgba(34,197,94,0.35), rgba(6,182,212,0.35))",
     },
     {
       logo: "/LogoMezcal.png",
       alt: "Logo Mi Mezcal",
-      title: "Destileria Lorenzana",
+      title: "Mi Mezcal",
       description:
         "Descubre Mi Mezcal, el sitio web de mi marca de mezcal artesanal: conoce nuestra historia, explora variedades y haz tu pedido directo. Diseño elegante y experiencia de usuario auténtica.",
       siteLink: "https://www.destilerialorenzana.com/",
       buttonGradient: "bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500",
-      cardGlowGradient: "linear-gradient(100deg, rgba(250,204,21,0.25), rgba(251,191,36,0.25), rgba(245,158,11,0.25))",
+      cardGlowGradient: "linear-gradient(100deg, rgba(245,158,11,0.35), rgba(249,186,14,0.35), rgba(249,168,21,0.35))",
     },
   ]
 
@@ -240,19 +240,11 @@ export default function PortfolioPage() {
               </div>
               <div className="text-center md:text-left">
                 <p className="text-gray-300 leading-relaxed text-lg">
-                Soy ingeniero biomédico y desarrollador iOS de corazón, ahora explorando el mundo del web-development. Apasionado por resolver retos y entregar experiencias digitales pulcras, eficientes y con un toque minimalista. <br />
-                ¡Bienvenido a mi atelier digital!
+                  Soy un desarrollador full-stack apasionado por crear experiencias digitales pulcras y eficientes. Con
+                  un pie en la precisión técnica y otro en la elegancia del diseño minimalista, busco la armonía en cada
+                  línea de código. Mi enfoque franco-italiano se refleja en soluciones robustas con un toque de estilo
+                  distintivo. ¡Bienvenido a mi atelier digital!
                 </p>
-                {/* Contenedor flex para centrar el botón */}
-                <div className="mt-6 flex justify-center md:justify-start">
-                  <Link
-                    href="/docs/CV_Ivan_Lorenzana_Belli.pdf"
-                    target="_blank"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-md shadow-lg transition"
-                  >
-                    <DownloadIcon size={20} /> Ver mi CV
-                  </Link>
-                </div>
               </div>
             </div>
           </div>
