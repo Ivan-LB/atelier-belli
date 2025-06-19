@@ -1,37 +1,65 @@
-"use client" // Necesario para useState y manejo de eventos del menú móvil
+"use client"
 
-import type React from "react" // Importar useState
-import { useState } from "react"
+import type React from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
-import {
-  GithubIcon,
-  LinkedinIcon,
-  ArrowRightIcon,
-  DownloadIcon,
-  MenuIcon,
-  XIcon,
-  InstagramIcon,
-} from "lucide-react"
+import Image from "next/image"
+import { GithubIcon, LinkedinIcon, ArrowRightIcon, DownloadIcon, MenuIcon, XIcon, InstagramIcon } from "lucide-react"
+import { motion, type Variants, easeOut } from "framer-motion"
+import Tilt from "react-parallax-tilt"
+import { cn } from "@/lib/utils" // Asegúrate de que cn esté importado
 
-// Helper component for gradient buttons (sin cambios)
+import HeroBackground from "@/components/hero-background"
+
+// Componente GradientButton corregido y mejorado
 const GradientButton = ({
   href,
   children,
   className,
   target,
-}: { href: string; children: React.ReactNode; className?: string; target?: string }) => (
-  <a
-    href={href}
-    target={target}
-    rel={target === "_blank" ? "noopener noreferrer" : undefined}
-    className={`inline-block px-6 py-3 rounded-md text-white font-semibold bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 hover:from-orange-600 hover:via-pink-600 hover:to-purple-700 transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${className}`}
-  >
-    {children}
-  </a>
-)
+  gradientClasses, // Prop para clases de gradiente específicas
+}: {
+  href: string
+  children: React.ReactNode
+  className?: string
+  target?: string
+  gradientClasses?: string // Clases de Tailwind para el background gradient
+}) => {
+  // Gradiente por defecto si no se proporciona uno específico
+  const defaultGradient = "bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600"
+  // Efectos de hover que no alteran el color del gradiente base
+  const hoverVisualEffects = "hover:shadow-xl transform hover:-translate-y-0.5"
+
+  return (
+    <a
+      href={href}
+      target={target}
+      rel={target === "_blank" ? "noopener noreferrer" : undefined}
+      className={cn(
+        "inline-flex items-center justify-center px-6 py-3 text-white font-semibold transition-all duration-300 ease-in-out shadow-lg",
+        "rounded-full", // Para botones completamente redondeados (forma de píldora)
+        gradientClasses || defaultGradient, // Aplica el gradiente específico o el por defecto
+        hoverVisualEffects, // Aplica efectos visuales de hover (sombra, transformación)
+        className,
+      )}
+    >
+      {children}
+    </a>
+  )
+}
+
+const sectionVariants: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: easeOut },
+  },
+}
 
 export default function PortfolioPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
 
   const navLinks = [
     { name: "Inicio", href: "#inicio" },
@@ -41,20 +69,59 @@ export default function PortfolioPage() {
     { name: "Contacto", href: "#contacto" },
   ]
 
-  const scrollMarginTop = "scroll-mt-16" // Ajustado a la altura del header h-16
+  // Datos de las apps con sus gradientes para botones y para el glow de la tarjeta
+  const appsData = [
+    {
+      logo: "/Fingo-Logo.png",
+      alt: "Logo Fingo",
+      title: "Fingo",
+      description:
+        "Fingo es la app definitiva para tomar decisiones en grupo al instante: elige con toques, ruletas, flechas giratorias o lanzamientos de moneda. Totalmente personalizable, con háptics que hacen cada elección rápida, divertida y justa.",
+      supportLink: "https://ivanlorenzanabelli.github.io/fingo-support/",
+      appStoreLink: "https://apps.apple.com/mx/app/fingo-group-choice-made-easy/id6747301883?l=en-GB",
+      buttonGradient: "bg-gradient-to-r from-pink-500 via-red-500 to-orange-400",
+      cardGlowGradient: "linear-gradient(100deg, rgba(236,72,153,0.25), rgba(239,68,68,0.25), rgba(249,115,22,0.25))",
+    },
+    {
+      logo: "/Savely-Logo.png",
+      alt: "Logo Savely",
+      title: "Savely",
+      description:
+        "Savely es tu asistente de finanzas personales: controla tus gastos, ahorra con metas personalizadas y recibe alertas inteligentes para mantener tu presupuesto en orden. Diseño intuitivo y seguridad bancaria garantizada.",
+      supportLink: "https://ivanlorenzanabelli.github.io/savely-support/",
+      appStoreLink: "https://apps.apple.com/app/idSAVELY_APP_ID",
+      buttonGradient: "bg-gradient-to-r from-green-400 via-emerald-500 to-teal-600",
+      cardGlowGradient: "linear-gradient(100deg, rgba(52, 211, 153, 0.25), rgba(45, 212, 191, 0.25), rgba(6, 182, 212, 0.25))",
+    },
+    {
+      logo: "/LogoMezcal.png",
+      alt: "Logo Mi Mezcal",
+      title: "Destileria Lorenzana",
+      description:
+        "Descubre Mi Mezcal, el sitio web de mi marca de mezcal artesanal: conoce nuestra historia, explora variedades y haz tu pedido directo. Diseño elegante y experiencia de usuario auténtica.",
+      siteLink: "https://www.destilerialorenzana.com/",
+      buttonGradient: "bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500",
+      cardGlowGradient: "linear-gradient(100deg, rgba(250,204,21,0.25), rgba(251,191,36,0.25), rgba(245,158,11,0.25))",
+    },
+  ]
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen)
-  }
+  const scrollMarginTop = "scroll-mt-16"
 
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false)
-  }
+  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen)
+  const closeMobileMenu = () => setIsMobileMenuOpen(false)
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 50)
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-900 text-gray-100">
-      {/* Header MODIFICADO */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-gray-900/80 backdrop-blur-md border-b border-slate-700/50">
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out
+                    ${isScrolled ? "bg-gray-900/80 backdrop-blur-md border-b border-slate-700/50 shadow-lg" : "bg-transparent border-transparent"}`}
+      >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <Link
@@ -62,46 +129,43 @@ export default function PortfolioPage() {
               onClick={closeMobileMenu}
               className="flex items-center gap-2 text-xl font-semibold text-white"
             >
-              <img src="/AtelierBelli.png" alt="Logo" className="w-8 h-8 sm:w-10 sm:h-10" />
+              <Image src="/AtelierBelli.png" alt="Logo Atelier Belli" width={32} height={32} className="h-8 w-8" />
               <span>Atelier Belli</span>
             </Link>
-
-            {/* Navegación Desktop */}
             <nav className="hidden md:flex">
-              <ul className="flex items-center space-x-5">
+              <ul className="flex items-center space-x-8">
                 {navLinks.map((link) => (
                   <li key={link.name}>
-                    <Link href={link.href} className="text-gray-300 hover:text-white transition-colors text-sm">
+                    <Link
+                      href={link.href}
+                      className="nav-link-underline text-sm text-gray-200 hover:text-white transition-colors"
+                    >
                       {link.name}
                     </Link>
                   </li>
                 ))}
               </ul>
             </nav>
-
-            {/* Botón Menú Móvil */}
             <div className="md:hidden">
-              <button
-                onClick={toggleMobileMenu}
-                aria-label="Abrir menú"
-                className="text-gray-300 hover:text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-pink-500"
-              >
+              <button onClick={toggleMobileMenu} aria-label="Abrir menú" className="text-gray-200 hover:text-white p-2">
                 {isMobileMenuOpen ? <XIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
               </button>
             </div>
           </div>
         </div>
-
-        {/* Menú Desplegable Móvil */}
         {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-16 left-0 right-0 bg-gray-900/95 backdrop-blur-md shadow-lg pb-4 border-b border-slate-700/50">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="md:hidden absolute top-16 left-0 right-0 bg-gray-900/95 backdrop-blur-md shadow-lg pb-4 border-b border-slate-700/50"
+          >
             <nav>
               <ul className="flex flex-col items-center space-y-3 pt-3">
                 {navLinks.map((link) => (
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      onClick={closeMobileMenu} // Cierra el menú al hacer clic en un enlace
+                      onClick={closeMobileMenu}
                       className="text-gray-200 hover:text-pink-400 transition-colors text-base py-2 block w-full text-center"
                     >
                       {link.name}
@@ -110,159 +174,176 @@ export default function PortfolioPage() {
                 ))}
               </ul>
             </nav>
-          </div>
+          </motion.div>
         )}
       </header>
 
       <main className="flex-grow">
-        {/* Hero Section */}
         <section
           id="inicio"
-          className={`min-h-screen flex flex-col justify-center items-center text-center px-4 pt-16 ${scrollMarginTop}`}
+          className={`relative min-h-screen flex flex-col justify-center items-center text-center px-4 ${scrollMarginTop} pt-16`}
         >
-          <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold">
-            <span className="text-gradient">Atelier Belli</span>
-          </h1>
-          <p className="mt-4 text-lg sm:text-xl text-gray-300 max-w-2xl">
-            Desarrollo de software y soluciones digitales
-          </p>
-          <GradientButton href="#apps" className="mt-8 text-lg">
-            Ver mi trabajo <ArrowRightIcon className="inline-block ml-2 h-5 w-5" />
-          </GradientButton>
+          <HeroBackground />
+          <div className="relative z-10">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-5xl sm:text-6xl md:text-7xl font-bold"
+            >
+              <span className="text-gradient">Atelier Belli</span>
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="mt-4 text-lg sm:text-xl text-gray-300 max-w-2xl"
+            >
+              Desarrollo de software y soluciones digitales
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
+              <GradientButton href="#apps" className="mt-8 text-lg">
+                Ver mi trabajo <ArrowRightIcon className="inline-block ml-2 h-5 w-5" />
+              </GradientButton>
+            </motion.div>
+          </div>
         </section>
 
-        {/* El resto de las secciones permanecen sin cambios */}
-        <section id="sobre-mi" className={`py-16 sm:py-20 bg-gray-800/50 ${scrollMarginTop}`}>
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.section
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          id="sobre-mi"
+          className={`relative py-20 sm:py-24 bg-slate-800 overflow-hidden ${scrollMarginTop}`}
+        >
+          <div className="absolute inset-0 z-0 opacity-20">
+            <HeroBackground />
+          </div>
+          <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">
               Sobre <span className="text-gradient">mí</span>
             </h2>
             <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
               <div className="flex-shrink-0">
-                <img
-                  src="/ProfilePic.jpg?width=160&height=160"
+                <Image
+                  src="/ProfilePic.jpg"
                   alt="Avatar del desarrollador"
-                  className="rounded-full w-32 h-32 md:w-40 md:h-40 object-cover shadow-xl border-4 border-pink-500/50"
+                  width={160}
+                  height={160}
+                  className="rounded-full w-32 h-32 md:w-40 md:h-40 object-cover shadow-xl border-4 border-pink-500/70"
                 />
               </div>
               <div className="text-center md:text-left">
                 <p className="text-gray-300 leading-relaxed text-lg">
-                  Soy un desarrollador full-stack apasionado por crear experiencias digitales pulcras y eficientes. Con
-                  un pie en la precisión técnica y otro en la elegancia del diseño minimalista, busco la armonía en cada
-                  línea de código. Mi enfoque franco-italiano se refleja en soluciones robustas con un toque de estilo
-                  distintivo. ¡Bienvenido a mi atelier digital!
+                Soy ingeniero biomédico y desarrollador iOS de corazón, ahora explorando el mundo del web-development. Apasionado por resolver retos y entregar experiencias digitales pulcras, eficientes y con un toque minimalista. <br />
+                ¡Bienvenido a mi atelier digital!
                 </p>
+                {/* Contenedor flex para centrar el botón */}
+                <div className="mt-6 flex justify-center md:justify-start">
+                  <Link
+                    href="/docs/CV_Ivan_Lorenzana_Belli.pdf"
+                    target="_blank"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-md shadow-lg transition"
+                  >
+                    <DownloadIcon size={20} /> Ver mi CV
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
-        <section id="apps" className={`py-16 sm:py-20 ${scrollMarginTop}`}>
+        <motion.section
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          id="apps"
+          className={`py-20 sm:py-24 bg-gray-900 ${scrollMarginTop}`}
+        >
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-16">
               Mis <span className="text-gradient">Aplicaciones</span>
             </h2>
-
-            {/* Fingo */}
-            <div className="bg-gray-800 p-6 sm:p-8 rounded-xl shadow-2xl max-w-2xl mx-auto mb-12">
-              <div className="flex flex-col sm:flex-row items-center gap-6">
-                <img
-                  src="/Fingo-Logo.png"
-                  alt="Logo Fingo"
-                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover flex-shrink-0"
-                />
-                <div>
-                  <h3 className="text-2xl font-semibold mb-2 text-white">Fingo</h3>
-                  <p className="text-gray-400 mb-4 text-sm sm:text-base">
-                    Fingo es la app definitiva para tomar decisiones en grupo al instante: elige con toques, ruletas,
-                    flechas giratorias o lanzamientos de moneda. Totalmente personalizable, con háptics que hacen
-                    cada elección rápida, divertida y justa.
-                  </p>
-                  <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-                    <GradientButton
-                      href="https://ivanlorenzanabelli.github.io/fingo-support/"
-                      target="_blank"
-                      className="text-sm w-full sm:w-auto justify-center"
-                    >
-                      Soporte
-                    </GradientButton>
-                    <GradientButton
-                      href="https://apps.apple.com/mx/app/fingo-group-choice-made-easy/id6747301883?l=en-GB"
-                      target="_blank"
-                      className="text-sm w-full sm:w-auto justify-center"
-                    >
-                      Ver en App Store <DownloadIcon className="inline-block ml-1.5 h-4 w-4" />
-                    </GradientButton>
+            <div className="grid grid-cols-1 gap-12">
+              {appsData.map((app) => (
+                <Tilt
+                  key={app.title}
+                  tiltMaxAngleX={5}
+                  tiltMaxAngleY={5}
+                  glareEnable={true}
+                  glareMaxOpacity={0.1}
+                  scale={1.02}
+                >
+                  <div
+                    className="glow-card bg-slate-800 p-6 sm:p-8 rounded-xl shadow-xl transition-all duration-300 ease-in-out"
+                    style={{ "--card-glow-gradient": app.cardGlowGradient } as React.CSSProperties}
+                  >
+                    <div className="flex flex-col sm:flex-row items-center gap-6">
+                      <Image
+                        src={app.logo || "/placeholder.svg"}
+                        alt={app.alt}
+                        width={100}
+                        height={100}
+                        className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-contain flex-shrink-0"
+                      />
+                      <div>
+                        <h3 className="text-2xl font-semibold mb-2 text-white">{app.title}</h3>
+                        <p className="text-gray-400 mb-4 text-sm sm:text-base">{app.description}</p>
+                        <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                          {app.supportLink && (
+                            <GradientButton
+                              href={app.supportLink}
+                              target="_blank"
+                              className="text-sm w-full sm:w-auto justify-center"
+                              gradientClasses={app.buttonGradient} // Usar el gradiente específico del botón
+                            >
+                              Soporte
+                            </GradientButton>
+                          )}
+                          {app.appStoreLink && (
+                            <GradientButton
+                              href={app.appStoreLink}
+                              target="_blank"
+                              className="text-sm w-full sm:w-auto justify-center"
+                              gradientClasses={app.buttonGradient} // Usar el gradiente específico del botón
+                            >
+                              Ver en App Store <DownloadIcon className="inline-block ml-1.5 h-4 w-4" />
+                            </GradientButton>
+                          )}
+                          {app.siteLink && (
+                            <GradientButton
+                              href={app.siteLink}
+                              target="_blank"
+                              className="text-sm w-full sm:w-auto justify-center"
+                              gradientClasses={app.buttonGradient} // Usar el gradiente específico del botón
+                            >
+                              Visitar sitio
+                            </GradientButton>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Savely */}
-            <div className="bg-gray-800 p-6 sm:p-8 rounded-xl shadow-2xl max-w-2xl mx-auto mb-12">
-              <div className="flex flex-col sm:flex-row items-center gap-6">
-                <img
-                  src="/Savely-Logo.png"
-                  alt="Logo Savely"
-                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover flex-shrink-0"
-                />
-                <div>
-                  <h3 className="text-2xl font-semibold mb-2 text-white">Savely</h3>
-                  <p className="text-gray-400 mb-4 text-sm sm:text-base">
-                    Savely es tu asistente de finanzas personales: controla tus gastos, ahorra con metas personalizadas
-                    y recibe alertas inteligentes para mantener tu presupuesto en orden. Diseño intuitivo y seguridad
-                    bancaria garantizada.
-                  </p>
-                  <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-                    <GradientButton
-                      href="https://ivanlorenzanabelli.github.io/savely-support/"
-                      target="_blank"
-                      className="text-sm w-full sm:w-auto justify-center"
-                    >
-                      Soporte
-                    </GradientButton>
-                    <GradientButton
-                      href="https://apps.apple.com/app/idSAVELY_APP_ID"
-                      target="_blank"
-                      className="text-sm w-full sm:w-auto justify-center"
-                    >
-                      Ver en App Store <DownloadIcon className="inline-block ml-1.5 h-4 w-4" />
-                    </GradientButton>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Mezcal Site */}
-            <div className="bg-gray-800 p-6 sm:p-8 rounded-xl shadow-2xl max-w-2xl mx-auto">
-              <div className="flex flex-col sm:flex-row items-center gap-6">
-                <img
-                  src="/Mezcal-Logo.jpg"
-                  alt="Logo Mi Mezcal"
-                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover flex-shrink-0"
-                />
-                <div>
-                  <h3 className="text-2xl font-semibold mb-2 text-white">Mi Mezcal</h3>
-                  <p className="text-gray-400 mb-4 text-sm sm:text-base">
-                    Descubre Mi Mezcal, el sitio web de mi marca de mezcal artesanal: conoce nuestra historia,
-                    explora variedades y haz tu pedido directo. Diseño elegante y experiencia de usuario auténtica.
-                  </p>
-                  <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-                    <GradientButton
-                      href="https://www.destilerialorenzana.com/"
-                      target="_blank"
-                      className="text-sm w-full sm:w-auto justify-center"
-                    >
-                      Visitar sitio
-                    </GradientButton>
-                  </div>
-                </div>
-              </div>
+                </Tilt>
+              ))}
             </div>
           </div>
-        </section>
+        </motion.section>
 
-        <section id="privacidad" className={`py-16 sm:py-20 bg-gray-800/50 ${scrollMarginTop}`}>
+        <motion.section
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          id="privacidad"
+          className={`py-20 sm:py-24 bg-slate-800/50 ${scrollMarginTop}`}
+        >
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl sm:text-4xl font-bold mb-8">
               Tu <span className="text-gradient">Privacidad</span> es Importante
@@ -287,9 +368,16 @@ export default function PortfolioPage() {
               </Link>
             </div>
           </div>
-        </section>
+        </motion.section>
 
-        <section id="contacto" className={`py-16 sm:py-20 ${scrollMarginTop}`}>
+        <motion.section
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          id="contacto"
+          className={`py-20 sm:py-24 bg-gray-900 ${scrollMarginTop}`}
+        >
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl sm:text-4xl font-bold mb-8">
               Hablemos de tu <span className="text-gradient">Proyecto</span>
@@ -306,7 +394,7 @@ export default function PortfolioPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
-                className="text-gray-400 hover:text-pink-400 transition-colors"
+                className="text-gray-400 hover:text-pink-400 transition-transform hover:scale-110"
               >
                 <GithubIcon size={28} />
               </a>
@@ -315,7 +403,7 @@ export default function PortfolioPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
-                className="text-gray-400 hover:text-pink-400 transition-colors"
+                className="text-gray-400 hover:text-pink-400 transition-transform hover:scale-110"
               >
                 <LinkedinIcon size={28} />
               </a>
@@ -323,29 +411,25 @@ export default function PortfolioPage() {
                 href="https://www.instagram.com/_ivanlb?igsh=Z2VwMXg5bnhrbGRl&utm_source=qr"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Facebook"
-                className="text-gray-400 hover:text-pink-400 transition-colors"
+                aria-label="Instagram"
+                className="text-gray-400 hover:text-pink-400 transition-transform hover:scale-110"
               >
                 <InstagramIcon size={28} />
               </a>
             </div>
           </div>
-        </section>
+        </motion.section>
       </main>
 
-      <footer className="bg-gray-800 text-gray-400 py-8 text-center mt-auto">
+      <footer className="bg-slate-900 text-gray-400 py-8 text-center border-t border-slate-700/50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-sm mb-2">
             &copy; {new Date().getFullYear()} Atelier Belli. Todos los derechos reservados.
           </p>
           <div className="space-x-4">
-            <a
-              href="/terms"
-              rel="noopener noreferrer"
-              className="text-xs hover:text-pink-300 transition-colors"
-            >
+            <Link href="/terms" className="text-xs hover:text-pink-300 transition-colors">
               Términos y Condiciones
-            </a>
+            </Link>
             <Link href="/privacy" className="text-xs hover:text-pink-300 transition-colors">
               Política de Privacidad
             </Link>
