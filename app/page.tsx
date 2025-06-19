@@ -5,26 +5,48 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { GithubIcon, LinkedinIcon, ArrowRightIcon, DownloadIcon, MenuIcon, XIcon, InstagramIcon } from "lucide-react"
-import { motion } from "framer-motion"
+import { motion, type Variants, easeOut } from "framer-motion"
 import Tilt from "react-parallax-tilt"
-import { Variants, easeOut } from "framer-motion";
+import { cn } from "@/lib/utils" // Asegúrate de que cn esté importado
+
 import HeroBackground from "@/components/hero-background"
 
+// Componente GradientButton corregido y mejorado
 const GradientButton = ({
   href,
   children,
   className,
   target,
-}: { href: string; children: React.ReactNode; className?: string; target?: string }) => (
-  <a
-    href={href}
-    target={target}
-    rel={target === "_blank" ? "noopener noreferrer" : undefined}
-    className={`inline-flex items-center justify-center px-6 py-3 rounded-md text-white font-semibold bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 hover:from-orange-600 hover:via-pink-600 hover:to-purple-700 transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${className}`}
-  >
-    {children}
-  </a>
-)
+  gradientClasses, // Prop para clases de gradiente específicas
+}: {
+  href: string
+  children: React.ReactNode
+  className?: string
+  target?: string
+  gradientClasses?: string // Clases de Tailwind para el background gradient
+}) => {
+  // Gradiente por defecto si no se proporciona uno específico
+  const defaultGradient = "bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600"
+  // Efectos de hover que no alteran el color del gradiente base
+  const hoverVisualEffects = "hover:shadow-xl transform hover:-translate-y-0.5"
+
+  return (
+    <a
+      href={href}
+      target={target}
+      rel={target === "_blank" ? "noopener noreferrer" : undefined}
+      className={cn(
+        "inline-flex items-center justify-center px-6 py-3 text-white font-semibold transition-all duration-300 ease-in-out shadow-lg",
+        "rounded-full", // Para botones completamente redondeados (forma de píldora)
+        gradientClasses || defaultGradient, // Aplica el gradiente específico o el por defecto
+        hoverVisualEffects, // Aplica efectos visuales de hover (sombra, transformación)
+        className,
+      )}
+    >
+      {children}
+    </a>
+  )
+}
 
 const sectionVariants: Variants = {
   hidden: { opacity: 0, y: 40 },
@@ -33,7 +55,7 @@ const sectionVariants: Variants = {
     y: 0,
     transition: { duration: 0.7, ease: easeOut },
   },
-};
+}
 
 export default function PortfolioPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -45,6 +67,42 @@ export default function PortfolioPage() {
     { name: "Apps", href: "#apps" },
     { name: "Privacidad", href: "#privacidad" },
     { name: "Contacto", href: "#contacto" },
+  ]
+
+  // Datos de las apps con sus gradientes para botones y para el glow de la tarjeta
+  const appsData = [
+    {
+      logo: "/Fingo-Logo.png",
+      alt: "Logo Fingo",
+      title: "Fingo",
+      description:
+        "Fingo es la app definitiva para tomar decisiones en grupo al instante: elige con toques, ruletas, flechas giratorias o lanzamientos de moneda. Totalmente personalizable, con háptics que hacen cada elección rápida, divertida y justa.",
+      supportLink: "https://ivanlorenzanabelli.github.io/fingo-support/",
+      appStoreLink: "https://apps.apple.com/mx/app/fingo-group-choice-made-easy/id6747301883?l=en-GB",
+      buttonGradient: "bg-gradient-to-r from-pink-500 via-red-500 to-orange-400",
+      cardGlowGradient: "linear-gradient(100deg, rgba(236, 72, 153, 0.35), rgba(239, 68, 68, 0.35), rgba(249, 115, 22, 0.35))",
+    },
+    {
+      logo: "/Savely-Logo.png",
+      alt: "Logo Savely",
+      title: "Savely",
+      description:
+        "Savely es tu asistente de finanzas personales: controla tus gastos, ahorra con metas personalizadas y recibe alertas inteligentes para mantener tu presupuesto en orden. Diseño intuitivo y seguridad bancaria garantizada.",
+      supportLink: "https://ivanlorenzanabelli.github.io/savely-support/",
+      appStoreLink: "https://apps.apple.com/app/idSAVELY_APP_ID",
+      buttonGradient: "bg-gradient-to-r from-green-400 via-emerald-500 to-teal-600",
+      cardGlowGradient: "linear-gradient(100deg, rgba(67,163,71,0.35), rgba(34,197,94,0.35), rgba(6,182,212,0.35))",
+    },
+    {
+      logo: "/LogoMezcal.png",
+      alt: "Logo Mi Mezcal",
+      title: "Mi Mezcal",
+      description:
+        "Descubre Mi Mezcal, el sitio web de mi marca de mezcal artesanal: conoce nuestra historia, explora variedades y haz tu pedido directo. Diseño elegante y experiencia de usuario auténtica.",
+      siteLink: "https://www.destilerialorenzana.com/",
+      buttonGradient: "bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500",
+      cardGlowGradient: "linear-gradient(100deg, rgba(245,158,11,0.35), rgba(249,186,14,0.35), rgba(249,168,21,0.35))",
+    },
   ]
 
   const scrollMarginTop = "scroll-mt-16"
@@ -205,43 +263,7 @@ export default function PortfolioPage() {
               Mis <span className="text-gradient">Aplicaciones</span>
             </h2>
             <div className="grid grid-cols-1 gap-12">
-              {[
-                {
-                  logo: "/Fingo-Logo.png",
-                  alt: "Logo Fingo",
-                  title: "Fingo",
-                  description:
-                    "Fingo es la app definitiva para tomar decisiones en grupo al instante: elige con toques, ruletas, flechas giratorias o lanzamientos de moneda. Totalmente personalizable, con háptics que hacen cada elección rápida, divertida y justa.",
-                  supportLink: "https://ivanlorenzanabelli.github.io/fingo-support/",
-                  appStoreLink: "https://apps.apple.com/mx/app/fingo-group-choice-made-easy/id6747301883?l=en-GB",
-                  buttonGradient: "bg-gradient-to-r from-pink-500 via-red-500 to-orange-400",
-                  // Gradiente para el glow de la tarjeta Fingo
-                  cardGlowGradient: "linear-gradient(100deg, #ec4899, #ef4444, #f97316)", // Rosa, Rojo, Naranja
-                },
-                {
-                  logo: "/Savely-Logo.png",
-                  alt: "Logo Savely",
-                  title: "Savely",
-                  description:
-                    "Savely es tu asistente de finanzas personales: controla tus gastos, ahorra con metas personalizadas y recibe alertas inteligentes para mantener tu presupuesto en orden. Diseño intuitivo y seguridad bancaria garantizada.",
-                  supportLink: "https://ivanlorenzanabelli.github.io/savely-support/",
-                  appStoreLink: "https://apps.apple.com/app/idSAVELY_APP_ID",
-                  buttonGradient: "bg-gradient-to-r from-green-400 via-emerald-500 to-teal-600",
-                  // Gradiente para el glow de la tarjeta Savely
-                  cardGlowGradient: "linear-gradient(100deg, #34d399, #2dd4bf, #06b6d4)", // Verde, Esmeralda, Teal
-                },
-                {
-                  logo: "/LogoMezcal.png",
-                  alt: "Logo Mi Mezcal",
-                  title: "Mi Mezcal",
-                  description:
-                    "Descubre Mi Mezcal, el sitio web de mi marca de mezcal artesanal: conoce nuestra historia, explora variedades y haz tu pedido directo. Diseño elegante y experiencia de usuario auténtica.",
-                  siteLink: "https://www.destilerialorenzana.com/",
-                  buttonGradient: "bg-gradient-to-r from-amber-400 via-yellow-500 to-orange-500",
-                  // Gradiente para el glow de la tarjeta Mi Mezcal
-                  cardGlowGradient: "linear-gradient(100deg, #facc15, #fbbf24, #f59e0b)", // Amarillo, Ámbar, Naranja claro
-                },
-              ].map((app) => (
+              {appsData.map((app) => (
                 <Tilt
                   key={app.title}
                   tiltMaxAngleX={5}
@@ -271,6 +293,7 @@ export default function PortfolioPage() {
                               href={app.supportLink}
                               target="_blank"
                               className="text-sm w-full sm:w-auto justify-center"
+                              gradientClasses={app.buttonGradient} // Usar el gradiente específico del botón
                             >
                               Soporte
                             </GradientButton>
@@ -280,6 +303,7 @@ export default function PortfolioPage() {
                               href={app.appStoreLink}
                               target="_blank"
                               className="text-sm w-full sm:w-auto justify-center"
+                              gradientClasses={app.buttonGradient} // Usar el gradiente específico del botón
                             >
                               Ver en App Store <DownloadIcon className="inline-block ml-1.5 h-4 w-4" />
                             </GradientButton>
@@ -289,6 +313,7 @@ export default function PortfolioPage() {
                               href={app.siteLink}
                               target="_blank"
                               className="text-sm w-full sm:w-auto justify-center"
+                              gradientClasses={app.buttonGradient} // Usar el gradiente específico del botón
                             >
                               Visitar sitio
                             </GradientButton>
