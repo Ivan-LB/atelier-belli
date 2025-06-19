@@ -162,33 +162,98 @@ export default function PortfolioPage() {
             <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">
               Mis <span className="text-gradient">Aplicaciones</span>
             </h2>
-            <div className="bg-gray-800 p-6 sm:p-8 rounded-xl shadow-2xl max-w-2xl mx-auto">
+
+            {/* Fingo */}
+            <div className="bg-gray-800 p-6 sm:p-8 rounded-xl shadow-2xl max-w-2xl mx-auto mb-12">
               <div className="flex flex-col sm:flex-row items-center gap-6">
                 <img
-                  src="/Fingo-Logo.png?width=100&height=100"
+                  src="/Fingo-Logo.png"
                   alt="Logo Fingo"
                   className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover flex-shrink-0"
                 />
                 <div>
                   <h3 className="text-2xl font-semibold mb-2 text-white">Fingo</h3>
                   <p className="text-gray-400 mb-4 text-sm sm:text-base">
-                    Fingo es tu compañero ideal para la gestión de finanzas personales, diseñado con simplicidad y
-                    potencia para ayudarte a alcanzar tus metas económicas.
+                    Fingo es la app definitiva para tomar decisiones en grupo al instante: elige con toques, ruletas,
+                    flechas giratorias o lanzamientos de moneda. Totalmente personalizable, con háptics que hacen
+                    cada elección rápida, divertida y justa.
                   </p>
                   <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
                     <GradientButton
-                      href="/fingo/support"
+                      href="https://ivanlorenzanabelli.github.io/fingo-support/"
                       target="_blank"
                       className="text-sm w-full sm:w-auto justify-center"
                     >
                       Soporte
                     </GradientButton>
                     <GradientButton
-                      href="https://apps.apple.com/app/tu-app-id"
+                      href="https://apps.apple.com/mx/app/fingo-group-choice-made-easy/id6747301883?l=en-GB"
                       target="_blank"
                       className="text-sm w-full sm:w-auto justify-center"
                     >
                       Ver en App Store <DownloadIcon className="inline-block ml-1.5 h-4 w-4" />
+                    </GradientButton>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Savely */}
+            <div className="bg-gray-800 p-6 sm:p-8 rounded-xl shadow-2xl max-w-2xl mx-auto mb-12">
+              <div className="flex flex-col sm:flex-row items-center gap-6">
+                <img
+                  src="/Savely-Logo.png"
+                  alt="Logo Savely"
+                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover flex-shrink-0"
+                />
+                <div>
+                  <h3 className="text-2xl font-semibold mb-2 text-white">Savely</h3>
+                  <p className="text-gray-400 mb-4 text-sm sm:text-base">
+                    Savely es tu asistente de finanzas personales: controla tus gastos, ahorra con metas personalizadas
+                    y recibe alertas inteligentes para mantener tu presupuesto en orden. Diseño intuitivo y seguridad
+                    bancaria garantizada.
+                  </p>
+                  <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                    <GradientButton
+                      href="https://ivanlorenzanabelli.github.io/savely-support/"
+                      target="_blank"
+                      className="text-sm w-full sm:w-auto justify-center"
+                    >
+                      Soporte
+                    </GradientButton>
+                    <GradientButton
+                      href="https://apps.apple.com/app/idSAVELY_APP_ID"
+                      target="_blank"
+                      className="text-sm w-full sm:w-auto justify-center"
+                    >
+                      Ver en App Store <DownloadIcon className="inline-block ml-1.5 h-4 w-4" />
+                    </GradientButton>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Mezcal Site */}
+            <div className="bg-gray-800 p-6 sm:p-8 rounded-xl shadow-2xl max-w-2xl mx-auto">
+              <div className="flex flex-col sm:flex-row items-center gap-6">
+                <img
+                  src="/Mezcal-Logo.jpg"
+                  alt="Logo Mi Mezcal"
+                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover flex-shrink-0"
+                />
+                <div>
+                  <h3 className="text-2xl font-semibold mb-2 text-white">Mi Mezcal</h3>
+                  <p className="text-gray-400 mb-4 text-sm sm:text-base">
+                    Descubre Mi Mezcal, el sitio web de mi marca de mezcal artesanal: conoce nuestra historia,
+                    explora variedades y haz tu pedido directo. Diseño elegante y experiencia de usuario auténtica.
+                  </p>
+                  <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                    <GradientButton
+                      href="https://www.destilerialorenzana.com/"
+                      target="_blank"
+                      className="text-sm w-full sm:w-auto justify-center"
+                    >
+                      Visitar sitio
                     </GradientButton>
                   </div>
                 </div>
