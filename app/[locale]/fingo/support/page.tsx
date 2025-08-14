@@ -1,3 +1,5 @@
+"use client"
+
 import SimplePageLayout from "@/components/simple-page-layout"
 import { MailIcon, HelpCircleIcon, ClockIcon } from "lucide-react"
 
@@ -36,8 +38,6 @@ export default function FingoSupportPage() {
             Muchas respuestas a preguntas comunes se pueden encontrar en nuestra sección de FAQ.
             <br />
             <a href="/fingo/faq" className="font-medium">
-              {" "}
-              {/* Placeholder para tu página de FAQ */}
               Visita nuestras FAQ
             </a>
           </p>

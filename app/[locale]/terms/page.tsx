@@ -1,3 +1,5 @@
+"use client"
+
 import SimplePageLayout from "@/components/simple-page-layout"
 
 export default function TermsAndConditionsPage() {
@@ -21,8 +23,7 @@ export default function TermsAndConditionsPage() {
         de datos, funcionalidad, software, diseños de sitios web, audio, video, texto, fotografías y gráficos
         (colectivamente, el "Contenido") y las marcas comerciales, marcas de servicio y logotipos contenidos en él (las
         "Marcas") son de nuestra propiedad o están bajo nuestro control o licencia, y están protegidos por las leyes de
-        derechos de autor y marcas registradas. El Contenido y las Marcas se proporcionan en el Sitio "TAL CUAL" para su
-        información y uso personal únicamente.
+        derechos de autor y marcas registradas.
       </p>
 
       <h2>3. Representaciones del Usuario</h2>
@@ -47,9 +48,7 @@ export default function TermsAndConditionsPage() {
         Nos reservamos el derecho, a nuestra entera discreción, de denegar el acceso y uso de los Servicios (incluyendo
         el bloqueo de ciertas direcciones IP) a cualquier persona por cualquier motivo o sin motivo alguno, incluyendo,
         sin limitación, el incumplimiento de cualquier representación, garantía o pacto contenido en estos Términos o de
-        cualquier ley o regulación aplicable. Podemos terminar su uso o participación en los Servicios o eliminar
-        cualquier contenido o información que haya publicado en cualquier momento, sin previo aviso, a nuestra entera
-        discreción.
+        cualquier ley o regulación aplicable.
       </p>
 
       <h2>6. Ley Aplicable</h2>
@@ -70,8 +69,7 @@ export default function TermsAndConditionsPage() {
       <p>
         Nos reservamos el derecho de cambiar, modificar o revisar estos Términos en cualquier momento y por cualquier
         motivo a nuestra entera discreción. Cualquier cambio o modificación será efectivo inmediatamente después de la
-        publicación de los Términos actualizados en el Sitio, y usted renuncia a cualquier derecho a recibir un aviso
-        específico de cada uno de dichos cambios o modificaciones.
+        publicación de los Términos actualizados en el Sitio.
       </p>
 
       <h2>9. Contacto</h2>

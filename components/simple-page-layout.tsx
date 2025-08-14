@@ -1,6 +1,9 @@
+"use client"
+
 import Link from "next/link"
 import type React from "react"
 import { ArrowLeftIcon } from "lucide-react"
+import { usePathname } from "next/navigation"
 
 export default function SimplePageLayout({
   title,
@@ -11,6 +14,9 @@ export default function SimplePageLayout({
   children: React.ReactNode
   showBackButton?: boolean
 }) {
+  const pathname = usePathname()
+  const locale = pathname.split("/")[1] || "es" // Extract locale from pathname
+
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100 flex flex-col">
       <header className="py-4 bg-gray-800/50 shadow-md">
@@ -18,7 +24,7 @@ export default function SimplePageLayout({
           <h1 className="text-2xl sm:text-3xl font-bold text-gradient">{title}</h1>
           {showBackButton && (
             <Link
-              href="/#inicio"
+              href={`/${locale}#inicio`}
               className="text-sm text-pink-400 hover:text-pink-300 flex items-center transition-colors"
             >
               <ArrowLeftIcon className="w-4 h-4 mr-1.5" />
@@ -36,15 +42,10 @@ export default function SimplePageLayout({
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-xs">&copy; {new Date().getFullYear()} Atelier Belli. Todos los derechos reservados.</p>
           <div className="mt-1 space-x-3">
-            <Link href="/#privacidad" className="text-xs hover:text-pink-300 transition-colors">
+            <Link href={`/${locale}/privacy`} className="text-xs hover:text-pink-300 transition-colors">
               Política de Privacidad
             </Link>
-            <Link
-              href="/terms" // Asumiendo que tendrás una página de términos
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs hover:text-pink-300 transition-colors"
-            >
+            <Link href={`/${locale}/terms`} className="text-xs hover:text-pink-300 transition-colors">
               Términos y Condiciones
             </Link>
           </div>

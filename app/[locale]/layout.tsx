@@ -1,7 +1,5 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { NextIntlClientProvider } from "next-intl"
-import { getMessages } from "next-intl/server"
 import { notFound } from "next/navigation"
 import { locales } from "@/i18n"
 import "../globals.css"
@@ -9,10 +7,6 @@ import "../globals.css"
 export const metadata: Metadata = {
   title: "Atelier Belli - Software Development",
   description: "Software development and digital solutions",
-  generator: 'Next.js',
-  icons: {
-    icon: '/favicon.png'
-  }
 }
 
 export function generateStaticParams() {
@@ -34,15 +28,9 @@ export default async function LocaleLayout({
     notFound()
   }
 
-  // Providing all messages to the client
-  // side is the easiest way to get started
-  const messages = await getMessages()
-
   return (
     <html lang={locale}>
-      <body className="bg-gray-900 text-gray-100 antialiased">
-        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
-      </body>
+      <body className="bg-gray-900 text-gray-100 antialiased">{children}</body>
     </html>
   )
 }

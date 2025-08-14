@@ -1,3 +1,5 @@
+"use client"
+
 import SimplePageLayout from "@/components/simple-page-layout"
 
 export default function PrivacyChoicesPage() {

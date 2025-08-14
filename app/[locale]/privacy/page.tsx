@@ -1,7 +1,12 @@
+"use client"
+
 import Link from "next/link"
 import SimplePageLayout from "@/components/simple-page-layout"
+import { usePathname } from "next/navigation"
 
 export default function PrivacyPolicyPage() {
+  const pathname = usePathname()
+  const locale = pathname.split("/")[1] || "es"
   const lastUpdated = "14 de junio de 2025"
 
   return (
@@ -39,10 +44,7 @@ export default function PrivacyPolicyPage() {
           <strong>Datos Financieros:</strong> Información financiera, como datos relacionados con tu método de pago (por
           ejemplo, número de tarjeta de crédito válida, marca de la tarjeta, fecha de caducidad) que podemos recopilar
           cuando compras, ordenas, devuelves, intercambias o solicitas información sobre nuestros servicios desde el
-          Sitio o nuestras Aplicaciones. [Almacenamos solo información muy limitada, si la hay, de los datos
-          financieros. De lo contrario, todos los datos financieros son almacenados por nuestro procesador de pagos,
-          [Nombre del Procesador de Pagos], y te animamos a revisar su política de privacidad y contactarlos
-          directamente para obtener respuestas a tus preguntas.]
+          Sitio o nuestras Aplicaciones.
         </li>
         <li>
           <strong>Datos de Aplicaciones Móviles:</strong> Si te conectas usando nuestra(s) aplicación(es) móvil(es):
@@ -54,8 +56,7 @@ export default function PrivacyPolicyPage() {
             <li>
               <em>Datos de Geolocalización.</em> Podemos solicitar acceso o permiso y rastrear información basada en la
               ubicación de tu dispositivo móvil, ya sea continuamente o mientras estás usando nuestra aplicación móvil,
-              para proporcionar servicios basados en la ubicación. Si deseas cambiar nuestro acceso o permisos, puedes
-              hacerlo en la configuración de tu dispositivo.
+              para proporcionar servicios basados en la ubicación.
             </li>
           </ul>
         </li>
@@ -76,22 +77,20 @@ export default function PrivacyPolicyPage() {
           Aplicaciones.
         </li>
         <li>Mejorar la eficiencia y el funcionamiento del Sitio y nuestras Aplicaciones.</li>
-        {/* Añadir más usos según sea necesario */}
       </ul>
 
       <h2>Seguridad de Tus Datos</h2>
       <p>
         Utilizamos medidas de seguridad administrativas, técnicas y físicas para ayudar a proteger tu información
         personal. Si bien hemos tomado medidas razonables para asegurar la información personal que nos proporcionas,
-        ten en cuenta que a pesar de nuestros esfuerzos, ninguna medida de seguridad es perfecta o impenetrable, y
-        ningún método de transmisión de datos puede garantizarse contra cualquier interceptación u otro tipo de mal uso.
+        ten en cuenta que a pesar de nuestros esfuerzos, ninguna medida de seguridad es perfecta o impenetrable.
       </p>
 
       <h2>Tus Derechos de Privacidad</h2>
       <p>
         Dependiendo de tu ubicación, puedes tener ciertos derechos con respecto a tu información personal. Para más
         información sobre cómo ejercer estos derechos, por favor visita nuestra página de{" "}
-        <Link href="/privacy/choices">Opciones de Privacidad del Usuario</Link>.
+        <Link href={`/${locale}/privacy/choices`}>Opciones de Privacidad del Usuario</Link>.
       </p>
 
       <h2>Política para Niños</h2>
@@ -104,8 +103,7 @@ export default function PrivacyPolicyPage() {
       <h2>Cambios a Esta Política de Privacidad</h2>
       <p>
         Podemos actualizar esta Política de Privacidad de vez en cuando. Te notificaremos cualquier cambio publicando la
-        nueva Política de Privacidad en esta página. Se te aconseja revisar esta Política de Privacidad periódicamente
-        para cualquier cambio.
+        nueva Política de Privacidad en esta página.
       </p>
 
       <h2>Contacto</h2>
