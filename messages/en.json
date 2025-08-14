@@ -1,0 +1,67 @@
+{
+    "navigation": {
+      "home": "Home",
+      "about": "About me",
+      "apps": "Apps",
+      "privacy": "Privacy",
+      "contact": "Contact"
+    },
+    "hero": {
+      "title": "Atelier Belli",
+      "subtitle": "Software development and digital solutions",
+      "cta": "View my work"
+    },
+    "about": {
+      "title": "About me",
+      "description": "I'm a full-stack developer passionate about creating clean and efficient digital experiences. With one foot in technical precision and another in the elegance of minimalist design, I seek harmony in every line of code. My Franco-Italian approach is reflected in robust solutions with a distinctive touch of style. Welcome to my digital atelier!"
+    },
+    "apps": {
+      "title": "My Applications",
+      "fingo": {
+        "title": "Fingo",
+        "description": "Fingo is the ultimate app for making group decisions instantly: choose with taps, wheels, spinning arrows, or coin flips. Fully customizable, with haptics that make every choice quick, fun, and fair."
+      },
+      "savely": {
+        "title": "Savely",
+        "description": "Savely is your personal finance assistant: control your expenses, save with personalized goals, and receive smart alerts to keep your budget in order. Intuitive design and guaranteed banking security."
+      },
+      "mezcal": {
+        "title": "Mi Mezcal",
+        "description": "Discover Mi Mezcal, the website for my artisanal mezcal brand: learn our story, explore varieties, and place your order directly. Elegant design and authentic user experience."
+      },
+      "buttons": {
+        "support": "Support",
+        "appStore": "View on App Store",
+        "visitSite": "Visit site"
+      }
+    },
+    "privacy": {
+      "title": "Your Privacy is Important",
+      "description": "At Atelier Belli, I'm committed to protecting your personal data. All applications and services are developed with privacy in mind, ensuring your information is handled transparently and securely.",
+      "policyLink": "Privacy Policy",
+      "choicesLink": "User Privacy Choices"
+    },
+    "contact": {
+      "title": "Let's talk about your Project",
+      "description": "Do you have an idea or need help with development? Don't hesitate to contact me.",
+      "cta": "Send an Email"
+    },
+    "footer": {
+      "rights": "All rights reserved.",
+      "terms": "Terms and Conditions",
+      "privacy": "Privacy Policy"
+    },
+    "languageSelector": {
+      "title": "Choose your language",
+      "description": "Select your preferred language to continue",
+      "english": "English",
+      "spanish": "Español",
+      "continue": "Continue"
+    },
+    "notFound": {
+      "title": "Page Not Found",
+      "description": "Sorry, the page you're looking for doesn't exist or has been moved.",
+      "backHome": "Back to Home"
+    }
+  }
+  

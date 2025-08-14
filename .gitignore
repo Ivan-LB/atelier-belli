@@ -21,8 +21,14 @@ yarn-error.log*
 # Vercel deployment
 .vercel/
 
+# AWS Amplify
+amplify/
+.amplifyrc
+amplify-meta.json
+
 # TypeScript
 *.tsbuildinfo
+next-env.d.ts
 
 # System files
 .DS_Store
@@ -32,6 +38,15 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+*.swo
 
 # Public cache (optional)
 public/cache/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp

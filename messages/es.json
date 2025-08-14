@@ -1,0 +1,67 @@
+{
+    "navigation": {
+      "home": "Inicio",
+      "about": "Sobre mí",
+      "apps": "Apps",
+      "privacy": "Privacidad",
+      "contact": "Contacto"
+    },
+    "hero": {
+      "title": "Atelier Belli",
+      "subtitle": "Desarrollo de software y soluciones digitales",
+      "cta": "Ver mi trabajo"
+    },
+    "about": {
+      "title": "Sobre mí",
+      "description": "Soy un desarrollador full-stack apasionado por crear experiencias digitales pulcras y eficientes. Con un pie en la precisión técnica y otro en la elegancia del diseño minimalista, busco la armonía en cada línea de código. Mi enfoque franco-italiano se refleja en soluciones robustas con un toque de estilo distintivo. ¡Bienvenido a mi atelier digital!"
+    },
+    "apps": {
+      "title": "Mis Aplicaciones",
+      "fingo": {
+        "title": "Fingo",
+        "description": "Fingo es la app definitiva para tomar decisiones en grupo al instante: elige con toques, ruletas, flechas giratorias o lanzamientos de moneda. Totalmente personalizable, con háptics que hacen cada elección rápida, divertida y justa."
+      },
+      "savely": {
+        "title": "Savely",
+        "description": "Savely es tu asistente de finanzas personales: controla tus gastos, ahorra con metas personalizadas y recibe alertas inteligentes para mantener tu presupuesto en orden. Diseño intuitivo y seguridad bancaria garantizada."
+      },
+      "mezcal": {
+        "title": "Mi Mezcal",
+        "description": "Descubre Mi Mezcal, el sitio web de mi marca de mezcal artesanal: conoce nuestra historia, explora variedades y haz tu pedido directo. Diseño elegante y experiencia de usuario auténtica."
+      },
+      "buttons": {
+        "support": "Soporte",
+        "appStore": "Ver en App Store",
+        "visitSite": "Visitar sitio"
+      }
+    },
+    "privacy": {
+      "title": "Tu Privacidad es Importante",
+      "description": "En Atelier Belli, me comprometo a proteger tus datos personales. Todas las aplicaciones y servicios se desarrollan con la privacidad en mente, asegurando que tu información se maneje de forma transparente y segura.",
+      "policyLink": "Política de Privacidad",
+      "choicesLink": "Opciones de Privacidad del Usuario"
+    },
+    "contact": {
+      "title": "Hablemos de tu Proyecto",
+      "description": "¿Tienes una idea o necesitas ayuda con un desarrollo? No dudes en contactarme.",
+      "cta": "Enviar un Email"
+    },
+    "footer": {
+      "rights": "Todos los derechos reservados.",
+      "terms": "Términos y Condiciones",
+      "privacy": "Política de Privacidad"
+    },
+    "languageSelector": {
+      "title": "Elige tu idioma",
+      "description": "Selecciona tu idioma preferido para continuar",
+      "english": "English",
+      "spanish": "Español",
+      "continue": "Continuar"
+    },
+    "notFound": {
+      "title": "Página No Encontrada",
+      "description": "Lo sentimos, la página que estás buscando no existe o ha sido movida.",
+      "backHome": "Volver al Inicio"
+    }
+  }
+  
