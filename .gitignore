@@ -50,3 +50,8 @@ coverage/
 # Temporary files
 *.tmp
 *.temp
+.agent
+.agents
+.claude
+skills-lock.json
+CLAUDE.md

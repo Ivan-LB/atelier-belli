@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -55,11 +57,27 @@
 
   html {
     scroll-behavior: smooth;
+    color-scheme: dark;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Inter", Arial, Helvetica, sans-serif;
+  }
+
+  /* Global focus ring for keyboard users */
+  :focus-visible {
+    outline: 2px solid #ec4899;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Touch optimisation — prevents 300ms double-tap delay on mobile */
+  button,
+  a,
+  [role="button"] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
@@ -74,6 +92,25 @@
   @apply bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 bg-clip-text text-transparent;
 }
 
+/* Skip-to-content link for keyboard / screen-reader users */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.5rem 1rem;
+  background: #ec4899;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 0 0 6px 6px;
+  transition: top 0.2s ease-in-out;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Nav underline animation — uses scaleX (compositor-friendly) instead of width */
 .nav-link-underline {
   position: relative;
   padding-bottom: 4px;
@@ -84,16 +121,19 @@
   position: absolute;
   left: 0;
   bottom: 0;
-  width: 0;
+  width: 100%;
   height: 2px;
   background: linear-gradient(to right, #f97316, #ec4899, #8b5cf6);
-  transition: width 0.3s ease-in-out;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease-in-out;
 }
 
 .nav-link-underline:hover::after {
-  width: 100%;
+  transform: scaleX(1);
 }
 
+/* Card glow effect */
 .glow-card {
   position: relative;
   overflow: hidden;
@@ -117,4 +157,16 @@
 
 .glow-card:hover::before {
   opacity: 0.45;
+}
+
+/* Reduced motion — disable all non-essential transitions/animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

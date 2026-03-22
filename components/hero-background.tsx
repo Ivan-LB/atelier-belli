@@ -4,9 +4,12 @@ import type * as THREE from "three"
 import { Canvas, useFrame } from "@react-three/fiber"
 import { Points, PointMaterial } from "@react-three/drei"
 import { useRef, useState } from "react"
+import { useReducedMotion } from "framer-motion"
 
-function Stars(props: any) {
+function Stars(props: Record<string, unknown>) {
   const ref = useRef<THREE.Points>(null!)
+  const prefersReducedMotion = useReducedMotion()
+
   const [sphere] = useState(() => {
     // Genera posiciones aleatorias para las estrellas dentro de una esfera
     const positions = new Float32Array(5000 * 3)
@@ -23,7 +26,8 @@ function Stars(props: any) {
   })
 
   useFrame((state, delta) => {
-    // Rotación sutil de las estrellas
+    // Pause rotation when user prefers reduced motion
+    if (prefersReducedMotion) return
     ref.current.rotation.x -= delta / 20
     ref.current.rotation.y -= delta / 25
   })
@@ -33,7 +37,7 @@ function Stars(props: any) {
       <Points ref={ref} positions={sphere} stride={3} frustumCulled={false} {...props}>
         <PointMaterial
           transparent
-          color="#ffa0e0" // Un rosa que complementa el gradiente
+          color="#ffa0e0"
           size={0.015}
           sizeAttenuation={true}
           depthWrite={false}
@@ -45,7 +49,8 @@ function Stars(props: any) {
 
 export default function HeroBackground() {
   return (
-    <div className="absolute inset-0 z-0">
+    // aria-hidden: decorative animation — screen readers should skip it
+    <div className="absolute inset-0 z-0" aria-hidden="true">
       <Canvas camera={{ position: [0, 0, 1] }}>
         <Stars />
       </Canvas>

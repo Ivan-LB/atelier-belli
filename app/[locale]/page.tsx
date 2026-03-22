@@ -5,12 +5,13 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { GithubIcon, LinkedinIcon, ArrowRightIcon, DownloadIcon, MenuIcon, XIcon, InstagramIcon } from "lucide-react"
-import { motion, type Variants, easeOut } from "framer-motion"
+import { motion, type Variants, easeOut, useReducedMotion } from "framer-motion"
 import Tilt from "react-parallax-tilt"
 import { cn } from "@/lib/utils"
-import { usePathname } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 
 import HeroBackground from "@/components/hero-background"
+import LanguageSelector from "@/components/languaje-selector"
 
 // Componente GradientButton
 const GradientButton = ({
@@ -35,8 +36,8 @@ const GradientButton = ({
       target={target}
       rel={target === "_blank" ? "noopener noreferrer" : undefined}
       className={cn(
-        "inline-flex items-center justify-center px-6 py-3 text-white font-semibold transition-all duration-300 ease-in-out shadow-lg",
-        "rounded-full",
+        "inline-flex items-center justify-center px-6 py-3 text-white font-semibold duration-300 ease-in-out shadow-lg",
+        "transition-[color,box-shadow,transform] rounded-full",
         gradientClasses || defaultGradient,
         hoverVisualEffects,
         className,
@@ -56,11 +57,44 @@ const sectionVariants: Variants = {
   },
 }
 
+const LANGUAGE_COOKIE = "preferred-language"
+
+/** Compact pill button that switches between EN ↔ ES */
+function LocaleToggle({ locale, className }: { locale: string; className?: string }) {
+  const router = useRouter()
+  const isSpanish = locale === "es"
+  const targetLocale = isSpanish ? "en" : "es"
+  const label = isSpanish ? "🇺🇸 EN" : "🇪🇸 ES"
+
+  const switchLocale = () => {
+    const expires = new Date()
+    expires.setFullYear(expires.getFullYear() + 1)
+    document.cookie = `${LANGUAGE_COOKIE}=${targetLocale}; expires=${expires.toUTCString()}; path=/`
+    router.push(`/${targetLocale}`)
+  }
+
+  return (
+    <button
+      onClick={switchLocale}
+      aria-label={isSpanish ? "Switch to English" : "Cambiar a Español"}
+      className={cn(
+        "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold",
+        "border border-transparent bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600",
+        "text-white hover:opacity-90 transition-opacity duration-200",
+        className,
+      )}
+    >
+      {label}
+    </button>
+  )
+}
+
 export default function PortfolioPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const pathname = usePathname()
-  const locale = pathname.split("/")[1] || "es"
+  const params = useParams()
+  const locale = (params?.locale as string) || "es"
+  const prefersReducedMotion = useReducedMotion()
 
   // Static translations - you can make this dynamic later
   const isSpanish = locale === "es"
@@ -82,7 +116,7 @@ export default function PortfolioPage() {
       description: isSpanish
         ? "Fingo es la app definitiva para tomar decisiones en grupo al instante: elige con toques, ruletas, flechas giratorias o lanzamientos de moneda. Totalmente personalizable, con háptics que hacen cada elección rápida, divertida y justa."
         : "Fingo is the ultimate app for making group decisions instantly: choose with taps, wheels, spinning arrows, or coin flips. Fully customizable, with haptics that make every choice quick, fun, and fair.",
-      supportLink: "https://ivanlorenzanabelli.github.io/fingo-support/",
+      supportLink: `/${locale}/fingo/support`,
       appStoreLink: "https://apps.apple.com/mx/app/fingo-group-choice-made-easy/id6747301883?l=en-GB",
       buttonGradient: "bg-gradient-to-r from-pink-500 via-red-500 to-orange-400",
       cardGlowGradient: "linear-gradient(100deg, #ec4899, #ef4444, #f97316)",
@@ -94,7 +128,7 @@ export default function PortfolioPage() {
       description: isSpanish
         ? "Savely es tu asistente de finanzas personales: controla tus gastos, ahorra con metas personalizadas y recibe alertas inteligentes para mantener tu presupuesto en orden. Diseño intuitivo y seguridad bancaria garantizada."
         : "Savely is your personal finance assistant: control your expenses, save with personalized goals, and receive smart alerts to keep your budget in order. Intuitive design and guaranteed banking security.",
-      supportLink: "https://ivanlorenzanabelli.github.io/savely-support/",
+      supportLink: `/${locale}/savely/support`,
       appStoreLink: "https://apps.apple.com/app/idSAVELY_APP_ID",
       buttonGradient: "bg-gradient-to-r from-green-400 via-emerald-500 to-teal-600",
       cardGlowGradient: "linear-gradient(100deg, #34d399, #2dd4bf, #06b6d4)",
@@ -126,7 +160,7 @@ export default function PortfolioPage() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-900 text-gray-100">
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out
+        className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color,box-shadow] duration-300 ease-in-out
                     ${isScrolled ? "bg-gray-900/80 backdrop-blur-md border-b border-slate-700/50 shadow-lg" : "bg-transparent border-transparent"}`}
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -139,7 +173,7 @@ export default function PortfolioPage() {
               <Image src="/AtelierBelli.png" alt="Logo Atelier Belli" width={32} height={32} className="h-8 w-8" />
               <span>Atelier Belli</span>
             </Link>
-            <nav className="hidden md:flex">
+            <nav className="hidden md:flex items-center gap-8">
               <ul className="flex items-center space-x-8">
                 {navLinks.map((link) => (
                   <li key={link.name}>
@@ -152,17 +186,25 @@ export default function PortfolioPage() {
                   </li>
                 ))}
               </ul>
+              {/* Desktop locale toggle */}
+              <LocaleToggle locale={locale} />
             </nav>
-            <div className="md:hidden">
-              <button onClick={toggleMobileMenu} aria-label="Abrir menú" className="text-gray-200 hover:text-white p-2">
-                {isMobileMenuOpen ? <XIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
+            <div className="md:hidden flex items-center gap-2">
+              {/* Mobile locale toggle (always visible) */}
+              <LocaleToggle locale={locale} />
+              <button
+                onClick={toggleMobileMenu}
+                aria-label={isSpanish ? (isMobileMenuOpen ? "Cerrar menú" : "Abrir menú") : (isMobileMenuOpen ? "Close menu" : "Open menu")}
+                className="text-gray-200 hover:text-white p-2"
+              >
+                {isMobileMenuOpen ? <XIcon className="h-6 w-6" aria-hidden="true" /> : <MenuIcon className="h-6 w-6" aria-hidden="true" />}
               </button>
             </div>
           </div>
         </div>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             className="md:hidden absolute top-16 left-0 right-0 bg-gray-900/95 backdrop-blur-md shadow-lg pb-4 border-b border-slate-700/50"
           >
@@ -185,7 +227,7 @@ export default function PortfolioPage() {
         )}
       </header>
 
-      <main className="flex-grow">
+      <main id="main-content" className="flex-grow">
         <section
           id="inicio"
           className={`relative min-h-screen flex flex-col justify-center items-center text-center px-4 ${scrollMarginTop} pt-16`}
@@ -193,15 +235,15 @@ export default function PortfolioPage() {
           <HeroBackground />
           <div className="relative z-10">
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-5xl sm:text-6xl md:text-7xl font-bold"
+              className="text-5xl sm:text-6xl md:text-7xl font-bold text-balance"
             >
               <span className="text-gradient">Atelier Belli</span>
             </motion.h1>
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               className="mt-4 text-lg sm:text-xl text-gray-300 max-w-2xl"
@@ -211,7 +253,7 @@ export default function PortfolioPage() {
                 : "Software development and digital solutions"}
             </motion.p>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
@@ -223,9 +265,9 @@ export default function PortfolioPage() {
         </section>
 
         <motion.section
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
+          variants={prefersReducedMotion ? undefined : sectionVariants}
+          initial={prefersReducedMotion ? undefined : "hidden"}
+          whileInView={prefersReducedMotion ? undefined : "visible"}
           viewport={{ once: true, amount: 0.2 }}
           id="sobre-mi"
           className={`relative py-20 sm:py-24 bg-slate-800 overflow-hidden ${scrollMarginTop}`}
@@ -234,16 +276,17 @@ export default function PortfolioPage() {
             <HeroBackground />
           </div>
           <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-balance">
               <span className="text-gradient">{isSpanish ? "Sobre mí" : "About me"}</span>
             </h2>
             <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
               <div className="flex-shrink-0">
                 <Image
                   src="/ProfilePic.jpg"
-                  alt="Avatar del desarrollador"
+                  alt={isSpanish ? "Avatar del desarrollador" : "Developer avatar"}
                   width={160}
                   height={160}
+                  priority
                   className="rounded-full w-32 h-32 md:w-40 md:h-40 object-cover shadow-xl border-4 border-pink-500/70"
                 />
               </div>
@@ -259,15 +302,15 @@ export default function PortfolioPage() {
         </motion.section>
 
         <motion.section
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
+          variants={prefersReducedMotion ? undefined : sectionVariants}
+          initial={prefersReducedMotion ? undefined : "hidden"}
+          whileInView={prefersReducedMotion ? undefined : "visible"}
           viewport={{ once: true, amount: 0.2 }}
           id="apps"
           className={`py-20 sm:py-24 bg-gray-900 ${scrollMarginTop}`}
         >
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-16 text-balance">
               <span className="text-gradient">{isSpanish ? "Mis Aplicaciones" : "My Applications"}</span>
             </h2>
             <div className="grid grid-cols-1 gap-12">
@@ -290,6 +333,7 @@ export default function PortfolioPage() {
                         alt={app.alt}
                         width={100}
                         height={100}
+                        loading="lazy"
                         className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-contain flex-shrink-0"
                       />
                       <div>
@@ -299,7 +343,6 @@ export default function PortfolioPage() {
                           {app.supportLink && (
                             <GradientButton
                               href={app.supportLink}
-                              target="_blank"
                               className="text-sm w-full sm:w-auto justify-center"
                               gradientClasses={app.buttonGradient}
                             >
@@ -338,15 +381,15 @@ export default function PortfolioPage() {
         </motion.section>
 
         <motion.section
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
+          variants={prefersReducedMotion ? undefined : sectionVariants}
+          initial={prefersReducedMotion ? undefined : "hidden"}
+          whileInView={prefersReducedMotion ? undefined : "visible"}
           viewport={{ once: true, amount: 0.2 }}
           id="privacidad"
           className={`py-20 sm:py-24 bg-slate-800/50 ${scrollMarginTop}`}
         >
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-balance">
               <span className="text-gradient">
                 {isSpanish ? "Tu Privacidad es Importante" : "Your Privacy is Important"}
               </span>
@@ -374,17 +417,17 @@ export default function PortfolioPage() {
         </motion.section>
 
         <motion.section
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
+          variants={prefersReducedMotion ? undefined : sectionVariants}
+          initial={prefersReducedMotion ? undefined : "hidden"}
+          whileInView={prefersReducedMotion ? undefined : "visible"}
           viewport={{ once: true, amount: 0.2 }}
           id="contacto"
           className={`py-20 sm:py-24 bg-gray-900 ${scrollMarginTop}`}
         >
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-balance">
               <span className="text-gradient">
-                {isSpanish ? "Hablemos de tu Proyecto" : "Let's talk about your Project"}
+                {isSpanish ? "Hablemos de tu Proyecto" : "Let's Talk About Your Project"}
               </span>
             </h2>
             <p className="text-gray-300 leading-relaxed mb-8 max-w-xl mx-auto">
@@ -431,7 +474,7 @@ export default function PortfolioPage() {
       <footer className="bg-slate-900 text-gray-400 py-8 text-center border-t border-slate-700/50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-sm mb-2">
-            &copy; {new Date().getFullYear()} Atelier Belli.{" "}
+            &copy; <span suppressHydrationWarning>{new Date().getFullYear()}</span> Atelier Belli.{" "}
             {isSpanish ? "Todos los derechos reservados." : "All rights reserved."}
           </p>
           <div className="space-x-4">
@@ -444,6 +487,9 @@ export default function PortfolioPage() {
           </div>
         </div>
       </footer>
+
+      {/* First-visit language selection modal */}
+      <LanguageSelector />
     </div>
   )
 }
