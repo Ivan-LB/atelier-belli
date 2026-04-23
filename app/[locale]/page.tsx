@@ -403,14 +403,14 @@ export default function PortfolioPage() {
                 <p className="ab-h-sub">
                   {isSpanish ? (
                     <>
-                      Un pequeño <em>atelier</em> de software — precisión franco-italiana, forma
-                      minimalista, código escrito a mano. Diseño y construyo apps de iOS y la web
+                      Un pequeño <em>atelier</em> de software desde Tijuana. Forma minimalista, y
+                      la paciencia de terminar las cosas. Diseño y construyo apps de iOS y la web
                       que las acompaña.
                     </>
                   ) : (
                     <>
-                      A small <em>atelier</em> for software — Franco-Italian precision, minimalist
-                      form, and code written by hand. I design and build iOS apps and the web
+                      A small <em>atelier</em> for software out of Tijuana. Minimalist form, and
+                      the patience to finish things. I design and build iOS apps and the web
                       around them.
                     </>
                   )}
