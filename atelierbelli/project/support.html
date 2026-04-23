@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en" data-app="fingo">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Support — Atelier Belli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Geist:wght@400;500;600&display=swap">
+<style>
+/* ──────────────────────────────────────────────────────────
+   Support — shared shell, per-app skin via [data-app="..."]
+   ────────────────────────────────────────────────────────── */
+:root{
+  --serif: 'EB Garamond', 'Instrument Serif', Georgia, serif;
+  --sans: 'Inter', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* defaults — overridden per app */
+  --bg:        #F6F2EA;
+  --bg-2:      #EFE9DB;
+  --fg:        #1a1a1a;
+  --fg-2:      #2a2a2a;
+  --muted:     #7a7265;
+  --muted-2:   #a59d8f;
+  --line:      #00000014;
+  --line-2:    #0000000a;
+  --accent:    #B14D2E;
+  --accent-2:  #D8814D;
+  --card:      #ffffff;
+  --card-2:    #fbf8f1;
+
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+
+  --shadow-sm: 0 1px 0 #0000000a, 0 2px 8px -4px #00000014;
+  --shadow-md: 0 10px 32px -14px #00000022, 0 2px 10px -4px #00000012;
+}
+
+/* ──────────────────────────────────────────────────────────
+   FINGO — warm terracotta, editorial serif, playful iOS
+   ────────────────────────────────────────────────────────── */
+[data-app="fingo"]{
+  --bg:        #F6F2EA;
+  --bg-2:      #EFE9DB;
+  --fg:        #1a1a1a;
+  --fg-2:      #2a2623;
+  --muted:     #7a7265;
+  --muted-2:   #a59d8f;
+  --accent:    #B14D2E;
+  --accent-2:  #D8814D;
+  --serif-display: 'EB Garamond', Georgia, serif;
+  --card:      #FCF9F2;
+  --card-2:    #F3EDDE;
+  --hero-tex:  radial-gradient(circle at 30% 20%, #D8814D18, transparent 50%);
+}
+
+/* ──────────────────────────────────────────────────────────
+   SAVELY — calm greens, sans, quiet financial
+   ────────────────────────────────────────────────────────── */
+[data-app="savely"]{
+  --bg:        #F4F6F2;
+  --bg-2:      #E9EEE3;
+  --fg:        #14221A;
+  --fg-2:      #23332A;
+  --muted:     #5F6E61;
+  --muted-2:   #8D9B8E;
+  --accent:    #2E6B4A;
+  --accent-2:  #4E9B72;
+  --serif-display: 'Instrument Serif', 'EB Garamond', serif;
+  --card:      #FDFEFC;
+  --card-2:    #EEF3E9;
+  --hero-tex:  radial-gradient(circle at 70% 15%, #4E9B7222, transparent 55%);
+}
+
+/* ──────────────────────────────────────────────────────────
+   LORENZANA — midnight oaxacan, golden cream
+   ────────────────────────────────────────────────────────── */
+[data-app="lorenzana"]{
+  --bg:        #17110B;
+  --bg-2:      #211910;
+  --fg:        #EADFC3;
+  --fg-2:      #F5ECD4;
+  --muted:     #A59074;
+  --muted-2:   #7A6851;
+  --line:      #FFFFFF10;
+  --line-2:    #FFFFFF08;
+  --accent:    #C9A766;
+  --accent-2:  #E5C185;
+  --serif-display: 'EB Garamond', serif;
+  --card:      #231A10;
+  --card-2:    #2A2015;
+  --hero-tex:  radial-gradient(circle at 50% 0%, #C9A76620, transparent 60%);
+  --shadow-sm: 0 1px 0 #ffffff06, 0 2px 8px -4px #00000066;
+  --shadow-md: 0 10px 32px -14px #00000088, 0 2px 10px -4px #00000044;
+}
+
+*{ box-sizing:border-box }
+html, body{ margin:0; padding:0 }
+html{ scroll-behavior:smooth }
+body{
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--sans);
+  font-size: 16px; line-height: 1.6;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+em{ font-style:italic; font-family: var(--serif); font-weight: 400 }
+a{ color: inherit; text-decoration: none }
+button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer }
+.wrap{ max-width: 1080px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 48px) }
+.wrap-narrow{ max-width: 760px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 48px) }
+
+/* ──────────────────────────────────────────────────────────
+   Nav — minimal, anchored to parent portfolio
+   ────────────────────────────────────────────────────────── */
+.nav{
+  position: sticky; top:0; z-index: 20;
+  background: color-mix(in oklab, var(--bg) 85%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  height: 64px;
+  max-width: 1080px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 48px);
+}
+.back{
+  display:inline-flex; align-items:center; gap:10px;
+  font-family: var(--serif); font-style:italic;
+  font-size: 17px; color: var(--fg-2);
+  opacity: .85;
+  transition: opacity .2s ease;
+}
+.back:hover{ opacity:1 }
+.back svg{ width:16px; height:16px; stroke: currentColor; fill:none; stroke-width:1.6 }
+.nav-app{
+  display:flex; align-items:center; gap:10px;
+  font-size: 12px; letter-spacing:.22em; text-transform: uppercase;
+  color: var(--muted);
+}
+.nav-app .crest{
+  width: 22px; height: 22px; border-radius: var(--r-sm);
+  background: var(--accent);
+  position: relative;
+  display:grid; place-items:center;
+  color: var(--card); font-family: var(--serif); font-style: italic; font-size: 14px; font-weight: 500;
+  line-height:1;
+}
+[data-app="lorenzana"] .nav-app .crest{ background: var(--accent); color: #1a1305 }
+
+/* ──────────────────────────────────────────────────────────
+   Hero
+   ────────────────────────────────────────────────────────── */
+.hero{
+  padding: clamp(72px, 11vw, 140px) 0 clamp(48px, 7vw, 88px);
+  position: relative; overflow: hidden;
+}
+.hero::before{
+  content:""; position:absolute; inset: 0;
+  background: var(--hero-tex);
+  pointer-events:none;
+}
+.hero .wrap-narrow{ position: relative }
+.hero .eyebrow{
+  display:inline-flex; align-items:center; gap: 10px;
+  font-size: 11px; letter-spacing: .28em; text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+.hero .eyebrow .dot{
+  width: 6px; height: 6px; border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 22%, transparent);
+}
+.hero h1{
+  font-family: var(--serif-display, var(--serif));
+  font-weight: 400; font-style: normal;
+  font-size: clamp(46px, 7.5vw, 96px);
+  line-height: .98; letter-spacing: -0.025em;
+  margin: 0 0 clamp(20px, 3vw, 36px);
+  text-wrap: balance;
+}
+.hero h1 em{
+  font-style: italic;
+  color: var(--accent);
+}
+.hero .lede{
+  font-family: var(--serif);
+  font-size: clamp(19px, 2vw, 23px);
+  line-height: 1.5;
+  color: var(--fg-2);
+  max-width: 48ch;
+  text-wrap: pretty;
+  margin: 0;
+}
+
+/* Section header */
+.section{
+  padding: clamp(56px, 8vw, 100px) 0;
+  border-top: 1px solid var(--line);
+}
+.section-head{
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: clamp(24px, 5vw, 64px);
+  align-items: baseline;
+  margin-bottom: clamp(36px, 5vw, 56px);
+}
+.section-eye{
+  font-size: 11px; letter-spacing:.28em; text-transform: uppercase;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+.section-title{
+  font-family: var(--serif-display, var(--serif));
+  font-weight: 400;
+  font-size: clamp(30px, 4.2vw, 48px);
+  line-height: 1.02; letter-spacing:-0.02em;
+  margin: 0;
+  text-wrap: balance;
+}
+.section-title em{ font-style:italic; color: var(--accent) }
+.section-sub{
+  margin-top: 14px;
+  font-family: var(--serif);
+  font-size: 18px; line-height:1.55;
+  color: var(--fg-2);
+  max-width: 52ch;
+}
+@media (max-width: 760px){
+  .section-head{ grid-template-columns: 1fr; gap: 12px }
+}
+
+/* ──────────────────────────────────────────────────────────
+   Contact — card grid
+   ────────────────────────────────────────────────────────── */
+.contact-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+.card{
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 28px;
+  display: flex; flex-direction: column; gap: 10px;
+  transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  position: relative;
+}
+a.card, button.card{ cursor: pointer; text-align: left; width: 100% }
+a.card:hover, button.card:hover{
+  border-color: var(--muted-2);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.card .ico{
+  width: 36px; height: 36px;
+  border-radius: var(--r-md);
+  background: color-mix(in oklab, var(--accent) 14%, transparent);
+  display:grid; place-items:center;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.card .ico svg{ width: 18px; height:18px; stroke: currentColor; fill:none; stroke-width: 1.6 }
+.card .k{
+  font-size: 11px; letter-spacing:.22em; text-transform: uppercase;
+  color: var(--muted);
+  margin: 0;
+}
+.card .v{
+  font-family: var(--serif);
+  font-size: 22px; line-height: 1.15; letter-spacing: -0.005em;
+  color: var(--fg);
+  margin: 0;
+}
+.card .v em{ color: var(--accent); font-style: italic }
+.card .hint{
+  font-size: 13px; color: var(--muted);
+  margin: 0;
+  margin-top: auto;
+  padding-top: 6px;
+}
+.card .arr{
+  position: absolute; top: 24px; right: 24px;
+  color: var(--muted-2);
+  font-family: var(--serif); font-style: italic;
+  font-size: 20px;
+  transition: transform .2s ease, color .2s ease;
+}
+a.card:hover .arr, button.card:hover .arr{
+  color: var(--accent); transform: translate(4px, -4px);
+}
+
+/* ──────────────────────────────────────────────────────────
+   FAQ accordion
+   ────────────────────────────────────────────────────────── */
+.faq{
+  border-top: 1px solid var(--line);
+}
+.faq details{
+  border-bottom: 1px solid var(--line);
+  padding: 22px 0;
+}
+.faq summary{
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: 18px; align-items: baseline;
+  cursor: pointer;
+  list-style: none;
+}
+.faq summary::-webkit-details-marker{ display:none }
+.faq summary .n{
+  font-family: var(--mono);
+  font-size: 11px; color: var(--muted);
+  letter-spacing: .1em;
+}
+.faq summary .q{
+  font-family: var(--serif-display, var(--serif));
+  font-size: clamp(20px, 2.4vw, 26px);
+  line-height: 1.25; letter-spacing: -0.01em;
+  color: var(--fg);
+  font-weight: 400;
+}
+.faq summary .tog{
+  width: 24px; height: 24px;
+  display:grid; place-items:center;
+  color: var(--muted);
+  transition: transform .3s cubic-bezier(.2, .8, .2, 1), color .2s;
+}
+.faq details[open] summary .tog{
+  transform: rotate(45deg);
+  color: var(--accent);
+}
+.faq .a{
+  padding: 14px 0 6px 46px;
+  font-family: var(--serif);
+  font-size: 18px; line-height: 1.65;
+  color: var(--fg-2);
+  max-width: 66ch;
+}
+.faq .a a{ color: var(--accent); border-bottom: 1px solid color-mix(in oklab, var(--accent) 40%, transparent) }
+@media (max-width: 620px){
+  .faq summary{ grid-template-columns: 1fr auto; gap: 14px }
+  .faq summary .n{ display:none }
+  .faq .a{ padding-left: 0 }
+}
+
+/* ──────────────────────────────────────────────────────────
+   Status row — app version, platform, response time, status
+   ────────────────────────────────────────────────────────── */
+.status-row{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--card-2);
+}
+.status-cell{
+  padding: 24px 22px;
+  border-right: 1px solid var(--line);
+}
+.status-cell:last-child{ border-right: 0 }
+.status-cell .k{
+  font-size: 10.5px; letter-spacing:.24em; text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 10px;
+  font-family: var(--mono);
+}
+.status-cell .v{
+  font-family: var(--serif);
+  font-size: 20px; line-height: 1.15;
+  color: var(--fg);
+}
+.status-cell .v.ok::before{
+  content: ""; display:inline-block;
+  width: 7px; height: 7px; border-radius: 999px;
+  background: #3fb56d;
+  margin-right: 8px; vertical-align: middle;
+  box-shadow: 0 0 0 4px #3fb56d22;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%, 100%{ box-shadow: 0 0 0 4px #3fb56d22 }
+  50%{ box-shadow: 0 0 0 8px #3fb56d00 }
+}
+@media (max-width: 760px){
+  .status-row{ grid-template-columns: repeat(2, 1fr) }
+  .status-cell{ border-bottom: 1px solid var(--line) }
+  .status-cell:nth-child(3){ border-bottom: 0 }
+  .status-cell:nth-child(2){ border-right: 0 }
+}
+
+/* ──────────────────────────────────────────────────────────
+   Footer CTA
+   ────────────────────────────────────────────────────────── */
+.cta{
+  padding: clamp(72px, 11vw, 120px) 0;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+.cta h2{
+  font-family: var(--serif-display, var(--serif));
+  font-size: clamp(34px, 5.5vw, 62px);
+  line-height: 1; letter-spacing: -0.02em;
+  margin: 0 0 22px;
+  font-weight: 400;
+  text-wrap: balance;
+}
+.cta h2 em{ color: var(--accent); font-style: italic }
+.cta .sub{
+  font-family: var(--serif);
+  font-size: 20px; color: var(--fg-2);
+  margin: 0 0 36px;
+  max-width: 42ch; margin-left:auto; margin-right:auto;
+  text-wrap: pretty;
+}
+.btn-pill{
+  display:inline-flex; align-items:center; gap: 12px;
+  padding: 14px 28px;
+  border-radius: 999px;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 14px; font-weight: 500;
+  letter-spacing: .04em;
+  transition: transform .2s ease, background .2s ease;
+}
+[data-app="lorenzana"] .btn-pill{ background: var(--accent); color: #1a1305 }
+.btn-pill:hover{ transform: translateY(-1px) }
+.btn-pill .d{
+  width: 6px; height: 6px; border-radius: 999px;
+  background: var(--accent);
+}
+[data-app="lorenzana"] .btn-pill .d{ background: #1a1305 }
+
+/* ──────────────────────────────────────────────────────────
+   Foot
+   ────────────────────────────────────────────────────────── */
+.foot{
+  padding: 32px 0 48px;
+  font-size: 12px; letter-spacing:.14em; text-transform: uppercase;
+  color: var(--muted);
+  border-top: 1px solid var(--line-2);
+  text-align: center;
+}
+.foot a{ color: var(--muted); transition: color .2s }
+.foot a:hover{ color: var(--fg) }
+.foot .sep{ margin: 0 14px; color: var(--muted-2) }
+
+/* ──────────────────────────────────────────────────────────
+   Tweaks panel (hidden by default — host toggles)
+   ────────────────────────────────────────────────────────── */
+#tweaks{
+  position: fixed; right: 20px; bottom: 20px;
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--r-lg); padding: 14px;
+  box-shadow: var(--shadow-md);
+  display: none; z-index: 50;
+  font-family: var(--sans); font-size: 13px;
+  min-width: 220px;
+}
+#tweaks.on{ display: block }
+#tweaks h4{
+  margin: 0 0 10px; font-size: 11px; letter-spacing:.24em; text-transform: uppercase;
+  color: var(--muted); font-family: var(--mono); font-weight: 500;
+}
+#tweaks .tw-opts{ display: flex; flex-direction: column; gap: 6px }
+#tweaks button{
+  padding: 8px 12px; border-radius: var(--r-sm);
+  background: var(--card-2); color: var(--fg);
+  font-size: 13px; text-align: left;
+  border: 1px solid transparent;
+  display: flex; align-items: center; gap: 10px;
+  transition: all .2s ease;
+}
+#tweaks button:hover{ border-color: var(--line) }
+#tweaks button.on{
+  background: var(--accent); color: var(--card);
+}
+[data-app="lorenzana"] #tweaks button.on{ color: #1a1305 }
+#tweaks button .sw{
+  width: 10px; height: 10px; border-radius: 2px; background: currentColor; opacity: .9;
+}
+</style>
+</head>
+<body>
+
+<!-- ──────────────────────────────────────────────────────────
+     NAV
+     ────────────────────────────────────────────────────────── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="back" href="index.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      <span>Atelier Belli</span>
+    </a>
+    <div class="nav-app">
+      <span class="crest" data-bind="crestLetter">F</span>
+      <span data-bind="navLabel">Fingo · Support</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ──────────────────────────────────────────────────────────
+     HERO
+     ────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="wrap-narrow">
+    <div class="eyebrow"><span class="dot"></span><span data-bind="heroEye">Support · v2.4</span></div>
+    <h1 data-bind-html="heroTitle">How can we <em>help?</em></h1>
+    <p class="lede" data-bind="heroLede">
+      A small team behind a small app. Drop us a note — we reply by hand, usually within a day.
+    </p>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────────
+     CONTACT
+     ────────────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="wrap">
+    <header class="section-head">
+      <span class="section-eye">01 — Contact</span>
+      <div>
+        <h2 class="section-title" data-bind-html="contactTitle">Get in <em>touch.</em></h2>
+        <p class="section-sub" data-bind="contactSub">Choose what suits you best. Everything routes to the same desk.</p>
+      </div>
+    </header>
+    <div class="contact-grid" id="contact-grid"></div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────────
+     FAQ
+     ────────────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="wrap">
+    <header class="section-head">
+      <span class="section-eye">02 — Frequent questions</span>
+      <div>
+        <h2 class="section-title" data-bind-html="faqTitle">Questions <em>we hear.</em></h2>
+        <p class="section-sub" data-bind="faqSub">The ones that come up most. If yours isn't here, write to us.</p>
+      </div>
+    </header>
+    <div class="faq" id="faq-list"></div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────────
+     STATUS
+     ────────────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="wrap">
+    <header class="section-head">
+      <span class="section-eye">03 — Status</span>
+      <div>
+        <h2 class="section-title" data-bind-html="statusTitle">Everything <em>running.</em></h2>
+        <p class="section-sub" data-bind="statusSub">Current version, platform availability, and our response time.</p>
+      </div>
+    </header>
+    <div class="status-row" id="status-row"></div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────────
+     FOOTER CTA
+     ────────────────────────────────────────────────────────── -->
+<section class="cta">
+  <div class="wrap-narrow">
+    <h2 data-bind-html="ctaTitle">Still <em>stuck?</em></h2>
+    <p class="sub" data-bind="ctaSub">Write directly. A real person on the other side.</p>
+    <a class="btn-pill" data-bind-href="ctaHref" href="mailto:ivanlorenzana@outlook.com">
+      <span class="d"></span>
+      <span data-bind="ctaLabel">ivanlorenzana@outlook.com</span>
+    </a>
+  </div>
+</section>
+
+<footer class="foot">
+  <a href="index.html">Atelier Belli</a>
+  <span class="sep">·</span>
+  <span data-bind="footMeta">Fingo — Support desk · 2025</span>
+  <span class="sep">·</span>
+  <a href="#" data-bind="privacyLabel" data-bind-href="privacyHref">Privacy</a>
+  <span class="sep">·</span>
+  <a href="#" data-bind="termsLabel" data-bind-href="termsHref">Terms</a>
+</footer>
+
+<!-- ──────────────────────────────────────────────────────────
+     TWEAKS PANEL
+     ────────────────────────────────────────────────────────── -->
+<div id="tweaks">
+  <h4>App</h4>
+  <div class="tw-opts">
+    <button data-setapp="fingo"><span class="sw" style="background:#B14D2E"></span>Fingo</button>
+    <button data-setapp="savely"><span class="sw" style="background:#2E6B4A"></span>Savely</button>
+    <button data-setapp="lorenzana"><span class="sw" style="background:#C9A766"></span>Lorenzana</button>
+  </div>
+</div>
+
+<!-- ──────────────────────────────────────────────────────────
+     DATA — per app
+     ────────────────────────────────────────────────────────── -->
+<script id="support-data" type="application/json">
+{
+  "fingo": {
+    "name": "Fingo",
+    "crest": "F",
+    "navLabel": "Fingo · Support",
+    "footMeta": "Fingo — Support desk · 2025",
+
+    "heroEye": "Support · v2.1.0",
+    "heroTitle": "How can we <em>help?</em>",
+    "heroLede": "Fingo is a tiny app for deciding who pays, who goes first, who picks the music. If something doesn't work the way it should — write to us. A real person reads every message.",
+
+    "contactTitle": "Get in <em>touch.</em>",
+    "contactSub": "Choose what suits you best. All of it lands on the same desk in Milano.",
+    "contacts": [
+      { "kind":"email",    "label":"Email",            "value":"ivanlorenzana@outlook.com",             "hint":"Replies within 24h, usually sooner.",             "href":"mailto:ivanlorenzana@outlook.com" },
+      { "kind":"bug",      "label":"Report a bug",     "value":"<em>Something</em> broken?",   "hint":"A short note + screenshot goes a long way.",       "href":"mailto:ivanlorenzana@outlook.com?subject=Fingo%20bug%20report" },
+      { "kind":"feature",  "label":"Request a feature","value":"Imagine <em>better.</em>",     "hint":"We read all of them. Some ship.",                  "href":"mailto:ivanlorenzana@outlook.com?subject=Fingo%20wishlist" },
+      { "kind":"docs",     "label":"Help centre",      "value":"Guides & tips",               "hint":"Quick guides for the most common flows.",           "href":"#" }
+    ],
+
+    "faqTitle": "Questions <em>we hear.</em>",
+    "faqSub": "The ones that come up most. If yours isn't here, just write.",
+    "faq": [
+      { "q":"Does Fingo share my contacts or data?", "a":"No. Fingo doesn't ship your contacts, choices, or results anywhere. Everything lives on your device; there's no account and no server to leak. If you delete the app, nothing stays behind." },
+      { "q":"Why do I need to enable haptics?", "a":"Because half of Fingo's joy is the click. You can turn them off in <em>Settings → Feedback</em>, but we'd suggest trying a spin with them on at least once." },
+      { "q":"Can I use Fingo without an internet connection?", "a":"Yes — completely. Fingo is fully offline. The only time the internet is touched is if you share a result as a card via Messages or Mail." },
+      { "q":"Where do I restore a purchase?", "a":"Settings → About → Restore Purchases. You'll need to be signed into the same Apple ID you used when buying. If it still doesn't work, <a href='mailto:ivanlorenzana@outlook.com'>email us</a>." },
+      { "q":"Is there an Android version?", "a":"Not yet. Fingo is SwiftUI-native and we want to keep the animation and haptic quality at the standard it is. An Android port is on the table but not promised." }
+    ],
+
+    "statusTitle": "Everything <em>running.</em>",
+    "statusSub": "Current version, platform, and how quickly we get back.",
+    "status": [
+      { "k":"Version", "v":"2.1.0" },
+      { "k":"Platform", "v":"iOS 26+" },
+      { "k":"Reply time", "v":"~ 18 hours" },
+      { "k":"Systems", "v":"All good", "ok":true }
+    ],
+
+    "ctaTitle": "Still <em>stuck?</em>",
+    "ctaSub": "Write to us directly.",
+    "ctaLabel": "ivanlorenzana@outlook.com",
+    "ctaHref": "mailto:ivanlorenzana@outlook.com",
+
+    "privacyLabel": "Privacy",
+    "privacyHref": "#",
+    "termsLabel": "Terms",
+    "termsHref": "#"
+  },
+
+  "savely": {
+    "name": "Savely",
+    "crest": "S",
+    "navLabel": "Savely · Support",
+    "footMeta": "Savely — Support desk · 2025",
+
+    "heroEye": "Support · v1.8",
+    "heroTitle": "A calm <em>answer</em> to every question.",
+    "heroLede": "Savely is a quiet place for your money. If something looks off — a missing transaction, a chart that won't load, a bank that dropped — tell us. We'll sort it out, patiently.",
+
+    "contactTitle": "Reach <em>us.</em>",
+    "contactSub": "Questions about your account, a bank connection, or something simpler. All roads lead to the same desk.",
+    "contacts": [
+      { "kind":"email",    "label":"Email",            "value":"ivanlorenzana@outlook.com",           "hint":"Mon–Fri · Replies within 24h.",                    "href":"mailto:ivanlorenzana@outlook.com" },
+      { "kind":"bank",     "label":"Bank connection",  "value":"Can't <em>link</em> a bank?",   "hint":"Most issues are fixed in under an hour.",           "href":"mailto:ivanlorenzana@outlook.com?subject=Bank%20connection%20help" },
+      { "kind":"security", "label":"Security concern", "value":"See something <em>odd?</em>",   "hint":"Reported within 2 hours. 24/7.",                    "href":"mailto:ivanlorenzana@outlook.com" },
+      { "kind":"docs",     "label":"Help centre",      "value":"Guides & articles",             "hint":"Setup, budgets, categories, exports.",               "href":"#" }
+    ],
+
+    "faqTitle": "Common <em>questions.</em>",
+    "faqSub": "If yours isn't here, write in. We answer each one by hand.",
+    "faq": [
+      { "q":"Is my bank data safe with Savely?", "a":"Yes. Savely uses read-only bank connections via regulated aggregators. We never see or store your banking credentials. All data at rest is encrypted, and we never sell or share information with third parties." },
+      { "q":"Why can't I connect my bank?", "a":"Most often it's a temporary outage at the aggregator. Try again in ~30 minutes. If it persists, <a href='mailto:ivanlorenzana@outlook.com'>email us</a> with your bank name and country — we'll chase it down." },
+      { "q":"Can I export my data?", "a":"Yes. <em>Settings → Data → Export</em>. You'll get a CSV of all your transactions, categories, and budgets. Nothing is kept hostage." },
+      { "q":"How do budgets roll over at month end?", "a":"Unspent amounts either carry to next month or reset — your call. Set it per budget in <em>Budget → Options → Rollover</em>. The default is reset." },
+      { "q":"Does Savely work outside Europe?", "a":"Partial. EU, UK, and US banks work well. Canada and Australia are in public beta. Other regions — get in touch and we'll tell you honestly whether we can connect." }
+    ],
+
+    "statusTitle": "Current <em>state.</em>",
+    "statusSub": "Version, platform, response times, and system status.",
+    "status": [
+      { "k":"Version", "v":"1.8.0" },
+      { "k":"Platform", "v":"iOS 16+" },
+      { "k":"Reply time", "v":"~ 14 hours" },
+      { "k":"Systems", "v":"All good", "ok":true }
+    ],
+
+    "ctaTitle": "Still <em>stuck?</em>",
+    "ctaSub": "Write to us directly. A small team, real replies, patient answers.",
+    "ctaLabel": "ivanlorenzana@outlook.com",
+    "ctaHref": "mailto:ivanlorenzana@outlook.com",
+
+    "privacyLabel": "Privacy",
+    "privacyHref": "#",
+    "termsLabel": "Terms",
+    "termsHref": "#"
+  },
+
+  "lorenzana": {
+    "name": "Lorenzana",
+    "crest": "L",
+    "navLabel": "Destilería Lorenzana · Support",
+    "footMeta": "Destilería Lorenzana — Atención · 2025",
+
+    "heroEye": "Atención al cliente · 2025",
+    "heroTitle": "¿En qué podemos <em>servirte?</em>",
+    "heroLede": "Somos una destilería chica en Oaxaca. Cada botella se embotella a mano, y cada mensaje lo leemos igual. Si hay algo con tu pedido, tu envío, o quieres saber más del mezcal — escríbenos.",
+
+    "contactTitle": "Habla con <em>nosotros.</em>",
+    "contactSub": "Usa el canal que prefieras. Todo llega al mismo escritorio, en Oaxaca.",
+    "contacts": [
+      { "kind":"email",    "label":"Correo",             "value":"ivanlorenzana@outlook.com",  "hint":"Respondemos en menos de 24 horas.",                   "href":"mailto:ivanlorenzana@outlook.com" },
+      { "kind":"order",    "label":"Tu pedido",          "value":"<em>Seguimiento</em> de envío",  "hint":"Con tu número de orden, te decimos dónde va.",          "href":"mailto:ivanlorenzana@outlook.com?subject=Pedido" },
+      { "kind":"wholesale","label":"Mayoreo & Horeca",   "value":"Restaurantes, bares, tiendas",   "hint":"Muestras, catálogo y precios al mayoreo.",              "href":"mailto:ivanlorenzana@outlook.com?subject=Mayoreo" },
+      { "kind":"visit",    "label":"Visitas a la palenque", "value":"Ven a <em>conocer.</em>",     "hint":"Reserva con anticipación — grupos chicos.",             "href":"mailto:ivanlorenzana@outlook.com?subject=Visita" }
+    ],
+
+    "faqTitle": "Preguntas <em>comunes.</em>",
+    "faqSub": "Las que más nos llegan. Si no está la tuya, escríbenos.",
+    "faq": [
+      { "q":"¿A dónde hacen envíos?", "a":"A toda la República Mexicana y a Estados Unidos vía nuestros socios de distribución. Para Europa y Asia, escríbenos directamente — coordinamos caso por caso según las reglas del destino." },
+      { "q":"¿Cuánto tarda en llegar mi pedido?", "a":"Dentro de México: 3–5 días hábiles desde que se despacha en Oaxaca. A Estados Unidos: 7–10 días hábiles una vez librada la aduana. Te enviamos el número de guía por correo." },
+      { "q":"¿Cuál es la diferencia entre las variedades?", "a":"Trabajamos principalmente con <em>Espadín</em> (clásico, versátil), <em>Tobalá</em> (agave silvestre, más complejo) y <em>Tepeztate</em> (ediciones limitadas, herbal). Todo en <a href='#'>Variedades</a>." },
+      { "q":"¿Hacen ediciones especiales o regalos corporativos?", "a":"Sí. Grabamos etiquetas personalizadas a partir de cajas de 12 botellas. Contáctanos a <a href='mailto:ivanlorenzana@outlook.com'>ivanlorenzana@outlook.com</a>." },
+      { "q":"¿Puedo visitar la palenque?", "a":"Sí, los sábados con reserva previa. Recibimos grupos chicos (hasta 8 personas) y la visita dura unas 2 horas. Incluye recorrido por el horno, la tina y la destilación, más una cata." }
+    ],
+
+    "statusTitle": "Operación <em>al día.</em>",
+    "statusSub": "Temporada actual, envíos, y cómo responder.",
+    "status": [
+      { "k":"Edición", "v":"MMXXV" },
+      { "k":"Envíos", "v":"MX · US" },
+      { "k":"Respuesta", "v":"~ 16 horas" },
+      { "k":"Palenque", "v":"Abierta", "ok":true }
+    ],
+
+    "ctaTitle": "¿Sigues con <em>dudas?</em>",
+    "ctaSub": "Escríbenos directo. Una persona del otro lado, no un bot.",
+    "ctaLabel": "ivanlorenzana@outlook.com",
+    "ctaHref": "mailto:ivanlorenzana@outlook.com",
+
+    "privacyLabel": "Privacidad",
+    "privacyHref": "#",
+    "termsLabel": "Términos",
+    "termsHref": "#"
+  }
+}
+</script>
+
+<!-- ──────────────────────────────────────────────────────────
+     ICONS
+     ────────────────────────────────────────────────────────── -->
+<script type="application/json" id="icons">
+{
+  "email":     "<path d='M3 7.5l8.3 5.4a1.2 1.2 0 0 0 1.4 0L21 7.5'/><rect x='3' y='5' width='18' height='14' rx='2'/>",
+  "bug":       "<path d='M9 4l1.5 2h3L15 4'/><rect x='7' y='7' width='10' height='12' rx='5'/><path d='M7 11H4M7 15H4M17 11h3M17 15h3'/>",
+  "feature":   "<path d='M12 3l2.4 6.2L21 10l-5 4 1.4 7-5.4-3.3L6.6 21 8 14l-5-4 6.6-.8z'/>",
+  "twitter":   "<path d='M4 5l7 9-7 7h2.2l5.8-5.7L16 21h4l-7.4-9.6L19 5h-2.2l-5 4.9L9 5z'/>",
+  "bank":      "<path d='M3 20h18M5 20V10m4 10V10m6 10V10m4 10V10M3 10h18L12 3z'/>",
+  "security":  "<path d='M12 3l8 3v6c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V6z'/><path d='M9 12l2 2 4-4'/>",
+  "docs":      "<path d='M7 3h8l4 4v14H7z'/><path d='M15 3v4h4M10 13h6M10 17h6M10 9h3'/>",
+  "order":     "<path d='M3 4h3l2 12h12'/><circle cx='10' cy='20' r='1.4'/><circle cx='17' cy='20' r='1.4'/><path d='M8 8h12l-1 6H9'/>",
+  "wholesale": "<path d='M3 9l9-5 9 5-9 5zM3 9v8l9 5 9-5V9'/><path d='M3 13l9 5 9-5'/>",
+  "visit":     "<path d='M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z'/><circle cx='12' cy='9' r='2.5'/>"
+}
+</script>
+
+<script>
+(function(){
+  const DATA = JSON.parse(document.getElementById('support-data').textContent);
+  const ICONS = JSON.parse(document.getElementById('icons').textContent);
+
+  const APPS = Object.keys(DATA);
+  const DEFAULT_APP = 'fingo';
+
+  // pick app from ?app=... query string, else from data-app attr, else default
+  function getApp(){
+    const qs = new URLSearchParams(location.search);
+    const fromQs = qs.get('app');
+    if (fromQs && DATA[fromQs]) return fromQs;
+    const fromAttr = document.documentElement.getAttribute('data-app');
+    if (fromAttr && DATA[fromAttr]) return fromAttr;
+    return DEFAULT_APP;
+  }
+
+  function bind(el, key, value){
+    el.textContent = value;
+  }
+
+  function render(appKey){
+    const d = DATA[appKey];
+    document.documentElement.setAttribute('data-app', appKey);
+
+    // Simple text bindings
+    document.querySelectorAll('[data-bind]').forEach(el => {
+      const key = el.getAttribute('data-bind');
+      if (d[key] != null) el.textContent = d[key];
+    });
+
+    // HTML bindings (allow <em>)
+    document.querySelectorAll('[data-bind-html]').forEach(el => {
+      const key = el.getAttribute('data-bind-html');
+      if (d[key] != null) el.innerHTML = d[key];
+    });
+
+    // href bindings
+    document.querySelectorAll('[data-bind-href]').forEach(el => {
+      const key = el.getAttribute('data-bind-href');
+      if (d[key] != null) el.setAttribute('href', d[key]);
+    });
+
+    // Crest letter
+    const crestEl = document.querySelector('[data-bind="crestLetter"]');
+    if (crestEl) crestEl.textContent = d.crest || d.name?.[0] || 'A';
+
+    // Contact cards
+    const grid = document.getElementById('contact-grid');
+    grid.innerHTML = (d.contacts || []).map(c => `
+      <a class="card" href="${c.href || '#'}" ${c.href && c.href.startsWith('http') ? 'target="_blank" rel="noopener"' : ''}>
+        <div class="ico">
+          <svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[c.kind] || ICONS.email}</svg>
+        </div>
+        <p class="k">${c.label}</p>
+        <p class="v">${c.value}</p>
+        ${c.hint ? `<p class="hint">${c.hint}</p>` : ''}
+        <span class="arr">↗</span>
+      </a>
+    `).join('');
+
+    // FAQ
+    const faq = document.getElementById('faq-list');
+    faq.innerHTML = (d.faq || []).map((f, i) => `
+      <details ${i === 0 ? 'open' : ''}>
+        <summary>
+          <span class="n">${String(i+1).padStart(2,'0')}</span>
+          <span class="q">${f.q}</span>
+          <span class="tog">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M12 5v14M5 12h14"/>
+            </svg>
+          </span>
+        </summary>
+        <div class="a">${f.a}</div>
+      </details>
+    `).join('');
+
+    // Status
+    const status = document.getElementById('status-row');
+    status.innerHTML = (d.status || []).map(s => `
+      <div class="status-cell">
+        <p class="k">${s.k}</p>
+        <p class="v ${s.ok ? 'ok' : ''}">${s.v}</p>
+      </div>
+    `).join('');
+
+    // Title update
+    document.title = `${d.name} — Support · Atelier Belli`;
+
+    // Update tweaks panel active state
+    document.querySelectorAll('#tweaks button').forEach(b => {
+      b.classList.toggle('on', b.dataset.setapp === appKey);
+    });
+
+    // Persist selection (so refresh stays consistent)
+    try { localStorage.setItem('atelier.support.app', appKey); } catch(e){}
+  }
+
+  // Initial render
+  let currentApp = (function(){
+    try {
+      const saved = localStorage.getItem('atelier.support.app');
+      if (saved && DATA[saved]) return saved;
+    } catch(e){}
+    return getApp();
+  })();
+  render(currentApp);
+
+  // Tweaks panel — listens for host toggles and clicks
+  const tweaks = document.getElementById('tweaks');
+
+  window.addEventListener('message', (e) => {
+    if (!e.data || typeof e.data !== 'object') return;
+    if (e.data.type === '__activate_edit_mode') tweaks.classList.add('on');
+    if (e.data.type === '__deactivate_edit_mode') tweaks.classList.remove('on');
+  });
+
+  tweaks.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-setapp]');
+    if (!btn) return;
+    const appKey = btn.dataset.setapp;
+    currentApp = appKey;
+    render(appKey);
+    try {
+      window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { defaultApp: appKey } }, '*');
+    } catch(err) {}
+  });
+
+  // Announce availability
+  try {
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+  } catch(e){}
+})();
+</script>
+
+</body>
+</html>

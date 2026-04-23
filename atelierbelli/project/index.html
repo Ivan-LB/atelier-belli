@@ -1,0 +1,2011 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Atelier Belli — Digital craft, Franco-Italian.</title>
+<meta name="description" content="Atelier Belli — Software crafted with intention. Portfolio of Ivan Lorenzana, full-stack developer based in Tijuana, BC." />
+<link rel="icon" href="assets/AtelierBelli.svg" type="image/svg+xml" />
+<link rel="alternate icon" href="assets/AtelierBelli.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ──────────────────────────────────────────────────────────
+     Atelier Belli — tokens
+     ────────────────────────────────────────────────────────── */
+  :root{
+    --cream:        #FAF8F3;
+    --cream-2:      #F3EEE4;
+    --cream-3:      #EAE3D4;
+    --ink:          #1A1A1A;
+    --ink-2:        #3A3530;
+    --mute:         #6B6560;
+    --mute-2:       #A8A19A;
+    --rule:         #1A1A1A12;
+    --rule-strong:  #1A1A1A22;
+    --accent:       #2F8A99;     /* turquoise, derived from logo, desaturated for type */
+    --accent-soft:  #56B3C2;     /* logo turquoise */
+    --accent-deep:  #1F6F7C;
+    --good:         #3E8A5E;     /* small signal dot */
+
+    --bg:      var(--cream);
+    --bg-2:    var(--cream-2);
+    --fg:      var(--ink);
+    --fg-2:    var(--ink-2);
+    --muted:   var(--mute);
+    --muted-2: var(--mute-2);
+    --line:    var(--rule);
+    --line-2:  var(--rule-strong);
+
+    --serif: "Fraunces", "Cormorant Garamond", ui-serif, Georgia, serif;
+    --sans:  "Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+
+    --max: 1320px;
+    --pad: clamp(20px, 4vw, 56px);
+
+    --trans: 280ms cubic-bezier(.2,.6,.2,1);
+  }
+  [data-theme="dark"]{
+    --cream:   #141311;
+    --cream-2: #1B1916;
+    --cream-3: #24211D;
+    --ink:     #EDE6D8;
+    --ink-2:   #CFC8BA;
+    --mute:    #8F8A82;
+    --mute-2:  #5A554F;
+    --rule:        #EDE6D81A;
+    --rule-strong: #EDE6D82E;
+    --accent:      #56B3C2;
+    --accent-soft: #7FC9D5;
+    --accent-deep: #3A98A6;
+  }
+
+  /* reset-ish */
+  *,*::before,*::after{ box-sizing:border-box }
+  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100% }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--fg);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.5;
+    font-feature-settings:"ss01","cv11";
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    transition: background var(--trans), color var(--trans);
+  }
+  img{ display:block; max-width:100% }
+  a{ color:inherit; text-decoration:none }
+  button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer }
+  ::selection{ background:var(--accent); color:var(--cream) }
+
+  /* typography helpers */
+  .serif{ font-family:var(--serif); font-weight:400; letter-spacing:-0.01em }
+  .it{ font-style:italic; color:var(--accent) }
+  .smallcaps{
+    font-family:var(--sans);
+    font-size:11px;
+    font-weight:500;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .num{
+    font-family:var(--serif);
+    font-feature-settings:"tnum","lnum";
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  .rule{ height:1px; background:var(--line); border:0; margin:0 }
+  .hair{ height:0.5px; background:var(--line-2); border:0; margin:0 }
+
+  /* layout */
+  .wrap{ max-width:var(--max); margin:0 auto; padding-left:var(--pad); padding-right:var(--pad) }
+  .wrap-full{ max-width:100%; padding-left:var(--pad); padding-right:var(--pad) }
+
+  /* ──────────────────────────────────────────────────────────
+     Nav
+     ────────────────────────────────────────────────────────── */
+  .nav{
+    position:sticky; top:0; z-index:60;
+    background:color-mix(in oklab, var(--bg) 92%, transparent);
+    backdrop-filter:saturate(140%) blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    display:grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items:center;
+    gap:24px;
+    padding:14px 0;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; min-width:0 }
+  .brand-mark{
+    width:32px; height:32px;
+    display:grid; place-items:center;
+    color: var(--fg);
+    flex-shrink:0;
+  }
+  .brand-mark svg{ width:100%; height:100%; display:block }
+  .brand-mark .ab-dark{ fill: currentColor }
+  .brand-mark .ab-accent{ fill: #56B3C2 }
+  [data-theme="dark"] .brand-mark .ab-accent{ fill: #6BC4D2 }
+  .brand-name{
+    font-family:var(--serif); font-weight:500; font-size:17px; letter-spacing:-0.015em;
+  }
+  .brand-tag{
+    font-family:var(--serif); font-style:italic; color:var(--muted);
+    font-size:12px; margin-left:8px;
+    padding-left:10px; border-left:1px solid var(--line-2);
+  }
+  .nav-links{
+    justify-self:center;
+    display:flex; gap:2px; list-style:none; margin:0; padding:0;
+  }
+  .nav-links a{
+    display:inline-block;
+    font-family:var(--sans);
+    font-size:12px;
+    font-weight:500;
+    letter-spacing:.04em;
+    color:var(--fg-2);
+    padding:8px 14px;
+    border-radius:999px;
+    transition: background var(--trans), color var(--trans);
+  }
+  .nav-links a:hover{ background:var(--bg-2); color:var(--fg) }
+  .nav-links a[aria-current="true"]{ color:var(--fg) }
+  .nav-links a[aria-current="true"]::before{
+    content:""; display:inline-block; width:5px; height:5px; border-radius:999px;
+    background:var(--accent-soft); margin-right:7px; vertical-align:2px;
+  }
+  .nav-end{ justify-self:end; display:flex; gap:10px; align-items:center }
+
+  .chip{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:6px 12px;
+    border:1px solid var(--line-2);
+    border-radius:999px;
+    font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--fg-2);
+    transition: background var(--trans), color var(--trans), border-color var(--trans);
+  }
+  .chip:hover{ background:var(--fg); color:var(--bg); border-color:var(--fg) }
+  .chip .sep{ width:1px; height:10px; background:var(--line-2) }
+  .chip-lang b{ font-weight:600; color:var(--fg) }
+  .chip-lang .off{ color:var(--muted-2) }
+
+  .theme-toggle{
+    width:34px; height:34px; border-radius:999px;
+    border:1px solid var(--line-2);
+    display:grid; place-items:center;
+    transition: background var(--trans), border-color var(--trans);
+  }
+  .theme-toggle:hover{ background:var(--bg-2) }
+  .theme-toggle svg{ width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:1.25 }
+  .theme-toggle .moon{ display:none }
+  [data-theme="dark"] .theme-toggle .sun{ display:none }
+  [data-theme="dark"] .theme-toggle .moon{ display:block }
+
+  .nav-burger{ display:none; width:34px; height:34px; border-radius:999px; border:1px solid var(--line-2); place-items:center }
+  .nav-burger span{ display:block; width:14px; height:1px; background:currentColor; position:relative }
+  .nav-burger span::before,.nav-burger span::after{
+    content:""; position:absolute; left:0; width:14px; height:1px; background:currentColor;
+  }
+  .nav-burger span::before{ top:-5px } .nav-burger span::after{ top:5px }
+
+  /* ──────────────────────────────────────────────────────────
+     Hero
+     ────────────────────────────────────────────────────────── */
+  .hero{ padding: clamp(48px, 7vw, 96px) 0 0; }
+  .hero-grid{
+    display:grid;
+    grid-template-columns: minmax(0,1.7fr) minmax(0,1fr);
+    gap: clamp(24px, 5vw, 96px);
+    align-items:end;
+    padding-bottom: clamp(36px, 5vw, 72px);
+  }
+  .eyebrow-row{
+    display:flex; align-items:baseline; gap:14px; margin-bottom: clamp(24px, 3vw, 40px);
+  }
+  .eyebrow-row .num-xs{
+    font-family:var(--serif); font-size:13px; color:var(--muted);
+    font-feature-settings:"tnum";
+  }
+  .h-title{
+    font-family:var(--serif);
+    font-weight:350;
+    font-size: clamp(52px, 9.2vw, 148px);
+    line-height: .94;
+    letter-spacing: -0.035em;
+    margin:0;
+    text-wrap:balance;
+    font-variation-settings: "opsz" 144, "SOFT" 30;
+  }
+  .h-title .it{
+    font-style:italic;
+    color:var(--accent);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+  .h-sub{
+    margin-top: clamp(20px, 2.4vw, 28px);
+    max-width: 54ch;
+    color: var(--fg-2);
+    font-size: clamp(15px, 1.15vw, 17px);
+    line-height: 1.55;
+  }
+  .h-sub em{ font-family:var(--serif); font-style:italic; color:var(--accent); font-size:1.05em }
+
+  /* colophon */
+  .colophon{
+    border-top:1px solid var(--line-2);
+    padding-top:18px;
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:20px;
+    font-size:13px;
+    color:var(--fg-2);
+  }
+  .colophon .row{ display:grid; grid-template-columns: 96px 1fr; gap:16px; align-items:baseline }
+  .colophon .row .k{ color:var(--muted); font-size:11px; letter-spacing:.2em; text-transform:uppercase }
+  .colophon .row .v{ font-size:13px }
+  .colophon .row .v em{ font-family:var(--serif); font-style:italic }
+  .colophon .avail{
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .dot{
+    width:7px; height:7px; border-radius:999px; background:var(--good);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--good) 18%, transparent);
+    display:inline-block;
+  }
+  .sig{
+    font-family:var(--serif); font-style:italic; font-size:18px; color:var(--fg);
+    letter-spacing:-0.01em;
+  }
+
+  /* Vitrina (showcase) */
+  .vitrine{
+    background: var(--bg-2);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding: clamp(48px, 6vw, 96px) 0 clamp(56px, 6vw, 112px);
+    position:relative;
+    overflow:hidden;
+  }
+  .vitrine::before{
+    /* subtle horizontal rule like a gallery shelf */
+    content:""; position:absolute; left:0; right:0; bottom: clamp(42px, 5vw, 80px);
+    height:1px; background: var(--line-2);
+  }
+  .vitrine-cap{
+    display:grid;
+    grid-template-columns: 1fr auto;
+    align-items:end;
+    gap:24px; margin-bottom: clamp(40px, 5vw, 72px);
+    color:var(--muted);
+  }
+  .vitrine-cap .eye{
+    display:block;
+    font-size:11px; letter-spacing:.28em; text-transform:uppercase;
+    color:var(--muted); margin-bottom: 14px;
+  }
+  .vitrine-cap h2{
+    margin:0;
+    font-family:var(--serif); font-weight:350;
+    font-size: clamp(38px, 5.4vw, 78px);
+    line-height:.98; letter-spacing:-0.02em;
+    color: var(--fg);
+  }
+  .vitrine-cap h2 em{ font-style:italic }
+  .vitrine-cap .m{ font-size:11px; letter-spacing:.22em; text-transform:uppercase; white-space:nowrap; padding-bottom: 10px }
+
+  .phones{
+    display:grid;
+    grid-template-columns: 1fr 1.15fr 1fr;
+    gap: clamp(18px, 3vw, 48px);
+    align-items: center;
+    margin-top: clamp(40px, 6vw, 76px);
+    position:relative;
+  }
+  .phone-slot{
+    display:flex; flex-direction:column; align-items:center; gap:20px;
+    position:relative;
+    justify-content: flex-end;
+    min-height: 640px;
+  }
+    align-items:end;
+    gap: clamp(12px, 2vw, 40px);
+    justify-items:center;
+    position:relative;
+  }
+  .phone-slot{
+    display:flex; flex-direction:column; align-items:center; gap:20px;
+    position:relative;
+  }
+  .phone-slot .caption{
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    text-align:center;
+  }
+  .phone-slot .caption .n{
+    font-family:var(--serif); font-style:italic; font-size:22px; letter-spacing:-0.01em;
+    line-height:1.1;
+  }
+  .phone-slot .caption .s{
+    font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted);
+    margin-top: 4px;
+  }
+
+  /* --- Inline browser frame for vitrine (My Mezcal) --- */
+  .vit-browser{
+    --w: 360px;
+    --h: 240px;
+    width: var(--w);
+    border-radius: 12px;
+    background: #fff;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.35) inset,
+      0 40px 60px -30px rgba(20,16,10,.35),
+      0 20px 40px -20px rgba(20,16,10,.25);
+    overflow:hidden;
+    border: 1px solid #0000001f;
+    transform-origin: 50% 90%;
+    transition: transform 500ms cubic-bezier(.2,.6,.2,1);
+  }
+  [data-theme="dark"] .vit-browser{ background:#1a1815; border-color:#ffffff1a }
+  .vit-browser .bb{
+    display:flex; align-items:center; gap:6px;
+    padding: 9px 14px;
+    background: #f4efe6;
+    border-bottom: 1px solid #0000000f;
+  }
+  [data-theme="dark"] .vit-browser .bb{ background:#221f1a; border-bottom-color:#ffffff0d }
+  .vit-browser .bb .d{ width:10px; height:10px; border-radius:999px; background:#e0c0c0 }
+  .vit-browser .bb .d:nth-child(2){ background:#e7d6a5 }
+  .vit-browser .bb .d:nth-child(3){ background:#a8cda0 }
+  .vit-browser .bb .u{
+    margin-left:14px; flex:1;
+    font-family:var(--sans); font-size:11px; color:#8a8178aa;
+    background:#fff; padding: 4px 10px; border-radius:4px;
+    border:1px solid #0000000a;
+    letter-spacing:.02em; text-align:center;
+  }
+  [data-theme="dark"] .vit-browser .bb .u{ background:#15130f; border-color:#ffffff0a; color:#8a8178 }
+  .vit-browser .scr{
+    height: var(--h);
+    background: linear-gradient(180deg,#141008 0%, #241910 55%, #2d2014 100%);
+    color:#E8DDC6;
+    padding: 22px 26px;
+    display:grid; grid-template-columns: 1fr 1.2fr; gap:20px;
+    align-items:center; position:relative;
+  }
+  .vit-browser .scr .nav-strip{
+    position:absolute; top:10px; left:26px; right:26px;
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:#C9B99280;
+  }
+  .vit-browser .scr .nav-strip b{
+    font-family:var(--serif); font-style:italic; font-size:13px;
+    letter-spacing:-0.01em; text-transform:none; color:#E8DDC6;
+    font-weight:400;
+  }
+  .vit-browser .scr .nav-strip .links{ display:flex; gap:12px }
+  .vit-browser .scr .txt{
+    margin-top: 14px;
+  }
+  .vit-browser .scr .eyel{
+    font-size:8.5px; letter-spacing:.24em; text-transform:uppercase; color:#C9B99299;
+    margin-bottom: 6px;
+  }
+  .vit-browser .scr h4{
+    font-family:var(--serif); font-style:italic; font-weight:350;
+    font-size: 22px; line-height:1.05; letter-spacing:-0.015em;
+    margin: 0 0 10px;
+  }
+  .vit-browser .scr .sub{
+    font-size: 10px; color:#C9B992; line-height:1.5; max-width: 20ch;
+  }
+  .vit-browser .scr .buttons{
+    display:flex; gap:6px; margin-top: 10px;
+  }
+  .vit-browser .scr .buttons b{
+    font-family:var(--sans); font-weight:500;
+    font-size:9px; letter-spacing:.14em; text-transform:uppercase;
+    padding: 5px 10px; border-radius:999px;
+  }
+  .vit-browser .scr .buttons b.f{ background:#E8DDC6; color:#1a1a1a }
+  .vit-browser .scr .buttons b.g{ background:transparent; color:#E8DDC6; border:1px solid #E8DDC626 }
+  .vit-browser .scr .bottle-col{
+    position:relative; height: 100%;
+    display:grid; place-items:center;
+    margin-top: 12px;
+  }
+  .vit-bottle{
+    position:relative; width:56px; height:150px;
+    filter: drop-shadow(0 14px 12px #00000060);
+  }
+  .vit-bottle .neck{
+    position:absolute; top:0; left:50%; transform:translateX(-50%);
+    width:14px; height:26px;
+    background: linear-gradient(180deg,#2a1f12,#0c0906);
+    border-radius:2px;
+  }
+  .vit-bottle .neck::before{
+    content:""; position:absolute; top:-6px; left:50%; transform:translateX(-50%);
+    width:18px; height:7px; background: linear-gradient(180deg,#3d3021,#1c1610); border-radius:2px;
+  }
+  .vit-bottle .shld{
+    position:absolute; top:22px; left:50%; transform:translateX(-50%);
+    width:40px; height:18px; border-radius: 30px 30px 2px 2px;
+    background: linear-gradient(180deg,#241d14,#120d08);
+  }
+  .vit-bottle .bod{
+    position:absolute; top:38px; left:50%; transform:translateX(-50%);
+    width:52px; height:108px; border-radius:4px 4px 10px 10px;
+    background: linear-gradient(180deg,#231b12,#0c0906);
+    box-shadow: inset 2px 0 0 #ffffff0e, inset -2px 0 0 #00000080;
+  }
+  .vit-bottle .bod::before{
+    content:""; position:absolute; top:6px; left:6px; width:4px; height:80px;
+    background: linear-gradient(180deg,#ffffff55,#ffffff00); filter: blur(1px); border-radius:2px;
+  }
+  .vit-bottle .lbl{
+    position:absolute; top: 72px; left:50%; transform:translateX(-50%);
+    width:42px; height:56px; background:#E8DDC6; color:#1a1a1a;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:2px; padding:4px 3px;
+    box-shadow: 0 0 0 1px #00000020;
+  }
+  .vit-bottle .lbl .tt{
+    font-family:var(--serif); font-style:italic; font-weight:450; font-size:10px; line-height:1;
+  }
+  .vit-bottle .lbl .ln{ width:16px; height:1px; background:#0000001f }
+  .vit-bottle .lbl .ds{
+    font-size:4.5px; letter-spacing:.18em; text-transform:uppercase; color:#6b5c3a;
+    text-align:center; line-height:1.2;
+  }
+  .vit-bottle .lbl .yr{
+    font-family:var(--serif); font-size:6px; color:#8a6d3a; letter-spacing:.08em;
+  }
+
+  /* slot-3 specific positioning — browser instead of phone */
+  .vit-browser.phone-r{ transform: rotate(4deg) translateY(14px) }
+  @media (hover:hover){
+    .phone-slot.web-slot:hover .vit-browser{ transform: translateY(-10px) scale(1.04) rotate(0) }
+  }
+  @media (max-width: 820px){
+    .vit-browser.phone-r{ transform: translateY(0) rotate(0) }
+    .vit-browser{ --w: 300px; --h: 200px }
+    .vitrine-cap{ grid-template-columns: 1fr; }
+    .vitrine-cap .m{ padding-bottom:0 }
+    .phone-slot{ min-height: auto }
+  }
+
+  /* --- Real image mockups inside vitrine --- */
+  .phone-img{
+    --w: 260px;
+    width: var(--w);
+    display:block;
+    border-radius: 40px;
+    overflow: hidden;
+    background: var(--bg-2);
+    box-shadow:
+      0 1px 0 #ffffff60 inset,
+      0 36px 60px -24px #00000030,
+      0 20px 40px -20px #00000025,
+      0 0 0 1px #00000010;
+    transition: transform 500ms cubic-bezier(.2,.6,.2,1), box-shadow .3s ease;
+    transform-origin: 50% 90%;
+    position:relative;
+  }
+  [data-theme="dark"] .phone-img{
+    box-shadow:
+      0 1px 0 #ffffff10 inset,
+      0 36px 60px -24px #00000080,
+      0 20px 40px -20px #00000060,
+      0 0 0 1px #ffffff10;
+  }
+  .phone-img img{
+    display:block;
+    width:100%;
+    height:auto;
+    user-select:none;
+    -webkit-user-drag:none;
+  }
+  /* Fingo: App Store graphic — taller aspect */
+  .phone-img.fingo{ --w: 270px }
+  .phone-img.fingo img{ aspect-ratio: 460 / 997; object-fit: cover }
+  /* Savely: framed iPhone render — crop the small "A · Home" label at top */
+  .phone-img.savely{
+    --w: 272px;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  .phone-img.savely .crop{
+    position:relative;
+    overflow: hidden;
+    border-radius: 40px;
+    background: #F6F3EC;
+    box-shadow:
+      0 36px 60px -24px #00000028,
+      0 20px 40px -20px #00000020,
+      0 0 0 1px #00000010;
+  }
+  .phone-img.savely img{
+    /* shift up to hide top "A · Home" toolbar strip (~5% of height) */
+    margin-top: -6%;
+    margin-bottom: -3%;
+    width: 102%;
+    margin-left: -1%;
+  }
+
+  /* Tilt (left/right/center) matching the old iphone transforms */
+  .phone-img.tilt-l{ transform: rotate(-4deg) translateY(14px) }
+  .phone-img.tilt-c{ transform: translateY(-8px) scale(1.06); z-index:2 }
+  .phone-img.tilt-r{ transform: rotate(4deg) translateY(14px) }
+  @media (hover:hover){
+    .phone-slot:hover .phone-img{ transform: translateY(-10px) scale(1.04) rotate(0) }
+    .phone-slot.center:hover .phone-img{ transform: translateY(-18px) scale(1.1) rotate(0) }
+  }
+  @media (max-width: 820px){
+    .phone-img.tilt-l, .phone-img.tilt-c, .phone-img.tilt-r{ transform: none }
+    .phone-img{ --w: 240px }
+  }
+
+  /* --- iPhone frame (CSS only) --- */
+  .iphone{
+    --w: 260px;
+    --h: 540px;
+    width:var(--w); height:var(--h);
+    border-radius: 44px;
+    padding: 10px;
+    background: linear-gradient(180deg, #2a2a2a, #0c0c0c);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.35) inset,
+      0 -1px 0 rgba(0,0,0,.6) inset,
+      0 40px 60px -30px rgba(20,16,10,.35),
+      0 20px 40px -20px rgba(20,16,10,.25);
+    position:relative;
+    transform-origin: 50% 90%;
+    transition: transform 500ms cubic-bezier(.2,.6,.2,1);
+  }
+  .iphone::before{
+    /* outer bezel ring */
+    content:""; position:absolute; inset:2px; border-radius:42px;
+    background: linear-gradient(180deg, #3a3a3a, #111);
+    z-index:0;
+  }
+  .iphone .screen{
+    position:relative; z-index:1;
+    width:100%; height:100%;
+    border-radius: 36px;
+    overflow:hidden;
+    background:#000;
+  }
+  .iphone .notch{
+    position:absolute; top:10px; left:50%; transform:translateX(-50%);
+    width: 92px; height: 26px; border-radius:999px;
+    background:#000; z-index:5;
+  }
+  .iphone .status{
+    position:absolute; top:14px; left:0; right:0; z-index:6;
+    display:flex; justify-content:space-between; align-items:center;
+    padding: 0 24px 0 24px;
+    font-family:var(--sans); font-size:12px; font-weight:600;
+    color:#fff; letter-spacing:.01em;
+  }
+  .iphone .status.dark-on-light{ color:#111 }
+  .iphone .status .time{ font-variant-numeric:tabular-nums }
+  .iphone .status .right{ display:flex; gap:5px; align-items:center }
+  .iphone .status .bars{ display:flex; gap:1.5px; align-items:flex-end }
+  .iphone .status .bars i{ width:2px; background:currentColor; display:block; border-radius:1px }
+  .iphone .status .bars i:nth-child(1){ height:3px }
+  .iphone .status .bars i:nth-child(2){ height:5px }
+  .iphone .status .bars i:nth-child(3){ height:7px }
+  .iphone .status .bars i:nth-child(4){ height:9px; opacity:.4 }
+  .iphone .status .batt{
+    width:22px; height:10px; border:1px solid currentColor; border-radius:3px; position:relative; opacity:.9;
+  }
+  .iphone .status .batt::after{ content:""; position:absolute; right:-3px; top:2px; width:2px; height:4px; background:currentColor; border-radius:0 1px 1px 0 }
+  .iphone .status .batt::before{ content:""; position:absolute; inset:1.5px; width:70%; background:currentColor; border-radius:1.5px }
+  .iphone .homeind{
+    position:absolute; left:50%; bottom:8px; transform:translateX(-50%);
+    width: 110px; height:4px; border-radius:999px; background:#ffffffaa; z-index:6;
+  }
+  .iphone .homeind.dark{ background:#111111aa }
+
+  .phone-l{ transform: rotate(-4deg) translateY(14px) }
+  .phone-c{ transform: translateY(-8px) scale(1.06); z-index:2 }
+  .phone-r{ transform: rotate(4deg) translateY(14px) }
+  @media (hover:hover){
+    .phone-slot:hover .iphone{ transform: translateY(-10px) scale(1.04) rotate(0) }
+    .phone-slot.center:hover .iphone{ transform: translateY(-18px) scale(1.1) }
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     Phone 1 — Fingo (conic wheel)
+     ────────────────────────────────────────────────────────── */
+  .ui-fingo{
+    position:absolute; inset:0;
+    background: #F6F3ED;
+    color:#1a1a1a;
+    padding: 52px 18px 40px;
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+  }
+  .ui-fingo .eye{
+    font-size:9px; letter-spacing:.24em; text-transform:uppercase; color:#8a8178;
+  }
+  .ui-fingo .q{
+    font-family:var(--serif); font-weight:400; font-style:italic;
+    font-size:22px; line-height:1.05; text-align:center; letter-spacing:-0.01em;
+    margin-top:2px;
+  }
+  .ui-fingo .wheel-wrap{
+    position:relative; margin-top: 18px;
+    width: 210px; height: 210px;
+    display:grid; place-items:center;
+  }
+  .ui-fingo .wheel{
+    width:100%; height:100%; border-radius:999px;
+    background: conic-gradient(
+      from -90deg,
+      #E35D5B 0 60deg,
+      #E8A33C 60deg 120deg,
+      #DCBF4C 120deg 180deg,
+      #4C9B7A 180deg 240deg,
+      #3D6BBF 240deg 300deg,
+      #7A4DA8 300deg 360deg
+    );
+    box-shadow:
+      inset 0 0 0 2px #fff,
+      inset 0 0 0 3px #00000010,
+      0 10px 24px -12px #00000040;
+    position:relative;
+    animation: fingoSpin 14s linear infinite;
+  }
+  .ui-fingo .wheel::after{
+    content:""; position:absolute; inset: 32%;
+    border-radius:999px; background:#F6F3ED;
+    box-shadow: 0 0 0 2px #fff, 0 4px 10px -4px #00000030;
+  }
+  .ui-fingo .arrow{
+    position:absolute; top: -14px; left:50%; transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 16px solid #1a1a1a;
+    filter: drop-shadow(0 2px 2px #00000030);
+  }
+  .ui-fingo .pill-row{
+    margin-top:16px; display:flex; gap:6px;
+  }
+  .ui-fingo .pill-row .p{
+    font-size:10px; padding:5px 10px; border-radius:999px;
+    background:#fff; border:1px solid #0000000f; color:#5a524a;
+    letter-spacing:.1em; text-transform:uppercase;
+  }
+  .ui-fingo .pill-row .p.on{ background:#1a1a1a; color:#fff; border-color:#1a1a1a }
+  .ui-fingo .spin-btn{
+    margin-top:auto; margin-bottom:6px;
+    width: calc(100% - 8px); padding:12px; border-radius:14px;
+    background:#1a1a1a; color:#F6F3ED;
+    font-family:var(--serif); font-style:italic; font-size:14px;
+    text-align:center; letter-spacing:.01em;
+  }
+  @keyframes fingoSpin { to { transform: rotate(360deg) } }
+  @media (prefers-reduced-motion: reduce){ .ui-fingo .wheel{ animation:none } }
+
+  /* ──────────────────────────────────────────────────────────
+     Phone 2 — Savely (centre)
+     ────────────────────────────────────────────────────────── */
+  .ui-savely{
+    position:absolute; inset:0;
+    background: #0F6E56;
+    color:#EAF4EF;
+    display:flex; flex-direction:column;
+    padding-top: 44px;
+  }
+  .ui-savely .top{
+    padding: 16px 22px 0; display:flex; justify-content:space-between; align-items:center;
+  }
+  .ui-savely .top .avatar{
+    width:28px; height:28px; border-radius:999px;
+    background: linear-gradient(135deg,#9BCBB8,#55A48A);
+    border:1px solid #ffffff33;
+  }
+  .ui-savely .top .bell{
+    width:26px; height:26px; border-radius:999px;
+    background:#ffffff14; display:grid; place-items:center; font-size:12px;
+  }
+  .ui-savely .label{
+    padding: 22px 22px 4px;
+    font-size:10px; letter-spacing:.22em; text-transform:uppercase;
+    color:#EAF4EF99;
+    font-family:var(--sans);
+  }
+  .ui-savely .amt{
+    padding: 0 22px;
+    font-family:var(--serif); font-weight:350; letter-spacing:-0.025em;
+    font-size:42px; line-height:1;
+  }
+  .ui-savely .amt .cents{ font-size:22px; color:#EAF4EFCC; vertical-align:4px }
+  .ui-savely .delta{
+    padding: 6px 22px 0;
+    font-size:11px; color:#C7E6D8; letter-spacing:.06em;
+  }
+  .ui-savely .chart{
+    margin: 18px 22px 0;
+    display:flex; align-items:flex-end; gap:8px;
+    height: 64px;
+  }
+  .ui-savely .chart b{
+    flex:1; background:#EAF4EF; border-radius:3px 3px 1px 1px;
+    min-height:4px; opacity:.9;
+  }
+  .ui-savely .chart b.hi{ background: #F2C37A }
+  .ui-savely .days{
+    padding: 6px 22px 0; display:flex; gap:8px;
+    font-size:9px; letter-spacing:.14em; color:#C7E6D899; text-transform:uppercase;
+  }
+  .ui-savely .days b{ flex:1; text-align:center; font-weight:400 }
+
+  .ui-savely .sheet{
+    margin-top:auto;
+    background: #F6F1E7;
+    color:#1a1a1a;
+    border-radius: 22px 22px 0 0;
+    padding: 16px 18px 30px;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .ui-savely .sheet .grab{
+    width:36px; height:4px; border-radius:999px; background:#0000001f;
+    margin: 0 auto 6px;
+  }
+  .ui-savely .sheet .h{
+    display:flex; justify-content:space-between; align-items:baseline;
+    margin-bottom: 2px;
+  }
+  .ui-savely .sheet .h .t{
+    font-family:var(--serif); font-style:italic; font-size:14px;
+  }
+  .ui-savely .sheet .h .s{
+    font-size:9px; letter-spacing:.2em; color:#8a8178; text-transform:uppercase;
+  }
+  .ui-savely .tx{
+    display:grid; grid-template-columns:20px 1fr auto; gap:10px; align-items:center;
+    padding: 6px 0;
+  }
+  .ui-savely .tx + .tx{ border-top:1px solid #00000010 }
+  .ui-savely .tx .ico{
+    width:20px; height:20px; border-radius:6px; background:#e9e1ce; color:#8a6d3a;
+    font-family:var(--serif); font-style:italic; font-size:12px;
+    display:grid; place-items:center;
+  }
+  .ui-savely .tx .m{ font-size:11px; color:#1a1a1a }
+  .ui-savely .tx .m i{ display:block; font-style:normal; color:#8a8178; font-size:9.5px; letter-spacing:.08em }
+  .ui-savely .tx .v{ font-size:11px; font-variant-numeric:tabular-nums; font-weight:500 }
+  .ui-savely .tx .v.neg{ color:#B24B3A }
+  .ui-savely .tx .v.pos{ color:#0F6E56 }
+
+  /* ──────────────────────────────────────────────────────────
+     Phone 3 — Mi Mezcal (bottle)
+     ────────────────────────────────────────────────────────── */
+  .ui-mezcal{
+    position:absolute; inset:0;
+    background:
+      radial-gradient(120% 60% at 50% 0%, #1f1812 0%, #0c0906 62%);
+    color:#E8DDC6;
+    display:flex; flex-direction:column;
+    padding: 44px 18px 30px;
+    align-items:center;
+    text-align:center;
+  }
+  .ui-mezcal .eye{
+    margin-top: 6px;
+    font-size:9px; letter-spacing:.28em; text-transform:uppercase; color:#E8DDC680;
+  }
+  .ui-mezcal .name{
+    font-family:var(--serif); font-weight:350; font-style:italic;
+    font-size:30px; letter-spacing:-0.015em; line-height:1; margin-top:4px;
+  }
+  .ui-mezcal .kind{
+    margin-top: 2px;
+    font-family:var(--serif); font-size:12px; color:#C9B992; letter-spacing:.08em;
+  }
+  .bottle{
+    margin: 12px auto 8px;
+    width: 84px; height: 220px;
+    position:relative;
+    filter: drop-shadow(0 20px 18px #00000080);
+  }
+  .bottle .neck{
+    position:absolute; top:0; left:50%; transform:translateX(-50%);
+    width: 22px; height: 42px;
+    background: linear-gradient(180deg, #2a2218 0%, #0f0c07 100%);
+    border-radius: 3px 3px 2px 2px;
+    box-shadow: inset 2px 0 0 #ffffff12, inset -2px 0 0 #00000060;
+  }
+  .bottle .neck::before{
+    /* cap */
+    content:""; position:absolute; top:-8px; left:50%; transform:translateX(-50%);
+    width:26px; height:10px; border-radius:2px;
+    background: linear-gradient(180deg,#3d3021,#1c1610);
+    box-shadow: inset 0 1px 0 #ffffff22, 0 2px 3px #00000080;
+  }
+  .bottle .shoulder{
+    position:absolute; top:38px; left:50%; transform:translateX(-50%);
+    width: 60px; height: 28px;
+    background: linear-gradient(180deg, #241d14 0%, #120d08 100%);
+    border-radius: 40px 40px 4px 4px;
+    box-shadow: inset 2px 0 0 #ffffff10, inset -2px 0 0 #00000060;
+  }
+  .bottle .body{
+    position:absolute; top:62px; left:50%; transform:translateX(-50%);
+    width: 78px; height: 150px;
+    background: linear-gradient(180deg, #231b12 0%, #0c0906 100%);
+    border-radius: 6px 6px 14px 14px;
+    box-shadow:
+      inset 3px 0 0 #ffffff0e,
+      inset -3px 0 0 #00000080,
+      inset 0 -10px 0 #00000060;
+  }
+  .bottle .body::before{
+    /* highlight */
+    content:""; position:absolute; top:8px; left:8px;
+    width:6px; height: 120px; border-radius:4px;
+    background: linear-gradient(180deg, #ffffff55, #ffffff00);
+    filter: blur(1px);
+  }
+  .bottle .label{
+    position:absolute; top: 112px; left:50%; transform:translateX(-50%);
+    width: 66px; height: 78px;
+    background: #E8DDC6;
+    color:#1a1a1a;
+    border-radius:2px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:3px; padding:6px 4px;
+    box-shadow: 0 0 0 1px #00000020, inset 0 0 0 1px #0000000d;
+  }
+  .bottle .label .tt{
+    font-family:var(--serif); font-style:italic; font-weight:450; font-size:14px;
+    line-height:1;
+  }
+  .bottle .label .ds{
+    font-size:6.5px; letter-spacing:.2em; text-transform:uppercase; color:#6b5c3a;
+    text-align:center; line-height:1.2;
+  }
+  .bottle .label .yr{
+    font-family:var(--serif); font-feature-settings:"tnum";
+    font-size:8px; color:#8a6d3a; letter-spacing:.1em;
+  }
+  .bottle .label .line{
+    width:22px; height:1px; background:#0000001f;
+  }
+  .ui-mezcal .meta{
+    margin-top:auto;
+    display:flex; align-items:center; gap:10px;
+    font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:#C9B99299;
+  }
+  .ui-mezcal .meta .dot{ background:#C9B992; box-shadow:none; width:4px; height:4px }
+
+  /* ──────────────────────────────────────────────────────────
+     Selected work
+     ────────────────────────────────────────────────────────── */
+  section{ scroll-margin-top: 80px }
+  .sec{ padding: clamp(72px, 9vw, 140px) 0 }
+  .sec-cap{
+    display:grid;
+    grid-template-columns: 1fr auto;
+    align-items:end;
+    gap:24px;
+    margin-bottom: clamp(36px, 5vw, 64px);
+  }
+  .sec-cap .s-eye{
+    display:flex; gap:12px; align-items:baseline; color:var(--muted);
+    margin-bottom: 14px;
+  }
+  .sec-cap .s-title{
+    font-family:var(--serif); font-weight:350; letter-spacing:-0.03em;
+    font-size: clamp(44px, 6vw, 86px); line-height:.95; margin:0;
+    font-variation-settings:"opsz" 144,"SOFT" 30;
+  }
+  .sec-cap .s-title .it{ font-style:italic; color:var(--accent); font-variation-settings:"opsz" 144,"SOFT" 100 }
+  .sec-cap .s-meta{ color:var(--muted); text-align:right; font-size:11px; letter-spacing:.22em; text-transform:uppercase; white-space:nowrap }
+
+  .index-list{ border-top: 1px solid var(--line-2); }
+  .index-row{
+    display:grid;
+    grid-template-columns: 56px 1.6fr 1.2fr 0.9fr 28px;
+    align-items:center;
+    gap:24px;
+    padding: 26px 4px;
+    border-bottom: 0.5px solid var(--line-2);
+    cursor:pointer;
+    position:relative;
+    transition: padding var(--trans);
+    background: transparent;
+    border-top:0; border-left:0; border-right:0;
+    width:100%;
+    text-align:left;
+    color:inherit;
+    font:inherit;
+  }
+  .index-row:hover{ padding-left: 16px }
+  .index-row::before{
+    content:""; position:absolute; left:0; top:0; bottom:0; width:2px;
+    background:var(--accent);
+    transform: scaleY(0); transform-origin: top;
+    transition: transform var(--trans);
+  }
+  .index-row:hover::before{ transform: scaleY(1) }
+  .index-row .n{
+    font-family:var(--serif); font-feature-settings:"tnum";
+    font-size:13px; color:var(--muted);
+  }
+  .index-row .p-main{ min-width:0 }
+  .index-row .p-name{
+    font-family:var(--serif); font-weight:400; letter-spacing:-0.02em;
+    font-size: clamp(26px, 2.6vw, 38px); line-height:1;
+  }
+  .index-row .p-name .it{ color:var(--accent); font-style:italic }
+  .index-row .p-tag{
+    font-family:var(--serif); font-style:italic; color:var(--muted);
+    font-size:14px; margin-top:6px;
+  }
+  .index-row .p-stack{
+    display:flex; flex-wrap:wrap; gap:6px 10px;
+    font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--fg-2);
+  }
+  .index-row .p-stack span{ color:var(--muted) }
+  .index-row .p-stack span + span::before{ content:"·"; margin-right:10px; color:var(--mute-2) }
+  .index-row .p-plat{ font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted-2); font-family:var(--sans); font-weight:500 }
+  .index-row:hover .p-plat{ color:var(--accent) }
+  .index-row .arr{
+    font-family:var(--serif); font-size:22px; color:var(--muted);
+    transition: transform var(--trans), color var(--trans);
+    text-align:right;
+  }
+  .index-row:hover .arr{ color:var(--fg); transform: translateX(6px) }
+
+  /* ──────────────────────────────────────────────────────────
+     Workbench
+     ────────────────────────────────────────────────────────── */
+  .workbench{
+    background: var(--bg-2);
+    border:1px solid var(--line);
+    border-radius: 2px;
+    padding: clamp(40px, 5vw, 88px);
+    display:grid;
+    grid-template-columns: minmax(0,1fr) minmax(0,1.15fr);
+    gap: clamp(32px, 5vw, 88px);
+    align-items:start;
+  }
+  .wb-eye{ margin-bottom: 14px }
+  .wb-title{
+    font-family:var(--serif); font-weight:350; letter-spacing:-0.03em;
+    font-size: clamp(36px, 4.5vw, 60px); line-height:.98; margin:0;
+    font-variation-settings:"opsz" 144,"SOFT" 30;
+  }
+  .wb-title .it{ font-style:italic; color:var(--accent); font-variation-settings:"opsz" 144,"SOFT" 100 }
+  .wb-desc{
+    margin-top: 20px; max-width: 42ch; color: var(--fg-2); font-size:15px; line-height:1.6;
+  }
+  .wb-desc em{ font-family:var(--serif); font-style:italic }
+  .wb-link{
+    margin-top: 28px;
+    display:inline-flex; align-items:center; gap:10px;
+    padding: 10px 16px 10px 14px;
+    border:1px solid var(--line-2); border-radius:999px;
+    transition: background var(--trans), color var(--trans), border-color var(--trans);
+  }
+  .wb-link:hover{ background:var(--fg); color:var(--bg); border-color:var(--fg) }
+  .wb-link .dot{ background:var(--good) }
+  .wb-link span{ font-size:13px }
+  .wb-link span i{ font-family:var(--serif); font-style:italic; margin-right:4px; color:var(--muted) }
+  .wb-link:hover span i{ color:var(--bg) }
+
+  .wb-groups{ display:flex; flex-direction:column; gap: clamp(26px, 3vw, 40px) }
+  .wb-group h4{
+    font-family:var(--sans); font-weight:500; font-size:11px; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--muted); margin:0 0 14px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .wb-group h4::before{
+    content:""; width:14px; height:1px; background:var(--line-2);
+  }
+  .wb-group h4 .gn{
+    font-family:var(--serif); font-feature-settings:"tnum"; font-style:italic;
+    font-size:13px; letter-spacing:0; text-transform:none; color:var(--muted-2);
+    margin-left: auto;
+  }
+  .pills{ display:flex; flex-wrap:wrap; gap:8px }
+  .pill{
+    font-size:13px;
+    padding:8px 14px;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    color: var(--fg-2);
+    transition: background var(--trans), color var(--trans), border-color var(--trans), transform var(--trans);
+  }
+  .pill:hover{ background:var(--fg); color:var(--bg); border-color:var(--fg); transform: translateY(-1px) }
+  .pill .pi{ font-family:var(--serif); font-style:italic; color:var(--accent); margin-right:4px }
+
+  /* ──────────────────────────────────────────────────────────
+     Footer CTA
+     ────────────────────────────────────────────────────────── */
+  .cta{
+    padding: clamp(88px, 11vw, 180px) 0 clamp(48px, 5vw, 80px);
+    border-top: 1px solid var(--line);
+  }
+  .cta .eye{ margin-bottom: 24px }
+  .cta .eye em{ font-family:var(--serif); font-style:italic; color:var(--accent); text-transform:none; letter-spacing:0; font-size:14px }
+  .cta h2{
+    font-family:var(--serif); font-weight:350; letter-spacing:-0.035em;
+    font-size: clamp(56px, 10.5vw, 176px); line-height:.94; margin:0;
+    text-wrap:balance;
+    font-variation-settings:"opsz" 144,"SOFT" 30;
+  }
+  .cta h2 .it{ font-style:italic; color:var(--accent); font-variation-settings:"opsz" 144,"SOFT" 100 }
+  .cta-actions{
+    margin-top: clamp(32px, 4vw, 56px);
+    display:grid; grid-template-columns: auto 1fr auto; gap: 24px; align-items:center;
+  }
+  .btn-mail{
+    display:inline-flex; align-items:center; gap:14px;
+    padding: 16px 24px;
+    border: 1px solid var(--fg);
+    border-radius:999px;
+    transition: background var(--trans), color var(--trans), transform var(--trans);
+  }
+  .btn-mail:hover{ background:var(--fg); color:var(--bg); transform: translateY(-1px) }
+  .btn-mail .lbl{ font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); padding-right:14px; border-right:1px solid var(--line-2); white-space:nowrap }
+  .btn-mail .mail{ white-space:nowrap }
+  .btn-mail:hover .lbl{ color:var(--bg); border-right-color:#ffffff33 }
+  .btn-mail .mail{ font-family:var(--serif); font-style:italic; font-size:18px; white-space:nowrap }
+  @media (max-width: 520px){
+    .btn-mail{ flex-wrap:wrap; justify-content:flex-start }
+    .btn-mail .lbl{ border-right:0; padding-right:0; padding-bottom:2px }
+    .btn-mail .mail{ font-size:15px; white-space:normal; word-break:break-all }
+  }
+  .cta-links{ justify-self:end; text-align:right; display:flex; flex-direction:column; gap:10px; color:var(--muted); font-size:12px }
+  .cta-links .s{ font-family:var(--serif); font-style:italic; font-size:14px; color:var(--fg-2) }
+  .cta-links a{ color:var(--muted) }
+  .cta-links a:hover{ color:var(--fg) }
+
+  footer.colofon{
+    border-top: 1px solid var(--line);
+    padding: 28px 0 40px;
+    display:grid; grid-template-columns: 1fr auto 1fr; gap:24px;
+    align-items:center;
+    color: var(--muted); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+  }
+  footer.colofon .mid{ font-family:var(--serif); font-style:italic; font-size:14px; letter-spacing:-0.01em; text-transform:none; color:var(--fg-2) }
+  footer.colofon .right{ justify-self:end }
+
+  /* ──────────────────────────────────────────────────────────
+     Responsive
+     ────────────────────────────────────────────────────────── */
+  @media (max-width: 1000px){
+    .hero-grid{ grid-template-columns: 1fr; gap: 40px }
+    .colophon{ margin-top: 8px }
+    .workbench{ grid-template-columns: 1fr; gap: 40px }
+    .sec-cap{ grid-template-columns: 1fr; gap: 12px }
+    .sec-cap .s-meta{ text-align:left }
+    .index-row{ grid-template-columns: 40px 1fr 20px; gap:14px }
+    .index-row .p-stack, .index-row .p-plat{ display:none }
+    .index-row .p-main .mshow{
+      display:block; margin-top:8px;
+      font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted);
+    }
+    .cta-actions{ grid-template-columns: 1fr; gap:28px }
+    .cta-links{ justify-self:start; text-align:left }
+    footer.colofon{ grid-template-columns: 1fr; text-align:left }
+    footer.colofon .right{ justify-self:start }
+  }
+  @media (min-width: 1001px){
+    .index-row .p-main .mshow{ display:none }
+  }
+
+  @media (max-width: 820px){
+    .nav-links{ display:none }
+    .brand-tag{ display:none }    .nav-inner{ grid-template-columns: 1fr auto }
+    .nav-end{ gap:8px }
+    .phones{
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: 82%;
+      overflow-x:auto;
+      scroll-snap-type: x mandatory;
+      padding: 12px 10% 20px;
+      -webkit-overflow-scrolling: touch;
+      gap: 24px;
+      align-items:center;
+    }
+    .phones::-webkit-scrollbar{ display:none }
+    .phones{ scrollbar-width:none }
+    .phone-slot{ scroll-snap-align:center }
+    .phone-l,.phone-r,.phone-c{ transform:none }
+    .iphone{ --w: 240px; --h: 500px }
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     Case modal
+     ────────────────────────────────────────────────────────── */
+  .case-backdrop{
+    position:fixed; inset:0; z-index:100;
+    background: color-mix(in oklab, #000 55%, transparent);
+    backdrop-filter: blur(6px) saturate(120%);
+    opacity:0; pointer-events:none;
+    transition: opacity 260ms ease;
+  }
+  .case-backdrop.open{ opacity:1; pointer-events:auto }
+
+  .case-modal{
+    position:fixed; z-index:101;
+    left:50%; top:50%;
+    transform: translate(-50%, -46%) scale(.98);
+    width: min(1100px, calc(100vw - 32px));
+    max-height: calc(100vh - 48px);
+    background: var(--bg);
+    border: 1px solid var(--line-2);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px -20px #00000060, 0 10px 40px -10px #00000030;
+    opacity:0; pointer-events:none;
+    transition: opacity 320ms cubic-bezier(.2,.6,.2,1), transform 320ms cubic-bezier(.2,.6,.2,1);
+    display:flex; flex-direction:column;
+  }
+  .case-modal.open{
+    opacity:1; pointer-events:auto;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  .case-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--line);
+    flex-shrink:0;
+  }
+  .case-head .eye{
+    font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted);
+    display:flex; gap:10px; align-items:center;
+  }
+  .case-head .eye .num{ font-family:var(--serif); font-feature-settings:"tnum"; color:var(--accent-soft) }
+  .case-close{
+    width:34px; height:34px; border-radius:999px;
+    border:1px solid var(--line-2);
+    display:grid; place-items:center;
+    transition: background var(--trans), color var(--trans), border-color var(--trans);
+  }
+  .case-close:hover{ background:var(--fg); color:var(--bg); border-color:var(--fg) }
+  .case-close svg{ width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:1.4 }
+
+  .case-body{
+    display:grid;
+    grid-template-columns: 0.95fr 1.1fr;
+    gap: 0;
+    overflow:auto;
+  }
+  .case-preview{
+    background: var(--bg-2);
+    border-right: 1px solid var(--line);
+    min-height: 460px;
+    display:flex; align-items:center; justify-content:center;
+    padding: 40px 20px;
+    position:relative;
+  }
+  .case-preview::before{
+    content:""; position:absolute; inset:auto 0 30px 0; height:1px; background:var(--line-2);
+  }
+  .case-preview .iphone{
+    --w: 260px; --h: 540px;
+    transform: none;
+  }
+  .case-preview.web-preview{
+    padding: 32px;
+  }
+  .browser-frame{
+    width: 100%;
+    max-width: 420px;
+    border-radius: 10px;
+    background: #fff;
+    border:1px solid #0000001a;
+    box-shadow: 0 20px 40px -16px #00000040;
+    overflow:hidden;
+  }
+  [data-theme="dark"] .browser-frame{ background:#1a1815; border-color:#ffffff14 }
+  .browser-bar{
+    display:flex; align-items:center; gap:6px;
+    padding: 9px 12px;
+    background: #f4efe6;
+    border-bottom: 1px solid #0000000f;
+  }
+  [data-theme="dark"] .browser-bar{ background:#221f1a; border-bottom-color:#ffffff0d }
+  .browser-bar .dot{
+    width:10px; height:10px; border-radius:999px; background:#e0c0c0;
+    box-shadow:none;
+  }
+  .browser-bar .dot:nth-child(2){ background:#e7d6a5 }
+  .browser-bar .dot:nth-child(3){ background:#a8cda0 }
+  .browser-bar .url{
+    margin-left:12px; flex:1;
+    font-family:var(--sans); font-size:10px; color:#8a8178;
+    background:#fff; padding: 4px 10px; border-radius:4px;
+    border:1px solid #0000000a;
+    letter-spacing:.02em;
+  }
+  [data-theme="dark"] .browser-bar .url{ background:#15130f; border-color:#ffffff0a; color:#8a8178 }
+  .mez-site{
+    background: linear-gradient(180deg,#141008 0%, #241910 100%);
+    color:#E8DDC6;
+    padding: 20px 22px 24px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .mez-site h3{
+    font-family:var(--serif); font-style:italic; font-weight:400;
+    font-size:26px; letter-spacing:-0.015em; margin:0;
+  }
+  .mez-site .ms-eye{ font-size:9px; letter-spacing:.24em; text-transform:uppercase; color:#C9B99299 }
+  .mez-site .ms-row{
+    display:grid; grid-template-columns: 1fr 1.4fr; gap:14px; align-items:center;
+    margin-top:8px;
+  }
+  .mez-site .mini-bottle{
+    position:relative; height:140px;
+    background: radial-gradient(50% 60% at 50% 40%, #ffffff08, transparent);
+    display:grid; place-items:center;
+  }
+  .mez-site .mini-bottle::before{
+    content:""; width:36px; height:120px;
+    background: linear-gradient(180deg,#2a1f12 0%, #0c0906 100%);
+    border-radius: 6px 6px 8px 8px;
+    box-shadow: inset 3px 0 0 #ffffff10, inset -3px 0 0 #00000080;
+    position:absolute;
+  }
+  .mez-site .mini-bottle::after{
+    content:""; width:24px; height:36px;
+    background:#E8DDC6; border-radius:1px;
+    position:absolute;
+  }
+  .mez-site p{ font-size:11px; color:#C9B99; margin:0; line-height:1.5; color:#C9B992 }
+  .mez-site .ms-cta{
+    display:flex; gap:8px; margin-top:8px;
+  }
+  .mez-site .ms-cta b{
+    font-weight:500; font-size:10px; letter-spacing:.16em; text-transform:uppercase;
+    padding:7px 12px; border-radius:999px; background:#E8DDC6; color:#1a1a1a;
+  }
+  .mez-site .ms-cta b:nth-child(2){ background:transparent; color:#E8DDC6; border:1px solid #E8DDC622 }
+
+  .case-content{
+    padding: 28px 32px 32px;
+    display:flex; flex-direction:column; gap:20px;
+    overflow-y:auto;
+  }
+  .case-title{
+    font-family:var(--serif); font-weight:350; letter-spacing:-0.03em;
+    font-size: clamp(30px, 3.2vw, 42px); line-height: 1;
+    margin: 6px 0 0;
+  }
+  .case-title .it{ font-style:italic; color:var(--accent) }
+  .case-desc{
+    color:var(--fg-2); font-size:14.5px; line-height:1.6;
+  }
+  .case-desc em{ font-family:var(--serif); font-style:italic; color:var(--accent) }
+  .case-meta{
+    display:grid; grid-template-columns: auto 1fr; gap: 10px 18px;
+    font-size:12px;
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .case-meta dt{
+    font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted);
+    padding-top:2px;
+  }
+  .case-meta dd{
+    margin:0; color:var(--fg-2);
+  }
+  .case-meta dd .tag{
+    display:inline-block; padding:3px 10px; margin:2px 4px 2px 0;
+    border:1px solid var(--line-2); border-radius:999px;
+    font-size:11px; color:var(--fg-2);
+  }
+  .case-actions{
+    display:flex; flex-wrap:wrap; gap:10px;
+    margin-top: 4px;
+  }
+  .case-btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding: 10px 16px;
+    border-radius:999px;
+    font-size:13px; font-weight:500;
+    border:1px solid var(--line-2);
+    color: var(--fg);
+    transition: background var(--trans), color var(--trans), border-color var(--trans), transform var(--trans);
+  }
+  .case-btn:hover{ transform: translateY(-1px) }
+  .case-btn.primary{
+    background: var(--fg); color: var(--bg); border-color: var(--fg);
+  }
+  .case-btn.primary:hover{ background: var(--accent); border-color: var(--accent); color:#fff }
+  .case-btn.accent{
+    background: var(--accent); color:#fff; border-color: var(--accent);
+  }
+  .case-btn.accent:hover{ background: var(--accent-deep); border-color: var(--accent-deep) }
+  .case-btn.ghost:hover{ background: var(--bg-2) }
+  .case-btn.disabled{ opacity:.5; pointer-events:none }
+  .case-btn svg{ width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:1.6 }
+
+  @media (max-width: 820px){
+    .case-body{ grid-template-columns: 1fr }
+    .case-preview{ border-right:0; border-bottom:1px solid var(--line); min-height:380px; padding: 28px 16px }
+    .case-preview .iphone{ --w: 220px; --h: 460px }
+    .case-modal{ width: calc(100vw - 16px); max-height: calc(100vh - 24px); border-radius: 12px }
+    .case-content{ padding: 22px 20px 26px }
+  }
+
+  /* reveal-on-scroll */
+  .reveal{ opacity:0; transform: translateY(18px); transition: opacity 700ms ease, transform 700ms cubic-bezier(.2,.6,.2,1) }
+  .reveal.in{ opacity:1; transform:none }
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity:1; transform:none; transition:none }
+    html{ scroll-behavior:auto }
+  }
+
+  /* focus ring */
+  a:focus-visible, button:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ─────────────────────────────  NAV  ───────────────────────────── -->
+<header class="nav" role="banner">
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand" aria-label="Atelier Belli — home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 418 439" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <path class="ab-dark" d="M309.858 65.3296L381.867 107.607L403.76 120.585C407.627 122.898 413.235 126.427 417.139 128.423C417.633 131.95 417.253 144.108 417.256 148.423L417.269 193.468L417.309 345.287C405.284 351.722 392.046 360.015 380.182 366.98L300.245 414.214L273.471 430.048C269.198 432.551 263.079 436.346 258.705 438.43C234.967 424.66 211.315 410.75 187.747 396.692L164.716 383.083C161.148 380.995 154.775 377.573 151.669 375.333L151.688 300.681C151.683 287.418 151.375 272.909 151.795 259.81C153.707 259.175 162.97 253.342 165.129 252.092L197.888 233.216C202.33 230.678 209.779 226.133 214.214 224.04L214.159 296.958C219.224 300.265 226.152 304.008 231.494 307.08C240.771 312.399 250.008 317.794 259.202 323.257C261.764 321.971 264.264 320.538 266.754 319.115C285.234 308.548 303.743 297.821 321.529 286.139C306.959 278.65 290.56 268.254 276.203 259.839C255.75 247.856 234.721 236.232 214.461 224.059C213.92 211.665 214.179 197.915 214.181 185.42L214.197 122.791C221.054 118.226 230.434 112.869 237.637 108.572L282.753 81.6101C291.49 76.4108 301.433 70.8473 309.858 65.3296Z"/>
+          <path class="ab-accent" d="M309.858 65.3296L381.867 107.607L403.76 120.585C407.627 122.898 413.235 126.427 417.139 128.423C404.352 135.354 391.264 143.371 378.71 150.721L322.099 183.565C322.645 201.011 322.184 220.827 322.177 238.447L322.167 268.865C322.167 273.91 322.184 278.981 322.148 284.029C322.141 285.262 322.171 285.432 321.529 286.139C306.959 278.65 290.56 268.254 276.203 259.839C255.75 247.856 234.721 236.232 214.461 224.059C213.92 211.665 214.179 197.915 214.182 185.42L214.197 122.791C221.054 118.226 230.434 112.869 237.637 108.572L282.754 81.6101C291.49 76.4108 301.433 70.8473 309.858 65.3296Z"/>
+          <path class="ab-accent" d="M151.795 259.81C153.707 259.175 162.97 253.342 165.129 252.093L197.888 233.216C202.33 230.678 209.779 226.133 214.214 224.041L214.159 296.958L171.5 271.77C167.521 269.389 155.033 261.24 151.795 259.81Z"/>
+          <path class="ab-dark" d="M176.404 0C179.141 0.852222 197.867 12.5246 201.139 14.4668L268.828 54.3989L151.589 124.157L117.037 144.624C110.186 148.708 101.165 154.448 94.1272 157.877L94.1102 308.139L94.0929 351.974C94.0886 359.243 94.3 367.916 94.0124 375.097L93.5173 375.293C77.1485 366.643 57.9991 354.51 41.7095 344.901L17.4601 330.556C12.0696 327.373 5.05491 323.385 0.130637 319.766C-0.126537 311.512 0.0743604 302.176 0.0799227 293.84L0.107072 246.796L0.140772 104.191L176.404 0Z"/>
+        </svg>
+      </span>
+      <span>
+        <span class="brand-name">Atelier Belli</span>
+        <span class="brand-tag">Est. 2023</span>
+      </span>
+    </a>
+
+    <nav aria-label="Primary">
+      <ul class="nav-links">
+        <li><a href="#top" data-i18n="nav.index">Home</a></li>
+        <li><a href="#work" data-i18n="nav.work">Work</a></li>
+        <li><a href="#stack" data-i18n="nav.stack">Stack</a></li>
+        <li><a href="#studio" data-i18n="nav.studio">About</a></li>
+        <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-end">
+      <button class="chip chip-lang" id="lang-toggle" aria-label="Toggle language">
+        <b id="lang-on">EN</b><span class="sep"></span><span class="off" id="lang-off">ES</span>
+      </button>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ─────────────────────────────  HERO  ───────────────────────────── -->
+<section class="hero" aria-labelledby="hero-heading">
+  <div class="wrap">
+    <div class="hero-grid">
+
+      <div class="hero-left reveal">
+        <div class="eyebrow-row">
+          <span class="num-xs">01</span>
+          <span class="smallcaps" data-i18n="hero.eyebrow">Software · Digital craft</span>
+        </div>
+
+        <h1 id="hero-heading" class="h-title serif">
+          <span data-i18n="hero.title1">Apps crafted</span><br>
+          <span data-i18n="hero.title2">with </span><span class="it" data-i18n="hero.title3">intention.</span>
+        </h1>
+
+        <p class="h-sub" data-i18n-html="hero.sub">
+          A small <em>atelier</em> for software — Franco-Italian precision, minimalist form, and code written by hand. I design and build iOS apps and the web around them.
+        </p>
+      </div>
+
+      <aside class="hero-right reveal" aria-label="Colophon" style="transition-delay:120ms">
+        <div class="colophon">
+          <div class="row">
+            <span class="k" data-i18n="colo.loc">Location</span>
+            <span class="v">Tijuana · BC</span>
+          </div>
+          <hr class="hair">
+          <div class="row">
+            <span class="k" data-i18n="colo.status">Status</span>
+            <span class="v avail"><span class="dot" aria-hidden="true"></span> <em data-i18n="colo.available">Available for commissions</em></span>
+          </div>
+          <hr class="hair">
+          <div class="row">
+            <span class="k" data-i18n="colo.est">Est.</span>
+            <span class="v">2023 — Ongoing</span>
+          </div>
+          <hr class="hair">
+          <div class="row">
+            <span class="k" data-i18n="colo.sig">Signed</span>
+            <span class="v sig">— Ivan Lorenzana</span>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <!-- VITRINE -->
+  <div class="vitrine" aria-label="Showcase">
+    <div class="wrap-full" style="max-width: 1480px; margin:0 auto">
+      <div class="vitrine-cap">
+        <div>
+          <span class="eye" data-i18n="vit.eye">Showcase — 2025</span>
+          <h2><span data-i18n="vit.t1">Three recent</span> <em data-i18n="vit.t2">pieces.</em></h2>
+        </div>
+        <span class="m" data-i18n="vit.meta">— Hover to focus</span>
+      </div>
+
+      <div class="phones">
+
+        <!-- PHONE 1 — Fingo -->
+        <!-- SLOT 1 — Fingo (real image) -->
+        <div class="phone-slot" aria-label="Fingo preview">
+          <div class="phone-img fingo tilt-l" aria-hidden="true">
+            <img src="assets/fingo-hero.webp" alt="" loading="lazy">
+          </div>
+          <div class="caption">
+            <span class="n">Fingo</span>
+            <span class="s">iOS · 2024</span>
+          </div>
+        </div>
+
+        <!-- SLOT 2 — Savely (real image) -->
+        <div class="phone-slot center" aria-label="Savely preview">
+          <div class="phone-img savely tilt-c" aria-hidden="true">
+            <div class="crop">
+              <img src="assets/savely-hero.png" alt="" loading="lazy">
+            </div>
+          </div>
+          <div class="caption">
+            <span class="n">Savely</span>
+            <span class="s">iOS · 2025</span>
+          </div>
+        </div>
+
+        <!-- SLOT 3 — My Mezcal (browser, not app) -->
+        <div class="phone-slot web-slot" aria-label="My Mezcal preview">
+          <div class="vit-browser phone-r" aria-hidden="true">
+            <div class="bb">
+              <span class="d"></span><span class="d"></span><span class="d"></span>
+              <span class="u">◌</span>
+            </div>
+            <div class="scr">
+              <div class="nav-strip">
+                <b>Destilería Lorenzana</b>
+                <span class="links"><span>Origen</span><span>Tienda</span><span>ES · EN</span></span>
+              </div>
+              <div class="txt">
+                <div class="eyel">Edición 2025</div>
+                <h4>Mi Mezcal,<br>espadín&nbsp;puro.</h4>
+                <div class="sub">Destilado en ollas de barro. Oaxaca.</div>
+                <div class="buttons">
+                  <b class="f">Comprar · $780</b>
+                  <b class="g">Historia</b>
+                </div>
+              </div>
+              <div class="bottle-col">
+                <div class="vit-bottle">
+                  <div class="neck"></div>
+                  <div class="shld"></div>
+                  <div class="bod"></div>
+                  <div class="lbl">
+                    <span class="tt">Espadín</span>
+                    <span class="ln"></span>
+                    <span class="ds">Artesanal<br>Oaxaca · 46°</span>
+                    <span class="yr">MMXXV</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="caption">
+            <span class="n">Destilería Lorenzana</span>
+            <span class="s">Web · 2025</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────  SELECTED WORK  ───────────────────────────── -->
+<section id="work" class="sec" aria-labelledby="work-title">
+  <div class="wrap">
+    <div class="sec-cap">
+      <div>
+        <div class="s-eye">
+          <span class="num-xs">02</span>
+          <span class="smallcaps" data-i18n="work.eye">The work</span>
+        </div>
+        <h2 id="work-title" class="s-title"><span data-i18n="work.t1">Selected</span> <span class="it" data-i18n="work.t2">work.</span></h2>
+      </div>
+      <div class="s-meta" data-i18n="work.meta">Index — 2023 / 2026</div>
+    </div>
+
+    <div class="index-list" role="list">
+
+      <button type="button" class="index-row" data-case="fingo">
+        <span class="n num">01</span>
+        <div class="p-main">
+          <div class="p-name">Fingo<span class="it"> — group choice, made easy.</span></div>
+          <div class="p-tag" data-i18n="work.fingo.tag">Wheels, coins, haptics — decisions in a tap.</div>
+          <div class="mshow">iOS · SwiftUI · App Store →</div>
+        </div>
+        <div class="p-stack"><span>iOS</span><span>SwiftUI</span><span>Haptics</span></div>
+        <div class="p-plat" data-i18n="work.view">View case</div>
+        <div class="arr">→</div>
+      </button>
+
+      <button type="button" class="index-row" data-case="savely">
+        <span class="n num">02</span>
+        <div class="p-main">
+          <div class="p-name">Savely<span class="it"> — personal finance, quietly.</span></div>
+          <div class="p-tag" data-i18n="work.savely.tag">Balance, budgets, alerts — a calm financial assistant.</div>
+          <div class="mshow">iOS · Fintech · In review →</div>
+        </div>
+        <div class="p-stack"><span>iOS</span><span>Fintech</span><span>Banking APIs</span></div>
+        <div class="p-plat" data-i18n="work.view">View case</div>
+        <div class="arr">→</div>
+      </button>
+
+      <button type="button" class="index-row" data-case="mezcal">
+        <span class="n num">03</span>
+        <div class="p-main">
+          <div class="p-name">Mi Mezcal<span class="it"> — Destilería Lorenzana.</span></div>
+          <div class="p-tag" data-i18n="work.mezcal.tag">An artisanal mezcal brand — storefront and story.</div>
+          <div class="mshow">Web · E-commerce · Live →</div>
+        </div>
+        <div class="p-stack"><span>Web</span><span>E-commerce</span><span>Brand</span></div>
+        <div class="p-plat" data-i18n="work.view">View case</div>
+        <div class="arr">→</div>
+      </button>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────  WORKBENCH  ───────────────────────────── -->
+<section id="stack" class="sec" aria-labelledby="wb-title" style="padding-top:0">
+  <div class="wrap">
+    <div class="workbench reveal">
+
+      <div class="wb-left">
+        <div class="s-eye wb-eye">
+          <span class="num-xs">03</span>
+          <span class="smallcaps" data-i18n="wb.eye">The workbench</span>
+        </div>
+        <h2 id="wb-title" class="wb-title"><span data-i18n="wb.t1">Tools of the</span> <span class="it" data-i18n="wb.t2">trade.</span></h2>
+        <p class="wb-desc" data-i18n-html="wb.desc">
+          A small, opinionated set. Swift and SwiftUI for the phone; <em>Next.js</em> and TypeScript for the web; Postgres for things that must last. Figma, Xcode, Claude Code — the bench stays tidy.
+        </p>
+        <a href="https://github.com/Ivan-LB" target="_blank" rel="noopener" class="wb-link" aria-label="GitHub profile">
+          <span class="dot" aria-hidden="true"></span>
+          <span><i>github.com/</i>Ivan-LB →</span>
+        </a>
+      </div>
+
+      <div class="wb-groups">
+        <div class="wb-group">
+          <h4 data-i18n="wb.g1">Frontend &amp; Mobile <span class="gn">i.</span></h4>
+          <div class="pills">
+            <span class="pill"><span class="pi">i.</span>SwiftUI</span>
+            <span class="pill"><span class="pi">ii.</span>Swift</span>
+            <span class="pill"><span class="pi">iii.</span>React</span>
+            <span class="pill"><span class="pi">iv.</span>Next.js</span>
+            <span class="pill"><span class="pi">v.</span>TypeScript</span>
+            <span class="pill"><span class="pi">vi.</span>Tailwind</span>
+          </div>
+        </div>
+        <div class="wb-group">
+          <h4 data-i18n="wb.g2">Backend &amp; Infra <span class="gn">ii.</span></h4>
+          <div class="pills">
+            <span class="pill"><span class="pi">i.</span>Node</span>
+            <span class="pill"><span class="pi">ii.</span>PostgreSQL</span>
+            <span class="pill"><span class="pi">iii.</span>Supabase</span>
+            <span class="pill"><span class="pi">iv.</span>Vercel</span>
+            <span class="pill"><span class="pi">v.</span>Edge Functions</span>
+          </div>
+        </div>
+        <div class="wb-group">
+          <h4 data-i18n="wb.g3">Craft <span class="gn">iii.</span></h4>
+          <div class="pills">
+            <span class="pill"><span class="pi">i.</span>Figma</span>
+            <span class="pill"><span class="pi">ii.</span>Xcode</span>
+            <span class="pill"><span class="pi">iii.</span>Claude Code</span>
+            <span class="pill"><span class="pi">iv.</span>Git</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────  STUDIO / CTA  ───────────────────────────── -->
+<section id="studio" class="cta" aria-labelledby="cta-title">
+  <div class="wrap">
+    <div class="eye smallcaps">— <em data-i18n="cta.eye">Commissions open</em> —</div>
+    <h2 id="cta-title"><span data-i18n="cta.t1">Let's build something</span> <span class="it" data-i18n="cta.t2">well-made.</span></h2>
+
+    <div class="cta-actions" id="contact">
+      <a class="btn-mail" href="mailto:ivanlorenzana@outlook.com">
+        <span class="lbl" data-i18n="cta.write">Write to</span>
+        <span class="mail">ivanlorenzana@outlook.com</span>
+      </a>
+      <span></span>
+      <div class="cta-links">
+        <span class="s">Atelier Belli</span>
+        <span>Tijuana ⇄ <span data-i18n="cta.ww">Worldwide</span></span>
+        <span>
+          <a href="https://github.com/Ivan-LB" target="_blank" rel="noopener">GitHub</a> ·
+          <a href="https://www.linkedin.com/in/ivan-lorenzana-belli/" target="_blank" rel="noopener">LinkedIn</a> ·
+          <a href="https://www.instagram.com/_ivanlb" target="_blank" rel="noopener">Instagram</a>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap" style="margin-top: clamp(56px, 7vw, 112px)">
+    <footer class="colofon" role="contentinfo">
+      <div>© <span id="yr">2026</span> — Atelier Belli</div>
+      <div class="mid">Atelier Belli</div>
+      <div class="right">
+        <a href="#" data-i18n="foot.priv">Privacy</a> &nbsp;·&nbsp;
+        <a href="#" data-i18n="foot.terms">Terms</a>
+      </div>
+    </footer>
+  </div>
+</section>
+
+<!-- ─────────────────────────────  CASE MODAL  ───────────────────────────── -->
+<div class="case-backdrop" id="case-backdrop" aria-hidden="true"></div>
+<div class="case-modal" id="case-modal" role="dialog" aria-modal="true" aria-labelledby="case-title" aria-hidden="true">
+  <div class="case-head">
+    <div class="eye">
+      <span class="num" id="case-num">—</span>
+      <span id="case-kicker">Case study</span>
+    </div>
+    <button class="case-close" id="case-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6l-12 12"/></svg>
+    </button>
+  </div>
+  <div class="case-body">
+    <div class="case-preview" id="case-preview"></div>
+    <div class="case-content">
+      <h3 class="case-title" id="case-title"></h3>
+      <p class="case-desc" id="case-desc"></p>
+      <dl class="case-meta" id="case-meta"></dl>
+      <div class="case-actions" id="case-actions"></div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- ─────────────────────────────  JS  ───────────────────────────── -->
+<script>
+(() => {
+  // year
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // ───────── i18n ─────────
+  const DICT = {
+    en: {
+      "nav.index":"Home","nav.work":"Work","nav.stack":"Stack","nav.studio":"About","nav.contact":"Contact",
+      "hero.eyebrow":"Software · Digital craft",
+      "hero.title1":"Apps crafted", "hero.title2":"with ", "hero.title3":"intention.",
+      "hero.sub":"A small <em>atelier</em> for software — Franco-Italian precision, minimalist form, and code written by hand. I design and build iOS apps and the web around them.",
+      "colo.loc":"Location","colo.status":"Status","colo.available":"Available for commissions","colo.est":"Est.","colo.sig":"Signed",
+      "vit.eye":"Showcase — 2025",
+      "vit.t1":"Three recent",
+      "vit.t2":"pieces.",
+      "vit.meta":"— Hover to focus",
+      "work.eye":"The work","work.t1":"Selected","work.t2":"work.","work.meta":"Index — 2023 / 2026",
+      "work.fingo.tag":"Wheels, coins, haptics — decisions in a tap.",
+      "work.savely.tag":"Balance, budgets, alerts — a calm financial assistant.",
+      "work.view":"View case",
+      "work.mezcal.tag":"An artisanal mezcal brand — storefront and story.",
+      "wb.eye":"The workbench","wb.t1":"Tools of the","wb.t2":"trade.",
+      "wb.desc":"A small, opinionated set. Swift and SwiftUI for the phone; <em>Next.js</em> and TypeScript for the web; Postgres for things that must last. Figma, Xcode, Claude Code — the bench stays tidy.",
+      "wb.g1":'Frontend &amp; Mobile <span class="gn">i.</span>',
+      "wb.g2":'Backend &amp; Infra <span class="gn">ii.</span>',
+      "wb.g3":'Craft <span class="gn">iii.</span>',
+      "cta.eye":"Commissions open","cta.t1":"Let's build something","cta.t2":"well-made.",
+      "cta.write":"Write to","cta.ww":"Worldwide",
+      "foot.priv":"Privacy","foot.terms":"Terms"
+    },
+    es: {
+      "nav.index":"Inicio","nav.work":"Proyectos","nav.stack":"Stack","nav.studio":"Sobre mí","nav.contact":"Contacto",
+      "hero.eyebrow":"Software · Oficio digital",
+      "hero.title1":"Apps hechas", "hero.title2":"con ", "hero.title3":"intención.",
+      "hero.sub":"Un pequeño <em>atelier</em> de software — precisión franco-italiana, forma minimalista, código escrito a mano. Diseño y construyo apps de iOS y la web que las acompaña.",
+      "colo.loc":"Ubicación","colo.status":"Estado","colo.available":"Disponible para encargos","colo.est":"Est.","colo.sig":"Firmado",
+      "vit.eye":"Vitrina — 2025",
+      "vit.t1":"Tres piezas",
+      "vit.t2":"recientes.",
+      "vit.meta":"— Pasa el cursor para enfocar",
+      "work.eye":"La obra","work.t1":"Obra","work.t2":"selecta.","work.meta":"Índice — 2023 / 2026",
+      "work.fingo.tag":"Ruletas, monedas, háptics — decisiones de un toque.",
+      "work.savely.tag":"Balance, presupuesto, alertas — un asistente financiero tranquilo.",
+      "work.view":"Ver proyecto",
+      "work.mezcal.tag":"Una marca de mezcal artesanal — tienda e historia.",
+      "wb.eye":"El taller","wb.t1":"Herramientas del","wb.t2":"oficio.",
+      "wb.desc":"Un conjunto pequeño y opinado. Swift y SwiftUI para el teléfono; <em>Next.js</em> y TypeScript para la web; Postgres para lo que debe durar. Figma, Xcode, Claude Code — el banco se mantiene limpio.",
+      "wb.g1":'Frontend &amp; Móvil <span class="gn">i.</span>',
+      "wb.g2":'Backend &amp; Infra <span class="gn">ii.</span>',
+      "wb.g3":'Oficio <span class="gn">iii.</span>',
+      "cta.eye":"Encargos abiertos","cta.t1":"Hagamos algo","cta.t2":"bien hecho.",
+      "cta.write":"Escribe a","cta.ww":"Todo el mundo",
+      "foot.priv":"Privacidad","foot.terms":"Términos"
+    }
+  };
+
+  const applyLang = (lang) => {
+    document.documentElement.lang = lang;
+    const dict = DICT[lang];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const k = el.dataset.i18n;
+      if (dict[k] != null) el.textContent = dict[k];
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+      const k = el.dataset.i18nHtml;
+      if (dict[k] != null) el.innerHTML = dict[k];
+    });
+    // Pill group headings contain HTML
+    const setHTML = (sel, key) => { const el = document.querySelector(sel); if (el) el.innerHTML = dict[key]; };
+    setHTML('#stack .wb-group:nth-of-type(1) h4', 'wb.g1');
+    setHTML('#stack .wb-group:nth-of-type(2) h4', 'wb.g2');
+    setHTML('#stack .wb-group:nth-of-type(3) h4', 'wb.g3');
+
+    // toggle pill label
+    const on = document.getElementById('lang-on');
+    const off = document.getElementById('lang-off');
+    on.textContent = lang.toUpperCase();
+    off.textContent = lang === 'en' ? 'ES' : 'EN';
+
+    try { localStorage.setItem('ab_lang', lang); } catch(e){}
+  };
+
+  let current = 'en';
+  try { current = localStorage.getItem('ab_lang') || (navigator.language?.startsWith('es') ? 'es' : 'en'); } catch(e){}
+  applyLang(current);
+
+  document.getElementById('lang-toggle').addEventListener('click', () => {
+    current = current === 'en' ? 'es' : 'en';
+    applyLang(current);
+  });
+
+  // ───────── Theme ─────────
+  const root = document.documentElement;
+  const getInitialTheme = () => {
+    try {
+      const saved = localStorage.getItem('ab_theme');
+      if (saved) return saved;
+    } catch(e){}
+    return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  };
+  const setTheme = (t) => {
+    root.setAttribute('data-theme', t);
+    try { localStorage.setItem('ab_theme', t); } catch(e){}
+  };
+  setTheme(getInitialTheme());
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+
+  // ───────── Reveal on scroll ─────────
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // ───────── Live time in phone status bars (subtle) ─────────
+  const setTimes = () => {
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    document.querySelectorAll('.iphone .status .time').forEach(el => el.textContent = `${hh}:${mm}`);
+  };
+  setTimes(); setInterval(setTimes, 30000);
+
+  // ───────── Case Modal ─────────
+  const CASES = {
+    fingo: {
+      num: "01",
+      kicker: { en: "iOS · 2025", es: "iOS · 2025" },
+      title: { en: 'Fingo — <span class="it">group choice, made easy.</span>', es: 'Fingo — <span class="it">decisiones en grupo, fácil.</span>' },
+      desc: {
+        en: 'An iOS app for making group decisions instantly — wheels, coins, spinning arrows, tap-to-choose. Fully customizable, with <em>haptics</em> that make each pick feel deliberate. Built with SwiftUI.',
+        es: 'Una app de iOS para decidir en grupo al instante — ruletas, monedas, flechas giratorias, toque-para-elegir. Totalmente personalizable, con <em>háptics</em> que hacen que cada elección se sienta intencional. Construida con SwiftUI.'
+      },
+      meta: {
+        en: [['Platform','iOS 16+'],['Stack','SwiftUI · Swift · Core Haptics'],['Status','Live on the App Store'],['Year','2025']],
+        es: [['Plataforma','iOS 16+'],['Stack','SwiftUI · Swift · Core Haptics'],['Estado','Disponible en App Store'],['Año','2025']]
+      },
+      actions: {
+        en: [
+          { label: 'View on App Store', href: 'https://apps.apple.com/mx/app/fingo-group-choice-made-easy/id6747301883', kind: 'primary', ext: true, icon: 'external' },
+          { label: 'Support', href: '#', kind: 'ghost', icon: 'help' }
+        ],
+        es: [
+          { label: 'Ver en App Store', href: 'https://apps.apple.com/mx/app/fingo-group-choice-made-easy/id6747301883', kind: 'primary', ext: true, icon: 'external' },
+          { label: 'Soporte', href: '#', kind: 'ghost', icon: 'help' }
+        ]
+      },
+      preview: 'fingo'
+    },
+    savely: {
+      num: "02",
+      kicker: { en: "iOS · Fintech · 2026", es: "iOS · Fintech · 2026" },
+      title: { en: 'Savely — <span class="it">personal finance, quietly.</span>', es: 'Savely — <span class="it">finanzas personales, en calma.</span>' },
+      desc: {
+        en: 'A calm financial assistant. Track spending, save with goals, get smart alerts before things slip. Bank-grade security, <em>quiet</em> interface. Built with SwiftUI and secure banking APIs.',
+        es: 'Un asistente financiero tranquilo. Rastrea gastos, ahorra con metas, recibe alertas inteligentes antes de que las cosas se salgan. Seguridad bancaria, interfaz <em>silenciosa</em>. Construida con SwiftUI y APIs bancarias seguras.'
+      },
+      meta: {
+        en: [['Platform','iOS 16+'],['Stack','SwiftUI · Swift · Banking APIs'],['Status','In review · App Store soon'],['Year','2026']],
+        es: [['Plataforma','iOS 16+'],['Stack','SwiftUI · Swift · APIs bancarias'],['Estado','En revisión · Próximamente'],['Año','2026']]
+      },
+      actions: {
+        en: [
+          { label: 'Coming soon', href: '#', kind: 'primary disabled', icon: 'clock' },
+          { label: 'Support', href: '#', kind: 'ghost', icon: 'help' }
+        ],
+        es: [
+          { label: 'Próximamente', href: '#', kind: 'primary disabled', icon: 'clock' },
+          { label: 'Soporte', href: '#', kind: 'ghost', icon: 'help' }
+        ]
+      },
+      preview: 'savely'
+    },
+    mezcal: {
+      num: "03",
+      kicker: { en: "Web · E-commerce · 2025", es: "Web · E-commerce · 2025" },
+      title: { en: 'Mi Mezcal — <span class="it">Destilería Lorenzana.</span>', es: 'Mi Mezcal — <span class="it">Destilería Lorenzana.</span>' },
+      desc: {
+        en: 'Storefront and story for an artisanal mezcal brand out of Oaxaca. A quiet, editorial site built to sell — varieties, origin, direct orders. <em>Hand-built</em> from brand to checkout.',
+        es: 'Tienda e historia para una marca de mezcal artesanal de Oaxaca. Un sitio editorial y tranquilo construido para vender — variedades, origen, pedidos directos. <em>Hecho a mano</em> de la marca al checkout.'
+      },
+      meta: {
+        en: [['Platform','Web · Responsive'],['Stack','Next.js · TypeScript · Stripe'],['Status','Live'],['Year','2025']],
+        es: [['Plataforma','Web · Responsiva'],['Stack','Next.js · TypeScript · Stripe'],['Estado','En vivo'],['Año','2025']]
+      },
+      actions: {
+        en: [
+          { label: 'Visit site', href: 'https://www.destilerialorenzana.com/', kind: 'primary', ext: true, icon: 'external' }
+        ],
+        es: [
+          { label: 'Visitar sitio', href: 'https://www.destilerialorenzana.com/', kind: 'primary', ext: true, icon: 'external' }
+        ]
+      },
+      preview: 'mezcal'
+    }
+  };
+
+  // icons
+  const ICON = {
+    external: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 14L20 4M18 13v6H5V6h6"/></svg>',
+    help:     '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 2-2.5 2-2.5 4M12 17h.01"/></svg>',
+    clock:    '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'
+  };
+
+  // preview builders (reuse the hero phones' styles)
+  const PREVIEWS = {
+    fingo: () => `
+      <div class="phone-img fingo" aria-hidden="true" style="--w: 280px">
+        <img src="assets/fingo-hero.webp" alt="">
+      </div>`,
+    savely: () => `
+      <div class="phone-img savely" aria-hidden="true" style="--w: 280px">
+        <div class="crop"><img src="assets/savely-hero.png" alt=""></div>
+      </div>`,
+    mezcal: () => `
+      <div class="browser-frame">
+        <div class="browser-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="url">destilerialorenzana.com</span>
+        </div>
+        <div class="mez-site">
+          <span class="ms-eye">Destilería Lorenzana · Oaxaca</span>
+          <h3>Mi Mezcal — Espadín.</h3>
+          <div class="ms-row">
+            <div class="mini-bottle"></div>
+            <div>
+              <p>Artesanal. 46°. Cosecha limitada. Destilado en olla de cobre, embotellado a mano.</p>
+              <div class="ms-cta"><b>Pedir ahora</b><b>Nuestra historia</b></div>
+            </div>
+          </div>
+        </div>
+      </div>`
+  };
+
+  const $bd = document.getElementById('case-backdrop');
+  const $md = document.getElementById('case-modal');
+  let lastFocus = null;
+
+  const openCase = (key) => {
+    const c = CASES[key]; if(!c) return;
+    const lang = current;
+    document.getElementById('case-num').textContent = c.num;
+    document.getElementById('case-kicker').textContent = c.kicker[lang];
+    document.getElementById('case-title').innerHTML = c.title[lang];
+    document.getElementById('case-desc').innerHTML = c.desc[lang];
+
+    const meta = document.getElementById('case-meta');
+    meta.innerHTML = c.meta[lang].map(([k,v]) => `<dt>${k}</dt><dd>${v.split(' · ').map(t=>`<span class="tag">${t}</span>`).join('')}</dd>`).join('');
+
+    const acts = document.getElementById('case-actions');
+    acts.innerHTML = c.actions[lang].map(a => {
+      const ext = a.ext ? 'target="_blank" rel="noopener"' : '';
+      const icon = ICON[a.icon] || '';
+      return `<a class="case-btn ${a.kind}" href="${a.href}" ${ext}>${a.label} ${icon}</a>`;
+    }).join('');
+
+    const prev = document.getElementById('case-preview');
+    prev.className = 'case-preview' + (c.preview === 'mezcal' ? ' web-preview' : '');
+    prev.innerHTML = PREVIEWS[c.preview]();
+
+    lastFocus = document.activeElement;
+    $bd.classList.add('open');
+    $md.classList.add('open');
+    $bd.setAttribute('aria-hidden','false');
+    $md.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('case-close').focus(), 50);
+  };
+  const closeCase = () => {
+    $bd.classList.remove('open');
+    $md.classList.remove('open');
+    $bd.setAttribute('aria-hidden','true');
+    $md.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  };
+
+  document.querySelectorAll('.index-row[data-case]').forEach(btn => {
+    btn.addEventListener('click', () => openCase(btn.dataset.case));
+  });
+  $bd.addEventListener('click', closeCase);
+  document.getElementById('case-close').addEventListener('click', closeCase);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && $md.classList.contains('open')) closeCase();
+  });
+})();
+</script>
+</body>
+</html>

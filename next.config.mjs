@@ -13,10 +13,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  experimental: {
-    // Suppress the warning about dynamic APIs
-    serverComponentsExternalPackages: ['next-intl'],
-  },
+  serverExternalPackages: ['next-intl'],
   trailingSlash: true,
 };
  

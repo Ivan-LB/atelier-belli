@@ -12,9 +12,13 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Atelier Belli – Ivan Lorenzana | Software Development & Digital Solutions",
+  title: "Atelier Belli — Digital craft, Franco-Italian.",
   description:
-    "Atelier Belli is the digital studio of Ivan Lorenzana — full-stack developer crafting clean iOS apps and web experiences. Explore Fingo, Savely, Mi Mezcal and more.",
+    "Atelier Belli is the digital atelier of Ivan Lorenzana — full-stack developer crafting clean iOS apps and the web around them. Fingo, Savely, Mi Mezcal and more.",
+  icons: {
+    icon: "/AtelierBelli.svg",
+    shortcut: "/AtelierBelli.png",
+  },
 }
 
 export function generateStaticParams() {
@@ -28,21 +32,18 @@ export default async function LocaleLayout({
   children: React.ReactNode
   params: Promise<{ locale: string }>
 }) {
-  // Await params first (Next.js 15 requirement)
   const { locale } = await params
 
-  // Validate that the incoming `locale` parameter is valid
   if (!locales.includes(locale as any)) {
     notFound()
   }
 
   return (
-    <html lang={locale} className={inter.variable} style={{ colorScheme: "dark" }}>
+    <html lang={locale} className={inter.variable}>
       <head>
-        <meta name="theme-color" content="#111827" />
+        <meta name="theme-color" content="#FAF8F3" />
       </head>
-      <body className="bg-gray-900 text-gray-100 antialiased font-sans">
-        {/* Skip-to-main-content link for keyboard / screen-reader users */}
+      <body className="antialiased font-sans">
         <a href="#main-content" className="skip-link">
           {locale === "es" ? "Ir al contenido principal" : "Skip to main content"}
         </a>
