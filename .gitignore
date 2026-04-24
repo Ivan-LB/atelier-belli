@@ -52,4 +52,8 @@ coverage/
 *.temp
 .agent
 .agents
-.claude
+
+# Claude Code harness — only the per-machine audit log is ignored.
+# The agents/, knowledge/, protocols/, commands/ directories ARE committed.
+.claude/orch-log.md
+.claude/settings.local.json
