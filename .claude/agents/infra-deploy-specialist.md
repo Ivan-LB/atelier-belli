@@ -23,7 +23,11 @@ Read `.claude/knowledge/common-rules.md` at the start of every invocation.
 
 - `images.unoptimized: true` is load-bearing for Amplify. Do NOT remove. See
   gotcha `amplify-images-unoptimized`.
-- `serverExternalPackages: ['next-intl']` is load-bearing. Do NOT remove.
+- `createNextIntlPlugin('./i18n.ts')` wraps the config export. Do NOT
+  unwrap it — next-intl's RSC integration depends on the plugin.
+- `serverExternalPackages: ['next-intl']` was REMOVED in PR #9 (2026-04-25)
+  because it was redundant with the plugin and prevented `useTranslations()`
+  from resolving the `react-server` export at SSG. Do NOT reintroduce it.
 - `typescript.ignoreBuildErrors` and `eslint.ignoreDuringBuilds` are currently
   `true`. Flipping either to `false` is a user-facing decision — ask first.
 - Dep changes are always their own PR. See gotcha
@@ -31,9 +35,11 @@ Read `.claude/knowledge/common-rules.md` at the start of every invocation.
   feature commit.
 - Package manager is pnpm. Never suggest npm/yarn. See gotcha
   `pnpm-is-package-manager`.
-- Any change to the client-component / server-component boundary impacts
-  Amplify — see gotcha `amplify-client-component-quirk` before touching
-  `app/[locale]/layout.tsx` or `middleware.ts`.
+- Any change to the i18n provider wiring impacts Amplify — see gotcha
+  `amplify-client-component-quirk` before touching
+  `app/[locale]/layout.tsx`, `i18n.ts`, the `next-intl` plugin, or
+  `middleware.ts`. Smoke-test on Amplify deploy preview before merging to
+  main when this region changes.
 
 ## Files you must NOT touch
 
@@ -64,8 +70,11 @@ Read `.claude/knowledge/common-rules.md` at the start of every invocation.
 ## Current state
 
 - Scripts: `dev`, `build`, `start`, `lint`. No `typecheck` or `test` script.
-- Dead deps were just removed (three, @react-three/fiber, @react-three/drei,
-  framer-motion, react-parallax-tilt, @types/three) — change is in working
-  tree pending its own commit.
+- Dep tree is clean as of 2026-04-25. Two cleanup PRs landed: PR #6
+  (three, @react-three/fiber, @react-three/drei, framer-motion,
+  react-parallax-tilt, @types/three) and PR #11 (next-themes, sonner).
+- `next.config.mjs` is minimal: `images.unoptimized`, `trailingSlash`,
+  the two `ignoreBuildErrors`/`ignoreDuringBuilds` flags, all wrapped by
+  `createNextIntlPlugin`. No `serverExternalPackages` entry.
 - No `amplify.yml`, no `.github/workflows/` — adding either is a user-
   facing decision.

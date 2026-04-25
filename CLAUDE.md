@@ -13,9 +13,11 @@ one Next.js app:
   reusable `SupportShell` keyed by `data-app`, `.sup-root` scope, per-app skin
   (terracotta / green / gold).
 - **Utility sub-pages**: `/[locale]/privacy`, `/[locale]/privacy/choices`,
-  `/[locale]/terms` — use the legacy `SimplePageLayout` with the gray/gradient
-  aesthetic. Visually inconsistent with the homepage, intentional (separate
-  scope; redesign is opportunistic).
+  `/[locale]/terms` — small inline `.ab-root` shells with the same editorial
+  aesthetic as the homepage. Bilingual EN/ES bodies via
+  `useTranslations('legal')`. The shared chrome + `.ab-prose` ruleset live
+  in `app/globals.css`. (Previously used a legacy `SimplePageLayout` with
+  gray/gradient aesthetic — removed in PR #12.)
 
 Fully bilingual EN/ES. Static site (no database, no auth, no server actions).
 
@@ -56,9 +58,16 @@ Routing (via `middleware.ts` using `next-intl/middleware`):
 
 **Deploy**: AWS Amplify. No `amplify.yml` in the repo — build config is in the
 Amplify console. No `.github/workflows/` — there is no CI beyond Amplify.
-`next.config.mjs` sets `images.unoptimized: true` and
-`serverExternalPackages: ['next-intl']` — both are load-bearing, see gotchas
-`amplify-images-unoptimized` and `amplify-client-component-quirk`.
+`next.config.mjs` sets `images.unoptimized: true` (load-bearing for Amplify
+image delivery, see gotcha `amplify-images-unoptimized`) and wraps the export
+with `createNextIntlPlugin('./i18n.ts')` so next-intl's RSC integration
+resolves correctly during SSG.
+
+`app/[locale]/layout.tsx` wraps `{children}` in `NextIntlClientProvider`
+(messages from `getMessages()`) and calls `unstable_setRequestLocale(locale)`
+before any translation read so all routes stay statically prerendered. This
+setup was Amplify-smoked successfully on Next 15.2.4 + React 19 in PR #9.
+See gotcha `amplify-client-component-quirk`.
 
 `next.config.mjs` also sets `typescript.ignoreBuildErrors: true` and
 `eslint.ignoreDuringBuilds: true`. The build will not fail on type or lint
@@ -73,14 +82,19 @@ See gotcha `root-token-scoping`.
   cream/turquoise (light) vs. ink/turquoise (dark). Tokens prefixed `--ab-*`
   (`--ab-bg`, `--ab-fg`, `--ab-muted`, `--accent-color`, `--accent-soft`,
   `--accent-deep`, etc.) live under `.ab-root` only.
-- **`.sup-root`** — support pages. Attribute `data-app="fingo" | "savely" |
-  "lorenzana"` swaps the skin. Tokens prefixed `--sup-*` live under `.sup-root`
-  only. Three themes are defined; `lorenzana` is unused by any route today
-  (kept for a future Destilería support page).
+- **`.sup-root`** — support pages. Attribute `data-app="fingo" | "savely"`
+  swaps the skin. Tokens prefixed `--sup-*` live under `.sup-root` only.
+  (A `lorenzana` theme existed but was unused by any route; removed in
+  PR #8. Re-add later if a Destilería support page is built.)
+- **Legal-page chrome (`.ab-legal-*`) + `.ab-prose`** — scoped under
+  `.ab-root` in `app/globals.css`. Used by `/privacy`, `/privacy/choices`,
+  `/terms`. Token-only (`--ab-*` and global HSL); no `--sup-*` references.
 - **Global HSL tokens** (`--background`, `--foreground`, `--border`, etc.)
-  live in `:root` and `.dark` in `app/globals.css`. These are the shadcn/ui
-  surface, consumed by Tailwind's extended color palette. Independent from
-  the two scoped roots above.
+  live in `:root` and `.dark` in `app/globals.css`. Consumed by Tailwind's
+  extended color palette. Independent from the two scoped roots above.
+  (Originally the shadcn/ui surface; the scaffold itself was removed in
+  PR #7 and the tokens stay because Tailwind's theme extension still
+  references them.)
 
 **Typography stacks**:
 
@@ -90,28 +104,42 @@ See gotcha `root-token-scoping`.
 | `.sup-root`| EB Garamond / Instrument Serif for display; IBM Plex Mono for meta; Inter for body |
 | Global     | `--font-inter` from `next/font` on `<html>`, default sans fallback |
 
-**shadcn/ui**: 50 components in `components/ui/` (full scaffold, most unused).
-Add new ones with `pnpm dlx shadcn@latest add <component>`. `lib/utils.ts`
-exports `cn()` (clsx + tailwind-merge).
+**No component library today**: the shadcn scaffold (`components/ui/`,
+50 files), `hooks/`, and `lib/utils.ts` (with `cn()`) were all removed in
+PR #7 — none were imported by runtime code. If you genuinely need a
+primitive, either hand-roll it (matching the editorial aesthetic) or
+re-introduce shadcn via `pnpm dlx shadcn@latest add <component>` as a
+deliberate, explicit decision. Recreate `cn()` as a tiny helper if needed.
 
 ## 5. i18n
 
-**Canonical direction**: `useTranslations()` from `next-intl`, with keys in
-`messages/en.json` and `messages/es.json`. See gotcha `i18n-pattern-canonical`.
+**Canonical pattern**: `useTranslations()` in Client Components,
+`getTranslations()` in Server Components. Keys in `messages/en.json` and
+`messages/es.json`. See gotcha `i18n-pattern-canonical`.
 
-**Current reality**: only `app/[locale]/not-found.tsx` uses `useTranslations()`.
-Every other page uses an inline flag:
+**Current reality**: every locale-scoped page uses the canonical pattern.
+The legacy `const isSpanish = locale === 'es'` ternary was fully removed
+in PRs #9 (homepage + locale layout) and #12 (legal pages). Zero
+`isSpanish` references remain in the source tree. **Never reintroduce
+that pattern.**
 
-```ts
-const params = useParams()
-const locale = (params?.locale as string) === "es" ? "es" : "en"
-const isSpanish = locale === "es"
-```
+`useParams().locale` is still used for routing concerns — href construction
+like `/${locale}/privacy`, the `switchLocale()` helper, language-code chip
+labels (`"EN"`/`"ES"`). That is correct; routing is not a translation
+concern.
 
-This is the residue of the historical Amplify migration (see gotcha
-`amplify-client-component-quirk`). **New code MUST use `useTranslations()`**.
-Migration of existing inline flags is opportunistic, not a blocker on
-unrelated work.
+`messages/*.json` top-level namespaces in use: `notFound`, `layout`,
+`legal`, `home`. Adding new copy = pick the right namespace, add the key
+to BOTH dictionaries (EN value matches user-facing English; ES matches
+Spanish), then consume via `useTranslations(namespace)`.
+
+For rich strings with embedded JSX (e.g. `<em>` accents), use ICU placeholder
+tags in the dictionary value (`"Designed in <it>Tijuana</it> by Belli"`) and
+render via `t.rich(key, { it: (chunks) => <em>{chunks}</em> })`.
+
+`app/[locale]/layout.tsx` wires the provider + `setRequestLocale`. See
+section 6 (Amplify quirks) and gotcha `amplify-client-component-quirk` for
+why both are required.
 
 ## 6. Amplify quirks
 
@@ -121,66 +149,79 @@ are load-bearing:
 1. **`images.unoptimized: true`** in `next.config.mjs` — Amplify's image proxy
    does not match Next/Image's sharp defaults. Removing this setting breaks
    image delivery. See gotcha `amplify-images-unoptimized`.
-2. **`serverExternalPackages: ['next-intl']`** — Next 15 renamed this from
-   `experimental.serverComponentsExternalPackages`. Keeps `next-intl` out of
-   the server-bundle rewrite, required for the Amplify runtime.
-3. **The client-component + i18n trap** — commit `5719a20` ("Fix client
-   component issues for Amplify", 2025-08-13) removed
-   `NextIntlClientProvider` + `getMessages()` from `app/[locale]/layout.tsx`,
-   migrated `useTranslations()` calls to inline `isSpanish`, and switched
-   `useParams()` to `usePathname()` for locale extraction. The 2026-04
-   redesign reintroduced `useParams()` in the homepage — **works in dev,
-   unverified on Amplify**. See gotcha `amplify-client-component-quirk`.
-4. **No env-var usage in any Client Component**. Only `NEXT_PUBLIC_*` vars
+2. **i18n provider + `unstable_setRequestLocale`** —
+   `app/[locale]/layout.tsx` wraps `{children}` in
+   `<NextIntlClientProvider messages={messages}>` (messages from
+   `getMessages()`) and calls `unstable_setRequestLocale(locale)` before any
+   `getTranslations`/`getMessages` read. The provider is required for
+   Client Component `useTranslations()` to work; `setRequestLocale` is
+   required to keep all routes statically prerendered. This combination
+   was reintroduced in PR #9 (after a previous Amplify regression on Next 14
+   in commit `5719a20` had stripped it) and Amplify-smoked successfully on
+   Next 15.2.4 + React 19. **If you change anything in this region, smoke-
+   test on an Amplify deploy preview before merging to main.** See gotcha
+   `amplify-client-component-quirk`.
+3. **No env-var usage in any Client Component**. Only `NEXT_PUBLIC_*` vars
    reach the browser, and no such vars exist today. See gotcha
    `client-component-env-vars`.
 
+(The previously load-bearing `serverExternalPackages: ['next-intl']` entry
+was removed in PR #9 — it was redundant with `createNextIntlPlugin` and
+prevented `useTranslations()` from resolving the `react-server` export at
+SSG time. Build is green and Amplify deploy verified without it.)
+
 ## 7. Dead dependencies
 
-**Status as of 2026-04-24**: clean in the working tree, pending commit.
+**Status as of 2026-04-25**: clean. Two waves of removal landed:
 
-The 2026-04 editorial redesign orphaned five deps. They were uninstalled in a
-single `pnpm remove` call this session but not yet committed:
+- **PR #6** — orphaned by the 2026-04 editorial redesign:
+  `three`, `@react-three/fiber`, `@react-three/drei` (old `HeroBackground`),
+  `framer-motion` (old page animations, replaced by CSS +
+  `IntersectionObserver`), `react-parallax-tilt` (old `Tilt` app cards),
+  `@types/three` (devDep).
+- **PR #11** — orphaned when the shadcn scaffold was deleted in PR #7:
+  `next-themes`, `sonner`. Both were only consumed by
+  `components/ui/sonner.tsx`.
 
-- `three`, `@react-three/fiber`, `@react-three/drei` — old `HeroBackground`
-  (file deleted).
-- `framer-motion` — old page animations (replaced by CSS + `IntersectionObserver`).
-- `react-parallax-tilt` — old `Tilt` app cards (replaced by the editorial vitrine).
-- `@types/three` (devDep).
-
-The removal is **its own dedicated PR** — never a drive-by in unrelated work.
-See gotcha `dead-deps-removal-dedicated-pr` for the verification checklist.
-
-`next-themes` stays — it's a peer of `components/ui/sonner.tsx` (scaffold,
-unused at runtime but tsc references it).
+Both followed gotcha `dead-deps-removal-dedicated-pr` — each was its own
+PR, never bundled with feature work. **Going forward, any future dep
+removal must follow the same pattern.**
 
 ## 8. Directory structure
 
 ```
 app/
   globals.css                     # All styling. Layers: tailwind, global HSL,
-                                  #   legacy helpers, .ab-root, .sup-root
+                                  #   legacy helpers (.text-gradient, etc.),
+                                  #   .ab-root (incl. .ab-legal-* + .ab-prose),
+                                  #   .sup-root (data-app="fingo"|"savely")
   [locale]/
-    layout.tsx                    # Only layout. next/font Inter. Metadata.
-    page.tsx                      # Homepage (editorial redesign, ~930 lines).
-    not-found.tsx                 # Only file using useTranslations().
-    privacy/ · terms/ · privacy/choices/   # SimplePageLayout-based utility pages.
+    layout.tsx                    # Server Component. NextIntlClientProvider +
+                                  #   unstable_setRequestLocale. next/font Inter.
+                                  #   Metadata. Skip-link via getTranslations.
+    page.tsx                      # Homepage (Client). useTranslations('home').
+    not-found.tsx                 # 404. Client. useTranslations('notFound').
+                                  #   Still uses .text-gradient (legacy purple/orange).
+    privacy/ · terms/ · privacy/choices/
+                                  # Inline .ab-root shells, useTranslations('legal').
+                                  # Bilingual EN/ES.
     fingo/support/                # SupportShell, data-app="fingo"
     savely/support/               # SupportShell, data-app="savely"
 components/
-  simple-page-layout.tsx          # Legacy gray/gradient shell for utility pages
-  support-shell.tsx               # New reusable support shell (ab-root cousin)
-  ui/                             # shadcn scaffold (50 components, mostly unused)
+  support-shell.tsx               # Reusable support shell. data-app union is
+                                  #   "fingo" | "savely" only.
 messages/
-  en.json · es.json               # next-intl dictionaries (only notFound used today)
-lib/
-  utils.ts                        # cn() helper
+  en.json · es.json               # next-intl dictionaries.
+                                  # Top-level: notFound, layout, legal, home.
 public/                           # All static assets, logos, hero images
-i18n.ts                           # next-intl config
-middleware.ts                     # next-intl middleware
+i18n.ts                           # next-intl config (createNextIntlPlugin)
+middleware.ts                     # next-intl middleware (locale routing)
 next.config.mjs · tailwind.config.ts · tsconfig.json
 .claude/                          # Claude Code harness (see section 10)
 ```
+
+(No `components/ui/`, no `hooks/`, no `lib/` today — all removed in PR #7
+along with the shadcn scaffold.)
 
 ## 9. Git discipline
 
@@ -219,7 +260,7 @@ Specialists in `.claude/agents/`:
 
 | Agent | Owns |
 |-------|------|
-| `frontend-ui-specialist` | `app/**/*.tsx`, `components/**/*.tsx`, `globals.css`, Tailwind, shadcn, tokens |
+| `frontend-ui-specialist` | `app/**/*.tsx`, `components/**/*.tsx`, `globals.css`, Tailwind, design tokens |
 | `content-i18n-specialist` | EN/ES copy, `messages/*.json`, middleware routing |
 | `infra-deploy-specialist` | `next.config.mjs`, package.json scripts, deps, Amplify config |
 | `spec-writer` | Feature/refactor planner (read-only on source, writes under `docs/` or `.claude/knowledge/`) |
