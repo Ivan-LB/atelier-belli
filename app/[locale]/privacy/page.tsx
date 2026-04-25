@@ -1,121 +1,131 @@
 "use client"
 
 import Link from "next/link"
-import SimplePageLayout from "@/components/simple-page-layout"
-import { usePathname } from "next/navigation"
+import { useParams } from "next/navigation"
+import { useTranslations } from "next-intl"
 
 export default function PrivacyPolicyPage() {
-  const pathname = usePathname()
-  const locale = pathname.split("/")[1] || "es"
-  const lastUpdated = "14 de junio de 2025"
+  const params = useParams()
+  const locale = (params?.locale as string) === "es" ? "es" : "en"
+  const t = useTranslations("legal")
+
+  const dataUseItems = t.raw("privacy.sections.dataUse.items") as string[]
 
   return (
-    <SimplePageLayout title="Política de Privacidad">
-      <p className="text-sm text-gray-400">Última actualización: {lastUpdated}</p>
+    <div className="ab-root" data-theme="light">
+      <header className="ab-legal-nav">
+        <div className="ab-legal-nav-inner ab-wrap">
+          <Link href={`/${locale}`} className="ab-legal-back">
+            ← {t("back")}
+          </Link>
+        </div>
+      </header>
 
-      <h2>Introducción</h2>
-      <p>
-        Bienvenido a Atelier Belli. Nos comprometemos a proteger tu privacidad. Esta Política de Privacidad explica cómo
-        recopilamos, usamos, divulgamos y salvaguardamos tu información cuando visitas nuestro sitio web [TuDominio.com]
-        o utilizas nuestras aplicaciones móviles (por ejemplo, Fingo). Por favor, lee esta política de privacidad
-        cuidadosamente. Si no estás de acuerdo con los términos de esta política de privacidad, por favor no accedas al
-        sitio ni a nuestras aplicaciones.
-      </p>
+      <main className="ab-legal-main">
+        <div className="ab-wrap ab-legal-content">
+          <h1 className="ab-legal-title ab-serif">{t("privacy.title")}</h1>
+          <p className="ab-legal-meta">{t("privacy.lastUpdated")}</p>
 
-      <h2>Información que Recopilamos</h2>
-      <p>
-        Podemos recopilar información sobre ti de varias maneras. La información que podemos recopilar en el Sitio o a
-        través de nuestras Aplicaciones incluye:
-      </p>
-      <ul>
-        <li>
-          <strong>Datos Personales:</strong> Información de identificación personal, como tu nombre, dirección de envío,
-          dirección de correo electrónico y número de teléfono, e información demográfica, como tu edad, sexo, ciudad
-          natal e intereses, que nos proporcionas voluntariamente cuando te registras en el Sitio o nuestras
-          Aplicaciones, o cuando eliges participar en diversas actividades relacionadas con el Sitio y nuestras
-          Aplicaciones, como chat en línea y tablones de mensajes.
-        </li>
-        <li>
-          <strong>Datos Derivados:</strong> Información que nuestros servidores recopilan automáticamente cuando accedes
-          al Sitio o a nuestras Aplicaciones, como tu dirección IP, tu tipo de navegador, tu sistema operativo, tus
-          tiempos de acceso y las páginas que has visto directamente antes y después de acceder al Sitio.
-        </li>
-        <li>
-          <strong>Datos Financieros:</strong> Información financiera, como datos relacionados con tu método de pago (por
-          ejemplo, número de tarjeta de crédito válida, marca de la tarjeta, fecha de caducidad) que podemos recopilar
-          cuando compras, ordenas, devuelves, intercambias o solicitas información sobre nuestros servicios desde el
-          Sitio o nuestras Aplicaciones.
-        </li>
-        <li>
-          <strong>Datos de Aplicaciones Móviles:</strong> Si te conectas usando nuestra(s) aplicación(es) móvil(es):
-          <ul>
-            <li>
-              <em>Información del Dispositivo Móvil.</em> Podemos recopilar información del dispositivo (como el ID de
-              tu dispositivo móvil, modelo y fabricante), sistema operativo, información de la versión e dirección IP.
-            </li>
-            <li>
-              <em>Datos de Geolocalización.</em> Podemos solicitar acceso o permiso y rastrear información basada en la
-              ubicación de tu dispositivo móvil, ya sea continuamente o mientras estás usando nuestra aplicación móvil,
-              para proporcionar servicios basados en la ubicación.
-            </li>
-          </ul>
-        </li>
-      </ul>
+          <article className="ab-prose">
+            <section>
+              <h2>{t("privacy.sections.intro.heading")}</h2>
+              <p>{t("privacy.sections.intro.body")}</p>
+            </section>
 
-      <h2>Cómo Usamos Tu Información</h2>
-      <p>
-        Tener información precisa sobre ti nos permite proporcionarte una experiencia fluida, eficiente y personalizada.
-        Específicamente, podemos usar la información recopilada sobre ti a través del Sitio o nuestras Aplicaciones
-        para:
-      </p>
-      <ul>
-        <li>Crear y gestionar tu cuenta.</li>
-        <li>Enviarte por correo electrónico tu cuenta o pedido.</li>
-        <li>Permitir la comunicación entre usuarios.</li>
-        <li>
-          Cumplir y gestionar compras, pedidos, pagos y otras transacciones relacionadas con el Sitio y nuestras
-          Aplicaciones.
-        </li>
-        <li>Mejorar la eficiencia y el funcionamiento del Sitio y nuestras Aplicaciones.</li>
-      </ul>
+            <section>
+              <h2>{t("privacy.sections.dataCollected.heading")}</h2>
+              <p>{t("privacy.sections.dataCollected.intro")}</p>
+              <p>
+                <strong>{t("privacy.sections.dataCollected.personalData.label")}</strong>{" "}
+                {t("privacy.sections.dataCollected.personalData.body")}
+              </p>
+              <p>
+                <strong>{t("privacy.sections.dataCollected.derivedData.label")}</strong>{" "}
+                {t("privacy.sections.dataCollected.derivedData.body")}
+              </p>
+              <p>
+                <strong>{t("privacy.sections.dataCollected.financialData.label")}</strong>{" "}
+                {t("privacy.sections.dataCollected.financialData.body")}
+              </p>
+              <p>
+                <strong>{t("privacy.sections.dataCollected.mobileAppData.label")}</strong>{" "}
+                {t("privacy.sections.dataCollected.mobileAppData.intro")}
+              </p>
+              <ul>
+                <li>
+                  <strong>{t("privacy.sections.dataCollected.mobileAppData.deviceInfo.label")}</strong>{" "}
+                  {t("privacy.sections.dataCollected.mobileAppData.deviceInfo.body")}
+                </li>
+                <li>
+                  <strong>{t("privacy.sections.dataCollected.mobileAppData.geolocation.label")}</strong>{" "}
+                  {t("privacy.sections.dataCollected.mobileAppData.geolocation.body")}
+                </li>
+              </ul>
+            </section>
 
-      <h2>Seguridad de Tus Datos</h2>
-      <p>
-        Utilizamos medidas de seguridad administrativas, técnicas y físicas para ayudar a proteger tu información
-        personal. Si bien hemos tomado medidas razonables para asegurar la información personal que nos proporcionas,
-        ten en cuenta que a pesar de nuestros esfuerzos, ninguna medida de seguridad es perfecta o impenetrable.
-      </p>
+            <section>
+              <h2>{t("privacy.sections.dataUse.heading")}</h2>
+              <p>{t("privacy.sections.dataUse.intro")}</p>
+              <ul>
+                {dataUseItems.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
+              </ul>
+            </section>
 
-      <h2>Tus Derechos de Privacidad</h2>
-      <p>
-        Dependiendo de tu ubicación, puedes tener ciertos derechos con respecto a tu información personal. Para más
-        información sobre cómo ejercer estos derechos, por favor visita nuestra página de{" "}
-        <Link href={`/${locale}/privacy/choices`}>Opciones de Privacidad del Usuario</Link>.
-      </p>
+            <section>
+              <h2>{t("privacy.sections.dataSecurity.heading")}</h2>
+              <p>{t("privacy.sections.dataSecurity.body")}</p>
+            </section>
 
-      <h2>Política para Niños</h2>
-      <p>
-        No solicitamos conscientemente información ni comercializamos a niños menores de 13 años. Si te das cuenta de
-        cualquier dato que hayamos recopilado de niños menores de 13 años, por favor contáctanos usando la información
-        de contacto proporcionada a continuación.
-      </p>
+            <section>
+              <h2>{t("privacy.sections.privacyRights.heading")}</h2>
+              <p>
+                {t("privacy.sections.privacyRights.body")}{" "}
+                <Link href={`/${locale}/privacy/choices`} className="ab-legal-link">
+                  {t("privacy.sections.privacyRights.linkLabel")}
+                </Link>
+                .
+              </p>
+            </section>
 
-      <h2>Cambios a Esta Política de Privacidad</h2>
-      <p>
-        Podemos actualizar esta Política de Privacidad de vez en cuando. Te notificaremos cualquier cambio publicando la
-        nueva Política de Privacidad en esta página.
-      </p>
+            <section>
+              <h2>{t("privacy.sections.children.heading")}</h2>
+              <p>{t("privacy.sections.children.body")}</p>
+            </section>
 
-      <h2>Contacto</h2>
-      <p>
-        Si tienes preguntas o comentarios sobre esta Política de Privacidad, por favor contáctanos en:
-        <br />
-        Atelier Belli
-        <br />
-        [Tu Dirección de Correo Electrónico de Contacto para Privacidad]
-        <br />
-        [Tu Dirección Física, si aplica]
-      </p>
-    </SimplePageLayout>
+            <section>
+              <h2>{t("privacy.sections.changes.heading")}</h2>
+              <p>{t("privacy.sections.changes.body")}</p>
+            </section>
+
+            <section>
+              <h2>{t("privacy.sections.contact.heading")}</h2>
+              <p>{t("privacy.sections.contact.body")}</p>
+              <p>
+                {t("privacy.sections.contact.name")}
+                <br />
+                {t("privacy.sections.contact.email")}
+                <br />
+                {t("privacy.sections.contact.address")}
+              </p>
+            </section>
+          </article>
+        </div>
+      </main>
+
+      <footer className="ab-legal-foot">
+        <div className="ab-wrap ab-legal-foot-inner">
+          <span>
+            © <span suppressHydrationWarning>{new Date().getFullYear()}</span> Atelier Belli —{" "}
+            {t("allRightsReserved")}
+          </span>
+          <nav className="ab-legal-foot-nav">
+            <Link href={`/${locale}/privacy`}>{t("privacyShortLabel")}</Link>
+            <Link href={`/${locale}/terms`}>{t("termsShortLabel")}</Link>
+          </nav>
+        </div>
+      </footer>
+    </div>
   )
 }

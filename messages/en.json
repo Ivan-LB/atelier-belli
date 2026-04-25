@@ -7,6 +7,177 @@
   "layout": {
     "skipToContent": "Skip to main content"
   },
+  "legal": {
+    "back": "Back to Home",
+    "allRightsReserved": "All rights reserved.",
+    "privacyLabel": "Privacy Policy",
+    "privacyShortLabel": "Privacy",
+    "termsLabel": "Terms & Conditions",
+    "termsShortLabel": "Terms",
+    "privacy": {
+      "title": "Privacy Policy",
+      "lastUpdated": "June 14, 2025",
+      "sections": {
+        "intro": {
+          "heading": "Introduction",
+          "body": "Welcome to Atelier Belli. We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our mobile applications (such as Fingo). Please read this policy carefully. If you disagree with its terms, please do not access the site or our applications."
+        },
+        "dataCollected": {
+          "heading": "Information We Collect",
+          "intro": "We may collect information about you in a variety of ways. The information we may collect on the site or through our applications includes:",
+          "personalData": {
+            "label": "Personal Data:",
+            "body": "Personally identifiable information — such as your name, shipping address, email address, and phone number — as well as demographic information such as your age, gender, hometown, and interests, that you voluntarily provide when you register on the site or our applications, or when you choose to participate in various activities related to the site and our applications, such as online chat and message boards."
+          },
+          "derivedData": {
+            "label": "Derived Data:",
+            "body": "Information our servers collect automatically when you access the site or our applications, such as your IP address, browser type, operating system, access times, and the pages you viewed directly before and after accessing the site."
+          },
+          "financialData": {
+            "label": "Financial Data:",
+            "body": "Financial information — such as data related to your payment method (for example, a valid credit card number, card brand, expiration date) — that we may collect when you purchase, order, return, exchange, or request information about our services from the site or our applications."
+          },
+          "mobileAppData": {
+            "label": "Mobile Application Data:",
+            "intro": "If you connect using our mobile application(s):",
+            "deviceInfo": {
+              "label": "Mobile Device Information.",
+              "body": "We may collect device information (such as your mobile device ID, model, and manufacturer), operating system, version information, and IP address."
+            },
+            "geolocation": {
+              "label": "Geolocation Data.",
+              "body": "We may request access or permission to track location-based information from your mobile device, either continuously or while you are using our mobile application, in order to provide location-based services."
+            }
+          }
+        },
+        "dataUse": {
+          "heading": "How We Use Your Information",
+          "intro": "Having accurate information about you allows us to provide you with a smooth, efficient, and personalized experience. Specifically, we may use information collected about you through the site or our applications to:",
+          "items": [
+            "Create and manage your account.",
+            "Email you regarding your account or orders.",
+            "Enable user-to-user communication.",
+            "Fulfill and manage purchases, orders, payments, and other transactions related to the site and our applications.",
+            "Improve the efficiency and operation of the site and our applications."
+          ]
+        },
+        "dataSecurity": {
+          "heading": "Security of Your Data",
+          "body": "We use administrative, technical, and physical security measures to help protect your personal information. While we have taken reasonable steps to secure the personal information you provide to us, please be aware that no security measures are perfect or impenetrable, despite our best efforts."
+        },
+        "privacyRights": {
+          "heading": "Your Privacy Rights",
+          "body": "Depending on your location, you may have certain rights with respect to your personal information. For more information on how to exercise these rights, please visit our",
+          "linkLabel": "User Privacy Choices"
+        },
+        "children": {
+          "heading": "Children's Policy",
+          "body": "We do not knowingly solicit information from or market to children under the age of 13. If you become aware of any data we have collected from children under 13, please contact us using the contact information provided below."
+        },
+        "changes": {
+          "heading": "Changes to This Privacy Policy",
+          "body": "We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page."
+        },
+        "contact": {
+          "heading": "Contact",
+          "body": "If you have questions or comments about this Privacy Policy, please contact us at:",
+          "name": "Atelier Belli",
+          "email": "ivanlorenzanabelli@outlook.com",
+          "address": "Tijuana, Baja California, Mexico"
+        }
+      }
+    },
+    "privacyChoices": {
+      "title": "User Privacy Choices",
+      "intro": "At Atelier Belli, we respect your privacy and give you control over your personal information. Below are the choices you have regarding your data:",
+      "sections": {
+        "access": {
+          "heading": "Access to Your Information",
+          "body": "You have the right to request a copy of the personal information we hold about you. You may do so by contacting us at ivanlorenzanabelli@outlook.com."
+        },
+        "correction": {
+          "heading": "Correction of Your Information",
+          "body": "If you believe that any information we hold about you is inaccurate or incomplete, please contact us as soon as possible. We will correct any information found to be inaccurate."
+        },
+        "deletion": {
+          "heading": "Deletion of Your Information (Right to Erasure)",
+          "body": "You may request the deletion of your personal information from our systems under certain circumstances — for example, if the data is no longer necessary for the purpose for which it was collected, or if you withdraw your consent (where processing is based on consent)."
+        },
+        "objection": {
+          "heading": "Objection to Processing",
+          "body": "You have the right to object to the processing of your personal information in certain situations, such as direct marketing. If you object, we will stop processing your personal information for those purposes unless we have compelling legitimate grounds for the processing that override your interests, rights, and freedoms, or for the establishment, exercise, or defense of legal claims."
+        },
+        "restriction": {
+          "heading": "Restriction of Processing",
+          "body": "You may request that we restrict the processing of your personal information if: (a) you contest the accuracy of the data; (b) the processing is unlawful but you oppose deletion; (c) we no longer need the data but you require it for legal claims; or (d) you have objected to processing and we are verifying whether our legitimate grounds override yours."
+        },
+        "portability": {
+          "heading": "Data Portability",
+          "body": "Where processing is based on your consent or on a contract and is carried out by automated means, you have the right to receive the personal information you provided to us in a structured, commonly used, and machine-readable format, and you have the right to transmit that data to another controller without hindrance from us."
+        },
+        "howToExercise": {
+          "heading": "How to Exercise Your Rights",
+          "contactIntro": "To exercise any of these rights, please contact us at:",
+          "name": "Atelier Belli — Privacy Department",
+          "email": "Email: ivanlorenzanabelli@outlook.com",
+          "responseNote": "We will respond to your request within the legally required timeframe. We may need to verify your identity before processing your request.",
+          "disclaimer": "Please note that these rights are not absolute and may be subject to certain exemptions under applicable law."
+        }
+      }
+    },
+    "terms": {
+      "title": "Terms & Conditions",
+      "lastUpdated": "June 15, 2025",
+      "sections": {
+        "acceptance": {
+          "heading": "1. Acceptance of Terms",
+          "body": "By accessing and using the Atelier Belli website (the \"Site\") and any of its mobile applications or services (collectively, the \"Services\"), you agree to be bound by these Terms and Conditions (\"Terms\"). If you do not agree to these Terms, you must not access or use our Services."
+        },
+        "intellectualProperty": {
+          "heading": "2. Intellectual Property Rights",
+          "body": "Unless otherwise indicated, the Site and all original materials — including source code, databases, functionality, software, website designs, audio, video, text, photographs, and graphics (collectively, the \"Content\") — and the trademarks, service marks, and logos contained therein (the \"Marks\") are owned by or licensed to us, and are protected by copyright and trademark law."
+        },
+        "userRepresentations": {
+          "heading": "3. User Representations",
+          "intro": "By using the Services, you represent and warrant that:",
+          "items": [
+            "All registration information you submit will be true, accurate, current, and complete.",
+            "You will maintain the accuracy of such information and promptly update it as necessary.",
+            "You have the legal capacity and agree to comply with these Terms.",
+            "You will not use the Services for any illegal or unauthorized purpose.",
+            "Your use of the Services will not violate any applicable law or regulation."
+          ]
+        },
+        "prohibitedActivities": {
+          "heading": "4. Prohibited Activities",
+          "body": "You may not access or use the Site for any purpose other than that for which we make the Site available. The Site may not be used in connection with any commercial endeavor except those that are specifically endorsed or approved by us."
+        },
+        "termination": {
+          "heading": "5. Termination",
+          "body": "We reserve the right, in our sole discretion, to deny access to and use of the Services (including blocking certain IP addresses) to any person for any reason or for no reason, including without limitation for breach of any representation, warranty, or covenant contained in these Terms or of any applicable law or regulation."
+        },
+        "governingLaw": {
+          "heading": "6. Governing Law",
+          "body": "These Terms shall be governed by and construed in accordance with the laws of the State of Baja California, Mexico, without regard to its conflict-of-law principles."
+        },
+        "limitationOfLiability": {
+          "heading": "7. Limitation of Liability",
+          "body": "IN NO EVENT SHALL WE OR OUR DIRECTORS, EMPLOYEES, OR AGENTS BE LIABLE TO YOU OR ANY THIRD PARTY FOR ANY DIRECT, INDIRECT, CONSEQUENTIAL, EXEMPLARY, INCIDENTAL, SPECIAL, OR PUNITIVE DAMAGES, INCLUDING LOSS OF PROFIT, LOSS OF REVENUE, LOSS OF DATA, OR OTHER DAMAGES ARISING FROM YOUR USE OF THE SERVICES, EVEN IF WE HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES."
+        },
+        "changes": {
+          "heading": "8. Changes to These Terms",
+          "body": "We reserve the right to change, modify, or revise these Terms at any time and for any reason at our sole discretion. Any change or modification will be effective immediately upon posting the updated Terms on the Site."
+        },
+        "contact": {
+          "heading": "9. Contact",
+          "body": "To resolve a complaint regarding the Services or to receive further information regarding use of the Services, please contact us at:",
+          "name": "Atelier Belli",
+          "email": "contacto@atelierbelli.com",
+          "address": "Tijuana, Baja California, Mexico"
+        }
+      }
+    }
+  },
   "home": {
     "nav": {
       "home": "Home",
