@@ -1,8 +1,15 @@
 {
   "notFound": {
-    "title": "Page Not Found",
+    "eye": "Lost · Error 404",
+    "titlePre": "Page not ",
+    "titleIt": "found.",
     "description": "Sorry, the page you're looking for doesn't exist or has been moved.",
-    "backHome": "Back to Home"
+    "backHome": "Back to Home",
+    "themeToggleLight": "Light",
+    "themeToggleDark": "Dark",
+    "themeToggleAria": "Toggle theme",
+    "localeSwitchAria": "Cambiar a Español",
+    "footerMeta": "Software · Digital craft"
   },
   "layout": {
     "skipToContent": "Skip to main content"

@@ -1,6 +1,6 @@
 ---
 name: frontend-ui-specialist
-description: Owns React UI, Tailwind, shadcn, tokens, and the two scoped root stylesheets (.ab-root / .sup-root). Use for homepage/support/utility-page changes that are visual, interactive, or structural.
+description: Owns React UI, Tailwind, design tokens, and the two scoped root stylesheets (.ab-root / .sup-root, plus .ab-prose / .ab-legal-* for legal pages). Use for homepage/support/legal-page changes that are visual, interactive, or structural.
 model: sonnet
 tools: Read, Edit, Write, Grep, Glob, Bash
 ---
@@ -12,9 +12,9 @@ Read `.claude/knowledge/common-rules.md` at the start of every invocation.
 ## Ownership
 
 - `app/[locale]/**/*.tsx` (all pages and the locale layout)
-- `components/*.tsx` (SupportShell, SimplePageLayout)
-- `components/ui/**` (shadcn scaffold)
-- `app/globals.css` — the single stylesheet; all design system tokens
+- `components/*.tsx` (SupportShell — the only shared component today)
+- `app/globals.css` — the single stylesheet; all design system tokens,
+  the `.ab-root` (incl. `.ab-prose` + `.ab-legal-*`) and `.sup-root` rules
 - `tailwind.config.ts` — content glob and theme extensions
 - `public/**` — static assets referenced by the UI (images, SVGs, favicons)
 
@@ -22,15 +22,18 @@ Read `.claude/knowledge/common-rules.md` at the start of every invocation.
 
 - `.ab-root` and `.sup-root` token sets do NOT cross. See gotcha
   `root-token-scoping`. When adding a color/spacing/type variable, pick the
-  correct root or extract to `:root` if it's global.
-- Legacy pages (`/privacy`, `/terms`, `/privacy/choices`) use
-  `SimplePageLayout` with the gray/gradient aesthetic. Do not convert them
-  to `.ab-root` / `.sup-root` as a side effect; that's a dedicated
-  refactor request.
+  correct root or extract to `:root` if it's global. Note that legal-page
+  chrome (`.ab-legal-*`) and `.ab-prose` are scoped UNDER `.ab-root` —
+  same token vocabulary as the homepage.
+- The `i18n-pattern-canonical` migration is COMPLETE. Every locale page
+  uses `useTranslations()` (Client) or `getTranslations()` (Server). NEVER
+  reintroduce a `const isSpanish = locale === 'es'` ternary.
 - Any new copy belongs to `content-i18n-specialist`; surface the string slot
-  and hand off.
+  (key path + EN/ES draft if you have it) and hand off.
 - Any `next.config.mjs` / `package.json` change belongs to
-  `infra-deploy-specialist`.
+  `infra-deploy-specialist`. Any change to the i18n provider wiring in
+  `app/[locale]/layout.tsx` requires the Amplify-smoke gate — see gotcha
+  `amplify-client-component-quirk`.
 
 ## Files you must NOT touch
 
@@ -58,10 +61,17 @@ A short report with:
 
 ## Notes on current state
 
-- Homepage (`app/[locale]/page.tsx`) is ~930 lines. Do not start a rewrite
-  without explicit user agreement — incremental edits only.
-- `components/ui/` has 50 shadcn components, most unused by current pages.
-  Reach for them before hand-rolling equivalents.
+- Homepage (`app/[locale]/page.tsx`) is ~870 lines after the i18n migration.
+  Do not start a rewrite without explicit user agreement — incremental
+  edits only.
+- No component library today: `components/ui/`, `hooks/`, and `lib/utils.ts`
+  were all removed in PR #7. If you need a primitive, hand-roll it matching
+  the editorial aesthetic, or have the user re-introduce shadcn explicitly
+  (`pnpm dlx shadcn@latest add <component>`) — don't sneak it in.
+- Legal pages (`/privacy`, `/privacy/choices`, `/terms`) are inline
+  `.ab-root` shells. The chrome (`.ab-legal-*`) and prose ruleset
+  (`.ab-prose`) live in `globals.css`. Re-use them rather than building
+  parallel shells if you add a new utility page.
 - Reveal-on-scroll uses vanilla `IntersectionObserver` + CSS; no animation
-  library is loaded today (framer-motion was removed). Keep it that way
-  unless the user asks for a different trade-off.
+  library is loaded today (framer-motion was removed in PR #6). Keep it
+  that way unless the user asks for a different trade-off.

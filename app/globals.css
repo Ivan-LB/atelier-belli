@@ -86,11 +86,6 @@
   }
 }
 
-/* Legacy helpers — still used by /privacy, /terms, /fingo/support, /savely/support sub-pages */
-.text-gradient {
-  @apply bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 bg-clip-text text-transparent;
-}
-
 /* Skip-to-content link for keyboard / screen-reader users */
 .skip-link {
   position: absolute;
@@ -2015,6 +2010,233 @@
 }
 .ab-legal-foot-nav a:hover {
   color: var(--ab-fg);
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   404 / not-found — editorial shell scoped under .ab-root
+   Mirrors the homepage chrome + Fraunces display anchor with italic
+   accent on the centre "0".
+   ────────────────────────────────────────────────────────────────────── */
+.ab-nf-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.ab-nf-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px clamp(20px, 5vw, 56px);
+  border-bottom: 1px solid var(--line-2);
+}
+.ab-nf-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--ab-fg);
+}
+.ab-nf-mark-svg {
+  width: 22px;
+  height: 23px;
+  display: block;
+}
+.ab-nf-name {
+  font-family: var(--ab-serif);
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+}
+.ab-nf-name em {
+  font-style: italic;
+  color: var(--accent-color);
+  font-weight: 400;
+}
+.ab-nf-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ab-nf-ctrl {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: var(--ab-muted);
+  font: 500 11px/1 var(--ab-sans);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: color var(--ab-trans);
+}
+.ab-nf-ctrl:hover {
+  color: var(--ab-fg);
+}
+.ab-nf-ctrl.is-active {
+  color: var(--ab-fg);
+}
+.ab-nf-ctrl-sep {
+  width: 1px;
+  height: 12px;
+  background: var(--line);
+  margin: 0 6px;
+  display: inline-block;
+}
+.ab-nf-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(40px, 8vh, 96px) clamp(20px, 5vw, 56px);
+}
+.ab-nf-stage {
+  width: 100%;
+  max-width: 760px;
+  text-align: center;
+  animation: ab-nf-fade-up 0.6s ease both;
+}
+@keyframes ab-nf-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ab-nf-stage {
+    animation: none;
+  }
+}
+.ab-nf-eye {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font: 500 11px/1 var(--ab-sans);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ab-muted);
+  margin-bottom: clamp(28px, 6vh, 48px);
+}
+.ab-nf-eye-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  display: inline-block;
+}
+.ab-nf-display {
+  font-family: var(--ab-serif);
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  font-weight: 400;
+  font-size: clamp(140px, 26vw, 280px);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  color: var(--ab-fg);
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+}
+.ab-nf-display .ab-nf-it {
+  font-style: italic;
+  color: var(--accent-color);
+  font-variation-settings: "opsz" 144, "SOFT" 100;
+}
+.ab-nf-title {
+  font-family: var(--ab-serif);
+  font-variation-settings: "opsz" 36;
+  font-weight: 400;
+  font-size: clamp(26px, 3.6vw, 36px);
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+  margin: clamp(28px, 5vh, 40px) 0 14px;
+}
+.ab-nf-title em {
+  font-style: italic;
+  color: var(--accent-color);
+  font-weight: 400;
+}
+.ab-nf-desc {
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--ab-muted);
+  max-width: 46ch;
+  margin: 0 auto clamp(36px, 6vh, 56px);
+  text-wrap: pretty;
+}
+.ab-nf-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 22px 14px 24px;
+  border-radius: 999px;
+  background: var(--accent-color);
+  color: var(--ab-bg);
+  text-decoration: none;
+  font: 500 11px/1 var(--ab-sans);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  border: 1px solid var(--accent-color);
+  transition:
+    background-color var(--ab-trans),
+    border-color var(--ab-trans),
+    transform var(--ab-trans);
+  white-space: nowrap;
+}
+.ab-nf-cta:hover {
+  background: var(--accent-deep);
+  border-color: var(--accent-deep);
+  transform: translateY(-1px);
+}
+.ab-nf-cta-arrow {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+.ab-nf-cta:hover .ab-nf-cta-arrow {
+  transform: translateX(3px);
+}
+.ab-nf-foot {
+  padding: 22px clamp(20px, 5vw, 56px);
+  border-top: 1px solid var(--line-2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.ab-nf-copy,
+.ab-nf-meta {
+  font: 500 11px/1 var(--ab-sans);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ab-muted);
+}
+.ab-nf-meta em {
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ab-muted);
+}
+@media (max-width: 540px) {
+  .ab-nf-display {
+    font-size: clamp(120px, 38vw, 200px);
+  }
+  .ab-nf-title {
+    font-size: 24px;
+  }
+  .ab-nf-desc {
+    font-size: 14.5px;
+  }
+  .ab-nf-foot {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+  .ab-nf-ctrl {
+    padding: 8px 8px;
+  }
 }
 
 /* ──────────────────────────────────────────────────────────────────────

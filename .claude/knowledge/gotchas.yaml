@@ -13,16 +13,20 @@
       - "--sup-"
       - ".ab-root"
       - ".sup-root"
+      - ".ab-prose"
+      - ".ab-legal-"
       - "data-theme"
       - "data-app"
   rule: >-
-    Tokens prefixed --ab-* live ONLY under .ab-root (homepage). Tokens
-    prefixed --sup-* live ONLY under .sup-root (support pages). Neither set
-    may leak across. Global tokens for shadcn (--background, --foreground,
-    --border, etc.) live in :root and .dark. When a new component needs a
-    color, first decide which scope it lives in, then reach for that scope's
-    prefixed vars. Do not redeclare the same token name under both roots —
-    extract to :root instead.
+    Tokens prefixed --ab-* live ONLY under .ab-root (homepage AND the legal-
+    page chrome via .ab-legal-* / .ab-prose, which are scoped under .ab-root
+    in globals.css). Tokens prefixed --sup-* live ONLY under .sup-root
+    (support pages, data-app="fingo" or "savely"). Neither set may leak
+    across. Global HSL tokens (--background, --foreground, --border, etc.)
+    live in :root and .dark; they're consumed by Tailwind's theme extension.
+    When a new component needs a color, first decide which scope it lives
+    in, then reach for that scope's prefixed vars. Do not redeclare the
+    same token name under both roots — extract to :root instead.
   source: "CLAUDE.md#4-design-system"
 
 - id: i18n-pattern-canonical
@@ -33,17 +37,24 @@
       - "messages/*.json"
     keywords:
       - "useTranslations"
+      - "getTranslations"
       - "isSpanish"
       - "next-intl"
       - "useParams"
+      - "NextIntlClientProvider"
   rule: >-
-    Canonical i18n for NEW code: useTranslations() from next-intl, keys in
-    messages/en.json and messages/es.json. Legacy inline flags (const
-    isSpanish = locale === 'es') exist in most pages due to an Amplify-
-    triggered migration (see gotcha amplify-client-component-quirk). Do NOT
-    introduce new inline isSpanish code unless a concrete Amplify regression
-    is reproduced first. Migration of existing pages to useTranslations() is
-    opportunistic, not a blocker on unrelated work.
+    Canonical i18n: useTranslations() in Client Components, getTranslations()
+    in Server Components. Keys in messages/en.json + messages/es.json. Top-
+    level namespaces in use today: notFound, layout, legal, home. The full
+    migration landed in PRs #9 and #12 (2026-04-25); zero `isSpanish`
+    ternaries remain in the source tree. NEVER reintroduce `const isSpanish
+    = locale === 'es'` or any equivalent ternary against a translation
+    string. New copy always goes through next-intl keys. useParams().locale
+    is still acceptable for routing logic (href construction, switchLocale
+    helper, language-code chip labels) — that is not a translation concern.
+    For rich strings with embedded JSX, use ICU placeholder tags in the
+    dictionary value and t.rich(key, { tag: chunks => <em>{chunks}</em> })
+    in the consumer.
   source: "CLAUDE.md#5-i18n"
 
 - id: amplify-images-unoptimized
@@ -72,24 +83,33 @@
       - "app/[locale]/layout.tsx"
       - "app/**/*.tsx"
       - "middleware.ts"
+      - "next.config.mjs"
+      - "i18n.ts"
     keywords:
       - "NextIntlClientProvider"
       - "getMessages"
+      - "getTranslations"
       - "useTranslations"
-      - "useParams"
-      - "usePathname"
+      - "unstable_setRequestLocale"
+      - "serverExternalPackages"
+      - "createNextIntlPlugin"
   rule: >-
-    Historical commit 5719a20 (2025-08-13, "Fix client component issues for
-    Amplify") stripped NextIntlClientProvider + getMessages() from the
-    locale layout, migrated useTranslations() calls to inline isSpanish
-    flags, and switched useParams() to usePathname() for locale extraction —
-    because the async provider setup failed under Amplify's static export
-    model. After the 2026-04 redesign, the homepage was rewritten to use
-    useParams() again and works in dev, but its Amplify behavior is
-    UNVERIFIED. If an Amplify build or runtime regression surfaces around
-    i18n, start by (a) confirming no NextIntlClientProvider was reintroduced
-    upstream of a 'use client' tree, and (b) falling back to usePathname() +
-    inline isSpanish for the failing route.
+    Current setup (PR #9, 2026-04-25): app/[locale]/layout.tsx wraps
+    {children} in NextIntlClientProvider with messages from getMessages(),
+    and calls unstable_setRequestLocale(locale) before any
+    getTranslations/getMessages read. The provider is required for Client
+    Component useTranslations() to work; setRequestLocale is required to
+    keep all routes statically prerendered. createNextIntlPlugin('./i18n.ts')
+    wraps the next.config.mjs export. serverExternalPackages: ['next-intl']
+    was REMOVED in PR #9 — it was redundant with the plugin and prevented
+    useTranslations() from resolving the react-server export at SSG. This
+    full setup was Amplify-smoked successfully on Next 15.2.4 + React 19;
+    the historical break (commit 5719a20, 2025-08-13, on Next 14) no longer
+    reproduces. FORWARD-LOOKING RULE: if you change anything about the
+    provider position, message loading, setRequestLocale call, or the
+    next-intl plugin wiring — smoke-test on an Amplify deploy preview
+    before merging to main. Do NOT trust local pnpm build alone for changes
+    in this region.
   source: "CLAUDE.md#6-amplify-quirks"
 
 - id: dead-deps-removal-dedicated-pr
@@ -98,22 +118,26 @@
       - "package.json"
       - "pnpm-lock.yaml"
     keywords:
-      - "three"
-      - "framer-motion"
-      - "react-parallax-tilt"
-      - "@react-three"
       - "pnpm remove"
       - "pnpm add"
+      - "next-themes"
+      - "sonner"
+      - "three"
+      - "framer-motion"
+      - "@react-three"
   rule: >-
-    After the 2026-04 editorial redesign, five deps (three,
-    @react-three/fiber, @react-three/drei, framer-motion,
-    react-parallax-tilt) and one devDep (@types/three) were uninstalled.
-    That removal is pending its own dedicated commit/PR as of 2026-04-24,
-    not bundled with unrelated work. Before shipping any future dep removal,
-    (1) grep the codebase for every import of the package, (2) run pnpm
-    build to confirm compile, (3) load /en/ and /es/ in pnpm dev as visual
-    smoke, (4) commit with a message naming what was removed and why. Never
-    remove a dep as a drive-by in an unrelated feature PR.
+    Two dep-removal waves shipped in 2026-04-25: PR #6 dropped six packages
+    orphaned by the editorial redesign (three, @react-three/fiber,
+    @react-three/drei, framer-motion, react-parallax-tilt, @types/three),
+    PR #11 dropped two more orphaned by the shadcn scaffold deletion
+    (next-themes, sonner). Both followed the dedicated-PR pattern. Going
+    forward, ANY dep removal must be its own PR — never bundled with
+    unrelated feature or refactor work. Before shipping a dep removal:
+    (1) grep the source tree for every import of the package
+    ('grep -rE "from ['\"]<pkg>" app components' — note that lib/, hooks/,
+    and components/ui/ no longer exist), (2) run pnpm build to confirm
+    compile, (3) load /en/ and /es/ in pnpm dev as visual smoke, (4) commit
+    with a message naming what was removed and why.
   source: "CLAUDE.md#7-dead-dependencies"
 
 - id: google-fonts-hybrid-loading
