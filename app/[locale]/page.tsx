@@ -1,7 +1,8 @@
 "use client"
 
-import { useEffect, useRef, useState, useCallback } from "react"
+import { useEffect, useRef, useState, useCallback, useMemo } from "react"
 import { useParams, useRouter } from "next/navigation"
+import { useTranslations } from "next-intl"
 
 const LANGUAGE_COOKIE = "preferred-language"
 
@@ -73,7 +74,7 @@ export default function PortfolioPage() {
   const params = useParams()
   const router = useRouter()
   const locale = (((params?.locale as string) || "en") === "es" ? "es" : "en") as Lang
-  const isSpanish = locale === "es"
+  const t = useTranslations("home")
 
   const [theme, setTheme] = useState<Theme>("light")
   const [hydrated, setHydrated] = useState(false)
@@ -105,7 +106,7 @@ export default function PortfolioPage() {
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"))
 
   const switchLocale = () => {
-    const target: Lang = isSpanish ? "en" : "es"
+    const target: Lang = locale === "es" ? "en" : "es"
     const expires = new Date()
     expires.setFullYear(expires.getFullYear() + 1)
     document.cookie = `${LANGUAGE_COOKIE}=${target}; expires=${expires.toUTCString()}; path=/`
@@ -131,50 +132,31 @@ export default function PortfolioPage() {
   }, [])
 
   // Build CASES per language
-  const CASES: Record<CaseKey, CaseData> = {
+  const CASES: Record<CaseKey, CaseData> = useMemo(() => ({
     fingo: {
       num: "01",
-      kicker: isSpanish ? "iOS · 2025" : "iOS · 2025",
+      kicker: "iOS · 2025",
       title: {
         pre: "Fingo — ",
-        it: isSpanish ? "decisiones en grupo, fácil." : "group choice, made easy.",
+        it: t("cases.fingo.titleIt"),
       },
-      desc: isSpanish ? (
-        <>
-          Una app de iOS para decidir en grupo al instante — ruletas, monedas, flechas giratorias,
-          toque-para-elegir. Totalmente personalizable, con <em>háptics</em> que hacen que cada
-          elección se sienta intencional. Construida con SwiftUI.
-        </>
-      ) : (
-        <>
-          An iOS app for making group decisions instantly — wheels, coins, spinning arrows,
-          tap-to-choose. Fully customizable, with <em>haptics</em> that make each pick feel
-          deliberate. Built with SwiftUI.
-        </>
-      ),
-      meta: isSpanish
-        ? [
-            ["Plataforma", "iOS 16+"],
-            ["Stack", "SwiftUI · Swift · Core Haptics"],
-            ["Estado", "Disponible en App Store"],
-            ["Año", "2025"],
-          ]
-        : [
-            ["Platform", "iOS 16+"],
-            ["Stack", "SwiftUI · Swift · Core Haptics"],
-            ["Status", "Live on the App Store"],
-            ["Year", "2025"],
-          ],
+      desc: t.rich("cases.fingo.descRich", { it: (chunks) => <em>{chunks}</em> }),
+      meta: [
+        [t("cases.meta.platform"), "iOS 16+"],
+        [t("cases.meta.stack"), "SwiftUI · Swift · Core Haptics"],
+        [t("cases.meta.status"), t("cases.fingo.metaStatus")],
+        [t("cases.meta.year"), "2025"],
+      ],
       actions: [
         {
-          label: isSpanish ? "Ver en App Store" : "View on App Store",
+          label: t("cases.fingo.actionPrimary"),
           href: "https://apps.apple.com/mx/app/fingo-group-choice-made-easy/id6747301883",
           kind: "primary",
           ext: true,
           icon: "external",
         },
         {
-          label: isSpanish ? "Soporte" : "Support",
+          label: t("cases.fingo.actionGhost"),
           href: `/${locale}/fingo/support`,
           kind: "ghost",
           icon: "help",
@@ -184,46 +166,27 @@ export default function PortfolioPage() {
     },
     savely: {
       num: "02",
-      kicker: isSpanish ? "iOS · Fintech · 2026" : "iOS · Fintech · 2026",
+      kicker: "iOS · Fintech · 2026",
       title: {
         pre: "Savely — ",
-        it: isSpanish ? "finanzas personales, en calma." : "personal finance, quietly.",
+        it: t("cases.savely.titleIt"),
       },
-      desc: isSpanish ? (
-        <>
-          Un asistente financiero tranquilo. Rastrea gastos, ahorra con metas, recibe alertas
-          inteligentes antes de que las cosas se salgan. Seguridad bancaria, interfaz{" "}
-          <em>silenciosa</em>. Construida con SwiftUI y APIs bancarias seguras.
-        </>
-      ) : (
-        <>
-          A calm financial assistant. Track spending, save with goals, get smart alerts before
-          things slip. Bank-grade security, <em>quiet</em> interface. Built with SwiftUI and secure
-          banking APIs.
-        </>
-      ),
-      meta: isSpanish
-        ? [
-            ["Plataforma", "iOS 16+"],
-            ["Stack", "SwiftUI · Swift · APIs bancarias"],
-            ["Estado", "En revisión · Próximamente"],
-            ["Año", "2026"],
-          ]
-        : [
-            ["Platform", "iOS 16+"],
-            ["Stack", "SwiftUI · Swift · Banking APIs"],
-            ["Status", "In review · App Store soon"],
-            ["Year", "2026"],
-          ],
+      desc: t.rich("cases.savely.descRich", { it: (chunks) => <em>{chunks}</em> }),
+      meta: [
+        [t("cases.meta.platform"), "iOS 16+"],
+        [t("cases.meta.stack"), "SwiftUI · Swift · Banking APIs"],
+        [t("cases.meta.status"), t("cases.savely.metaStatus")],
+        [t("cases.meta.year"), "2026"],
+      ],
       actions: [
         {
-          label: isSpanish ? "Próximamente" : "Coming soon",
+          label: t("cases.savely.actionPrimary"),
           href: "#",
           kind: "primary disabled",
           icon: "clock",
         },
         {
-          label: isSpanish ? "Soporte" : "Support",
+          label: t("cases.savely.actionGhost"),
           href: `/${locale}/savely/support`,
           kind: "ghost",
           icon: "help",
@@ -233,40 +196,21 @@ export default function PortfolioPage() {
     },
     mezcal: {
       num: "03",
-      kicker: isSpanish ? "Web · E-commerce · 2025" : "Web · E-commerce · 2025",
+      kicker: "Web · E-commerce · 2025",
       title: {
         pre: "Mi Mezcal — ",
         it: "Destilería Lorenzana.",
       },
-      desc: isSpanish ? (
-        <>
-          Tienda e historia para una marca de mezcal artesanal de Oaxaca. Un sitio editorial y
-          tranquilo construido para vender — variedades, origen, pedidos directos.{" "}
-          <em>Hecho a mano</em> de la marca al checkout.
-        </>
-      ) : (
-        <>
-          Storefront and story for an artisanal mezcal brand out of Oaxaca. A quiet, editorial site
-          built to sell — varieties, origin, direct orders. <em>Hand-built</em> from brand to
-          checkout.
-        </>
-      ),
-      meta: isSpanish
-        ? [
-            ["Plataforma", "Web · Responsiva"],
-            ["Stack", "Next.js · TypeScript · Stripe"],
-            ["Estado", "En vivo"],
-            ["Año", "2025"],
-          ]
-        : [
-            ["Platform", "Web · Responsive"],
-            ["Stack", "Next.js · TypeScript · Stripe"],
-            ["Status", "Live"],
-            ["Year", "2025"],
-          ],
+      desc: t.rich("cases.mezcal.descRich", { it: (chunks) => <em>{chunks}</em> }),
+      meta: [
+        [t("cases.meta.platform"), t("cases.mezcal.metaPlatform")],
+        [t("cases.meta.stack"), "Next.js · TypeScript · Stripe"],
+        [t("cases.meta.status"), t("cases.mezcal.metaStatus")],
+        [t("cases.meta.year"), "2025"],
+      ],
       actions: [
         {
-          label: isSpanish ? "Visitar sitio" : "Visit site",
+          label: t("cases.mezcal.actionPrimary"),
           href: "https://www.destilerialorenzana.com/",
           kind: "primary",
           ext: true,
@@ -275,7 +219,7 @@ export default function PortfolioPage() {
       ],
       preview: "mezcal",
     },
-  }
+  }), [t, locale])
 
   const openCase = useCallback((key: CaseKey, trigger?: HTMLElement) => {
     lastFocusRef.current = trigger ?? (document.activeElement as HTMLElement | null)
@@ -325,19 +269,19 @@ export default function PortfolioPage() {
           <nav aria-label="Primary">
             <ul className="ab-nav-links">
               <li>
-                <a href="#top">{isSpanish ? "Inicio" : "Home"}</a>
+                <a href="#top">{t("nav.home")}</a>
               </li>
               <li>
-                <a href="#work">{isSpanish ? "Proyectos" : "Work"}</a>
+                <a href="#work">{t("nav.work")}</a>
               </li>
               <li>
                 <a href="#stack">Stack</a>
               </li>
               <li>
-                <a href="#studio">{isSpanish ? "Sobre mí" : "About"}</a>
+                <a href="#studio">{t("nav.about")}</a>
               </li>
               <li>
-                <a href="#contact">{isSpanish ? "Contacto" : "Contact"}</a>
+                <a href="#contact">{t("nav.contact")}</a>
               </li>
             </ul>
           </nav>
@@ -346,16 +290,16 @@ export default function PortfolioPage() {
             <button
               className="ab-chip ab-chip-lang"
               onClick={switchLocale}
-              aria-label={isSpanish ? "Switch to English" : "Cambiar a Español"}
+              aria-label={t("locale.switchAria")}
             >
-              <b>{isSpanish ? "ES" : "EN"}</b>
+              <b>{locale === "es" ? "ES" : "EN"}</b>
               <span className="ab-sep" />
-              <span className="off">{isSpanish ? "EN" : "ES"}</span>
+              <span className="off">{locale === "es" ? "EN" : "ES"}</span>
             </button>
             <button
               className="ab-theme-toggle"
               onClick={toggleTheme}
-              aria-label={isSpanish ? "Cambiar tema" : "Toggle theme"}
+              aria-label={t("theme.toggleAria")}
             >
               <svg className="sun" viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="12" cy="12" r="4" />
@@ -379,41 +323,16 @@ export default function PortfolioPage() {
               <div className="ab-reveal">
                 <div className="ab-eyebrow-row">
                   <span className="num-xs">01</span>
-                  <span className="ab-smallcaps">
-                    {isSpanish ? "Software · Oficio digital" : "Software · Digital craft"}
-                  </span>
+                  <span className="ab-smallcaps">{t("hero.eyebrow")}</span>
                 </div>
                 <h1 id="hero-heading" className="ab-h-title ab-serif">
-                  {isSpanish ? (
-                    <>
-                      <span>Apps hechas</span>
-                      <br />
-                      <span>con </span>
-                      <span className="ab-it">intención.</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>Apps crafted</span>
-                      <br />
-                      <span>with </span>
-                      <span className="ab-it">intention.</span>
-                    </>
-                  )}
+                  <span>{t("hero.titleLine1")}</span>
+                  <br />
+                  <span>{t("hero.titleLine2")}</span>
+                  <span className="ab-it">{t("hero.titleIt")}</span>
                 </h1>
                 <p className="ab-h-sub">
-                  {isSpanish ? (
-                    <>
-                      Un pequeño <em>atelier</em> de software desde Tijuana. Forma minimalista, y
-                      la paciencia de terminar las cosas. Diseño y construyo apps de iOS y la web
-                      que las acompaña.
-                    </>
-                  ) : (
-                    <>
-                      A small <em>atelier</em> for software out of Tijuana. Minimalist form, and
-                      the patience to finish things. I design and build iOS apps and the web
-                      around them.
-                    </>
-                  )}
+                  {t.rich("hero.subtitle", { it: (chunks) => <em>{chunks}</em> })}
                 </p>
               </div>
 
@@ -424,27 +343,25 @@ export default function PortfolioPage() {
               >
                 <div className="ab-colophon">
                   <div className="row">
-                    <span className="k">{isSpanish ? "Ubicación" : "Location"}</span>
+                    <span className="k">{t("colophon.locationLabel")}</span>
                     <span className="v">Tijuana · BC</span>
                   </div>
                   <hr className="ab-hair" />
                   <div className="row">
-                    <span className="k">{isSpanish ? "Estado" : "Status"}</span>
+                    <span className="k">{t("colophon.statusLabel")}</span>
                     <span className="v avail">
                       <span className="ab-dot" aria-hidden="true" />{" "}
-                      <em>
-                        {isSpanish ? "Disponible para encargos" : "Available for commissions"}
-                      </em>
+                      <em>{t("colophon.status")}</em>
                     </span>
                   </div>
                   <hr className="ab-hair" />
                   <div className="row">
                     <span className="k">Est.</span>
-                    <span className="v">2023 — {isSpanish ? "En curso" : "Ongoing"}</span>
+                    <span className="v">2023 — {t("colophon.ongoing")}</span>
                   </div>
                   <hr className="ab-hair" />
                   <div className="row">
-                    <span className="k">{isSpanish ? "Firmado" : "Signed"}</span>
+                    <span className="k">{t("colophon.signed")}</span>
                     <span className="v ab-sig">— Ivan Lorenzana</span>
                   </div>
                 </div>
@@ -457,15 +374,13 @@ export default function PortfolioPage() {
             <div className="ab-wrap-full" style={{ maxWidth: 1480, margin: "0 auto" }}>
               <div className="ab-vitrine-cap">
                 <div>
-                  <span className="eye">{isSpanish ? "Vitrina — 2025" : "Showcase — 2025"}</span>
+                  <span className="eye">{t("vitrine.eyebrow")}</span>
                   <h2>
-                    <span>{isSpanish ? "Tres piezas " : "Three recent "}</span>
-                    <em>{isSpanish ? "recientes." : "pieces."}</em>
+                    <span>{t("vitrine.titlePre")}</span>
+                    <em>{t("vitrine.titleIt")}</em>
                   </h2>
                 </div>
-                <span className="m">
-                  {isSpanish ? "— Pasa el cursor para enfocar" : "— Hover to focus"}
-                </span>
+                <span className="m">{t("vitrine.hint")}</span>
               </div>
 
               <div className="ab-phones">
@@ -559,16 +474,14 @@ export default function PortfolioPage() {
               <div>
                 <div className="s-eye">
                   <span className="num-xs">02</span>
-                  <span className="ab-smallcaps">{isSpanish ? "La obra" : "The work"}</span>
+                  <span className="ab-smallcaps">{t("work.eyebrow")}</span>
                 </div>
                 <h2 id="work-title" className="s-title">
-                  <span>{isSpanish ? "Obra " : "Selected "}</span>
-                  <span className="ab-it">{isSpanish ? "selecta." : "work."}</span>
+                  <span>{t("work.titlePre")}</span>
+                  <span className="ab-it">{t("work.titleIt")}</span>
                 </h2>
               </div>
-              <div className="s-meta">
-                {isSpanish ? "Índice — 2023 / 2026" : "Index — 2023 / 2026"}
-              </div>
+              <div className="s-meta">{t("work.indexMeta")}</div>
             </div>
 
             <div className="ab-index-list" role="list">
@@ -576,22 +489,16 @@ export default function PortfolioPage() {
                 const c = CASES[key]
                 const name =
                   key === "fingo"
-                    ? { pre: "Fingo", it: isSpanish ? " — decisiones en grupo, fácil." : " — group choice, made easy." }
+                    ? { pre: "Fingo", it: ` — ${t("cases.fingo.titleIt")}` }
                     : key === "savely"
-                      ? { pre: "Savely", it: isSpanish ? " — finanzas personales, en calma." : " — personal finance, quietly." }
+                      ? { pre: "Savely", it: ` — ${t("cases.savely.titleIt")}` }
                       : { pre: "Mi Mezcal", it: " — Destilería Lorenzana." }
                 const tag =
                   key === "fingo"
-                    ? isSpanish
-                      ? "Ruletas, monedas, háptics — decisiones de un toque."
-                      : "Wheels, coins, haptics — decisions in a tap."
+                    ? t("cases.fingo.tag")
                     : key === "savely"
-                      ? isSpanish
-                        ? "Balance, presupuesto, alertas — un asistente financiero tranquilo."
-                        : "Balance, budgets, alerts — a calm financial assistant."
-                      : isSpanish
-                        ? "Una marca de mezcal artesanal — tienda e historia."
-                        : "An artisanal mezcal brand — storefront and story."
+                      ? t("cases.savely.tag")
+                      : t("cases.mezcal.tag")
                 const stack =
                   key === "fingo"
                     ? ["iOS", "SwiftUI", "Haptics"]
@@ -625,7 +532,7 @@ export default function PortfolioPage() {
                         <span key={s}>{s}</span>
                       ))}
                     </div>
-                    <div className="p-plat">{isSpanish ? "Ver proyecto" : "View case"}</div>
+                    <div className="p-plat">{t("work.viewCase")}</div>
                     <div className="arr">→</div>
                   </button>
                 )
@@ -641,28 +548,14 @@ export default function PortfolioPage() {
               <div>
                 <div className="s-eye ab-wb-eye">
                   <span className="num-xs">03</span>
-                  <span className="ab-smallcaps">
-                    {isSpanish ? "El taller" : "The workbench"}
-                  </span>
+                  <span className="ab-smallcaps">{t("workbench.eyebrow")}</span>
                 </div>
                 <h2 id="wb-title" className="ab-wb-title">
-                  <span>{isSpanish ? "Herramientas del " : "Tools of the "}</span>
-                  <span className="ab-it">{isSpanish ? "oficio." : "trade."}</span>
+                  <span>{t("workbench.titlePre")}</span>
+                  <span className="ab-it">{t("workbench.titleIt")}</span>
                 </h2>
                 <p className="ab-wb-desc">
-                  {isSpanish ? (
-                    <>
-                      Un conjunto pequeño y opinado. Swift y SwiftUI para el teléfono;{" "}
-                      <em>Next.js</em> y TypeScript para la web; Postgres para lo que debe durar.
-                      Figma, Xcode, Claude Code — el banco se mantiene limpio.
-                    </>
-                  ) : (
-                    <>
-                      A small, opinionated set. Swift and SwiftUI for the phone; <em>Next.js</em>{" "}
-                      and TypeScript for the web; Postgres for things that must last. Figma, Xcode,
-                      Claude Code — the bench stays tidy.
-                    </>
-                  )}
+                  {t.rich("workbench.desc", { it: (chunks) => <em>{chunks}</em> })}
                 </p>
                 <a
                   href="https://github.com/Ivan-LB"
@@ -681,7 +574,7 @@ export default function PortfolioPage() {
               <div className="ab-wb-groups">
                 <div className="ab-wb-group">
                   <h4>
-                    {isSpanish ? "Frontend & Móvil" : "Frontend & Mobile"}{" "}
+                    {t("workbench.groups.frontend")}{" "}
                     <span className="gn">i.</span>
                   </h4>
                   <div className="ab-pills">
@@ -697,7 +590,7 @@ export default function PortfolioPage() {
                 </div>
                 <div className="ab-wb-group">
                   <h4>
-                    {isSpanish ? "Backend & Infra" : "Backend & Infra"}{" "}
+                    {t("workbench.groups.backend")}{" "}
                     <span className="gn">ii.</span>
                   </h4>
                   <div className="ab-pills">
@@ -711,7 +604,7 @@ export default function PortfolioPage() {
                 </div>
                 <div className="ab-wb-group">
                   <h4>
-                    {isSpanish ? "Oficio" : "Craft"} <span className="gn">iii.</span>
+                    {t("workbench.groups.craft")} <span className="gn">iii.</span>
                   </h4>
                   <div className="ab-pills">
                     {["Figma", "Xcode", "Claude Code", "Git"].map((p, i) => (
@@ -731,23 +624,23 @@ export default function PortfolioPage() {
         <section id="studio" className="ab-cta" aria-labelledby="cta-title">
           <div className="ab-wrap">
             <div className="eye ab-smallcaps">
-              — <em>{isSpanish ? "Encargos abiertos" : "Commissions open"}</em> —
+              — <em>{t("cta.eyebrow")}</em> —
             </div>
             <h2 id="cta-title">
-              <span>{isSpanish ? "Hagamos algo " : "Let's build something "}</span>
-              <span className="ab-it">{isSpanish ? "bien hecho." : "well-made."}</span>
+              <span>{t("cta.titlePre")}</span>
+              <span className="ab-it">{t("cta.titleIt")}</span>
             </h2>
 
             <div className="ab-cta-actions" id="contact">
               <a className="ab-btn-mail" href="mailto:ivanlorenzana@outlook.com">
-                <span className="lbl">{isSpanish ? "Escribe a" : "Write to"}</span>
+                <span className="lbl">{t("cta.writeTo")}</span>
                 <span className="mail">ivanlorenzana@outlook.com</span>
               </a>
               <span />
               <div className="ab-cta-links">
                 <span className="s">Atelier Belli</span>
                 <span>
-                  Tijuana ⇄ <span>{isSpanish ? "Todo el mundo" : "Worldwide"}</span>
+                  Tijuana ⇄ <span>{t("cta.worldwide")}</span>
                 </span>
                 <span>
                   <a href="https://github.com/Ivan-LB" target="_blank" rel="noopener noreferrer">
@@ -781,9 +674,9 @@ export default function PortfolioPage() {
               </div>
               <div className="mid">Atelier Belli</div>
               <div className="right">
-                <a href={`/${locale}/privacy`}>{isSpanish ? "Privacidad" : "Privacy"}</a>
+                <a href={`/${locale}/privacy`}>{t("footer.privacy")}</a>
                 &nbsp;·&nbsp;
-                <a href={`/${locale}/terms`}>{isSpanish ? "Términos" : "Terms"}</a>
+                <a href={`/${locale}/terms`}>{t("footer.terms")}</a>
               </div>
             </footer>
           </div>
@@ -812,7 +705,7 @@ export default function PortfolioPage() {
             ref={closeBtnRef}
             className="ab-case-close"
             onClick={closeCase}
-            aria-label={isSpanish ? "Cerrar" : "Close"}
+            aria-label={t("modal.close")}
           >
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M6 6l12 12M18 6l-12 12" />

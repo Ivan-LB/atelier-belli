@@ -1,67 +1,107 @@
 {
-    "navigation": {
+  "notFound": {
+    "title": "Página No Encontrada",
+    "description": "Lo sentimos, la página que estás buscando no existe o ha sido movida.",
+    "backHome": "Volver al Inicio"
+  },
+  "layout": {
+    "skipToContent": "Ir al contenido principal"
+  },
+  "home": {
+    "nav": {
       "home": "Inicio",
+      "work": "Proyectos",
       "about": "Sobre mí",
-      "apps": "Apps",
-      "privacy": "Privacidad",
       "contact": "Contacto"
     },
+    "locale": {
+      "switchAria": "Switch to English"
+    },
+    "theme": {
+      "toggleAria": "Cambiar tema"
+    },
     "hero": {
-      "title": "Atelier Belli",
-      "subtitle": "Desarrollo de software y soluciones digitales",
-      "cta": "Ver mi trabajo"
+      "eyebrow": "Software · Oficio digital",
+      "titleLine1": "Apps hechas",
+      "titleLine2": "con ",
+      "titleIt": "intención.",
+      "subtitle": "Un pequeño <it>atelier</it> de software desde Tijuana. Forma minimalista, y la paciencia de terminar las cosas. Diseño y construyo apps de iOS y la web que las acompaña."
     },
-    "about": {
-      "title": "Sobre mí",
-      "description": "Soy un desarrollador full-stack apasionado por crear experiencias digitales pulcras y eficientes. Con un pie en la precisión técnica y otro en la elegancia del diseño minimalista, busco la armonía en cada línea de código. Mi enfoque franco-italiano se refleja en soluciones robustas con un toque de estilo distintivo. ¡Bienvenido a mi atelier digital!"
+    "colophon": {
+      "locationLabel": "Ubicación",
+      "statusLabel": "Estado",
+      "status": "Disponible para encargos",
+      "ongoing": "En curso",
+      "signed": "Firmado"
     },
-    "apps": {
-      "title": "Mis Aplicaciones",
-      "fingo": {
-        "title": "Fingo",
-        "description": "Fingo es la app definitiva para tomar decisiones en grupo al instante: elige con toques, ruletas, flechas giratorias o lanzamientos de moneda. Totalmente personalizable, con háptics que hacen cada elección rápida, divertida y justa."
-      },
-      "savely": {
-        "title": "Savely",
-        "description": "Savely es tu asistente de finanzas personales: controla tus gastos, ahorra con metas personalizadas y recibe alertas inteligentes para mantener tu presupuesto en orden. Diseño intuitivo y seguridad bancaria garantizada."
-      },
-      "mezcal": {
-        "title": "Mi Mezcal",
-        "description": "Descubre Mi Mezcal, el sitio web de mi marca de mezcal artesanal: conoce nuestra historia, explora variedades y haz tu pedido directo. Diseño elegante y experiencia de usuario auténtica."
-      },
-      "buttons": {
-        "support": "Soporte",
-        "appStore": "Ver en App Store",
-        "visitSite": "Visitar sitio"
+    "vitrine": {
+      "eyebrow": "Vitrina — 2025",
+      "titlePre": "Tres piezas ",
+      "titleIt": "recientes.",
+      "hint": "— Pasa el cursor para enfocar"
+    },
+    "work": {
+      "eyebrow": "La obra",
+      "titlePre": "Obra ",
+      "titleIt": "selecta.",
+      "indexMeta": "Índice — 2023 / 2026",
+      "viewCase": "Ver proyecto"
+    },
+    "workbench": {
+      "eyebrow": "El taller",
+      "titlePre": "Herramientas del ",
+      "titleIt": "oficio.",
+      "desc": "Un conjunto pequeño y opinado. Swift y SwiftUI para el teléfono; <it>Next.js</it> y TypeScript para la web; Postgres para lo que debe durar. Figma, Xcode, Claude Code — el banco se mantiene limpio.",
+      "groups": {
+        "frontend": "Frontend & Móvil",
+        "backend": "Backend & Infra",
+        "craft": "Oficio"
       }
     },
-    "privacy": {
-      "title": "Tu Privacidad es Importante",
-      "description": "En Atelier Belli, me comprometo a proteger tus datos personales. Todas las aplicaciones y servicios se desarrollan con la privacidad en mente, asegurando que tu información se maneje de forma transparente y segura.",
-      "policyLink": "Política de Privacidad",
-      "choicesLink": "Opciones de Privacidad del Usuario"
-    },
-    "contact": {
-      "title": "Hablemos de tu Proyecto",
-      "description": "¿Tienes una idea o necesitas ayuda con un desarrollo? No dudes en contactarme.",
-      "cta": "Enviar un Email"
+    "cta": {
+      "eyebrow": "Encargos abiertos",
+      "titlePre": "Hagamos algo ",
+      "titleIt": "bien hecho.",
+      "writeTo": "Escribe a",
+      "worldwide": "Todo el mundo"
     },
     "footer": {
-      "rights": "Todos los derechos reservados.",
-      "terms": "Términos y Condiciones",
-      "privacy": "Política de Privacidad"
+      "privacy": "Privacidad",
+      "terms": "Términos"
     },
-    "languageSelector": {
-      "title": "Elige tu idioma",
-      "description": "Selecciona tu idioma preferido para continuar",
-      "english": "English",
-      "spanish": "Español",
-      "continue": "Continuar"
+    "modal": {
+      "close": "Cerrar"
     },
-    "notFound": {
-      "title": "Página No Encontrada",
-      "description": "Lo sentimos, la página que estás buscando no existe o ha sido movida.",
-      "backHome": "Volver al Inicio"
+    "cases": {
+      "meta": {
+        "platform": "Plataforma",
+        "stack": "Stack",
+        "status": "Estado",
+        "year": "Año"
+      },
+      "fingo": {
+        "titleIt": "decisiones en grupo, fácil.",
+        "descRich": "Una app de iOS para decidir en grupo al instante — ruletas, monedas, flechas giratorias, toque-para-elegir. Totalmente personalizable, con <it>háptics</it> que hacen que cada elección se sienta intencional. Construida con SwiftUI.",
+        "metaStatus": "Disponible en App Store",
+        "actionPrimary": "Ver en App Store",
+        "actionGhost": "Soporte",
+        "tag": "Ruletas, monedas, háptics — decisiones de un toque."
+      },
+      "savely": {
+        "titleIt": "finanzas personales, en calma.",
+        "descRich": "Un asistente financiero tranquilo. Rastrea gastos, ahorra con metas, recibe alertas inteligentes antes de que las cosas se salgan. Seguridad bancaria, interfaz <it>silenciosa</it>. Construida con SwiftUI y APIs bancarias seguras.",
+        "metaStatus": "En revisión · Próximamente",
+        "actionPrimary": "Próximamente",
+        "actionGhost": "Soporte",
+        "tag": "Balance, presupuesto, alertas — un asistente financiero tranquilo."
+      },
+      "mezcal": {
+        "descRich": "Tienda e historia para una marca de mezcal artesanal de Oaxaca. Un sitio editorial y tranquilo construido para vender — variedades, origen, pedidos directos. <it>Hecho a mano</it> de la marca al checkout.",
+        "metaPlatform": "Web · Responsiva",
+        "metaStatus": "En vivo",
+        "actionPrimary": "Visitar sitio",
+        "tag": "Una marca de mezcal artesanal — tienda e historia."
+      }
     }
   }
-  
+}

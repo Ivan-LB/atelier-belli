@@ -2,6 +2,8 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { notFound } from "next/navigation"
+import { NextIntlClientProvider } from "next-intl"
+import { getTranslations, getMessages, unstable_setRequestLocale } from "next-intl/server"
 import { locales } from "@/i18n"
 import "../globals.css"
 
@@ -38,6 +40,11 @@ export default async function LocaleLayout({
     notFound()
   }
 
+  unstable_setRequestLocale(locale)
+
+  const t = await getTranslations({ locale, namespace: "layout" })
+  const messages = await getMessages()
+
   return (
     <html lang={locale} className={inter.variable}>
       <head>
@@ -45,9 +52,11 @@ export default async function LocaleLayout({
       </head>
       <body className="antialiased font-sans">
         <a href="#main-content" className="skip-link">
-          {locale === "es" ? "Ir al contenido principal" : "Skip to main content"}
+          {t("skipToContent")}
         </a>
-        {children}
+        <NextIntlClientProvider messages={messages}>
+          {children}
+        </NextIntlClientProvider>
       </body>
     </html>
   )
