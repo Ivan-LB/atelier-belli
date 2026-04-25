@@ -1,0 +1,183 @@
+# Gotchas registry. Each entry: an id, trigger globs/keywords, and a rule.
+# The orchestrator matches triggers against the request + diff; matched rules
+# are surfaced to specialists before they start work.
+
+- id: root-token-scoping
+  triggers:
+    files:
+      - "app/globals.css"
+      - "components/**/*.tsx"
+      - "app/**/*.tsx"
+    keywords:
+      - "--ab-"
+      - "--sup-"
+      - ".ab-root"
+      - ".sup-root"
+      - "data-theme"
+      - "data-app"
+  rule: >-
+    Tokens prefixed --ab-* live ONLY under .ab-root (homepage). Tokens
+    prefixed --sup-* live ONLY under .sup-root (support pages). Neither set
+    may leak across. Global tokens for shadcn (--background, --foreground,
+    --border, etc.) live in :root and .dark. When a new component needs a
+    color, first decide which scope it lives in, then reach for that scope's
+    prefixed vars. Do not redeclare the same token name under both roots —
+    extract to :root instead.
+  source: "CLAUDE.md#4-design-system"
+
+- id: i18n-pattern-canonical
+  triggers:
+    files:
+      - "app/**/*.tsx"
+      - "components/**/*.tsx"
+      - "messages/*.json"
+    keywords:
+      - "useTranslations"
+      - "isSpanish"
+      - "next-intl"
+      - "useParams"
+  rule: >-
+    Canonical i18n for NEW code: useTranslations() from next-intl, keys in
+    messages/en.json and messages/es.json. Legacy inline flags (const
+    isSpanish = locale === 'es') exist in most pages due to an Amplify-
+    triggered migration (see gotcha amplify-client-component-quirk). Do NOT
+    introduce new inline isSpanish code unless a concrete Amplify regression
+    is reproduced first. Migration of existing pages to useTranslations() is
+    opportunistic, not a blocker on unrelated work.
+  source: "CLAUDE.md#5-i18n"
+
+- id: amplify-images-unoptimized
+  triggers:
+    files:
+      - "next.config.mjs"
+      - "app/**/*.tsx"
+      - "components/**/*.tsx"
+    keywords:
+      - "images"
+      - "unoptimized"
+      - "next/image"
+      - "<Image"
+  rule: >-
+    next.config.mjs sets images.unoptimized: true. This is load-bearing for
+    Amplify — the hosted image optimizer does not match Next/Image's sharp-
+    based defaults, so optimized images come back 404 or broken. Do NOT
+    remove this setting, and be cautious about replacing <img> with
+    next/image without first verifying the Amplify build still serves the
+    asset. Visual smoke on /en and /es required for any image-related change.
+  source: "CLAUDE.md#6-amplify-quirks"
+
+- id: amplify-client-component-quirk
+  triggers:
+    files:
+      - "app/[locale]/layout.tsx"
+      - "app/**/*.tsx"
+      - "middleware.ts"
+    keywords:
+      - "NextIntlClientProvider"
+      - "getMessages"
+      - "useTranslations"
+      - "useParams"
+      - "usePathname"
+  rule: >-
+    Historical commit 5719a20 (2025-08-13, "Fix client component issues for
+    Amplify") stripped NextIntlClientProvider + getMessages() from the
+    locale layout, migrated useTranslations() calls to inline isSpanish
+    flags, and switched useParams() to usePathname() for locale extraction —
+    because the async provider setup failed under Amplify's static export
+    model. After the 2026-04 redesign, the homepage was rewritten to use
+    useParams() again and works in dev, but its Amplify behavior is
+    UNVERIFIED. If an Amplify build or runtime regression surfaces around
+    i18n, start by (a) confirming no NextIntlClientProvider was reintroduced
+    upstream of a 'use client' tree, and (b) falling back to usePathname() +
+    inline isSpanish for the failing route.
+  source: "CLAUDE.md#6-amplify-quirks"
+
+- id: dead-deps-removal-dedicated-pr
+  triggers:
+    files:
+      - "package.json"
+      - "pnpm-lock.yaml"
+    keywords:
+      - "three"
+      - "framer-motion"
+      - "react-parallax-tilt"
+      - "@react-three"
+      - "pnpm remove"
+      - "pnpm add"
+  rule: >-
+    After the 2026-04 editorial redesign, five deps (three,
+    @react-three/fiber, @react-three/drei, framer-motion,
+    react-parallax-tilt) and one devDep (@types/three) were uninstalled.
+    That removal is pending its own dedicated commit/PR as of 2026-04-24,
+    not bundled with unrelated work. Before shipping any future dep removal,
+    (1) grep the codebase for every import of the package, (2) run pnpm
+    build to confirm compile, (3) load /en/ and /es/ in pnpm dev as visual
+    smoke, (4) commit with a message naming what was removed and why. Never
+    remove a dep as a drive-by in an unrelated feature PR.
+  source: "CLAUDE.md#7-dead-dependencies"
+
+- id: google-fonts-hybrid-loading
+  triggers:
+    files:
+      - "app/globals.css"
+      - "app/[locale]/layout.tsx"
+    keywords:
+      - "@import"
+      - "fonts.googleapis.com"
+      - "next/font"
+      - "Inter"
+      - "Fraunces"
+      - "EB Garamond"
+      - "Instrument Serif"
+      - "IBM Plex Mono"
+  rule: >-
+    Fonts load two ways on purpose. @import in globals.css (line 1) ships
+    Fraunces, Inter, EB Garamond, Instrument Serif, and IBM Plex Mono for
+    CSS-level font-family references. next/font/google in
+    app/[locale]/layout.tsx ALSO loads Inter as --font-inter (exposed via
+    <html className={inter.variable}>) to benefit from Next's font
+    subsetting and preload for body copy. Coexistence is intentional — do
+    not collapse one into the other without measuring. When adding a new
+    family, prefer next/font for any weight you actually use, and leave
+    @import for display-only CSS references.
+  source: "CLAUDE.md#3-architecture"
+
+- id: pnpm-is-package-manager
+  triggers:
+    files:
+      - "package.json"
+      - "pnpm-lock.yaml"
+    keywords:
+      - "npm install"
+      - "yarn add"
+      - "npm run"
+      - "yarn "
+      - "npx "
+  rule: >-
+    Package manager is pnpm. Never suggest npm install / yarn add /
+    npx <cmd>. Always pnpm install, pnpm add, pnpm remove, pnpm dlx. The
+    lockfile is pnpm-lock.yaml — do not commit package-lock.json or
+    yarn.lock. There is no typecheck script in package.json — use
+    pnpm exec tsc --noEmit directly.
+  source: "CLAUDE.md#2-commands"
+
+- id: client-component-env-vars
+  triggers:
+    files:
+      - "app/**/*.tsx"
+      - "components/**/*.tsx"
+      - ".env*"
+      - "next.config.mjs"
+    keywords:
+      - "use client"
+      - "process.env"
+      - "NEXT_PUBLIC_"
+  rule: >-
+    Only env vars prefixed NEXT_PUBLIC_* are visible in Client Components
+    (files marked 'use client' or transitively imported from one). Any
+    server-only secret — API keys, DB URLs, Amplify tokens — referenced in
+    a Client Component will be inlined into the client bundle and leaked to
+    the browser. When in doubt, move the secret-using code to a Server
+    Component or Route Handler and expose only the non-secret result to
+    the client.
+  source: "CLAUDE.md#6-amplify-quirks"
