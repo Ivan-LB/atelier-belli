@@ -3,7 +3,7 @@
 import Link from "next/link"
 import type { ReactNode } from "react"
 
-export type SupportApp = "fingo" | "savely" | "lorenzana"
+export type SupportApp = "fingo" | "savely"
 
 export type ContactKind =
   | "email"
