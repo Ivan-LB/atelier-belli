@@ -7,6 +7,177 @@
   "layout": {
     "skipToContent": "Ir al contenido principal"
   },
+  "legal": {
+    "back": "Volver al Inicio",
+    "allRightsReserved": "Todos los derechos reservados.",
+    "privacyLabel": "Política de Privacidad",
+    "privacyShortLabel": "Privacidad",
+    "termsLabel": "Términos y Condiciones",
+    "termsShortLabel": "Términos",
+    "privacy": {
+      "title": "Política de Privacidad",
+      "lastUpdated": "14 de junio de 2025",
+      "sections": {
+        "intro": {
+          "heading": "Introducción",
+          "body": "Bienvenido a Atelier Belli. Nos comprometemos a proteger tu privacidad. Esta Política de Privacidad explica cómo recopilamos, usamos, divulgamos y salvaguardamos tu información cuando visitas nuestro sitio web o utilizas nuestras aplicaciones móviles (por ejemplo, Fingo). Por favor, lee esta política de privacidad cuidadosamente. Si no estás de acuerdo con los términos de esta política de privacidad, por favor no accedas al sitio ni a nuestras aplicaciones."
+        },
+        "dataCollected": {
+          "heading": "Información que Recopilamos",
+          "intro": "Podemos recopilar información sobre ti de varias maneras. La información que podemos recopilar en el Sitio o a través de nuestras Aplicaciones incluye:",
+          "personalData": {
+            "label": "Datos Personales:",
+            "body": "Información de identificación personal, como tu nombre, dirección de envío, dirección de correo electrónico y número de teléfono, e información demográfica, como tu edad, sexo, ciudad natal e intereses, que nos proporcionas voluntariamente cuando te registras en el Sitio o nuestras Aplicaciones, o cuando eliges participar en diversas actividades relacionadas con el Sitio y nuestras Aplicaciones, como chat en línea y tablones de mensajes."
+          },
+          "derivedData": {
+            "label": "Datos Derivados:",
+            "body": "Información que nuestros servidores recopilan automáticamente cuando accedes al Sitio o a nuestras Aplicaciones, como tu dirección IP, tu tipo de navegador, tu sistema operativo, tus tiempos de acceso y las páginas que has visto directamente antes y después de acceder al Sitio."
+          },
+          "financialData": {
+            "label": "Datos Financieros:",
+            "body": "Información financiera, como datos relacionados con tu método de pago (por ejemplo, número de tarjeta de crédito válida, marca de la tarjeta, fecha de caducidad) que podemos recopilar cuando compras, ordenas, devuelves, intercambias o solicitas información sobre nuestros servicios desde el Sitio o nuestras Aplicaciones."
+          },
+          "mobileAppData": {
+            "label": "Datos de Aplicaciones Móviles:",
+            "intro": "Si te conectas usando nuestra(s) aplicación(es) móvil(es):",
+            "deviceInfo": {
+              "label": "Información del Dispositivo Móvil.",
+              "body": "Podemos recopilar información del dispositivo (como el ID de tu dispositivo móvil, modelo y fabricante), sistema operativo, información de la versión e dirección IP."
+            },
+            "geolocation": {
+              "label": "Datos de Geolocalización.",
+              "body": "Podemos solicitar acceso o permiso y rastrear información basada en la ubicación de tu dispositivo móvil, ya sea continuamente o mientras estás usando nuestra aplicación móvil, para proporcionar servicios basados en la ubicación."
+            }
+          }
+        },
+        "dataUse": {
+          "heading": "Cómo Usamos Tu Información",
+          "intro": "Tener información precisa sobre ti nos permite proporcionarte una experiencia fluida, eficiente y personalizada. Específicamente, podemos usar la información recopilada sobre ti a través del Sitio o nuestras Aplicaciones para:",
+          "items": [
+            "Crear y gestionar tu cuenta.",
+            "Enviarte por correo electrónico tu cuenta o pedido.",
+            "Permitir la comunicación entre usuarios.",
+            "Cumplir y gestionar compras, pedidos, pagos y otras transacciones relacionadas con el Sitio y nuestras Aplicaciones.",
+            "Mejorar la eficiencia y el funcionamiento del Sitio y nuestras Aplicaciones."
+          ]
+        },
+        "dataSecurity": {
+          "heading": "Seguridad de Tus Datos",
+          "body": "Utilizamos medidas de seguridad administrativas, técnicas y físicas para ayudar a proteger tu información personal. Si bien hemos tomado medidas razonables para asegurar la información personal que nos proporcionas, ten en cuenta que a pesar de nuestros esfuerzos, ninguna medida de seguridad es perfecta o impenetrable."
+        },
+        "privacyRights": {
+          "heading": "Tus Derechos de Privacidad",
+          "body": "Dependiendo de tu ubicación, puedes tener ciertos derechos con respecto a tu información personal. Para más información sobre cómo ejercer estos derechos, por favor visita nuestra página de",
+          "linkLabel": "Opciones de Privacidad del Usuario"
+        },
+        "children": {
+          "heading": "Política para Niños",
+          "body": "No solicitamos conscientemente información ni comercializamos a niños menores de 13 años. Si te das cuenta de cualquier dato que hayamos recopilado de niños menores de 13 años, por favor contáctanos usando la información de contacto proporcionada a continuación."
+        },
+        "changes": {
+          "heading": "Cambios a Esta Política de Privacidad",
+          "body": "Podemos actualizar esta Política de Privacidad de vez en cuando. Te notificaremos cualquier cambio publicando la nueva Política de Privacidad en esta página."
+        },
+        "contact": {
+          "heading": "Contacto",
+          "body": "Si tienes preguntas o comentarios sobre esta Política de Privacidad, por favor contáctanos en:",
+          "name": "Atelier Belli",
+          "email": "[Tu Dirección de Correo Electrónico de Contacto para Privacidad]",
+          "address": "[Tu Dirección Física, si aplica]"
+        }
+      }
+    },
+    "privacyChoices": {
+      "title": "Opciones de Privacidad del Usuario",
+      "intro": "En Atelier Belli, respetamos tu privacidad y te ofrecemos control sobre tu información personal. A continuación, se describen las opciones que tienes con respecto a tus datos:",
+      "sections": {
+        "access": {
+          "heading": "Acceso a Tu Información",
+          "body": "Tienes derecho a solicitar una copia de la información personal que tenemos sobre ti. Puedes hacerlo contactándonos a través de [Método de Contacto para Solicitudes de Acceso, ej. email@atelierbelli.com]."
+        },
+        "correction": {
+          "heading": "Corrección de Tu Información",
+          "body": "Si crees que cualquier información que tenemos sobre ti es incorrecta o está incompleta, por favor contáctanos lo antes posible. Corregiremos cualquier información que se encuentre incorrecta."
+        },
+        "deletion": {
+          "heading": "Eliminación de Tu Información (Derecho al Olvido)",
+          "body": "Puedes solicitar la eliminación de tu información personal de nuestros sistemas en ciertas circunstancias. Por ejemplo, si los datos ya no son necesarios para el propósito para el cual fueron recopilados, o si retiras tu consentimiento (cuando el procesamiento se basa en el consentimiento)."
+        },
+        "objection": {
+          "heading": "Objeción al Procesamiento",
+          "body": "Tienes derecho a objetar el procesamiento de tu información personal en ciertas situaciones, como el marketing directo. Si te opones, dejaremos de procesar tu información personal para esos fines a menos que tengamos motivos legítimos convincentes para el procesamiento que prevalezcan sobre tus intereses, derechos y libertades, o para el establecimiento, ejercicio o defensa de reclamaciones legales."
+        },
+        "restriction": {
+          "heading": "Restricción del Procesamiento",
+          "body": "Puedes solicitar que restrinjamos el procesamiento de tu información personal si: (a) cuestionas la exactitud de los datos; (b) el procesamiento es ilegal pero te opones a la eliminación; (c) ya no necesitamos los datos pero tú los necesitas para reclamaciones legales; o (d) te has opuesto al procesamiento y estamos verificando si nuestros motivos legítimos prevalecen."
+        },
+        "portability": {
+          "heading": "Portabilidad de Datos",
+          "body": "Cuando el procesamiento se basa en tu consentimiento o en un contrato y se realiza por medios automatizados, tienes derecho a recibir la información personal que nos has proporcionado en un formato estructurado, de uso común y legible por máquina, y tienes derecho a transmitir esos datos a otro responsable del tratamiento sin impedimentos por nuestra parte."
+        },
+        "howToExercise": {
+          "heading": "Cómo Ejercer Tus Derechos",
+          "contactIntro": "Para ejercer cualquiera de estos derechos, por favor contáctanos en:",
+          "name": "Atelier Belli - Departamento de Privacidad",
+          "email": "Email: [Tu Email de Contacto para Privacidad, ej. privacy@atelierbelli.com]",
+          "responseNote": "Responderemos a tu solicitud dentro del plazo legalmente requerido. Es posible que necesitemos verificar tu identidad antes de procesar tu solicitud.",
+          "disclaimer": "Ten en cuenta que estos derechos no son absolutos y pueden estar sujetos a ciertas exenciones bajo la ley aplicable."
+        }
+      }
+    },
+    "terms": {
+      "title": "Términos y Condiciones",
+      "lastUpdated": "15 de junio de 2025",
+      "sections": {
+        "acceptance": {
+          "heading": "1. Aceptación de los Términos",
+          "body": "Al acceder y utilizar el sitio web de Atelier Belli (el \"Sitio\") y cualquiera de sus aplicaciones móviles o servicios (colectivamente, los \"Servicios\"), usted acepta y se compromete a cumplir con estos Términos y Condiciones (\"Términos\"). Si no está de acuerdo con estos Términos, no debe acceder ni utilizar nuestros Servicios."
+        },
+        "intellectualProperty": {
+          "heading": "2. Derechos de Propiedad Intelectual",
+          "body": "A menos que se indique lo contrario, el Sitio y todos los materiales de origen, incluyendo código fuente, bases de datos, funcionalidad, software, diseños de sitios web, audio, video, texto, fotografías y gráficos (colectivamente, el \"Contenido\") y las marcas comerciales, marcas de servicio y logotipos contenidos en él (las \"Marcas\") son de nuestra propiedad o están bajo nuestro control o licencia, y están protegidos por las leyes de derechos de autor y marcas registradas."
+        },
+        "userRepresentations": {
+          "heading": "3. Representaciones del Usuario",
+          "intro": "Al utilizar los Servicios, usted representa y garantiza que:",
+          "items": [
+            "Toda la información de registro que envíe será verdadera, precisa, actual y completa.",
+            "Mantendrá la exactitud de dicha información y la actualizará rápidamente según sea necesario.",
+            "Tiene la capacidad legal y acepta cumplir con estos Términos.",
+            "No utilizará los Servicios para ningún propósito ilegal o no autorizado.",
+            "Su uso de los Servicios no violará ninguna ley o regulación aplicable."
+          ]
+        },
+        "prohibitedActivities": {
+          "heading": "4. Actividades Prohibidas",
+          "body": "No puede acceder ni utilizar el Sitio para ningún otro propósito que no sea aquel para el que ponemos el Sitio a disposición. El Sitio no puede ser utilizado en conexión con ningún esfuerzo comercial excepto aquellos que sean específicamente respaldados o aprobados por nosotros."
+        },
+        "termination": {
+          "heading": "5. Terminación",
+          "body": "Nos reservamos el derecho, a nuestra entera discreción, de denegar el acceso y uso de los Servicios (incluyendo el bloqueo de ciertas direcciones IP) a cualquier persona por cualquier motivo o sin motivo alguno, incluyendo, sin limitación, el incumplimiento de cualquier representación, garantía o pacto contenido en estos Términos o de cualquier ley o regulación aplicable."
+        },
+        "governingLaw": {
+          "heading": "6. Ley Aplicable",
+          "body": "Estos Términos se regirán e interpretarán de acuerdo con las leyes de [Tu Jurisdicción, ej. el Estado de..., el País de...], sin tener en cuenta sus principios de conflicto de leyes."
+        },
+        "limitationOfLiability": {
+          "heading": "7. Limitación de Responsabilidad",
+          "body": "EN NINGÚN CASO NOSOTROS O NUESTROS DIRECTORES, EMPLEADOS O AGENTES SEREMOS RESPONSABLES ANTE USTED O CUALQUIER TERCERO POR CUALQUIER DAÑO DIRECTO, INDIRECTO, CONSECUENTE, EJEMPLAR, INCIDENTAL, ESPECIAL O PUNITIVO, INCLUYENDO LA PÉRDIDA DE BENEFICIOS, PÉRDIDA DE INGRESOS, PÉRDIDA DE DATOS U OTROS DAÑOS DERIVADOS DE SU USO DE LOS SERVICIOS, INCLUSO SI HEMOS SIDO ADVERTIDOS DE LA POSIBILIDAD DE TALES DAÑOS."
+        },
+        "changes": {
+          "heading": "8. Cambios a los Términos",
+          "body": "Nos reservamos el derecho de cambiar, modificar o revisar estos Términos en cualquier momento y por cualquier motivo a nuestra entera discreción. Cualquier cambio o modificación será efectivo inmediatamente después de la publicación de los Términos actualizados en el Sitio."
+        },
+        "contact": {
+          "heading": "9. Contacto",
+          "body": "Para resolver una queja sobre los Servicios o para recibir más información sobre el uso de los Servicios, por favor contáctenos en:",
+          "name": "Atelier Belli",
+          "email": "contacto@atelierbelli.com",
+          "address": "[Tu Dirección Física, si aplica]"
+        }
+      }
+    }
+  },
   "home": {
     "nav": {
       "home": "Inicio",
