@@ -1990,25 +1990,6 @@
   --sup-hero-tex: radial-gradient(circle at 70% 15%, #4e9b7222, transparent 55%);
 }
 
-.sup-root[data-app="lorenzana"] {
-  --sup-bg: #17110b;
-  --sup-bg-2: #211910;
-  --sup-fg: #eadfc3;
-  --sup-fg-2: #f5ecd4;
-  --sup-muted: #a59074;
-  --sup-muted-2: #7a6851;
-  --sup-line: #ffffff10;
-  --sup-line-2: #ffffff08;
-  --sup-accent: #c9a766;
-  --sup-accent-2: #e5c185;
-  --sup-serif-display: "EB Garamond", serif;
-  --sup-card: #231a10;
-  --sup-card-2: #2a2015;
-  --sup-hero-tex: radial-gradient(circle at 50% 0%, #c9a76620, transparent 60%);
-  --sup-shadow-sm: 0 1px 0 #ffffff06, 0 2px 8px -4px #00000066;
-  --sup-shadow-md: 0 10px 32px -14px #00000088, 0 2px 10px -4px #00000044;
-}
-
 .sup-root em {
   font-style: italic;
   font-family: var(--sup-serif);
@@ -2100,11 +2081,6 @@
   font-weight: 500;
   line-height: 1;
 }
-.sup-root[data-app="lorenzana"] .sup-nav-app .sup-crest {
-  background: var(--sup-accent);
-  color: #1a1305;
-}
-
 /* Hero */
 .sup-hero {
   padding: clamp(72px, 11vw, 140px) 0 clamp(48px, 7vw, 88px);
@@ -2476,10 +2452,6 @@ button.sup-card:hover .sup-arr {
   letter-spacing: 0.04em;
   transition: transform 0.2s ease, background 0.2s ease;
 }
-.sup-root[data-app="lorenzana"] .sup-btn-pill {
-  background: var(--sup-accent);
-  color: #1a1305;
-}
 .sup-btn-pill:hover {
   transform: translateY(-1px);
 }
@@ -2488,9 +2460,6 @@ button.sup-card:hover .sup-arr {
   height: 6px;
   border-radius: 999px;
   background: var(--sup-accent);
-}
-.sup-root[data-app="lorenzana"] .sup-btn-pill .sup-pill-dot {
-  background: #1a1305;
 }
 
 /* Foot */
