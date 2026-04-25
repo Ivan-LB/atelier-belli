@@ -1,8 +1,15 @@
 {
   "notFound": {
-    "title": "Página No Encontrada",
+    "eye": "Perdido · Error 404",
+    "titlePre": "Página no ",
+    "titleIt": "encontrada.",
     "description": "Lo sentimos, la página que estás buscando no existe o ha sido movida.",
-    "backHome": "Volver al Inicio"
+    "backHome": "Volver al Inicio",
+    "themeToggleLight": "Claro",
+    "themeToggleDark": "Oscuro",
+    "themeToggleAria": "Cambiar tema",
+    "localeSwitchAria": "Switch to English",
+    "footerMeta": "Software · Oficio digital"
   },
   "layout": {
     "skipToContent": "Ir al contenido principal"
