@@ -1,58 +1,18 @@
-"use client"
-
-import { useEffect, useState } from "react"
 import Link from "next/link"
-import { useParams, useRouter } from "next/navigation"
-import { useTranslations } from "next-intl"
+import { getLocale, getTranslations } from "next-intl/server"
+import { NotFoundControls } from "./_not-found-controls"
 
-type Theme = "light" | "dark"
-type Lang = "en" | "es"
+const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem("ab_theme");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}var r=document.currentScript&&document.currentScript.parentElement;if(r&&r.classList.contains("ab-root")){r.setAttribute("data-theme",t);}}catch(e){}})();`
 
-const LANGUAGE_COOKIE = "preferred-language"
-
-export default function NotFound() {
-  const params = useParams()
-  const router = useRouter()
-  const locale = (((params?.locale as string) || "en") === "es" ? "es" : "en") as Lang
-  const t = useTranslations("notFound")
-
-  const [theme, setTheme] = useState<Theme>("light")
-  const [hydrated, setHydrated] = useState(false)
-
-  useEffect(() => {
-    let initial: Theme
-    try {
-      const saved = localStorage.getItem("ab_theme") as Theme | null
-      if (saved === "light" || saved === "dark") initial = saved
-      else initial = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
-    } catch {
-      initial = "light"
-    }
-    setTheme(initial)
-    setHydrated(true)
-  }, [])
-
-  useEffect(() => {
-    if (!hydrated) return
-    try {
-      localStorage.setItem("ab_theme", theme)
-    } catch {}
-  }, [theme, hydrated])
-
-  const toggleTheme = () => setTheme((p) => (p === "dark" ? "light" : "dark"))
-
-  const switchLocale = () => {
-    const target: Lang = locale === "es" ? "en" : "es"
-    const expires = new Date()
-    expires.setFullYear(expires.getFullYear() + 1)
-    document.cookie = `${LANGUAGE_COOKIE}=${target}; expires=${expires.toUTCString()}; path=/`
-    router.push(`/${target}`)
-  }
-
-  const themeLabel = theme === "dark" ? t("themeToggleLight") : t("themeToggleDark")
+export default async function NotFound() {
+  const locale = (await getLocale()) === "es" ? "es" : "en"
+  const t = await getTranslations("notFound")
+  const otherLocale = locale === "es" ? "en" : "es"
+  const year = new Date().getFullYear()
 
   return (
-    <div className="ab-root ab-nf-root" data-theme={theme}>
+    <div className="ab-root ab-nf-root" data-theme="light">
+      <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       <nav className="ab-nf-nav" aria-label="Atelier Belli">
         <Link href={`/${locale}`} className="ab-nf-mark" aria-label="Atelier Belli — Home">
           <svg
@@ -76,35 +36,14 @@ export default function NotFound() {
           </span>
         </Link>
 
-        <div className="ab-nf-controls" role="group" aria-label="Site controls">
-          <button
-            type="button"
-            className={`ab-nf-ctrl${locale === "en" ? " is-active" : ""}`}
-            aria-pressed={locale === "en"}
-            aria-label={t("localeSwitchAria")}
-            onClick={switchLocale}
-          >
-            EN
-          </button>
-          <button
-            type="button"
-            className={`ab-nf-ctrl${locale === "es" ? " is-active" : ""}`}
-            aria-pressed={locale === "es"}
-            aria-label={t("localeSwitchAria")}
-            onClick={switchLocale}
-          >
-            ES
-          </button>
-          <span className="ab-nf-ctrl-sep" aria-hidden="true" />
-          <button
-            type="button"
-            className="ab-nf-ctrl"
-            onClick={toggleTheme}
-            aria-label={t("themeToggleAria")}
-          >
-            {themeLabel}
-          </button>
-        </div>
+        <NotFoundControls
+          locale={locale}
+          otherLocale={otherLocale}
+          themeLightLabel={t("themeToggleLight")}
+          themeDarkLabel={t("themeToggleDark")}
+          themeAriaLabel={t("themeToggleAria")}
+          localeAriaLabel={t("localeSwitchAria")}
+        />
       </nav>
 
       <main className="ab-nf-main">
@@ -139,7 +78,7 @@ export default function NotFound() {
       </main>
 
       <footer className="ab-nf-foot">
-        <span className="ab-nf-copy">© {new Date().getFullYear()} Atelier Belli</span>
+        <span className="ab-nf-copy">© {year} Atelier Belli</span>
         <span className="ab-nf-meta">
           <em>Tijuana</em> — {t("footerMeta")}
         </span>
