@@ -1,88 +1,106 @@
 "use client"
 
-import SimplePageLayout from "@/components/simple-page-layout"
+import Link from "next/link"
+import { useParams } from "next/navigation"
+import { useTranslations } from "next-intl"
 
 export default function TermsAndConditionsPage() {
-  const lastUpdated = "15 de junio de 2025"
+  const params = useParams()
+  const locale = (params?.locale as string) === "es" ? "es" : "en"
+  const t = useTranslations("legal")
+
+  const userRepItems = t.raw("terms.sections.userRepresentations.items") as string[]
 
   return (
-    <SimplePageLayout title="Términos y Condiciones">
-      <p className="text-sm text-gray-400">Última actualización: {lastUpdated}</p>
+    <div className="ab-root" data-theme="light">
+      <header className="ab-legal-nav">
+        <div className="ab-legal-nav-inner ab-wrap">
+          <Link href={`/${locale}`} className="ab-legal-back">
+            ← {t("back")}
+          </Link>
+        </div>
+      </header>
 
-      <h2>1. Aceptación de los Términos</h2>
-      <p>
-        Al acceder y utilizar el sitio web de Atelier Belli (el "Sitio") y cualquiera de sus aplicaciones móviles o
-        servicios (colectivamente, los "Servicios"), usted acepta y se compromete a cumplir con estos Términos y
-        Condiciones ("Términos"). Si no está de acuerdo con estos Términos, no debe acceder ni utilizar nuestros
-        Servicios.
-      </p>
+      <main className="ab-legal-main">
+        <div className="ab-wrap ab-legal-content">
+          <h1 className="ab-legal-title ab-serif">{t("terms.title")}</h1>
+          <p className="ab-legal-meta">{t("terms.lastUpdated")}</p>
 
-      <h2>2. Derechos de Propiedad Intelectual</h2>
-      <p>
-        A menos que se indique lo contrario, el Sitio y todos los materiales de origen, incluyendo código fuente, bases
-        de datos, funcionalidad, software, diseños de sitios web, audio, video, texto, fotografías y gráficos
-        (colectivamente, el "Contenido") y las marcas comerciales, marcas de servicio y logotipos contenidos en él (las
-        "Marcas") son de nuestra propiedad o están bajo nuestro control o licencia, y están protegidos por las leyes de
-        derechos de autor y marcas registradas.
-      </p>
+          <article className="ab-prose">
+            <section>
+              <h2>{t("terms.sections.acceptance.heading")}</h2>
+              <p>{t("terms.sections.acceptance.body")}</p>
+            </section>
 
-      <h2>3. Representaciones del Usuario</h2>
-      <p>Al utilizar los Servicios, usted representa y garantiza que:</p>
-      <ul>
-        <li>Toda la información de registro que envíe será verdadera, precisa, actual y completa.</li>
-        <li>Mantendrá la exactitud de dicha información y la actualizará rápidamente según sea necesario.</li>
-        <li>Tiene la capacidad legal y acepta cumplir con estos Términos.</li>
-        <li>No utilizará los Servicios para ningún propósito ilegal o no autorizado.</li>
-        <li>Su uso de los Servicios no violará ninguna ley o regulación aplicable.</li>
-      </ul>
+            <section>
+              <h2>{t("terms.sections.intellectualProperty.heading")}</h2>
+              <p>{t("terms.sections.intellectualProperty.body")}</p>
+            </section>
 
-      <h2>4. Actividades Prohibidas</h2>
-      <p>
-        No puede acceder ni utilizar el Sitio para ningún otro propósito que no sea aquel para el que ponemos el Sitio a
-        disposición. El Sitio no puede ser utilizado en conexión con ningún esfuerzo comercial excepto aquellos que sean
-        específicamente respaldados o aprobados por nosotros.
-      </p>
+            <section>
+              <h2>{t("terms.sections.userRepresentations.heading")}</h2>
+              <p>{t("terms.sections.userRepresentations.intro")}</p>
+              <ul>
+                {userRepItems.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
+              </ul>
+            </section>
 
-      <h2>5. Terminación</h2>
-      <p>
-        Nos reservamos el derecho, a nuestra entera discreción, de denegar el acceso y uso de los Servicios (incluyendo
-        el bloqueo de ciertas direcciones IP) a cualquier persona por cualquier motivo o sin motivo alguno, incluyendo,
-        sin limitación, el incumplimiento de cualquier representación, garantía o pacto contenido en estos Términos o de
-        cualquier ley o regulación aplicable.
-      </p>
+            <section>
+              <h2>{t("terms.sections.prohibitedActivities.heading")}</h2>
+              <p>{t("terms.sections.prohibitedActivities.body")}</p>
+            </section>
 
-      <h2>6. Ley Aplicable</h2>
-      <p>
-        Estos Términos se regirán e interpretarán de acuerdo con las leyes de [Tu Jurisdicción, ej. el Estado de..., el
-        País de...], sin tener en cuenta sus principios de conflicto de leyes.
-      </p>
+            <section>
+              <h2>{t("terms.sections.termination.heading")}</h2>
+              <p>{t("terms.sections.termination.body")}</p>
+            </section>
 
-      <h2>7. Limitación de Responsabilidad</h2>
-      <p>
-        EN NINGÚN CASO NOSOTROS O NUESTROS DIRECTORES, EMPLEADOS O AGENTES SEREMOS RESPONSABLES ANTE USTED O CUALQUIER
-        TERCERO POR CUALQUIER DAÑO DIRECTO, INDIRECTO, CONSECUENTE, EJEMPLAR, INCIDENTAL, ESPECIAL O PUNITIVO,
-        INCLUYENDO LA PÉRDIDA DE BENEFICIOS, PÉRDIDA DE INGRESOS, PÉRDIDA DE DATOS U OTROS DAÑOS DERIVADOS DE SU USO DE
-        LOS SERVICIOS, INCLUSO SI HEMOS SIDO ADVERTIDOS DE LA POSIBILIDAD DE TALES DAÑOS.
-      </p>
+            <section>
+              <h2>{t("terms.sections.governingLaw.heading")}</h2>
+              <p>{t("terms.sections.governingLaw.body")}</p>
+            </section>
 
-      <h2>8. Cambios a los Términos</h2>
-      <p>
-        Nos reservamos el derecho de cambiar, modificar o revisar estos Términos en cualquier momento y por cualquier
-        motivo a nuestra entera discreción. Cualquier cambio o modificación será efectivo inmediatamente después de la
-        publicación de los Términos actualizados en el Sitio.
-      </p>
+            <section>
+              <h2>{t("terms.sections.limitationOfLiability.heading")}</h2>
+              <p>{t("terms.sections.limitationOfLiability.body")}</p>
+            </section>
 
-      <h2>9. Contacto</h2>
-      <p>
-        Para resolver una queja sobre los Servicios o para recibir más información sobre el uso de los Servicios, por
-        favor contáctenos en:
-        <br />
-        Atelier Belli
-        <br />
-        <a href="mailto:contacto@atelierbelli.com">contacto@atelierbelli.com</a>
-        <br />
-        [Tu Dirección Física, si aplica]
-      </p>
-    </SimplePageLayout>
+            <section>
+              <h2>{t("terms.sections.changes.heading")}</h2>
+              <p>{t("terms.sections.changes.body")}</p>
+            </section>
+
+            <section>
+              <h2>{t("terms.sections.contact.heading")}</h2>
+              <p>{t("terms.sections.contact.body")}</p>
+              <p>
+                {t("terms.sections.contact.name")}
+                <br />
+                <a href={`mailto:${t("terms.sections.contact.email")}`} className="ab-legal-link">
+                  {t("terms.sections.contact.email")}
+                </a>
+                <br />
+                {t("terms.sections.contact.address")}
+              </p>
+            </section>
+          </article>
+        </div>
+      </main>
+
+      <footer className="ab-legal-foot">
+        <div className="ab-wrap ab-legal-foot-inner">
+          <span>
+            © <span suppressHydrationWarning>{new Date().getFullYear()}</span> Atelier Belli —{" "}
+            {t("allRightsReserved")}
+          </span>
+          <nav className="ab-legal-foot-nav">
+            <Link href={`/${locale}/privacy`}>{t("privacyShortLabel")}</Link>
+            <Link href={`/${locale}/terms`}>{t("termsShortLabel")}</Link>
+          </nav>
+        </div>
+      </footer>
+    </div>
   )
 }
