@@ -186,6 +186,104 @@
     }
   },
   "support": {
+    "savely": {
+      "name": "Savely",
+      "crest": "S",
+      "navLabel": "Savely · Support",
+      "footMeta": "Savely — Support desk · 2025",
+
+      "hero": {
+        "eye": "Support · v1.8",
+        "titleHtml": "A calm <em>answer</em> to every question.",
+        "lede": "Savely is a quiet place for your money. If something looks off — a missing transaction, a chart that won't load, a bank that dropped — tell us. We'll sort it out, patiently."
+      },
+
+      "contact": {
+        "titleHtml": "Reach <em>us.</em>",
+        "sub": "Questions about your account, a bank connection, or something simpler. All roads lead to the same desk.",
+        "cards": {
+          "email": {
+            "label": "Email",
+            "valueHtml": "ivanlorenzana@outlook.com",
+            "hint": "Mon–Fri · Replies within 24h.",
+            "href": "mailto:ivanlorenzana@outlook.com"
+          },
+          "bank": {
+            "label": "Bank connection",
+            "valueHtml": "Can't <em>link</em> a bank?",
+            "hint": "Most issues are fixed in under an hour.",
+            "href": "mailto:ivanlorenzana@outlook.com?subject=Bank%20connection%20help"
+          },
+          "security": {
+            "label": "Security concern",
+            "valueHtml": "See something <em>odd?</em>",
+            "hint": "Reported within 2 hours. 24/7.",
+            "href": "mailto:ivanlorenzana@outlook.com"
+          },
+          "docs": {
+            "label": "Help centre",
+            "valueHtml": "Guides &amp; articles",
+            "hint": "Setup, budgets, categories, exports.",
+            "href": "#"
+          }
+        }
+      },
+
+      "faq": {
+        "titleHtml": "Common <em>questions.</em>",
+        "sub": "If yours isn't here, write in. We answer each one by hand.",
+        "items": [
+          {
+            "q": "Is my bank data safe with Savely?",
+            "aHtml": "Yes. Savely uses read-only bank connections via regulated aggregators. We never see or store your banking credentials. All data at rest is encrypted, and we never sell or share information with third parties."
+          },
+          {
+            "q": "Why can't I connect my bank?",
+            "aHtml": "Most often it's a temporary outage at the aggregator. Try again in ~30 minutes. If it persists, <a href='mailto:ivanlorenzana@outlook.com'>email us</a> with your bank name and country — we'll chase it down."
+          },
+          {
+            "q": "Can I export my data?",
+            "aHtml": "Yes. <em>Settings → Data → Export</em>. You'll get a CSV of all your transactions, categories, and budgets. Nothing is kept hostage."
+          },
+          {
+            "q": "How do budgets roll over at month end?",
+            "aHtml": "Unspent amounts either carry to next month or reset — your call. Set it per budget in <em>Budget → Options → Rollover</em>. The default is reset."
+          },
+          {
+            "q": "Does Savely work outside Europe?",
+            "aHtml": "Partial. EU, UK, and US banks work well. Canada and Australia are in public beta. Other regions — get in touch and we'll tell you honestly whether we can connect."
+          }
+        ]
+      },
+
+      "status": {
+        "titleHtml": "Current <em>state.</em>",
+        "sub": "Version, platform, response times, and system status.",
+        "rows": [
+          { "k": "Version", "v": "1.8.0" },
+          { "k": "Platform", "v": "iOS 16+" },
+          { "k": "Reply time", "v": "~ 14 hours" },
+          { "k": "Systems", "v": "All good", "ok": true }
+        ]
+      },
+
+      "cta": {
+        "titleHtml": "Still <em>stuck?</em>",
+        "sub": "Write to us directly. A small team, real replies, patient answers.",
+        "label": "ivanlorenzana@outlook.com",
+        "href": "mailto:ivanlorenzana@outlook.com"
+      },
+
+      "sectionLabels": {
+        "contact": "01 — Contact",
+        "faq": "02 — Frequent questions",
+        "status": "03 — Status"
+      },
+
+      "privacyLabel": "Privacy",
+      "termsLabel": "Terms",
+      "backLabel": "Atelier Belli"
+    },
     "fingo": {
       "name": "Fingo",
       "crest": "F",
