@@ -186,6 +186,104 @@
     }
   },
   "support": {
+    "savely": {
+      "name": "Savely",
+      "crest": "S",
+      "navLabel": "Savely · Soporte",
+      "footMeta": "Savely — Mesa de soporte · 2025",
+
+      "hero": {
+        "eye": "Soporte · v1.8",
+        "titleHtml": "Una respuesta <em>serena</em> a cada pregunta.",
+        "lede": "Savely es un lugar tranquilo para tu dinero. Si algo no cuadra — una transacción faltante, una gráfica que no carga, un banco que se desconectó — dinos. Lo resolvemos, con paciencia."
+      },
+
+      "contact": {
+        "titleHtml": "Háblanos.",
+        "sub": "Preguntas sobre tu cuenta, una conexión bancaria, o algo más simple. Todos los caminos llegan al mismo escritorio.",
+        "cards": {
+          "email": {
+            "label": "Correo",
+            "valueHtml": "ivanlorenzana@outlook.com",
+            "hint": "Lun–Vie · Respondemos en 24h.",
+            "href": "mailto:ivanlorenzana@outlook.com"
+          },
+          "bank": {
+            "label": "Conexión bancaria",
+            "valueHtml": "¿No puedes <em>vincular</em> un banco?",
+            "hint": "La mayoría se resuelve en menos de una hora.",
+            "href": "mailto:ivanlorenzana@outlook.com?subject=Bank%20connection%20help"
+          },
+          "security": {
+            "label": "Asunto de seguridad",
+            "valueHtml": "¿Viste algo <em>extraño?</em>",
+            "hint": "Reportado en menos de 2 horas. 24/7.",
+            "href": "mailto:ivanlorenzana@outlook.com"
+          },
+          "docs": {
+            "label": "Centro de ayuda",
+            "valueHtml": "Guías y artículos",
+            "hint": "Configuración, presupuestos, categorías, exportaciones.",
+            "href": "#"
+          }
+        }
+      },
+
+      "faq": {
+        "titleHtml": "Preguntas <em>comunes.</em>",
+        "sub": "Si la tuya no está, escríbenos. Respondemos cada una a mano.",
+        "items": [
+          {
+            "q": "¿Están seguros mis datos bancarios con Savely?",
+            "aHtml": "Sí. Savely usa conexiones de solo lectura vía agregadores regulados. Nunca vemos ni almacenamos tus credenciales bancarias. Todos los datos en reposo están cifrados, y nunca vendemos ni compartimos información con terceros."
+          },
+          {
+            "q": "¿Por qué no puedo conectar mi banco?",
+            "aHtml": "La mayoría de las veces es una caída temporal del agregador. Intenta de nuevo en ~30 minutos. Si persiste, <a href='mailto:ivanlorenzana@outlook.com'>escríbenos</a> con el nombre de tu banco y país — lo perseguimos."
+          },
+          {
+            "q": "¿Puedo exportar mis datos?",
+            "aHtml": "Sí. <em>Ajustes → Datos → Exportar</em>. Obtendrás un CSV con todas tus transacciones, categorías y presupuestos. Nada queda de rehén."
+          },
+          {
+            "q": "¿Cómo funcionan los presupuestos al fin de mes?",
+            "aHtml": "Los montos sin usar pueden trasladarse al siguiente mes o resetearse — tú decides. Configúralo por presupuesto en <em>Presupuesto → Opciones → Rollover</em>. El default es resetear."
+          },
+          {
+            "q": "¿Funciona Savely fuera de Europa?",
+            "aHtml": "Parcialmente. Bancos de la UE, Reino Unido y EE.UU. funcionan bien. Canadá y Australia están en beta. Otras regiones — escríbenos y te decimos honestamente si podemos conectar."
+          }
+        ]
+      },
+
+      "status": {
+        "titleHtml": "Estado <em>actual.</em>",
+        "sub": "Versión, plataforma, tiempos de respuesta y estado de sistemas.",
+        "rows": [
+          { "k": "Versión", "v": "1.8.0" },
+          { "k": "Plataforma", "v": "iOS 16+" },
+          { "k": "Respuesta", "v": "~ 14 horas" },
+          { "k": "Sistemas", "v": "Todo bien", "ok": true }
+        ]
+      },
+
+      "cta": {
+        "titleHtml": "¿Sigues <em>atorado?</em>",
+        "sub": "Escríbenos directo. Un equipo pequeño, respuestas reales, con paciencia.",
+        "label": "ivanlorenzana@outlook.com",
+        "href": "mailto:ivanlorenzana@outlook.com"
+      },
+
+      "sectionLabels": {
+        "contact": "01 — Contacto",
+        "faq": "02 — Preguntas frecuentes",
+        "status": "03 — Estado"
+      },
+
+      "privacyLabel": "Privacidad",
+      "termsLabel": "Términos",
+      "backLabel": "Atelier Belli"
+    },
     "fingo": {
       "name": "Fingo",
       "crest": "F",
