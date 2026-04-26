@@ -185,6 +185,106 @@
       }
     }
   },
+  "support": {
+    "fingo": {
+      "name": "Fingo",
+      "crest": "F",
+      "navLabel": "Fingo · Support",
+      "footMeta": "Fingo — Support desk · 2025",
+
+      "hero": {
+        "eye": "Support · v2.1.0",
+        "titleHtml": "How can we <em>help?</em>",
+        "lede": "Fingo is a tiny app for deciding who pays, who goes first, who picks the music. If something doesn't work the way it should — write to us. A real person reads every message."
+      },
+
+      "contact": {
+        "titleHtml": "Get in <em>touch.</em>",
+        "sub": "Choose what suits you best. Everything routes to the same desk.",
+        "cards": {
+          "email": {
+            "label": "Email",
+            "valueHtml": "ivanlorenzana@outlook.com",
+            "hint": "Replies within 24h, usually sooner.",
+            "href": "mailto:ivanlorenzana@outlook.com"
+          },
+          "bug": {
+            "label": "Report a bug",
+            "valueHtml": "<em>Something</em> broken?",
+            "hint": "A short note + screenshot goes a long way.",
+            "href": "mailto:ivanlorenzana@outlook.com?subject=Fingo%20bug%20report"
+          },
+          "feature": {
+            "label": "Request a feature",
+            "valueHtml": "Imagine <em>better.</em>",
+            "hint": "We read all of them. Some ship.",
+            "href": "mailto:ivanlorenzana@outlook.com?subject=Fingo%20wishlist"
+          },
+          "docs": {
+            "label": "Help centre",
+            "valueHtml": "Guides &amp; tips",
+            "hint": "Quick guides for the most common flows.",
+            "href": "#"
+          }
+        }
+      },
+
+      "faq": {
+        "titleHtml": "Questions <em>we hear.</em>",
+        "sub": "The ones that come up most. If yours isn't here, just write.",
+        "items": [
+          {
+            "q": "Does Fingo share my contacts or data?",
+            "aHtml": "No. Fingo doesn't ship your contacts, choices, or results anywhere. Everything lives on your device; there's no account and no server to leak. If you delete the app, nothing stays behind."
+          },
+          {
+            "q": "Why do I need to enable haptics?",
+            "aHtml": "Because half of Fingo's joy is the click. You can turn them off in <em>Settings → Feedback</em>, but we'd suggest trying a spin with them on at least once."
+          },
+          {
+            "q": "Can I use Fingo without an internet connection?",
+            "aHtml": "Yes — completely. Fingo is fully offline. The only time the internet is touched is if you share a result as a card via Messages or Mail."
+          },
+          {
+            "q": "Where do I restore a purchase?",
+            "aHtml": "Settings → About → Restore Purchases. You'll need to be signed into the same Apple ID you used when buying. If it still doesn't work, <a href='mailto:ivanlorenzana@outlook.com'>email us</a>."
+          },
+          {
+            "q": "Is there an Android version?",
+            "aHtml": "Not yet. Fingo is SwiftUI-native and we want to keep the animation and haptic quality at the standard it is. An Android port is on the table but not promised."
+          }
+        ]
+      },
+
+      "status": {
+        "titleHtml": "Everything <em>running.</em>",
+        "sub": "Current version, platform, and how quickly we get back.",
+        "rows": [
+          { "k": "Version", "v": "2.1.0" },
+          { "k": "Platform", "v": "iOS 26+" },
+          { "k": "Reply time", "v": "~ 18 hours" },
+          { "k": "Systems", "v": "All good", "ok": true }
+        ]
+      },
+
+      "cta": {
+        "titleHtml": "Still <em>stuck?</em>",
+        "sub": "Write to us directly.",
+        "label": "ivanlorenzana@outlook.com",
+        "href": "mailto:ivanlorenzana@outlook.com"
+      },
+
+      "sectionLabels": {
+        "contact": "01 — Contact",
+        "faq": "02 — Frequent questions",
+        "status": "03 — Status"
+      },
+
+      "privacyLabel": "Privacy",
+      "termsLabel": "Terms",
+      "backLabel": "Atelier Belli"
+    }
+  },
   "home": {
     "nav": {
       "home": "Home",
