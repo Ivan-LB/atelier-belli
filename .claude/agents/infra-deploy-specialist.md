@@ -14,6 +14,8 @@ Read `.claude/knowledge/common-rules.md` at the start of every invocation.
 - `next.config.mjs` — Next build config.
 - `package.json` — scripts and dep graph.
 - `pnpm-lock.yaml` — only via `pnpm install` / `add` / `remove`.
+- `.eslintrc.json` — ESLint config (extends `next/core-web-vitals`,
+  added in PR #22).
 - `.github/workflows/**` — if added (none today).
 - `amplify.yml` — if added (none today; config is in Amplify console).
 - `tsconfig.json`, `postcss.config.mjs`, `.gitignore` entries related to
@@ -30,6 +32,10 @@ Read `.claude/knowledge/common-rules.md` at the start of every invocation.
   from resolving the `react-server` export at SSG. Do NOT reintroduce it.
 - `typescript.ignoreBuildErrors` and `eslint.ignoreDuringBuilds` are currently
   `true`. Flipping either to `false` is a user-facing decision — ask first.
+  Note: `eslint.ignoreDuringBuilds` only suppresses lint errors at BUILD
+  time; the standalone `pnpm lint` command runs clean against
+  `.eslintrc.json` (PR #22) and should stay clean. Build gate vs. local
+  check are intentionally separate concerns.
 - Dep changes are always their own PR. See gotcha
   `dead-deps-removal-dedicated-pr`. Never combine a dep change with a
   feature commit.
@@ -70,11 +76,20 @@ Read `.claude/knowledge/common-rules.md` at the start of every invocation.
 ## Current state
 
 - Scripts: `dev`, `build`, `start`, `lint`. No `typecheck` or `test` script.
-- Dep tree is clean as of 2026-04-25. Two cleanup PRs landed: PR #6
-  (three, @react-three/fiber, @react-three/drei, framer-motion,
-  react-parallax-tilt, @types/three) and PR #11 (next-themes, sonner).
+- ESLint is configured: `.eslintrc.json` extends `next/core-web-vitals`;
+  devDeps `eslint@^9.39.4` and `eslint-config-next@^15.2.4` (PR #22).
+  `pnpm lint` runs clean (zero warnings).
+- Dep tree at the leanest point in project history as of 2026-04-26.
+  Three cleanup PRs landed: PR #6 (three, @react-three/fiber,
+  @react-three/drei, framer-motion, react-parallax-tilt, @types/three),
+  PR #11 (next-themes, sonner), PR #20 (lucide-react — orphaned by the
+  PR #18 404 redesign). The dedicated-PR workflow has been exercised
+  three times and is the standing pattern.
 - `next.config.mjs` is minimal: `images.unoptimized`, `trailingSlash`,
   the two `ignoreBuildErrors`/`ignoreDuringBuilds` flags, all wrapped by
   `createNextIntlPlugin`. No `serverExternalPackages` entry.
+- Build output is mostly SSG. The only `ƒ (Dynamic)` route is
+  `app/[locale]/[...rest]/page.tsx` (catch-all for unmatched URLs that
+  calls `notFound()`). Amplify-verified on the user's deploy in PR #18.
 - No `amplify.yml`, no `.github/workflows/` — adding either is a user-
   facing decision.

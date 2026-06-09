@@ -23,17 +23,29 @@ Read `.claude/knowledge/common-rules.md` at the start of every invocation.
 - `.ab-root` and `.sup-root` token sets do NOT cross. See gotcha
   `root-token-scoping`. When adding a color/spacing/type variable, pick the
   correct root or extract to `:root` if it's global. Note that legal-page
-  chrome (`.ab-legal-*`) and `.ab-prose` are scoped UNDER `.ab-root` —
-  same token vocabulary as the homepage.
-- The `i18n-pattern-canonical` migration is COMPLETE. Every locale page
-  uses `useTranslations()` (Client) or `getTranslations()` (Server). NEVER
-  reintroduce a `const isSpanish = locale === 'es'` ternary.
+  chrome (`.ab-legal-*`), `.ab-prose`, AND the 404 chrome (`.ab-nf-*`) are
+  all scoped UNDER `.ab-root` — same token vocabulary as the homepage.
+- The `i18n-pattern-canonical` migration is COMPLETE across the entire
+  source tree (homepage, layout, legal, 404, BOTH support pages). Every
+  locale page uses `useTranslations()` (Client) or `getTranslations()`
+  (Server). NEVER reintroduce a `const isSpanish = locale === 'es'`
+  ternary, and NEVER inline a `Record<Lang, ...>` / `CONTENT[locale]`
+  dictionary in a TSX file.
+- For values consumed via `dangerouslySetInnerHTML` (the support pages do
+  this for `<em>` accents and `<a>` mailto links), use `t.raw(key)` — the
+  ICU formatter treats raw `<em>` / `<a>` substrings as tag placeholders
+  and throws `FORMATTING_ERROR` if read via plain `t()`. Convention: the
+  key carries an `Html` suffix (`heroTitleHtml`, `*.valueHtml`, `aHtml`).
+  Arrays in the dictionary (`faq.items`, `status.rows`) are also read via
+  `t.raw()`. See gotcha `next-intl-html-via-t-raw`.
 - Any new copy belongs to `content-i18n-specialist`; surface the string slot
   (key path + EN/ES draft if you have it) and hand off.
-- Any `next.config.mjs` / `package.json` change belongs to
-  `infra-deploy-specialist`. Any change to the i18n provider wiring in
-  `app/[locale]/layout.tsx` requires the Amplify-smoke gate — see gotcha
-  `amplify-client-component-quirk`.
+- Any `next.config.mjs` / `package.json` / `.eslintrc.json` change belongs
+  to `infra-deploy-specialist`. Any change to the i18n provider wiring in
+  `app/[locale]/layout.tsx`, the catch-all `[...rest]/page.tsx`, or the
+  Server/Client split of `not-found.tsx` requires the Amplify-smoke gate —
+  see gotchas `amplify-client-component-quirk` and
+  `not-found-catch-all-required`.
 
 ## Files you must NOT touch
 
@@ -64,6 +76,21 @@ A short report with:
 - Homepage (`app/[locale]/page.tsx`) is ~870 lines after the i18n migration.
   Do not start a rewrite without explicit user agreement — incremental
   edits only.
+- Support pages (`app/[locale]/fingo/support/page.tsx`,
+  `app/[locale]/savely/support/page.tsx`) shrank to ~65 lines each
+  post-migration (PRs #23 + #25). Each page calls
+  `useTranslations("support.<app>")`, builds a `SupportContent` adapter
+  via `useMemo`, and hands it to `SupportShell`. The previous
+  `CONTENT[locale]` dictionary is gone. `SupportShell`'s type stayed
+  unchanged (still `appKey: "fingo" | "savely"`); `dangerouslySetInnerHTML`
+  still consumes `<em>`/`<a>` from the same string fields.
+- 404 is split: `app/[locale]/not-found.tsx` is a Server Component
+  (`getTranslations`/`getLocale`) with an inline theme-init script;
+  `app/[locale]/_not-found-controls.tsx` is the Client island for theme +
+  locale toggles; `app/[locale]/[...rest]/page.tsx` is the catch-all that
+  calls `notFound()` for unmatched URLs. See gotcha
+  `not-found-catch-all-required` — do not collapse this back into a single
+  Client Component.
 - No component library today: `components/ui/`, `hooks/`, and `lib/utils.ts`
   were all removed in PR #7. If you need a primitive, hand-roll it matching
   the editorial aesthetic, or have the user re-introduce shadcn explicitly
@@ -73,5 +100,6 @@ A short report with:
   (`.ab-prose`) live in `globals.css`. Re-use them rather than building
   parallel shells if you add a new utility page.
 - Reveal-on-scroll uses vanilla `IntersectionObserver` + CSS; no animation
-  library is loaded today (framer-motion was removed in PR #6). Keep it
-  that way unless the user asks for a different trade-off.
+  library is loaded today (framer-motion was removed in PR #6). No icon
+  library either (lucide-react was removed in PR #20). Keep it that way
+  unless the user asks for a different trade-off.

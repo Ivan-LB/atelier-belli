@@ -2,6 +2,8 @@
 
 Guidance for Claude Code (claude.ai/code) when working in this repository.
 
+> **Estado vivo y próximos pasos: lee `HANDOFF.md` primero.**
+
 ## 1. What this project does
 
 Portfolio site of Ivan Lorenzana (Atelier Belli). **Two themed sub-sites** share
@@ -11,15 +13,49 @@ one Next.js app:
   theme toggle, custom vitrine/selected-work/workbench sections, case modal.
 - **Support pages** at `/[locale]/fingo/support` and `/[locale]/savely/support` —
   reusable `SupportShell` keyed by `data-app`, `.sup-root` scope, per-app skin
-  (terracotta / green / gold).
+  (terracotta / green). Both consume `useTranslations("support.fingo")` /
+  `useTranslations("support.savely")` and build a `SupportContent` adapter via
+  `useMemo` (PRs #23 + #25). The previous `CONTENT[locale]` dictionary is gone.
 - **Utility sub-pages**: `/[locale]/privacy`, `/[locale]/privacy/choices`,
   `/[locale]/terms` — small inline `.ab-root` shells with the same editorial
   aesthetic as the homepage. Bilingual EN/ES bodies via
   `useTranslations('legal')`. The shared chrome + `.ab-prose` ruleset live
   in `app/globals.css`. (Previously used a legacy `SimplePageLayout` with
   gray/gradient aesthetic — removed in PR #12.)
+- **404 page** at `/[locale]/not-found` — Server Component using
+  `getTranslations("notFound")`, with a tiny client island
+  (`_not-found-controls.tsx`) for theme + locale toggles. Backed by a
+  catch-all route (`app/[locale]/[...rest]/page.tsx`) that calls
+  `notFound()` for unmatched URLs (PR #18). `.ab-nf-*` chrome scoped under
+  `.ab-root`.
 
 Fully bilingual EN/ES. Static site (no database, no auth, no server actions).
+
+### Case studies (Selected Work)
+
+Six cases as of 2026-06-09: `fingo`, `savely`, `mezcal` (originals) + `blip`,
+`briefmark`, `pass` (added in the projects-reorg session). All case data lives
+in `app/[locale]/page.tsx` — there are NO per-case route files. To add a case:
+
+1. Extend the `CaseKey` union.
+2. Add an entry to the `CASES` record (inside `useMemo`) — num, kicker, title,
+   `t.rich` desc, meta rows, actions.
+3. Add an entry to `indexInfo` in the Selected Work list (name/tag/stack/mshow).
+4. Add a branch to `CasePreview` at the bottom of the file.
+5. Add `cases.<key>` to **both** `messages/en.json` and `messages/es.json`
+   (titleIt, descRich with `<it>` tags, metaStatus, actionPrimary, tag,
+   metaPlatform when not iOS).
+
+**Previews:** fingo/savely use real hero images from `public/`. blip/briefmark/
+pass currently reuse the `ab-browser-frame` + `ab-mez-site` classes as styled
+*placeholders* — replace with real screenshots in `public/` when available
+(follow the fingo/savely `ab-phone-img` pattern for iOS apps). The modal
+wrapper adds `web-preview` for every browser-frame preview via an
+`includes([...])` check — keep that list in sync. The vitrine (hero showcase)
+intentionally still shows only the original three pieces.
+
+**Pending:** the `pass` case links to `github.com/Ivan-LB/loyalty-cards` —
+if that repo is private, make it public or swap the action for a disabled one.
 
 ## 2. Commands
 
@@ -27,7 +63,7 @@ Fully bilingual EN/ES. Static site (no database, no auth, no server actions).
 pnpm dev      # Next dev server on :3000
 pnpm build    # Production build
 pnpm start    # Serve the production build
-pnpm lint     # next lint
+pnpm lint     # next lint (configured via .eslintrc.json — runs clean as of PR #22)
 ```
 
 **There is no `typecheck` or `test` script.** To typecheck run
@@ -48,6 +84,21 @@ Routing (via `middleware.ts` using `next-intl/middleware`):
 - `/en/...` and `/es/...` render the locale tree
 - `defaultLocale: "en"`, `matcher: ["/", "/(es|en)/:path*"]`
 
+**Build output is mostly SSG with one dynamic route.** `generateStaticParams()`
+pre-renders every named route for both locales. The single exception is the
+catch-all `app/[locale]/[...rest]/page.tsx`, which Next reports as
+`ƒ (Dynamic)` — its only job is to call `notFound()` so Next renders
+`app/[locale]/not-found.tsx` for unmatched URLs (PR #18; see gotcha
+`not-found-catch-all-required` for why this shape is required).
+
+**Not-found shape**: `app/[locale]/not-found.tsx` is a Server Component
+that reads `getTranslations("notFound")`, then renders the `.ab-nf-*` editorial
+404. Its theme + locale toggles live in `app/[locale]/_not-found-controls.tsx`
+(a Client island) and a small inline script bootstraps `data-theme` from
+`localStorage`/`prefers-color-scheme` before paint. PR #17 shipped this as a
+single Client Component and broke on production; PR #18 split it into the
+current Server + island shape.
+
 **Hybrid font loading** (intentional — see gotcha `google-fonts-hybrid-loading`):
 
 - `@import` at the top of `app/globals.css` ships Fraunces, Inter, EB Garamond,
@@ -66,29 +117,32 @@ resolves correctly during SSG.
 `app/[locale]/layout.tsx` wraps `{children}` in `NextIntlClientProvider`
 (messages from `getMessages()`) and calls `unstable_setRequestLocale(locale)`
 before any translation read so all routes stay statically prerendered. This
-setup was Amplify-smoked successfully on Next 15.2.4 + React 19 in PR #9.
+setup was Amplify-smoked successfully on Next 15.2.4 + React 19 in PR #9, and
+the catch-all + Server `not-found.tsx` shape was Amplify-verified in PR #18.
 See gotcha `amplify-client-component-quirk`.
 
 `next.config.mjs` also sets `typescript.ignoreBuildErrors: true` and
 `eslint.ignoreDuringBuilds: true`. The build will not fail on type or lint
-violations — fix them anyway.
+violations — fix them anyway. (Standalone `pnpm lint` IS now a real check; the
+build-gate flag stays separate.)
 
 ## 4. Design system
 
 The load-bearing rule: **two scoped roots, tokens do not cross.**
 See gotcha `root-token-scoping`.
 
-- **`.ab-root`** — homepage. Attribute `data-theme="light"` or `"dark"` drives
-  cream/turquoise (light) vs. ink/turquoise (dark). Tokens prefixed `--ab-*`
-  (`--ab-bg`, `--ab-fg`, `--ab-muted`, `--accent-color`, `--accent-soft`,
-  `--accent-deep`, etc.) live under `.ab-root` only.
+- **`.ab-root`** — homepage, legal trio, AND the 404. Attribute
+  `data-theme="light"` or `"dark"` drives cream/turquoise (light) vs.
+  ink/turquoise (dark). Tokens prefixed `--ab-*` (`--ab-bg`, `--ab-fg`,
+  `--ab-muted`, `--accent-color`, `--accent-soft`, `--accent-deep`, etc.)
+  live under `.ab-root` only.
 - **`.sup-root`** — support pages. Attribute `data-app="fingo" | "savely"`
   swaps the skin. Tokens prefixed `--sup-*` live under `.sup-root` only.
   (A `lorenzana` theme existed but was unused by any route; removed in
   PR #8. Re-add later if a Destilería support page is built.)
-- **Legal-page chrome (`.ab-legal-*`) + `.ab-prose`** — scoped under
-  `.ab-root` in `app/globals.css`. Used by `/privacy`, `/privacy/choices`,
-  `/terms`. Token-only (`--ab-*` and global HSL); no `--sup-*` references.
+- **Legal-page chrome (`.ab-legal-*`) + `.ab-prose` + 404 chrome
+  (`.ab-nf-*`)** — all scoped under `.ab-root` in `app/globals.css`.
+  Token-only (`--ab-*` and global HSL); no `--sup-*` references.
 - **Global HSL tokens** (`--background`, `--foreground`, `--border`, etc.)
   live in `:root` and `.dark` in `app/globals.css`. Consumed by Tailwind's
   extended color palette. Independent from the two scoped roots above.
@@ -117,11 +171,12 @@ deliberate, explicit decision. Recreate `cn()` as a tiny helper if needed.
 `getTranslations()` in Server Components. Keys in `messages/en.json` and
 `messages/es.json`. See gotcha `i18n-pattern-canonical`.
 
-**Current reality**: every locale-scoped page uses the canonical pattern.
-The legacy `const isSpanish = locale === 'es'` ternary was fully removed
-in PRs #9 (homepage + locale layout) and #12 (legal pages). Zero
-`isSpanish` references remain in the source tree. **Never reintroduce
-that pattern.**
+**Migration status: COMPLETE.** Every locale-scoped page uses the canonical
+pattern — homepage, locale layout, legal trio, 404, AND both support pages.
+The migration shipped across PRs #9 (homepage + layout), #12 (legal pages),
+#18 (404 split), #23 (Fingo support), and #25 (Savely support). Zero
+`isSpanish` or `Record<Lang, ...>` references remain in the source tree.
+**Never reintroduce that pattern.**
 
 `useParams().locale` is still used for routing concerns — href construction
 like `/${locale}/privacy`, the `switchLocale()` helper, language-code chip
@@ -129,13 +184,30 @@ labels (`"EN"`/`"ES"`). That is correct; routing is not a translation
 concern.
 
 `messages/*.json` top-level namespaces in use: `notFound`, `layout`,
-`legal`, `home`. Adding new copy = pick the right namespace, add the key
-to BOTH dictionaries (EN value matches user-facing English; ES matches
-Spanish), then consume via `useTranslations(namespace)`.
+`legal`, `home`, `support` (with `support.fingo.*` and `support.savely.*`).
+Adding new copy = pick the right namespace, add the key to BOTH dictionaries
+(EN value matches user-facing English; ES matches Spanish), then consume via
+`useTranslations(namespace)`.
 
-For rich strings with embedded JSX (e.g. `<em>` accents), use ICU placeholder
-tags in the dictionary value (`"Designed in <it>Tijuana</it> by Belli"`) and
-render via `t.rich(key, { it: (chunks) => <em>{chunks}</em> })`.
+**`t(key)` vs `t.raw(key)` — the HTML rule (gotcha
+`next-intl-html-via-t-raw`)**: next-intl's ICU formatter treats `<em>`,
+`<a>`, etc. inside a translation value as **tag placeholders**, not literal
+HTML. Calling `t("hero.titleHtml")` on a value like
+`"How can we <em>help?</em>"` throws `FORMATTING_ERROR` at render. Two
+options:
+
+- For values consumed via `dangerouslySetInnerHTML` (support pages, where
+  the HTML round-trips through JSON), use `t.raw(key)` and name the key
+  with an `Html` suffix (`heroTitleHtml`, `*.valueHtml`, `aHtml`). PRs
+  #23 + #25 established this convention across the support namespace.
+- For values rendered into JSX with embedded React (homepage hero, etc.),
+  use ICU placeholder tags in the dictionary value
+  (`"Designed in <it>Tijuana</it> by Belli"`) and render via
+  `t.rich(key, { it: (chunks) => <em>{chunks}</em> })`.
+
+Arrays in the dictionary (e.g. `support.fingo.faq.items`,
+`support.fingo.status.rows`) are also read via `t.raw(key)` and iterated by
+the consumer — `t()` would try to interpolate them.
 
 `app/[locale]/layout.tsx` wires the provider + `setRequestLocale`. See
 section 6 (Amplify quirks) and gotcha `amplify-client-component-quirk` for
@@ -155,13 +227,20 @@ are load-bearing:
    `getMessages()`) and calls `unstable_setRequestLocale(locale)` before any
    `getTranslations`/`getMessages` read. The provider is required for
    Client Component `useTranslations()` to work; `setRequestLocale` is
-   required to keep all routes statically prerendered. This combination
+   required to keep all named routes statically prerendered. This combination
    was reintroduced in PR #9 (after a previous Amplify regression on Next 14
    in commit `5719a20` had stripped it) and Amplify-smoked successfully on
    Next 15.2.4 + React 19. **If you change anything in this region, smoke-
    test on an Amplify deploy preview before merging to main.** See gotcha
    `amplify-client-component-quirk`.
-3. **No env-var usage in any Client Component**. Only `NEXT_PUBLIC_*` vars
+3. **The `ƒ (Dynamic)` catch-all route** —
+   `app/[locale]/[...rest]/page.tsx` is the project's only dynamic route.
+   It exists solely to call `notFound()` for unmatched URLs so Next renders
+   the editorial `not-found.tsx` chrome instead of the framework default.
+   PR #18 shipped this (replacing PR #17's broken Client-only 404) and it
+   was Amplify-verified on the user's deploy. The build output is otherwise
+   fully static. See gotcha `not-found-catch-all-required`.
+4. **No env-var usage in any Client Component**. Only `NEXT_PUBLIC_*` vars
    reach the browser, and no such vars exist today. See gotcha
    `client-component-env-vars`.
 
@@ -172,7 +251,8 @@ SSG time. Build is green and Amplify deploy verified without it.)
 
 ## 7. Dead dependencies
 
-**Status as of 2026-04-25**: clean. Two waves of removal landed:
+**Status as of 2026-04-26**: clean and at the leanest dep tree this project
+has ever had. Three waves of removal landed:
 
 - **PR #6** — orphaned by the 2026-04 editorial redesign:
   `three`, `@react-three/fiber`, `@react-three/drei` (old `HeroBackground`),
@@ -182,40 +262,56 @@ SSG time. Build is green and Amplify deploy verified without it.)
 - **PR #11** — orphaned when the shadcn scaffold was deleted in PR #7:
   `next-themes`, `sonner`. Both were only consumed by
   `components/ui/sonner.tsx`.
+- **PR #20** — orphaned when the legacy 404 was redesigned in PR #18:
+  `lucide-react`. The new `.ab-nf-*` design uses pure typography and an
+  inline arrow glyph; no icon library remains.
 
-Both followed gotcha `dead-deps-removal-dedicated-pr` — each was its own
-PR, never bundled with feature work. **Going forward, any future dep
-removal must follow the same pattern.**
+All three followed gotcha `dead-deps-removal-dedicated-pr` — each was its
+own PR, never bundled with feature work. The pattern is now battle-tested.
+**Going forward, any future dep removal must follow the same pattern.**
 
 ## 8. Directory structure
 
 ```
 app/
   globals.css                     # All styling. Layers: tailwind, global HSL,
-                                  #   legacy helpers (.text-gradient, etc.),
-                                  #   .ab-root (incl. .ab-legal-* + .ab-prose),
+                                  #   legacy helpers, .ab-root (incl.
+                                  #   .ab-legal-* + .ab-prose + .ab-nf-*),
                                   #   .sup-root (data-app="fingo"|"savely")
   [locale]/
     layout.tsx                    # Server Component. NextIntlClientProvider +
                                   #   unstable_setRequestLocale. next/font Inter.
                                   #   Metadata. Skip-link via getTranslations.
     page.tsx                      # Homepage (Client). useTranslations('home').
-    not-found.tsx                 # 404. Client. useTranslations('notFound').
-                                  #   Still uses .text-gradient (legacy purple/orange).
+    not-found.tsx                 # 404. Server Component.
+                                  #   getTranslations('notFound') + inline
+                                  #   theme-init script.
+    _not-found-controls.tsx       # Client island for the 404's theme + locale
+                                  #   toggles (used by not-found.tsx).
+    [...rest]/page.tsx            # Catch-all. Calls notFound() for unmatched
+                                  #   URLs so the editorial 404 fires.
+                                  #   The only ƒ (Dynamic) route in the build.
     privacy/ · terms/ · privacy/choices/
                                   # Inline .ab-root shells, useTranslations('legal').
                                   # Bilingual EN/ES.
-    fingo/support/                # SupportShell, data-app="fingo"
-    savely/support/               # SupportShell, data-app="savely"
+    fingo/support/                # SupportShell, data-app="fingo".
+                                  # useTranslations('support.fingo') + useMemo
+                                  # adapter producing SupportContent.
+    savely/support/               # SupportShell, data-app="savely".
+                                  # useTranslations('support.savely') + useMemo
+                                  # adapter producing SupportContent.
 components/
   support-shell.tsx               # Reusable support shell. data-app union is
-                                  #   "fingo" | "savely" only.
+                                  #   "fingo" | "savely" only. Receives a
+                                  #   SupportContent prop built by each page.
 messages/
   en.json · es.json               # next-intl dictionaries.
-                                  # Top-level: notFound, layout, legal, home.
+                                  # Top-level: notFound, layout, legal, home,
+                                  #   support (with support.fingo + support.savely).
 public/                           # All static assets, logos, hero images
 i18n.ts                           # next-intl config (createNextIntlPlugin)
 middleware.ts                     # next-intl middleware (locale routing)
+.eslintrc.json                    # extends next/core-web-vitals (PR #22)
 next.config.mjs · tailwind.config.ts · tsconfig.json
 .claude/                          # Claude Code harness (see section 10)
 ```
@@ -262,7 +358,7 @@ Specialists in `.claude/agents/`:
 |-------|------|
 | `frontend-ui-specialist` | `app/**/*.tsx`, `components/**/*.tsx`, `globals.css`, Tailwind, design tokens |
 | `content-i18n-specialist` | EN/ES copy, `messages/*.json`, middleware routing |
-| `infra-deploy-specialist` | `next.config.mjs`, package.json scripts, deps, Amplify config |
+| `infra-deploy-specialist` | `next.config.mjs`, package.json scripts, deps, `.eslintrc.json`, Amplify config |
 | `spec-writer` | Feature/refactor planner (read-only on source, writes under `docs/` or `.claude/knowledge/`) |
 | `bug-triage` | Reproduces + localizes bugs (read-only) |
 | `qa-validator` | Runs `pnpm exec tsc --noEmit` + `pnpm build`; tests only if they exist |
