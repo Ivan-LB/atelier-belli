@@ -766,6 +766,13 @@
   border-color: #ffffff0a;
   color: #8a8178;
 }
+.ab-vit-browser .shot {
+  display: block;
+  width: 100%;
+  height: var(--h);
+  object-fit: cover;
+  object-position: top;
+}
 .ab-vit-browser .scr {
   height: var(--h);
   background: linear-gradient(180deg, #141008 0%, #241910 55%, #2d2014 100%);

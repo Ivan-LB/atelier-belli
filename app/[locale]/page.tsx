@@ -488,46 +488,15 @@ export default function PortfolioPage() {
                       <span className="d" />
                       <span className="u">◌</span>
                     </div>
-                    <div className="scr">
-                      <div className="nav-strip">
-                        <b>Destilería Lorenzana</b>
-                        <span className="links">
-                          <span>Origen</span>
-                          <span>Tienda</span>
-                          <span>ES · EN</span>
-                        </span>
-                      </div>
-                      <div className="txt">
-                        <div className="eyel">Edición 2025</div>
-                        <h4>
-                          Mi Mezcal,
-                          <br />
-                          espadín&nbsp;puro.
-                        </h4>
-                        <div className="sub">Destilado en ollas de barro. Oaxaca.</div>
-                        <div className="buttons">
-                          <b className="f">Comprar · $780</b>
-                          <b className="g">Historia</b>
-                        </div>
-                      </div>
-                      <div className="bottle-col">
-                        <div className="ab-vit-bottle">
-                          <div className="neck" />
-                          <div className="shld" />
-                          <div className="bod" />
-                          <div className="lbl">
-                            <span className="tt">Espadín</span>
-                            <span className="ln" />
-                            <span className="ds">
-                              Artesanal
-                              <br />
-                              Oaxaca · 46°
-                            </span>
-                            <span className="yr">MMXXV</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      className="shot"
+                      src="/cases/mezcal-hero.webp"
+                      alt=""
+                      width={1600}
+                      height={1000}
+                      loading="lazy"
+                    />
                   </div>
                   <div className="caption">
                     <span className="n">Destilería Lorenzana</span>
