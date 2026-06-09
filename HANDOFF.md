@@ -24,12 +24,6 @@ Pendiente: merge humano del PR, luego release PR `develop` → `main`
   `affectionate-moore-aae644` de mayo, branch solo-merges, sin trabajo
   propio — borrable con `git worktree remove` cuando quieras).
 
-### Hallazgo pre-existente (no tocado)
-El chip flotante de marca ("N", abajo-izquierda) se encima al footer de
-TODOS los case modals (también fingo/savely originales) — z-index del
-float vs. el modal. No es de esta sesión; candidato para
-`docs/opportunistic-improvements.md`.
-
 ## Próximos pasos (en orden)
 1. Mergear el PR del feature a `develop`, luego release PR a `main` —
    idealmente revisar el deploy preview de Amplify antes.
@@ -41,7 +35,6 @@ float vs. el modal. No es de esta sesión; candidato para
    originales — decidir si BLIP merece entrar.
 4. (Opcional) Cuando Briefmark salga al App Store: support page como las
    de fingo/savely (`SupportShell` + `support.briefmark` en messages).
-5. (Opcional) Arreglar el overlap del chip flotante sobre los modals.
 
 ## Contexto externo
 - CV actualizado en `~/Projects/CV/ivanCV.yaml` ya lista estos 3 proyectos —
