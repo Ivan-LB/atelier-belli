@@ -890,29 +890,15 @@ function CasePreview({ which }: { which: CaseKey }) {
   }
   if (which === "blip") {
     return (
-      <div className="ab-browser-frame">
+      <div className="ab-browser-frame has-shot" aria-hidden="true">
         <div className="ab-browser-bar">
           <span className="bdot" />
           <span className="bdot" />
           <span className="bdot" />
           <span className="url">BLIP — Radar</span>
         </div>
-        <div className="ab-mez-site">
-          <span className="ms-eye">Monitor · Pokémon TCG · Amazon MX</span>
-          <h3>Restock detectado.</h3>
-          <div className="ms-row">
-            <div>
-              <p>
-                Push al instante → un toque → carrito lleno. Precio, stock y restocks vigilados
-                antes que el swarm.
-              </p>
-              <div className="ms-cta">
-                <b>Al carrito</b>
-                <b>Watchlist</b>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="ab-browser-shot" src="/cases/blip-hero.webp" alt="" width={1600} height={1000} loading="lazy" />
       </div>
     )
   }
@@ -973,27 +959,15 @@ function CasePreview({ which }: { which: CaseKey }) {
     )
   }
   return (
-    <div className="ab-browser-frame">
+    <div className="ab-browser-frame has-shot" aria-hidden="true">
       <div className="ab-browser-bar">
         <span className="bdot" />
         <span className="bdot" />
         <span className="bdot" />
         <span className="url">destilerialorenzana.com</span>
       </div>
-      <div className="ab-mez-site">
-        <span className="ms-eye">Destilería Lorenzana · Oaxaca</span>
-        <h3>Mi Mezcal — Espadín.</h3>
-        <div className="ms-row">
-          <div className="mini-bottle" />
-          <div>
-            <p>Artesanal. 46°. Cosecha limitada. Destilado en olla de cobre, embotellado a mano.</p>
-            <div className="ms-cta">
-              <b>Pedir ahora</b>
-              <b>Nuestra historia</b>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className="ab-browser-shot" src="/cases/mezcal-hero.webp" alt="" width={1600} height={1000} loading="lazy" />
     </div>
   )
 }

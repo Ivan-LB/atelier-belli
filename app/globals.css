@@ -1587,6 +1587,17 @@
   box-shadow: 0 20px 40px -16px #00000040;
   overflow: hidden;
 }
+.ab-browser-frame.has-shot {
+  max-width: 560px;
+}
+.ab-browser-shot {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top;
+}
 .ab-root[data-theme="dark"] .ab-browser-frame {
   background: #1a1815;
   border-color: #ffffff14;
