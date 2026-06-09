@@ -9,7 +9,7 @@ const LANGUAGE_COOKIE = "preferred-language"
 type Lang = "en" | "es"
 type Theme = "light" | "dark"
 
-type CaseKey = "fingo" | "savely" | "mezcal"
+type CaseKey = "fingo" | "savely" | "mezcal" | "blip" | "briefmark" | "pass"
 
 type CaseAction = {
   label: string
@@ -218,6 +218,78 @@ export default function PortfolioPage() {
         },
       ],
       preview: "mezcal",
+    },
+    blip: {
+      num: "04",
+      kicker: "Web · PWA · 2026",
+      title: {
+        pre: "BLIP — ",
+        it: t("cases.blip.titleIt"),
+      },
+      desc: t.rich("cases.blip.descRich", { it: (chunks) => <em>{chunks}</em> }),
+      meta: [
+        [t("cases.meta.platform"), t("cases.blip.metaPlatform")],
+        [t("cases.meta.stack"), "React · TypeScript · FastAPI · Web Push"],
+        [t("cases.meta.status"), t("cases.blip.metaStatus")],
+        [t("cases.meta.year"), "2026"],
+      ],
+      actions: [
+        {
+          label: t("cases.blip.actionPrimary"),
+          href: "#",
+          kind: "primary disabled",
+          icon: "clock",
+        },
+      ],
+      preview: "blip",
+    },
+    briefmark: {
+      num: "05",
+      kicker: "iOS · AI · 2026",
+      title: {
+        pre: "Briefmark — ",
+        it: t("cases.briefmark.titleIt"),
+      },
+      desc: t.rich("cases.briefmark.descRich", { it: (chunks) => <em>{chunks}</em> }),
+      meta: [
+        [t("cases.meta.platform"), "iOS 26+"],
+        [t("cases.meta.stack"), "SwiftUI · Swift · Node · Claude API"],
+        [t("cases.meta.status"), t("cases.briefmark.metaStatus")],
+        [t("cases.meta.year"), "2026"],
+      ],
+      actions: [
+        {
+          label: t("cases.briefmark.actionPrimary"),
+          href: "#",
+          kind: "primary disabled",
+          icon: "clock",
+        },
+      ],
+      preview: "briefmark",
+    },
+    pass: {
+      num: "06",
+      kicker: "Backend · Serverless · 2026",
+      title: {
+        pre: "Pass — ",
+        it: t("cases.pass.titleIt"),
+      },
+      desc: t.rich("cases.pass.descRich", { it: (chunks) => <em>{chunks}</em> }),
+      meta: [
+        [t("cases.meta.platform"), t("cases.pass.metaPlatform")],
+        [t("cases.meta.stack"), "Node.js · AWS Lambda · DynamoDB · PassKit"],
+        [t("cases.meta.status"), t("cases.pass.metaStatus")],
+        [t("cases.meta.year"), "2026"],
+      ],
+      actions: [
+        {
+          label: t("cases.pass.actionPrimary"),
+          href: "#",
+          kind: "primary disabled",
+          icon: "clock",
+        },
+      ],
+      preview: "pass",
     },
   }), [t, locale])
 
@@ -487,30 +559,48 @@ export default function PortfolioPage() {
             <div className="ab-index-list" role="list">
               {(Object.keys(CASES) as CaseKey[]).map((key) => {
                 const c = CASES[key]
-                const name =
-                  key === "fingo"
-                    ? { pre: "Fingo", it: ` — ${t("cases.fingo.titleIt")}` }
-                    : key === "savely"
-                      ? { pre: "Savely", it: ` — ${t("cases.savely.titleIt")}` }
-                      : { pre: "Mi Mezcal", it: " — Destilería Lorenzana." }
-                const tag =
-                  key === "fingo"
-                    ? t("cases.fingo.tag")
-                    : key === "savely"
-                      ? t("cases.savely.tag")
-                      : t("cases.mezcal.tag")
-                const stack =
-                  key === "fingo"
-                    ? ["iOS", "SwiftUI", "Haptics"]
-                    : key === "savely"
-                      ? ["iOS", "Fintech", "Banking APIs"]
-                      : ["Web", "E-commerce", "Brand"]
-                const mshow =
-                  key === "fingo"
-                    ? "iOS · SwiftUI · App Store →"
-                    : key === "savely"
-                      ? "iOS · Fintech · In review →"
-                      : "Web · E-commerce · Live →"
+                const indexInfo: Record<
+                  CaseKey,
+                  { name: { pre: string; it: string }; tag: string; stack: string[]; mshow: string }
+                > = {
+                  fingo: {
+                    name: { pre: "Fingo", it: ` — ${t("cases.fingo.titleIt")}` },
+                    tag: t("cases.fingo.tag"),
+                    stack: ["iOS", "SwiftUI", "Haptics"],
+                    mshow: "iOS · SwiftUI · App Store →",
+                  },
+                  savely: {
+                    name: { pre: "Savely", it: ` — ${t("cases.savely.titleIt")}` },
+                    tag: t("cases.savely.tag"),
+                    stack: ["iOS", "Fintech", "Banking APIs"],
+                    mshow: "iOS · Fintech · In review →",
+                  },
+                  mezcal: {
+                    name: { pre: "Mi Mezcal", it: " — Destilería Lorenzana." },
+                    tag: t("cases.mezcal.tag"),
+                    stack: ["Web", "E-commerce", "Brand"],
+                    mshow: "Web · E-commerce · Live →",
+                  },
+                  blip: {
+                    name: { pre: "BLIP", it: ` — ${t("cases.blip.titleIt")}` },
+                    tag: t("cases.blip.tag"),
+                    stack: ["React", "PWA", "FastAPI"],
+                    mshow: "Web · PWA · FastAPI →",
+                  },
+                  briefmark: {
+                    name: { pre: "Briefmark", it: ` — ${t("cases.briefmark.titleIt")}` },
+                    tag: t("cases.briefmark.tag"),
+                    stack: ["iOS", "SwiftUI", "Claude API"],
+                    mshow: "iOS · AI · SwiftUI →",
+                  },
+                  pass: {
+                    name: { pre: "Pass", it: ` — ${t("cases.pass.titleIt")}` },
+                    tag: t("cases.pass.tag"),
+                    stack: ["Serverless", "AWS", "PassKit"],
+                    mshow: "Backend · AWS · PassKit →",
+                  },
+                }
+                const { name, tag, stack, mshow } = indexInfo[key]
                 return (
                   <button
                     key={key}
@@ -715,7 +805,7 @@ export default function PortfolioPage() {
         {activeCase && (
           <div className="ab-case-body">
             <div
-              className={`ab-case-preview${activeCase.preview === "mezcal" ? " web-preview" : ""}`}
+              className={`ab-case-preview${["mezcal", "blip", "briefmark", "pass"].includes(activeCase.preview) ? " web-preview" : ""}`}
             >
               <CasePreview which={activeCase.preview} />
             </div>
@@ -794,6 +884,90 @@ function CasePreview({ which }: { which: CaseKey }) {
         <div className="crop">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/savely-hero.png" alt="" />
+        </div>
+      </div>
+    )
+  }
+  if (which === "blip") {
+    return (
+      <div className="ab-browser-frame">
+        <div className="ab-browser-bar">
+          <span className="bdot" />
+          <span className="bdot" />
+          <span className="bdot" />
+          <span className="url">BLIP — Radar</span>
+        </div>
+        <div className="ab-mez-site">
+          <span className="ms-eye">Monitor · Pokémon TCG · Amazon MX</span>
+          <h3>Restock detectado.</h3>
+          <div className="ms-row">
+            <div>
+              <p>
+                Push al instante → un toque → carrito lleno. Precio, stock y restocks vigilados
+                antes que el swarm.
+              </p>
+              <div className="ms-cta">
+                <b>Al carrito</b>
+                <b>Watchlist</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+  if (which === "briefmark") {
+    return (
+      <div className="ab-browser-frame">
+        <div className="ab-browser-bar">
+          <span className="bdot" />
+          <span className="bdot" />
+          <span className="bdot" />
+          <span className="url">Briefmark — iOS</span>
+        </div>
+        <div className="ab-mez-site">
+          <span className="ms-eye">TikTok → smart bookmark</span>
+          <h3>Brief + Mark.</h3>
+          <div className="ms-row">
+            <div>
+              <p>
+                Comparte un video y la IA extrae cada recomendación — recetas, películas, libros,
+                lugares — en tarjetas accionables.
+              </p>
+              <div className="ms-cta">
+                <b>Analizar video</b>
+                <b>Mis marcas</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+  if (which === "pass") {
+    return (
+      <div className="ab-browser-frame">
+        <div className="ab-browser-bar">
+          <span className="bdot" />
+          <span className="bdot" />
+          <span className="bdot" />
+          <span className="url">api.pass — AWS</span>
+        </div>
+        <div className="ab-mez-site">
+          <span className="ms-eye">Apple Wallet · Serverless</span>
+          <h3>Pases vivos en Wallet.</h3>
+          <div className="ms-row">
+            <div>
+              <p>
+                Membresías y tarjetas de sellos emitidas por API — y actualizadas en tiempo real
+                directo en la tarjeta del usuario.
+              </p>
+              <div className="ms-cta">
+                <b>POST /generate</b>
+                <b>PATCH /update</b>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     )

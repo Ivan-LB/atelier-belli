@@ -477,6 +477,29 @@
         "metaStatus": "Live",
         "actionPrimary": "Visit site",
         "tag": "An artisanal mezcal brand — storefront and story."
+      },
+      "blip": {
+        "titleIt": "the restock radar.",
+        "descRich": "A live monitor for sealed Pokémon TCG product on Amazon México. It watches price, stock and restocks, then fires an instant push with a one-tap deep-link that fills the cart — <it>you</it> finish the purchase. The edge is legitimate speed: know first, tap first.",
+        "metaPlatform": "Web · PWA",
+        "metaStatus": "In development",
+        "actionPrimary": "In development",
+        "tag": "Price, stock, restocks — alerted before the swarm."
+      },
+      "briefmark": {
+        "titleIt": "bookmarks that think.",
+        "descRich": "An iOS app that turns TikTok videos into smart bookmarks. Share a URL and it extracts every recommendation — recipes, movies, books, places — into structured, actionable cards, powered by <it>Claude</it>. SwiftUI on the front, a TypeScript backend behind.",
+        "metaStatus": "In development",
+        "actionPrimary": "In development",
+        "tag": "TikToks into structured, searchable cards."
+      },
+      "pass": {
+        "titleIt": "cards that live in Wallet.",
+        "descRich": "A serverless platform that issues and updates Apple Wallet passes — gym memberships, loyalty stamp cards — with changes pushed in real time straight to the card. AWS Lambda, DynamoDB and the Apple Wallet web service, <it>end to end</it>.",
+        "metaPlatform": "AWS · Serverless",
+        "metaStatus": "Running in production",
+        "actionPrimary": "Code coming soon",
+        "tag": "Apple Wallet passes — issued, updated, alive."
       }
     }
   }
