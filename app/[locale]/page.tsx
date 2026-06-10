@@ -459,7 +459,7 @@ export default function PortfolioPage() {
                 <div className="ab-phone-slot" aria-label="Fingo preview">
                   <div className="ab-phone-img fingo tilt-l" aria-hidden="true">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/fingo-hero.webp" alt="" loading="lazy" />
+                    <img src="/fingo-hero.webp" alt="" width={460} height={997} loading="lazy" />
                   </div>
                   <div className="caption">
                     <span className="n">Fingo</span>
@@ -471,7 +471,7 @@ export default function PortfolioPage() {
                   <div className="ab-phone-img savely tilt-c" aria-hidden="true">
                     <div className="crop">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/savely-hero.png" alt="" loading="lazy" />
+                      <img src="/savely-hero.png" alt="" width={660} height={1374} loading="lazy" />
                     </div>
                   </div>
                   <div className="caption">
@@ -855,7 +855,7 @@ function CasePreview({ which }: { which: CaseKey }) {
     return (
       <div className="ab-phone-img fingo" aria-hidden="true" style={{ ["--w" as any]: "280px" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/fingo-hero.webp" alt="" />
+        <img src="/fingo-hero.webp" alt="" width={460} height={997} />
       </div>
     )
   }
@@ -864,7 +864,7 @@ function CasePreview({ which }: { which: CaseKey }) {
       <div className="ab-phone-img savely" aria-hidden="true" style={{ ["--w" as any]: "280px" }}>
         <div className="crop">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/savely-hero.png" alt="" />
+          <img src="/savely-hero.png" alt="" width={660} height={1374} />
         </div>
       </div>
     )
