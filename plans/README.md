@@ -20,8 +20,8 @@ Repo-wide rules every executor must honor (from CLAUDE.md):
 | 001  | Remove dead shadcn dependency mountain (~42 pkgs) | P1 | S | — | DONE — executed in isolated worktree, reviewed+verified 2026-06-10, cherry-picked into PR #27 as `de81dc9` (owner's call to bundle); pending PR merge |
 | 002  | Upgrade Next.js → ≥15.5.16 (critical CVE)         | P1 | M | 001 (soft) | DONE — next 15.5.19, executed+reviewed 2026-06-10, integrated in `chore/next-upgrade-and-test-baseline`; audit 26→3 moderate; Amplify preview gate pending at release PR |
 | 003  | Verification baseline (typecheck, i18n parity, Playwright) | P1 | M | 001 (soft) | DONE — `pnpm verify` + 6-test Playwright suite, executed+reviewed 2026-06-10, integrated in `chore/next-upgrade-and-test-baseline` |
-| 004  | Orphaned vitrine CSS + savely WebP + cookie hygiene | P2 | S | — | TODO |
-| 005  | SEO & shareability (metadata, hreflang, OG, sitemap, robots) | P2 | M | 003 (recommended) | TODO |
+| 004  | Orphaned vitrine CSS + savely WebP + cookie hygiene | P2 | S | — | DONE — executed+reviewed 2026-06-10 (195 CSS lines gone, savely 251KB→34.5KB webp, SameSite=Lax, placeholders dropped); integrated in `chore/css-cleanup-and-seo` |
+| 005  | SEO & shareability (metadata, hreflang, OG, sitemap, robots) | P2 | M | 003 (recommended) | DONE — executed+reviewed 2026-06-10 (per-locale generateMetadata, hreflang, OG card 1200×630, sitemap 12 URLs, robots); integrated in `chore/css-cleanup-and-seo`; Amplify preview gate pending at release PR |
 | 006  | Case-study deep links (`?case=` URL state)         | P3 | M | 003 (hard) | TODO |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED (one-line reason) | REJECTED (one-line rationale)
