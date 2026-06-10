@@ -481,22 +481,34 @@ export default function PortfolioPage() {
                 </div>
 
                 <div className="ab-phone-slot web-slot" aria-label="Destilería Lorenzana preview">
-                  <div className="ab-vit-browser tilt-r" aria-hidden="true">
-                    <div className="bb">
-                      <span className="d" />
-                      <span className="d" />
-                      <span className="d" />
-                      <span className="u">◌</span>
+                  <div className="ab-vit-web-combo tilt-r" aria-hidden="true">
+                    <div className="ab-vit-browser">
+                      <div className="bb">
+                        <span className="d" />
+                        <span className="d" />
+                        <span className="d" />
+                        <span className="u">◌</span>
+                      </div>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        className="shot"
+                        src="/cases/mezcal-hero.webp"
+                        alt=""
+                        width={1600}
+                        height={1000}
+                        loading="lazy"
+                      />
                     </div>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      className="shot"
-                      src="/cases/mezcal-hero.webp"
-                      alt=""
-                      width={1600}
-                      height={1000}
-                      loading="lazy"
-                    />
+                    <div className="ab-vit-mini-phone">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src="/cases/mezcal-mobile.webp"
+                        alt=""
+                        width={600}
+                        height={1299}
+                        loading="lazy"
+                      />
+                    </div>
                   </div>
                   <div className="caption">
                     <span className="n">Destilería Lorenzana</span>
