@@ -79,6 +79,10 @@ pnpm dev      # Next dev server on :3000
 pnpm build    # Production build
 pnpm start    # Serve the production build
 pnpm lint     # next lint (configured via .eslintrc.json — runs clean as of PR #22)
+pnpm typecheck   # tsc --noEmit (full type check, no emit)
+pnpm verify:i18n # structural parity check — messages/en.json vs messages/es.json
+pnpm verify      # typecheck + lint + verify:i18n in sequence
+pnpm test:e2e    # Playwright smoke suite (6 tests); boots its own dev server on :3100
 ```
 
 **Never run `pnpm build` while a dev server is up** — both share `.next`
@@ -87,8 +91,14 @@ and the build clobbers the dev server's vendor chunks ("Cannot find module
 is kill dev → `rm -rf .next` → restart. See gotcha
 `next-build-clobbers-dev-cache`.
 
-**There is no `typecheck` or `test` script.** To typecheck run
-`pnpm exec tsc --noEmit`. See gotcha `pnpm-is-package-manager`.
+**`pnpm verify` is the one-command health check.** Run it before opening a PR.
+`pnpm test:e2e` boots its own dev server on `:3100` (via Playwright `webServer`)
+so it is safe to run while a normal dev server is on `:3000`. The i18n parity
+check (`verify:i18n`) catches missing keys in either locale dictionary before
+they can crash the Spanish site at runtime.
+
+Package manager: **pnpm** (lockfile: `pnpm-lock.yaml`). Never suggest
+`npm install` or `yarn add`.
 
 Package manager: **pnpm** (lockfile: `pnpm-lock.yaml`). Never suggest
 `npm install` or `yarn add`.
