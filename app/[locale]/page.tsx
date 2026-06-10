@@ -109,7 +109,7 @@ export default function PortfolioPage() {
     const target: Lang = locale === "es" ? "en" : "es"
     const expires = new Date()
     expires.setFullYear(expires.getFullYear() + 1)
-    document.cookie = `${LANGUAGE_COOKIE}=${target}; expires=${expires.toUTCString()}; path=/`
+    document.cookie = `${LANGUAGE_COOKIE}=${target}; expires=${expires.toUTCString()}; path=/; SameSite=Lax`
     router.push(`/${target}`)
   }
 
