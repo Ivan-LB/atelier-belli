@@ -109,7 +109,7 @@ export default function PortfolioPage() {
     const target: Lang = locale === "es" ? "en" : "es"
     const expires = new Date()
     expires.setFullYear(expires.getFullYear() + 1)
-    document.cookie = `${LANGUAGE_COOKIE}=${target}; expires=${expires.toUTCString()}; path=/`
+    document.cookie = `${LANGUAGE_COOKIE}=${target}; expires=${expires.toUTCString()}; path=/; SameSite=Lax`
     router.push(`/${target}`)
   }
 
@@ -471,7 +471,7 @@ export default function PortfolioPage() {
                   <div className="ab-phone-img savely tilt-c" aria-hidden="true">
                     <div className="crop">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/savely-hero.png" alt="" width={660} height={1374} loading="lazy" />
+                      <img src="/savely-hero.webp" alt="" width={660} height={1374} loading="lazy" />
                     </div>
                   </div>
                   <div className="caption">
@@ -864,7 +864,7 @@ function CasePreview({ which }: { which: CaseKey }) {
       <div className="ab-phone-img savely" aria-hidden="true" style={{ ["--w" as any]: "280px" }}>
         <div className="crop">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/savely-hero.png" alt="" width={660} height={1374} />
+          <img src="/savely-hero.webp" alt="" width={660} height={1374} />
         </div>
       </div>
     )
