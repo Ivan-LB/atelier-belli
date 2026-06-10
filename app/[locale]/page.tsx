@@ -10,6 +10,7 @@ type Lang = "en" | "es"
 type Theme = "light" | "dark"
 
 type CaseKey = "fingo" | "savely" | "mezcal" | "blip" | "briefmark" | "pass"
+const CASE_KEYS: readonly CaseKey[] = ["fingo", "savely", "mezcal", "blip", "briefmark", "pass"]
 
 type CaseAction = {
   label: string
@@ -94,6 +95,13 @@ export default function PortfolioPage() {
     }
     setTheme(initial)
     setHydrated(true)
+  }, [])
+
+  useEffect(() => {
+    const param = new URLSearchParams(window.location.search).get("case")
+    if (param && (CASE_KEYS as readonly string[]).includes(param)) {
+      setOpenCaseKey(param as CaseKey)
+    }
   }, [])
 
   useEffect(() => {
@@ -296,10 +304,16 @@ export default function PortfolioPage() {
   const openCase = useCallback((key: CaseKey, trigger?: HTMLElement) => {
     lastFocusRef.current = trigger ?? (document.activeElement as HTMLElement | null)
     setOpenCaseKey(key)
+    const url = new URL(window.location.href)
+    url.searchParams.set("case", key)
+    window.history.replaceState(null, "", url)
   }, [])
 
   const closeCase = useCallback(() => {
     setOpenCaseKey(null)
+    const url = new URL(window.location.href)
+    url.searchParams.delete("case")
+    window.history.replaceState(null, "", url)
   }, [])
 
   useEffect(() => {
