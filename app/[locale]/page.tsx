@@ -9,7 +9,8 @@ const LANGUAGE_COOKIE = "preferred-language"
 type Lang = "en" | "es"
 type Theme = "light" | "dark"
 
-type CaseKey = "fingo" | "savely" | "mezcal"
+type CaseKey = "fingo" | "savely" | "mezcal" | "blip" | "briefmark" | "pass"
+const CASE_KEYS: readonly CaseKey[] = ["fingo", "savely", "mezcal", "blip", "briefmark", "pass"]
 
 type CaseAction = {
   label: string
@@ -97,6 +98,13 @@ export default function PortfolioPage() {
   }, [])
 
   useEffect(() => {
+    const param = new URLSearchParams(window.location.search).get("case")
+    if (param && (CASE_KEYS as readonly string[]).includes(param)) {
+      setOpenCaseKey(param as CaseKey)
+    }
+  }, [])
+
+  useEffect(() => {
     if (!hydrated) return
     try {
       localStorage.setItem("ab_theme", theme)
@@ -109,7 +117,7 @@ export default function PortfolioPage() {
     const target: Lang = locale === "es" ? "en" : "es"
     const expires = new Date()
     expires.setFullYear(expires.getFullYear() + 1)
-    document.cookie = `${LANGUAGE_COOKIE}=${target}; expires=${expires.toUTCString()}; path=/`
+    document.cookie = `${LANGUAGE_COOKIE}=${target}; expires=${expires.toUTCString()}; path=/; SameSite=Lax`
     router.push(`/${target}`)
   }
 
@@ -219,15 +227,93 @@ export default function PortfolioPage() {
       ],
       preview: "mezcal",
     },
+    blip: {
+      num: "04",
+      kicker: "Web · PWA · 2026",
+      title: {
+        pre: "BLIP — ",
+        it: t("cases.blip.titleIt"),
+      },
+      desc: t.rich("cases.blip.descRich", { it: (chunks) => <em>{chunks}</em> }),
+      meta: [
+        [t("cases.meta.platform"), t("cases.blip.metaPlatform")],
+        [t("cases.meta.stack"), "React · TypeScript · FastAPI · Web Push"],
+        [t("cases.meta.status"), t("cases.blip.metaStatus")],
+        [t("cases.meta.year"), "2026"],
+      ],
+      actions: [
+        {
+          label: t("cases.blip.actionPrimary"),
+          href: "#",
+          kind: "primary disabled",
+          icon: "clock",
+        },
+      ],
+      preview: "blip",
+    },
+    briefmark: {
+      num: "05",
+      kicker: "iOS · AI · 2026",
+      title: {
+        pre: "Briefmark — ",
+        it: t("cases.briefmark.titleIt"),
+      },
+      desc: t.rich("cases.briefmark.descRich", { it: (chunks) => <em>{chunks}</em> }),
+      meta: [
+        [t("cases.meta.platform"), "iOS 26+"],
+        [t("cases.meta.stack"), "SwiftUI · Swift · Node · Claude API"],
+        [t("cases.meta.status"), t("cases.briefmark.metaStatus")],
+        [t("cases.meta.year"), "2026"],
+      ],
+      actions: [
+        {
+          label: t("cases.briefmark.actionPrimary"),
+          href: "#",
+          kind: "primary disabled",
+          icon: "clock",
+        },
+      ],
+      preview: "briefmark",
+    },
+    pass: {
+      num: "06",
+      kicker: "Backend · Serverless · 2026",
+      title: {
+        pre: "Pass — ",
+        it: t("cases.pass.titleIt"),
+      },
+      desc: t.rich("cases.pass.descRich", { it: (chunks) => <em>{chunks}</em> }),
+      meta: [
+        [t("cases.meta.platform"), t("cases.pass.metaPlatform")],
+        [t("cases.meta.stack"), "Node.js · AWS Lambda · DynamoDB · PassKit"],
+        [t("cases.meta.status"), t("cases.pass.metaStatus")],
+        [t("cases.meta.year"), "2026"],
+      ],
+      actions: [
+        {
+          label: t("cases.pass.actionPrimary"),
+          href: "#",
+          kind: "primary disabled",
+          icon: "clock",
+        },
+      ],
+      preview: "pass",
+    },
   }), [t, locale])
 
   const openCase = useCallback((key: CaseKey, trigger?: HTMLElement) => {
     lastFocusRef.current = trigger ?? (document.activeElement as HTMLElement | null)
     setOpenCaseKey(key)
+    const url = new URL(window.location.href)
+    url.searchParams.set("case", key)
+    window.history.replaceState(null, "", url)
   }, [])
 
   const closeCase = useCallback(() => {
     setOpenCaseKey(null)
+    const url = new URL(window.location.href)
+    url.searchParams.delete("case")
+    window.history.replaceState(null, "", url)
   }, [])
 
   useEffect(() => {
@@ -387,7 +473,7 @@ export default function PortfolioPage() {
                 <div className="ab-phone-slot" aria-label="Fingo preview">
                   <div className="ab-phone-img fingo tilt-l" aria-hidden="true">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/fingo-hero.webp" alt="" loading="lazy" />
+                    <img src="/fingo-hero.webp" alt="" width={460} height={997} loading="lazy" />
                   </div>
                   <div className="caption">
                     <span className="n">Fingo</span>
@@ -399,7 +485,7 @@ export default function PortfolioPage() {
                   <div className="ab-phone-img savely tilt-c" aria-hidden="true">
                     <div className="crop">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/savely-hero.png" alt="" loading="lazy" />
+                      <img src="/savely-hero.webp" alt="" width={660} height={1374} loading="lazy" />
                     </div>
                   </div>
                   <div className="caption">
@@ -409,52 +495,33 @@ export default function PortfolioPage() {
                 </div>
 
                 <div className="ab-phone-slot web-slot" aria-label="Destilería Lorenzana preview">
-                  <div className="ab-vit-browser tilt-r" aria-hidden="true">
-                    <div className="bb">
-                      <span className="d" />
-                      <span className="d" />
-                      <span className="d" />
-                      <span className="u">◌</span>
+                  <div className="ab-vit-web-combo tilt-r" aria-hidden="true">
+                    <div className="ab-vit-browser">
+                      <div className="bb">
+                        <span className="d" />
+                        <span className="d" />
+                        <span className="d" />
+                        <span className="u">◌</span>
+                      </div>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        className="shot"
+                        src="/cases/mezcal-hero.webp"
+                        alt=""
+                        width={1600}
+                        height={1000}
+                        loading="lazy"
+                      />
                     </div>
-                    <div className="scr">
-                      <div className="nav-strip">
-                        <b>Destilería Lorenzana</b>
-                        <span className="links">
-                          <span>Origen</span>
-                          <span>Tienda</span>
-                          <span>ES · EN</span>
-                        </span>
-                      </div>
-                      <div className="txt">
-                        <div className="eyel">Edición 2025</div>
-                        <h4>
-                          Mi Mezcal,
-                          <br />
-                          espadín&nbsp;puro.
-                        </h4>
-                        <div className="sub">Destilado en ollas de barro. Oaxaca.</div>
-                        <div className="buttons">
-                          <b className="f">Comprar · $780</b>
-                          <b className="g">Historia</b>
-                        </div>
-                      </div>
-                      <div className="bottle-col">
-                        <div className="ab-vit-bottle">
-                          <div className="neck" />
-                          <div className="shld" />
-                          <div className="bod" />
-                          <div className="lbl">
-                            <span className="tt">Espadín</span>
-                            <span className="ln" />
-                            <span className="ds">
-                              Artesanal
-                              <br />
-                              Oaxaca · 46°
-                            </span>
-                            <span className="yr">MMXXV</span>
-                          </div>
-                        </div>
-                      </div>
+                    <div className="ab-vit-mini-phone">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src="/cases/mezcal-mobile.webp"
+                        alt=""
+                        width={600}
+                        height={1299}
+                        loading="lazy"
+                      />
                     </div>
                   </div>
                   <div className="caption">
@@ -487,30 +554,48 @@ export default function PortfolioPage() {
             <div className="ab-index-list" role="list">
               {(Object.keys(CASES) as CaseKey[]).map((key) => {
                 const c = CASES[key]
-                const name =
-                  key === "fingo"
-                    ? { pre: "Fingo", it: ` — ${t("cases.fingo.titleIt")}` }
-                    : key === "savely"
-                      ? { pre: "Savely", it: ` — ${t("cases.savely.titleIt")}` }
-                      : { pre: "Mi Mezcal", it: " — Destilería Lorenzana." }
-                const tag =
-                  key === "fingo"
-                    ? t("cases.fingo.tag")
-                    : key === "savely"
-                      ? t("cases.savely.tag")
-                      : t("cases.mezcal.tag")
-                const stack =
-                  key === "fingo"
-                    ? ["iOS", "SwiftUI", "Haptics"]
-                    : key === "savely"
-                      ? ["iOS", "Fintech", "Banking APIs"]
-                      : ["Web", "E-commerce", "Brand"]
-                const mshow =
-                  key === "fingo"
-                    ? "iOS · SwiftUI · App Store →"
-                    : key === "savely"
-                      ? "iOS · Fintech · In review →"
-                      : "Web · E-commerce · Live →"
+                const indexInfo: Record<
+                  CaseKey,
+                  { name: { pre: string; it: string }; tag: string; stack: string[]; mshow: string }
+                > = {
+                  fingo: {
+                    name: { pre: "Fingo", it: ` — ${t("cases.fingo.titleIt")}` },
+                    tag: t("cases.fingo.tag"),
+                    stack: ["iOS", "SwiftUI", "Haptics"],
+                    mshow: "iOS · SwiftUI · App Store →",
+                  },
+                  savely: {
+                    name: { pre: "Savely", it: ` — ${t("cases.savely.titleIt")}` },
+                    tag: t("cases.savely.tag"),
+                    stack: ["iOS", "Fintech", "Banking APIs"],
+                    mshow: "iOS · Fintech · In review →",
+                  },
+                  mezcal: {
+                    name: { pre: "Mi Mezcal", it: " — Destilería Lorenzana." },
+                    tag: t("cases.mezcal.tag"),
+                    stack: ["Web", "E-commerce", "Brand"],
+                    mshow: "Web · E-commerce · Live →",
+                  },
+                  blip: {
+                    name: { pre: "BLIP", it: ` — ${t("cases.blip.titleIt")}` },
+                    tag: t("cases.blip.tag"),
+                    stack: ["React", "PWA", "FastAPI"],
+                    mshow: "Web · PWA · FastAPI →",
+                  },
+                  briefmark: {
+                    name: { pre: "Briefmark", it: ` — ${t("cases.briefmark.titleIt")}` },
+                    tag: t("cases.briefmark.tag"),
+                    stack: ["iOS", "SwiftUI", "Claude API"],
+                    mshow: "iOS · AI · SwiftUI →",
+                  },
+                  pass: {
+                    name: { pre: "Pass", it: ` — ${t("cases.pass.titleIt")}` },
+                    tag: t("cases.pass.tag"),
+                    stack: ["Serverless", "AWS", "PassKit"],
+                    mshow: "Backend · AWS · PassKit →",
+                  },
+                }
+                const { name, tag, stack, mshow } = indexInfo[key]
                 return (
                   <button
                     key={key}
@@ -715,7 +800,7 @@ export default function PortfolioPage() {
         {activeCase && (
           <div className="ab-case-body">
             <div
-              className={`ab-case-preview${activeCase.preview === "mezcal" ? " web-preview" : ""}`}
+              className={`ab-case-preview${["mezcal", "blip", "briefmark", "pass"].includes(activeCase.preview) ? " web-preview" : ""}`}
             >
               <CasePreview which={activeCase.preview} />
             </div>
@@ -784,7 +869,7 @@ function CasePreview({ which }: { which: CaseKey }) {
     return (
       <div className="ab-phone-img fingo" aria-hidden="true" style={{ ["--w" as any]: "280px" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/fingo-hero.webp" alt="" />
+        <img src="/fingo-hero.webp" alt="" width={460} height={997} />
       </div>
     )
   }
@@ -793,33 +878,91 @@ function CasePreview({ which }: { which: CaseKey }) {
       <div className="ab-phone-img savely" aria-hidden="true" style={{ ["--w" as any]: "280px" }}>
         <div className="crop">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/savely-hero.png" alt="" />
+          <img src="/savely-hero.webp" alt="" width={660} height={1374} />
+        </div>
+      </div>
+    )
+  }
+  if (which === "blip") {
+    return (
+      <div className="ab-browser-frame has-shot" aria-hidden="true">
+        <div className="ab-browser-bar">
+          <span className="bdot" />
+          <span className="bdot" />
+          <span className="bdot" />
+          <span className="url">BLIP — Radar</span>
+        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="ab-browser-shot" src="/cases/blip-hero.webp" alt="" width={1600} height={1000} loading="lazy" />
+      </div>
+    )
+  }
+  if (which === "briefmark") {
+    return (
+      <div className="ab-browser-frame">
+        <div className="ab-browser-bar">
+          <span className="bdot" />
+          <span className="bdot" />
+          <span className="bdot" />
+          <span className="url">Briefmark — iOS</span>
+        </div>
+        <div className="ab-mez-site">
+          <span className="ms-eye">TikTok → smart bookmark</span>
+          <h3>Brief + Mark.</h3>
+          <div className="ms-row">
+            <div>
+              <p>
+                Comparte un video y la IA extrae cada recomendación — recetas, películas, libros,
+                lugares — en tarjetas accionables.
+              </p>
+              <div className="ms-cta">
+                <b>Analizar video</b>
+                <b>Mis marcas</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+  if (which === "pass") {
+    return (
+      <div className="ab-browser-frame">
+        <div className="ab-browser-bar">
+          <span className="bdot" />
+          <span className="bdot" />
+          <span className="bdot" />
+          <span className="url">api.pass — AWS</span>
+        </div>
+        <div className="ab-mez-site">
+          <span className="ms-eye">Apple Wallet · Serverless</span>
+          <h3>Pases vivos en Wallet.</h3>
+          <div className="ms-row">
+            <div>
+              <p>
+                Membresías y tarjetas de sellos emitidas por API — y actualizadas en tiempo real
+                directo en la tarjeta del usuario.
+              </p>
+              <div className="ms-cta">
+                <b>POST /generate</b>
+                <b>PATCH /update</b>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     )
   }
   return (
-    <div className="ab-browser-frame">
+    <div className="ab-browser-frame has-shot" aria-hidden="true">
       <div className="ab-browser-bar">
         <span className="bdot" />
         <span className="bdot" />
         <span className="bdot" />
         <span className="url">destilerialorenzana.com</span>
       </div>
-      <div className="ab-mez-site">
-        <span className="ms-eye">Destilería Lorenzana · Oaxaca</span>
-        <h3>Mi Mezcal — Espadín.</h3>
-        <div className="ms-row">
-          <div className="mini-bottle" />
-          <div>
-            <p>Artesanal. 46°. Cosecha limitada. Destilado en olla de cobre, embotellado a mano.</p>
-            <div className="ms-cta">
-              <b>Pedir ahora</b>
-              <b>Nuestra historia</b>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className="ab-browser-shot" src="/cases/mezcal-hero.webp" alt="" width={1600} height={1000} loading="lazy" />
     </div>
   )
 }

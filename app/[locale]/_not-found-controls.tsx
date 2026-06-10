@@ -51,7 +51,7 @@ export function NotFoundControls({
   const switchLocale = () => {
     const expires = new Date()
     expires.setFullYear(expires.getFullYear() + 1)
-    document.cookie = `${LANGUAGE_COOKIE}=${otherLocale}; expires=${expires.toUTCString()}; path=/`
+    document.cookie = `${LANGUAGE_COOKIE}=${otherLocale}; expires=${expires.toUTCString()}; path=/; SameSite=Lax`
     router.push(`/${otherLocale}`)
   }
 

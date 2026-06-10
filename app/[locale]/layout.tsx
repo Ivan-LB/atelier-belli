@@ -13,14 +13,33 @@ const inter = Inter({
   variable: "--font-inter",
 })
 
-export const metadata: Metadata = {
-  title: "Atelier Belli — Digital craft, Franco-Italian.",
-  description:
-    "Atelier Belli is the digital atelier of Ivan Lorenzana — full-stack developer crafting clean iOS apps and the web around them. Fingo, Savely, Mi Mezcal and more.",
-  icons: {
-    icon: "/AtelierBelli.svg",
-    shortcut: "/AtelierBelli.png",
-  },
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: "layout" })
+  return {
+    metadataBase: new URL("https://atelierbelli.com"),
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+    icons: { icon: "/AtelierBelli.svg", shortcut: "/AtelierBelli.png" },
+    alternates: {
+      canonical: `/${locale}/`,
+      languages: { en: "/en/", es: "/es/", "x-default": "/en/" },
+    },
+    openGraph: {
+      type: "website",
+      siteName: "Atelier Belli",
+      locale: locale === "es" ? "es_MX" : "en_US",
+      url: `/${locale}/`,
+      title: t("metaTitle"),
+      description: t("metaDescription"),
+      images: [{ url: "/og.png", width: 1200, height: 630, alt: t("ogAlt") }],
+    },
+    twitter: { card: "summary_large_image" },
+  }
 }
 
 export function generateStaticParams() {

@@ -13,7 +13,32 @@ deliberately deferred. Each is self-contained and safe to leave alone.
 
 ---
 
+## Status snapshot — 2026-04-26
+
+Items that have shipped since this doc was first written:
+
+- §1 Support pages migration — DONE (PRs #23 + #25).
+- §2 not-found redesign — DONE (PRs #17 + #18).
+- §3 pnpm lint script — DONE (PR #22).
+- §4 Stale local branches — DONE (cleaned 2026-04-26).
+- §5 Legal content review — pending (external/legal task).
+- §6 Recurring dep hygiene — pending (rolling).
+- §7 develop → main sync — rolling, after each batch.
+
+Each section retains its original body for historical context.
+
+---
+
 ## 1. Support pages — migrate CONTENT[locale] to next-intl
+
+> Status: DONE — PRs #23 (Fingo, 2026-04-26) + #25 (Savely, 2026-04-26).
+> The `support.fingo.*` and `support.savely.*` namespaces now live in
+> `messages/{en,es}.json`; both pages shrank from ~200 lines to ~65
+> via the `useTranslations` + `useMemo` adapter described in Phase B
+> Path 1 below. Critical learning surfaced: ICU formatter parses `<em>`
+> as a tag placeholder, so HTML-bearing values must be read with
+> `t.raw()` and named with an `Html` suffix (gotcha
+> `next-intl-html-via-t-raw`).
 
 **Priority**: Low. **Size**: Large (hundreds of strings, two PRs).
 **Risk**: Low for build, Medium for translation review.
@@ -212,6 +237,17 @@ contact cards.
 
 ## 2. not-found.tsx — redesign to .ab-root aesthetic
 
+> Status: DONE — PRs #17 (initial redesign, 2026-04-25) + #18 (Amplify
+> fix, 2026-04-25). The page now uses `.ab-nf-*` chrome under `.ab-root`
+> with light/dark variants, and `.text-gradient` is gone from
+> `globals.css`. PR #17 originally shipped as a single Client Component
+> and broke on Amplify (Next 15.2.4's server-thrown `notFound()` doesn't
+> render a Client `not-found.tsx` cleanly). PR #18 fixed it by splitting
+> into a Server Component (`not-found.tsx`) + Client island
+> (`_not-found-controls.tsx`) and adding the catch-all
+> `app/[locale]/[...rest]/page.tsx`. See gotcha
+> `not-found-catch-all-required`.
+
 **Priority**: Low. **Size**: Small (one page, ~30 lines of CSS to
 delete). **Risk**: Low.
 
@@ -385,6 +421,13 @@ Once the design is signed off:
 
 ## 3. pnpm lint script
 
+> Status: DONE — PR #22 (2026-04-26). Took Option A: added
+> `.eslintrc.json` extending `next/core-web-vitals`, plus
+> `eslint@^9.39.4` + `eslint-config-next@^15.2.4` as devDeps. `pnpm lint`
+> exits 0 with zero warnings. The build-gate flag
+> `eslint.ignoreDuringBuilds: true` in `next.config.mjs` stays — that's
+> separate from the local check.
+
 **Priority**: Low. **Size**: Small (one config file or one
 package.json line). **Risk**: None.
 
@@ -446,6 +489,9 @@ a quality gate — the repo already merges with type errors permitted
 ---
 
 ## 4. Stale local branches
+
+> Status: DONE — cleaned 2026-04-26. All listed branches resolved with
+> `git branch -d`; no force-delete required.
 
 **Priority**: Trivial. **Size**: One command. **Risk**: None — all
 listed branches were merged to `develop` and their origin counterparts

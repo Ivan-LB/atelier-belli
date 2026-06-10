@@ -12,7 +12,10 @@
     "footerMeta": "Software · Oficio digital"
   },
   "layout": {
-    "skipToContent": "Ir al contenido principal"
+    "skipToContent": "Ir al contenido principal",
+    "metaTitle": "Atelier Belli",
+    "metaDescription": "Atelier Belli es el atelier digital de Ivan Lorenzana — desarrollador full-stack que crea aplicaciones iOS limpias y la web que las rodea. Fingo, Savely, Mi Mezcal y más.",
+    "ogAlt": "Atelier Belli — portafolio de Ivan Lorenzana"
   },
   "legal": {
     "back": "Volver al Inicio",
@@ -477,6 +480,29 @@
         "metaStatus": "En vivo",
         "actionPrimary": "Visitar sitio",
         "tag": "Una marca de mezcal artesanal — tienda e historia."
+      },
+      "blip": {
+        "titleIt": "el radar de restocks.",
+        "descRich": "Un monitor en vivo de producto sellado de Pokémon TCG en Amazon México. Vigila precio, stock y restocks, y dispara un push instantáneo con un deep-link de un toque que llena el carrito — <it>tú</it> completas la compra. La ventaja es velocidad legítima: enterarte y tocar primero.",
+        "metaPlatform": "Web · PWA",
+        "metaStatus": "En desarrollo",
+        "actionPrimary": "En desarrollo",
+        "tag": "Precio, stock, restocks — alertado antes que el swarm."
+      },
+      "briefmark": {
+        "titleIt": "bookmarks que piensan.",
+        "descRich": "Una app de iOS que convierte videos de TikTok en bookmarks inteligentes. Comparte una URL y extrae cada recomendación — recetas, películas, libros, lugares — en tarjetas estructuradas y accionables, con <it>Claude</it> detrás. SwiftUI al frente, backend en TypeScript.",
+        "metaStatus": "En desarrollo",
+        "actionPrimary": "En desarrollo",
+        "tag": "TikToks en tarjetas estructuradas y buscables."
+      },
+      "pass": {
+        "titleIt": "tarjetas vivas en Wallet.",
+        "descRich": "Una plataforma serverless que emite y actualiza pases de Apple Wallet — membresías de gym, tarjetas de sellos — con cambios en tiempo real directo a la tarjeta. AWS Lambda, DynamoDB y el web service de Apple Wallet, <it>de punta a punta</it>.",
+        "metaPlatform": "AWS · Serverless",
+        "metaStatus": "En producción",
+        "actionPrimary": "Código próximamente",
+        "tag": "Pases de Apple Wallet — emitidos, actualizados, vivos."
       }
     }
   }
