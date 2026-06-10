@@ -314,3 +314,22 @@
     ab-browser-frame + ab-mez-site — swap for real screenshots in public/
     when available. The modal's web-preview class comes from an includes()
     list of browser-frame keys — keep it in sync when adding previews.
+
+- id: next-build-clobbers-dev-cache
+  triggers:
+    keywords:
+      - "pnpm build"
+      - "next build"
+      - "vendor-chunks"
+      - "Cannot find module './vendor-chunks"
+      - "webpack-runtime"
+  rule: >-
+    `next dev` and `next build` share the same .next directory. Running
+    `pnpm build` while a dev server is up clobbers the dev server's vendor
+    chunks; the dev server then throws "Cannot find module
+    './vendor-chunks/...'" on the next request. Before running `pnpm build`,
+    check for a listening dev server (`lsof -ti :3000 -sTCP:LISTEN`). If one
+    is running, either skip the build, or after building kill the dev server,
+    `rm -rf .next`, and restart `pnpm dev`. The error is always recoverable
+    that way — it is cache corruption, not a code problem.
+  source: "session 2026-06-10 — build during live dev broke the user's server"
