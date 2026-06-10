@@ -74,8 +74,53 @@ test("theme toggle flips data-theme and persists to localStorage", async ({
 });
 
 // ── Test 5: /es/ shows all six cases ─────────────────────────────────────────
-// Bump this count when a 7th case ships.
+// Bump this count when a 7th case ships (also update CASE_KEYS in page.tsx).
 test("/es/ shows all six cases", async ({ page }) => {
   await page.goto("/es/");
   await expect(page.locator("button.ab-index-row")).toHaveCount(6);
+});
+
+// ── Test 6: deep link opens the right case ────────────────────────────────────
+test("?case=blip deep link opens the BLIP modal; Escape clears the param", async ({
+  page,
+}) => {
+  await page.goto("/en/?case=blip");
+
+  // Modal should be visible and contain the case title
+  const modal = page.locator(".ab-case-modal.open");
+  await expect(modal).toBeVisible();
+  await expect(modal).toContainText("BLIP");
+
+  // Escape closes the modal and removes the param
+  await page.keyboard.press("Escape");
+  await expect(page.locator(".ab-case-modal.open")).toHaveCount(0);
+  expect(page.url()).not.toContain("case=");
+});
+
+// ── Test 7: opening a case writes the ?case= param ───────────────────────────
+test("clicking a case row adds ?case=fingo to the URL", async ({ page }) => {
+  await page.goto("/en/");
+
+  const firstRow = page.locator("button.ab-index-row").first();
+  await firstRow.click();
+
+  // URL should now contain ?case=fingo (fingo is the first case)
+  await expect(page).toHaveURL(/[?&]case=fingo/);
+
+  // Escape removes the param
+  await page.keyboard.press("Escape");
+  await expect(async () => {
+    expect(page.url()).not.toContain("case=");
+  }).toPass();
+});
+
+// ── Test 8: invalid ?case= key is silently ignored ───────────────────────────
+test("?case=notreal does not open any modal", async ({ page }) => {
+  await page.goto("/en/?case=notreal");
+
+  // No open modal
+  await expect(page.locator(".ab-case-modal.open")).toHaveCount(0);
+
+  // Page still renders correctly
+  await expect(page.locator("h1")).toBeVisible();
 });

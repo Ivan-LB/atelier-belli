@@ -45,6 +45,9 @@ in `app/[locale]/page.tsx` — there are NO per-case route files. To add a case:
 5. Add `cases.<key>` to **both** `messages/en.json` and `messages/es.json`
    (titleIt, descRich with `<it>` tags, metaStatus, actionPrimary, tag,
    metaPlatform when not iOS).
+6. Add the new key to `CASE_KEYS` (the deep-link allowlist, right below the
+   `CaseKey` union in `page.tsx`), and bump the six-case count assertion in
+   `tests/e2e/smoke.spec.ts` (the comment on Test 5).
 
 **Previews:** project screenshots live in `public/cases/` (fingo/savely
 predate the folder and keep their root-level `public/*-hero.*` files).
