@@ -100,9 +100,6 @@ they can crash the Spanish site at runtime.
 Package manager: **pnpm** (lockfile: `pnpm-lock.yaml`). Never suggest
 `npm install` or `yarn add`.
 
-Package manager: **pnpm** (lockfile: `pnpm-lock.yaml`). Never suggest
-`npm install` or `yarn add`.
-
 ## 3. Architecture
 
 **Next.js 15 App Router** under `app/[locale]/`. Only locale-scoped routes
