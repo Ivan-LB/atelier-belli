@@ -272,8 +272,8 @@ SSG time. Build is green and Amplify deploy verified without it.)
 
 ## 7. Dead dependencies
 
-**Status as of 2026-04-26**: clean and at the leanest dep tree this project
-has ever had. Three waves of removal landed:
+**Status as of 2026-06-10**: clean — runtime deps are down to exactly
+`next`, `next-intl`, `react`, `react-dom`. Four waves of removal landed:
 
 - **PR #6** — orphaned by the 2026-04 editorial redesign:
   `three`, `@react-three/fiber`, `@react-three/drei` (old `HeroBackground`),
@@ -286,10 +286,28 @@ has ever had. Three waves of removal landed:
 - **PR #20** — orphaned when the legacy 404 was redesigned in PR #18:
   `lucide-react`. The new `.ab-nf-*` design uses pure typography and an
   inline arrow glyph; no icon library remains.
+- **Plan 001 (2026-06-10)** — shadcn residue left over from PR #7's scaffold
+  deletion: 27 `@radix-ui/*` packages (`react-accordion`, `react-alert-dialog`,
+  `react-aspect-ratio`, `react-avatar`, `react-checkbox`, `react-collapsible`,
+  `react-context-menu`, `react-dialog`, `react-dropdown-menu`,
+  `react-hover-card`, `react-label`, `react-menubar`, `react-navigation-menu`,
+  `react-popover`, `react-progress`, `react-radio-group`, `react-scroll-area`,
+  `react-select`, `react-separator`, `react-slider`, `react-slot`,
+  `react-switch`, `react-tabs`, `react-toast`, `react-toggle`,
+  `react-toggle-group`, `react-tooltip`) plus 15 companions
+  (`@hookform/resolvers`, `class-variance-authority`, `clsx`, `cmdk`,
+  `date-fns`, `embla-carousel-react`, `input-otp`, `react-day-picker`,
+  `react-hook-form`, `react-resizable-panels`, `recharts`, `tailwind-merge`,
+  `tailwindcss-animate`, `vaul`, `zod`). `tailwind.config.ts` also lost
+  the `chart`/`sidebar` color groups, the `accordion-down`/`accordion-up`
+  keyframes + animations (which referenced `--radix-accordion-content-height`),
+  and the `tailwindcss-animate` plugin. Runtime deps are now exactly
+  `next`, `next-intl`, `react`, `react-dom`.
 
-All three followed gotcha `dead-deps-removal-dedicated-pr` — each was its
-own PR, never bundled with feature work. The pattern is now battle-tested.
-**Going forward, any future dep removal must follow the same pattern.**
+The first three followed gotcha `dead-deps-removal-dedicated-pr` — each was
+its own PR, never bundled with feature work. Wave four rode inside PR #27 by
+the owner's explicit call (plan-001 execution). **The dedicated-PR pattern
+remains the default for any future dep removal.**
 
 ## 8. Directory structure
 
