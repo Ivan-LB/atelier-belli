@@ -12,7 +12,10 @@
     "footerMeta": "Software · Digital craft"
   },
   "layout": {
-    "skipToContent": "Skip to main content"
+    "skipToContent": "Skip to main content",
+    "metaTitle": "Atelier Belli — Digital craft, Franco-Italian.",
+    "metaDescription": "Atelier Belli is the digital atelier of Ivan Lorenzana — full-stack developer crafting clean iOS apps and the web around them. Fingo, Savely, Mi Mezcal and more.",
+    "ogAlt": "Atelier Belli — portfolio of Ivan Lorenzana"
   },
   "legal": {
     "back": "Back to Home",
