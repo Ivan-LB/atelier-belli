@@ -46,16 +46,31 @@ in `app/[locale]/page.tsx` — there are NO per-case route files. To add a case:
    (titleIt, descRich with `<it>` tags, metaStatus, actionPrimary, tag,
    metaPlatform when not iOS).
 
-**Previews:** fingo/savely use real hero images from `public/`. blip/briefmark/
-pass currently reuse the `ab-browser-frame` + `ab-mez-site` classes as styled
-*placeholders* — replace with real screenshots in `public/` when available
-(follow the fingo/savely `ab-phone-img` pattern for iOS apps). The modal
-wrapper adds `web-preview` for every browser-frame preview via an
-`includes([...])` check — keep that list in sync. The vitrine (hero showcase)
-intentionally still shows only the original three pieces.
+**Previews:** project screenshots live in `public/cases/` (fingo/savely
+predate the folder and keep their root-level `public/*-hero.*` files).
+fingo/savely use the `ab-phone-img` phone frame; blip and mezcal render real
+captures inside `ab-browser-frame` via the `.ab-browser-shot` img class
+(16:10, explicit width/height). briefmark/pass are still styled
+*placeholders* reusing `ab-browser-frame` + `ab-mez-site` — swap for real
+images when available (briefmark is iOS → phone frame; pass → Apple Wallet
+screenshot). The modal wrapper adds `web-preview` for every browser-frame
+preview via an `includes([...])` check — keep that list in sync. **All
+preview imgs must carry explicit `width`/`height`** — without them the
+transparent-frame slots collapse to zero height until the lazy image paints
+(this bit Savely once; fixed in `5f8e600`).
 
-**Pending:** the `pass` case links to `github.com/Ivan-LB/loyalty-cards` —
-if that repo is private, make it public or swap the action for a disabled one.
+**Vitrine (hero showcase):** still the original three pieces — Fingo and
+Savely phones plus Destilería Lorenzana as a responsive-showcase combo
+(`.ab-vit-web-combo`): a 400×260 browser window with the desktop capture and
+a mini phone overlapping its corner with the mobile capture
+(`public/cases/mezcal-{hero,mobile}.webp`). Tilt/hover transforms live on
+the combo wrapper, not the browser. The old hand-drawn mock's CSS
+(`.ab-vit-browser .scr`, `.ab-vit-bottle`, …) is orphaned — cleanup PR
+pending.
+
+**Pending:** `github.com/Ivan-LB/loyalty-cards` is private, so the `pass`
+action ships disabled ("Code coming soon"); if the repo goes public, restore
+the GitHub link in the `CASES` record + both dictionaries.
 
 ## 2. Commands
 
@@ -65,6 +80,12 @@ pnpm build    # Production build
 pnpm start    # Serve the production build
 pnpm lint     # next lint (configured via .eslintrc.json — runs clean as of PR #22)
 ```
+
+**Never run `pnpm build` while a dev server is up** — both share `.next`
+and the build clobbers the dev server's vendor chunks ("Cannot find module
+'./vendor-chunks/...'"). Check `lsof -ti :3000 -sTCP:LISTEN` first; recovery
+is kill dev → `rm -rf .next` → restart. See gotcha
+`next-build-clobbers-dev-cache`.
 
 **There is no `typecheck` or `test` script.** To typecheck run
 `pnpm exec tsc --noEmit`. See gotcha `pnpm-is-package-manager`.
@@ -309,6 +330,9 @@ messages/
                                   # Top-level: notFound, layout, legal, home,
                                   #   support (with support.fingo + support.savely).
 public/                           # All static assets, logos, hero images
+  cases/                          # Project preview screenshots (blip-hero,
+                                  #   mezcal-hero, mezcal-mobile .webp);
+                                  #   briefmark/pass images land here too
 i18n.ts                           # next-intl config (createNextIntlPlugin)
 middleware.ts                     # next-intl middleware (locale routing)
 .eslintrc.json                    # extends next/core-web-vitals (PR #22)
