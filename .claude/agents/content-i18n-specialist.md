@@ -20,20 +20,32 @@ Read `.claude/knowledge/common-rules.md` at the start of every invocation.
 ## Scope rules
 
 - All code uses `useTranslations()` (Client) or `getTranslations()` (Server)
-  from `next-intl`. Keys belong in `messages/*.json`. The full migration
-  off `const isSpanish = locale === 'es'` shipped in PRs #9 and #12
-  (2026-04-25). NEVER reintroduce that pattern. See gotcha
-  `i18n-pattern-canonical`.
-- Top-level namespaces in use today: `notFound`, `layout`, `legal`, `home`.
-  When adding new copy, pick the right namespace or create a new one if the
-  surface is genuinely new. Keep nesting shallow (≤2 levels).
+  from `next-intl`. Keys belong in `messages/*.json`. The migration off
+  `const isSpanish = locale === 'es'` and `Record<Lang, ...>` /
+  `CONTENT[locale]` dictionaries is FULLY COMPLETE as of 2026-04-26 —
+  PRs #9 (homepage + layout), #12 (legal trio), #18 (404 split), #23
+  (Fingo support), #25 (Savely support). NEVER reintroduce either pattern.
+  See gotcha `i18n-pattern-canonical`.
+- Top-level namespaces in use today: `notFound`, `layout`, `legal`, `home`,
+  `support` (with `support.fingo.*` and `support.savely.*`). When adding
+  new copy, pick the right namespace or create a new one if the surface is
+  genuinely new. Keep nesting shallow (≤2 levels for new namespaces;
+  `support.<app>.<section>.<field>` is the deepest pattern in use today and
+  it mirrors the support pages' UI structure 1:1).
 - Spanish is not a word-for-word translation of English. The homepage,
   legal-page, and support-page copy use idiomatic ES written by the owner.
   Match that voice; don't auto-translate verbatim. EN should be natural
   English, not literal.
-- For rich strings with embedded JSX (e.g. an `<em>` accent), use ICU
-  placeholder tags in the dictionary value (`<it>...</it>`) — the consumer
-  passes a chunks function via `t.rich()`.
+- **`t()` vs `t.raw()` — the HTML rule.** For values rendered into JSX
+  with embedded React, use ICU placeholder tags in the value (`<it>...</it>`)
+  and `t.rich(key, { it: chunks => <em>{chunks}</em> })`. For values
+  consumed via `dangerouslySetInnerHTML` (the support pages — every
+  `*.titleHtml`, `valueHtml`, `aHtml`), the value carries literal `<em>` /
+  `<a>` HTML and must be read via `t.raw(key)` — `t()` would parse the tag
+  as an ICU placeholder and throw `FORMATTING_ERROR`. Name HTML-bearing
+  keys with an `Html` suffix as the discoverability cue. Arrays
+  (`faq.items`, `status.rows`) are also read via `t.raw()`. See gotcha
+  `next-intl-html-via-t-raw`.
 - Route structure (`/[locale]/...`) and the middleware matcher are
   load-bearing. Changing supported locales or the default is a user-facing
   decision — ask first.
@@ -49,8 +61,10 @@ Read `.claude/knowledge/common-rules.md` at the start of every invocation.
 - The user request with target locale(s) or copy.
 - Matched gotcha ids with rule text.
 - Reference: the existing key shape of `home.*`, `legal.*`, `layout.*`,
-  `notFound.*` in `messages/en.json` / `messages/es.json` — pattern-match
-  to those when designing new keys.
+  `notFound.*`, `support.fingo.*`, `support.savely.*` in
+  `messages/en.json` / `messages/es.json` — pattern-match to those when
+  designing new keys. Note in particular the `Html` suffix convention for
+  values that carry inline `<em>` / `<a>` markup.
 
 ## What to return
 
@@ -68,12 +82,18 @@ Read `.claude/knowledge/common-rules.md` at the start of every invocation.
 
 ## Current state
 
-- Every locale-scoped page consumes `useTranslations(...)` or
-  `getTranslations(...)`. Zero `isSpanish` references in the source tree.
+- The i18n migration is FULLY COMPLETE. Every locale-scoped page consumes
+  `useTranslations(...)` or `getTranslations(...)`. Zero `isSpanish`
+  references and zero `CONTENT[locale]` dictionaries remain in the source
+  tree.
 - `messages/en.json` and `messages/es.json` top-level keys: `notFound`,
-  `layout`, `legal`, `home`. All four are live; no orphan namespaces.
-- Support pages still read content from inline `CONTENT[locale]` dictionaries
-  in each page's source — that's a different (acceptable) pattern from
-  next-intl, used for the heavy SUPPORT body text. Moving those into
-  `messages/*.json` is a future opportunistic migration; the homepage and
-  legal pages already finished theirs.
+  `layout`, `legal`, `home`, `support` (with `support.fingo` and
+  `support.savely` sub-namespaces — full hero/contact/faq/status/cta/labels
+  trees per app). All five top-level namespaces are live; no orphan
+  namespaces.
+- The support namespace was the heaviest migration (PRs #23 + #25): each
+  support page carries ~40 strings split across hero, contact cards, FAQ,
+  status, CTA, and footer chrome — doubled for both apps and both locales,
+  ~320 string moves total. The `Html`-suffix convention emerged from this
+  work (see gotcha `next-intl-html-via-t-raw`) and any new HTML-bearing
+  copy must follow it.
