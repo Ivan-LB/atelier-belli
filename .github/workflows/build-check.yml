@@ -1,0 +1,53 @@
+# Mirrors the Amplify production build so a broken deploy fails HERE (red X on
+# the PR + email to the author) instead of failing silently on Amplify and
+# leaving the live site frozen on a stale build.
+#
+# Why this catches the class of bug that froze the site (pnpm 10
+# ERR_PNPM_IGNORED_BUILDS on sharp/unrs-resolver): the pnpm store is
+# deliberately NOT cached. A cold store forces pnpm to evaluate every
+# dependency's build scripts against `pnpm.onlyBuiltDependencies` — exactly
+# what Amplify's fresh build environment does. A cached (already-approved)
+# store would mask an unapproved new dep, which is precisely why the failure
+# never reproduced locally.
+name: Build check
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  build:
+    name: Install + verify + production build (mirrors Amplify)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up pnpm 10
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10 # match Amplify (`npm install -g pnpm` → latest v10)
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20 # matches .nvmrc / package.json engines
+          # No `cache: pnpm` on purpose — see the header comment. A cold store
+          # is what surfaces ERR_PNPM_IGNORED_BUILDS before it reaches Amplify.
+
+      - name: Install dependencies
+        # --frozen-lockfile fails if pnpm-lock.yaml drifts from package.json.
+        # On a cold store this also runs (or flags) dependency build scripts,
+        # so an unapproved build script exits non-zero and fails the check —
+        # the exact signal Amplify was swallowing.
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify (typecheck + lint + i18n parity)
+        # The production build has typescript.ignoreBuildErrors and
+        # eslint.ignoreDuringBuilds ON, so `pnpm build` alone would ship
+        # type/lint errors. Running verify here is stricter than Amplify.
+        run: pnpm verify
+
+      - name: Production build
+        run: pnpm build
