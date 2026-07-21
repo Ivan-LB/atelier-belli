@@ -26,11 +26,11 @@
     "termsShortLabel": "Términos",
     "privacy": {
       "title": "Política de Privacidad",
-      "lastUpdated": "14 de junio de 2025",
+      "lastUpdated": "20 de julio de 2026",
       "sections": {
         "intro": {
           "heading": "Introducción",
-          "body": "Bienvenido a Atelier Belli. Nos comprometemos a proteger tu privacidad. Esta Política de Privacidad explica cómo recopilamos, usamos, divulgamos y salvaguardamos tu información cuando visitas nuestro sitio web o utilizas nuestras aplicaciones móviles (por ejemplo, Fingo). Por favor, lee esta política de privacidad cuidadosamente. Si no estás de acuerdo con los términos de esta política de privacidad, por favor no accedas al sitio ni a nuestras aplicaciones."
+          "body": "Bienvenido a Atelier Belli. Nos comprometemos a proteger tu privacidad. Esta Política de Privacidad explica cómo recopilamos, usamos, divulgamos y salvaguardamos tu información cuando visitas nuestro sitio web o utilizas nuestras aplicaciones móviles (por ejemplo, Fingo, Savely y Alisio). Por favor, lee esta política de privacidad cuidadosamente. Si no estás de acuerdo con los términos de esta política de privacidad, por favor no accedas al sitio ni a nuestras aplicaciones."
         },
         "dataCollected": {
           "heading": "Información que Recopilamos",
@@ -57,6 +57,10 @@
             "geolocation": {
               "label": "Datos de Geolocalización.",
               "body": "Podemos solicitar acceso o permiso y rastrear información basada en la ubicación de tu dispositivo móvil, ya sea continuamente o mientras estás usando nuestra aplicación móvil, para proporcionar servicios basados en la ubicación."
+            },
+            "healthData": {
+              "label": "Datos de Salud y Actividad Física (Alisio):",
+              "body": "Nuestra app Alisio lee datos de frecuencia cardiaca, energía activa y entrenamientos desde Apple HealthKit, con tu permiso explícito, únicamente para calcular tus zonas de entrenamiento por frecuencia cardiaca y mostrar tus métricas en vivo en tu Apple Watch y iPhone. Estos datos, junto con tu historial de entrenamientos, se guardan solo en tus propios dispositivos. No los transmitimos a nuestros servidores, no los compartimos con terceros ni los usamos con fines publicitarios. Alisio no requiere cuenta ni más datos personales que los que tú decidas ingresar (edad y frecuencia cardiaca en reposo) para calcular tus zonas."
             }
           }
         },
@@ -68,7 +72,8 @@
             "Enviarte por correo electrónico tu cuenta o pedido.",
             "Permitir la comunicación entre usuarios.",
             "Cumplir y gestionar compras, pedidos, pagos y otras transacciones relacionadas con el Sitio y nuestras Aplicaciones.",
-            "Mejorar la eficiencia y el funcionamiento del Sitio y nuestras Aplicaciones."
+            "Mejorar la eficiencia y el funcionamiento del Sitio y nuestras Aplicaciones.",
+            "Calcular tus zonas personales de entrenamiento por frecuencia cardiaca y mostrar datos de entrenamiento en vivo dentro de la app Alisio, procesados por completo en tu dispositivo."
           ]
         },
         "dataSecurity": {
@@ -194,13 +199,11 @@
       "crest": "S",
       "navLabel": "Savely · Soporte",
       "footMeta": "Savely — Mesa de soporte · 2025",
-
       "hero": {
         "eye": "Soporte · v1.8",
         "titleHtml": "Una respuesta <em>serena</em> a cada pregunta.",
         "lede": "Savely es un lugar tranquilo para tu dinero. Si algo no cuadra — una transacción faltante, una gráfica que no carga, un banco que se desconectó — dinos. Lo resolvemos, con paciencia."
       },
-
       "contact": {
         "titleHtml": "Háblanos.",
         "sub": "Preguntas sobre tu cuenta, una conexión bancaria, o algo más simple. Todos los caminos llegan al mismo escritorio.",
@@ -231,7 +234,6 @@
           }
         }
       },
-
       "faq": {
         "titleHtml": "Preguntas <em>comunes.</em>",
         "sub": "Si la tuya no está, escríbenos. Respondemos cada una a mano.",
@@ -258,31 +260,40 @@
           }
         ]
       },
-
       "status": {
         "titleHtml": "Estado <em>actual.</em>",
         "sub": "Versión, plataforma, tiempos de respuesta y estado de sistemas.",
         "rows": [
-          { "k": "Versión", "v": "1.8.0" },
-          { "k": "Plataforma", "v": "iOS 16+" },
-          { "k": "Respuesta", "v": "~ 14 horas" },
-          { "k": "Sistemas", "v": "Todo bien", "ok": true }
+          {
+            "k": "Versión",
+            "v": "1.8.0"
+          },
+          {
+            "k": "Plataforma",
+            "v": "iOS 16+"
+          },
+          {
+            "k": "Respuesta",
+            "v": "~ 14 horas"
+          },
+          {
+            "k": "Sistemas",
+            "v": "Todo bien",
+            "ok": true
+          }
         ]
       },
-
       "cta": {
         "titleHtml": "¿Sigues <em>atorado?</em>",
         "sub": "Escríbenos directo. Un equipo pequeño, respuestas reales, con paciencia.",
         "label": "ivanlorenzana@outlook.com",
         "href": "mailto:ivanlorenzana@outlook.com"
       },
-
       "sectionLabels": {
         "contact": "01 — Contacto",
         "faq": "02 — Preguntas frecuentes",
         "status": "03 — Estado"
       },
-
       "privacyLabel": "Privacidad",
       "termsLabel": "Términos",
       "backLabel": "Atelier Belli"
@@ -292,13 +303,11 @@
       "crest": "F",
       "navLabel": "Fingo · Soporte",
       "footMeta": "Fingo — Mesa de soporte · 2025",
-
       "hero": {
         "eye": "Soporte · v2.1.0",
         "titleHtml": "¿Cómo podemos <em>ayudar?</em>",
         "lede": "Fingo es una pequeña app para decidir quién paga, quién empieza, quién escoge la música. Si algo no funciona como debería — escríbenos. Una persona real lee cada mensaje."
       },
-
       "contact": {
         "titleHtml": "Estamos <em>aquí.</em>",
         "sub": "Elige el canal que mejor te funcione. Todo llega al mismo escritorio.",
@@ -329,7 +338,6 @@
           }
         }
       },
-
       "faq": {
         "titleHtml": "Preguntas <em>frecuentes.</em>",
         "sub": "Las que más nos llegan. Si la tuya no está, solo escribe.",
@@ -356,31 +364,40 @@
           }
         ]
       },
-
       "status": {
         "titleHtml": "Todo <em>funcionando.</em>",
         "sub": "Versión actual, plataforma, y cuán rápido respondemos.",
         "rows": [
-          { "k": "Versión", "v": "2.1.0" },
-          { "k": "Plataforma", "v": "iOS 26+" },
-          { "k": "Respuesta", "v": "~ 18 horas" },
-          { "k": "Sistemas", "v": "Todo bien", "ok": true }
+          {
+            "k": "Versión",
+            "v": "2.1.0"
+          },
+          {
+            "k": "Plataforma",
+            "v": "iOS 26+"
+          },
+          {
+            "k": "Respuesta",
+            "v": "~ 18 horas"
+          },
+          {
+            "k": "Sistemas",
+            "v": "Todo bien",
+            "ok": true
+          }
         ]
       },
-
       "cta": {
         "titleHtml": "¿Sigues <em>atorado?</em>",
         "sub": "Escríbenos directo.",
         "label": "ivanlorenzana@outlook.com",
         "href": "mailto:ivanlorenzana@outlook.com"
       },
-
       "sectionLabels": {
         "contact": "01 — Contacto",
         "faq": "02 — Preguntas frecuentes",
         "status": "03 — Estado"
       },
-
       "privacyLabel": "Privacidad",
       "termsLabel": "Términos",
       "backLabel": "Atelier Belli"
