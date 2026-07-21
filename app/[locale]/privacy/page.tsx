@@ -60,6 +60,10 @@ export default function PrivacyPolicyPage() {
                   <strong>{t("privacy.sections.dataCollected.mobileAppData.geolocation.label")}</strong>{" "}
                   {t("privacy.sections.dataCollected.mobileAppData.geolocation.body")}
                 </li>
+                <li>
+                  <strong>{t("privacy.sections.dataCollected.mobileAppData.healthData.label")}</strong>{" "}
+                  {t("privacy.sections.dataCollected.mobileAppData.healthData.body")}
+                </li>
               </ul>
             </section>
 
