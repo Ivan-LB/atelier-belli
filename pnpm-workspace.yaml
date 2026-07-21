@@ -1,0 +1,10 @@
+# Approve native postinstall build scripts so pnpm does not abort the install
+# with ERR_PNPM_IGNORED_BUILDS. pnpm 10.9+/11 block unapproved build scripts by
+# default and exit non-zero in CI. Amplify installs pnpm via
+# `npm install -g pnpm` (latest = v11), which reads this setting from HERE — not
+# from the "pnpm" field in package.json (pnpm 11 no longer reads that).
+#   sharp:         transitive via next (image processor).
+#   unrs-resolver: transitive via eslint tooling.
+allowBuilds:
+  sharp: true
+  unrs-resolver: true

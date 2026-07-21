@@ -2,13 +2,14 @@
 # the PR + email to the author) instead of failing silently on Amplify and
 # leaving the live site frozen on a stale build.
 #
-# Why this catches the class of bug that froze the site (pnpm 10
-# ERR_PNPM_IGNORED_BUILDS on sharp/unrs-resolver): the pnpm store is
-# deliberately NOT cached. A cold store forces pnpm to evaluate every
-# dependency's build scripts against `pnpm.onlyBuiltDependencies` — exactly
-# what Amplify's fresh build environment does. A cached (already-approved)
-# store would mask an unapproved new dep, which is precisely why the failure
-# never reproduced locally.
+# Two things make this a FAITHFUL mirror of Amplify — both learned the hard way:
+#   1. pnpm is installed with `npm install -g pnpm` (LATEST), exactly like
+#      Amplify. Pinning a version here once produced a false green: the pinned
+#      pnpm still read a config format that the newer pnpm on Amplify ignored.
+#      Tracking latest means a pnpm behavior/format change fails the PR first.
+#   2. The pnpm store is NOT cached. A cold store forces pnpm to evaluate every
+#      dependency's build scripts (ERR_PNPM_IGNORED_BUILDS surfaces here), just
+#      like Amplify's fresh build environment.
 name: Build check
 
 on:
@@ -24,23 +25,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up pnpm 10
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10 # match Amplify (`npm install -g pnpm` → latest v10)
-
       - name: Set up Node 20
         uses: actions/setup-node@v4
         with:
           node-version: 20 # matches .nvmrc / package.json engines
-          # No `cache: pnpm` on purpose — see the header comment. A cold store
-          # is what surfaces ERR_PNPM_IGNORED_BUILDS before it reaches Amplify.
+
+      - name: Install pnpm (latest, exactly like Amplify)
+        run: npm install -g pnpm
 
       - name: Install dependencies
         # --frozen-lockfile fails if pnpm-lock.yaml drifts from package.json.
-        # On a cold store this also runs (or flags) dependency build scripts,
-        # so an unapproved build script exits non-zero and fails the check —
-        # the exact signal Amplify was swallowing.
+        # On a cold store this also runs dependency build scripts, so an
+        # unapproved script exits non-zero and fails the check — the exact
+        # signal Amplify was swallowing.
         run: pnpm install --frozen-lockfile
 
       - name: Verify (typecheck + lint + i18n parity)
