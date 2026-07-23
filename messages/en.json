@@ -520,6 +520,13 @@
         "metaStatus": "Running in production",
         "actionPrimary": "Code coming soon",
         "tag": "Apple Wallet passes — issued, updated, alive."
+      },
+      "alisio": {
+        "titleIt": "train by heart-rate zones.",
+        "descRich": "An iOS and Apple Watch app for zone training. Pick a zone and your watch <it>taps your wrist</it> the moment you drift out — a workout stays a two-second glance, not a screen you study mid-set. It starts standalone from the watch, mirrors live on iPhone, and keeps every session <it>on-device</it>, no account. Built with SwiftUI and HealthKit.",
+        "metaStatus": "Live on the App Store",
+        "actionPrimary": "View on App Store",
+        "tag": "Heart-rate zones you feel on your wrist — no screen to study."
       }
     }
   }

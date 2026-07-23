@@ -33,8 +33,9 @@ Fully bilingual EN/ES. Static site (no database, no auth, no server actions).
 
 ### Case studies (Selected Work)
 
-Six cases as of 2026-06-09: `fingo`, `savely`, `mezcal` (originals) + `blip`,
-`briefmark`, `pass` (added in the projects-reorg session). All case data lives
+Seven cases as of 2026-07-21: `fingo`, `savely`, `mezcal` (originals) + `blip`,
+`briefmark`, `pass` (projects-reorg session) + `alisio` (iOS + Apple Watch
+zone-training app, num `07`, live on the App Store). All case data lives
 in `app/[locale]/page.tsx` — there are NO per-case route files. To add a case:
 
 1. Extend the `CaseKey` union.
@@ -46,7 +47,7 @@ in `app/[locale]/page.tsx` — there are NO per-case route files. To add a case:
    (titleIt, descRich with `<it>` tags, metaStatus, actionPrimary, tag,
    metaPlatform when not iOS).
 6. Add the new key to `CASE_KEYS` (the deep-link allowlist, right below the
-   `CaseKey` union in `page.tsx`), and bump the six-case count assertion in
+   `CaseKey` union in `page.tsx`), and bump the seven-case count assertion in
    `tests/e2e/smoke.spec.ts` (the comment on Test 5).
 
 **Previews:** project screenshots live in `public/cases/` (fingo/savely
@@ -57,13 +58,31 @@ captures inside `ab-browser-frame` via the `.ab-browser-shot` img class
 *placeholders* reusing `ab-browser-frame` + `ab-mez-site` — swap for real
 images when available (briefmark is iOS → phone frame; pass → Apple Wallet
 screenshot). The modal wrapper adds `web-preview` for every browser-frame
-preview via an `includes([...])` check — keep that list in sync. **All
+preview via an `includes([...])` check — keep that list in sync (alisio is a
+device combo, NOT web, so it stays OUT of that list). **All
 preview imgs must carry explicit `width`/`height`** — without them the
 transparent-frame slots collapse to zero height until the lazy image paints
 (this bit Savely once; fixed in `5f8e600`).
 
-**Vitrine (hero showcase):** still the original three pieces — Fingo and
-Savely phones plus Destilería Lorenzana as a responsive-showcase combo
+**alisio** is the first iOS + Apple Watch case and uses a bespoke
+`.ab-alisio-combo` preview: an `.ab-phone-img.alisio` phone (Live-session
+screen) with an `.ab-alisio-watch` rounded-square watch (Goal-reached screen)
+overlapping the bottom-left corner. Both `public/cases/alisio-hero.webp`
+(953×2109) and `public/cases/alisio-watch.webp` (249×293) were cropped from
+the App Store **marketing** frames in
+`~/Projects/Swift/Alisio/marketing/appstore-screenshots/` (headline + device
+bezel stripped so the raw screen sits in the CSS frame). Shipped 2026-07-23:
+the primary action links to `apps.apple.com/mx/app/alisio/id6793006694`
+(`kind: "primary"`, external) and `metaStatus` reads "Live on the App Store".
+
+**Vitrine (hero showcase):** three pieces — Fingo and **Alisio** phones
+plus Destilería Lorenzana as a responsive-showcase combo. Alisio replaced
+Savely in the center slot on 2026-07-21; it reuses the Fingo treatment (a
+full App Store **marketing frame** — headline + device — in the rounded
+`.ab-phone-img.alisio` card, NOT a raw screen), via
+`public/cases/alisio-vitrine.webp` (600×1304, cropped from
+`iphone_01_train.png`). Sized to the former Savely 272px through
+`.ab-vitrine .ab-phone-img.alisio` so the modal's 244px is untouched.
 (`.ab-vit-web-combo`): a 400×260 browser window with the desktop capture and
 a mini phone overlapping its corner with the mobile capture
 (`public/cases/mezcal-{hero,mobile}.webp`). Tilt/hover transforms live on
