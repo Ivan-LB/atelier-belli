@@ -73,11 +73,11 @@ test("theme toggle flips data-theme and persists to localStorage", async ({
   expect(stored).toBe(flippedTheme);
 });
 
-// ── Test 5: /es/ shows all six cases ─────────────────────────────────────────
-// Bump this count when a 7th case ships (also update CASE_KEYS in page.tsx).
-test("/es/ shows all six cases", async ({ page }) => {
+// ── Test 5: /es/ shows all seven cases ───────────────────────────────────────
+// Bump this count when an 8th case ships (also update CASE_KEYS in page.tsx).
+test("/es/ shows all seven cases", async ({ page }) => {
   await page.goto("/es/");
-  await expect(page.locator("button.ab-index-row")).toHaveCount(6);
+  await expect(page.locator("button.ab-index-row")).toHaveCount(7);
 });
 
 // ── Test 6: deep link opens the right case ────────────────────────────────────

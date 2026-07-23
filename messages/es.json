@@ -520,6 +520,13 @@
         "metaStatus": "En producción",
         "actionPrimary": "Código próximamente",
         "tag": "Pases de Apple Wallet — emitidos, actualizados, vivos."
+      },
+      "alisio": {
+        "titleIt": "entrena por zonas de frecuencia.",
+        "descRich": "Una app de iOS y Apple Watch para entrenar por zonas. Elige una zona y el reloj <it>te avisa en la muñeca</it> en cuanto te sales — el entrenamiento vuelve a ser un vistazo de dos segundos, no una pantalla que estudias a media serie. Arranca solo desde el reloj, se refleja en vivo en el iPhone y guarda cada sesión <it>en el dispositivo</it>, sin cuentas. Hecha con SwiftUI y HealthKit.",
+        "metaStatus": "Disponible en App Store",
+        "actionPrimary": "Ver en App Store",
+        "tag": "Zonas de frecuencia que sientes en la muñeca — sin pantallas."
       }
     }
   }
