@@ -9,8 +9,8 @@ const LANGUAGE_COOKIE = "preferred-language"
 type Lang = "en" | "es"
 type Theme = "light" | "dark"
 
-type CaseKey = "fingo" | "savely" | "mezcal" | "blip" | "briefmark" | "pass"
-const CASE_KEYS: readonly CaseKey[] = ["fingo", "savely", "mezcal", "blip", "briefmark", "pass"]
+type CaseKey = "fingo" | "savely" | "mezcal" | "blip" | "briefmark" | "pass" | "alisio"
+const CASE_KEYS: readonly CaseKey[] = ["fingo", "savely", "mezcal", "blip", "briefmark", "pass", "alisio"]
 
 type CaseAction = {
   label: string
@@ -299,6 +299,31 @@ export default function PortfolioPage() {
       ],
       preview: "pass",
     },
+    alisio: {
+      num: "07",
+      kicker: "iOS · watchOS · 2026",
+      title: {
+        pre: "Alisio — ",
+        it: t("cases.alisio.titleIt"),
+      },
+      desc: t.rich("cases.alisio.descRich", { it: (chunks) => <em>{chunks}</em> }),
+      meta: [
+        [t("cases.meta.platform"), "iOS · watchOS"],
+        [t("cases.meta.stack"), "SwiftUI · HealthKit · WatchConnectivity"],
+        [t("cases.meta.status"), t("cases.alisio.metaStatus")],
+        [t("cases.meta.year"), "2026"],
+      ],
+      actions: [
+        {
+          label: t("cases.alisio.actionPrimary"),
+          href: "https://apps.apple.com/mx/app/alisio/id6793006694",
+          kind: "primary",
+          ext: true,
+          icon: "external",
+        },
+      ],
+      preview: "alisio",
+    },
   }), [t, locale])
 
   const openCase = useCallback((key: CaseKey, trigger?: HTMLElement) => {
@@ -481,16 +506,14 @@ export default function PortfolioPage() {
                   </div>
                 </div>
 
-                <div className="ab-phone-slot center" aria-label="Savely preview">
-                  <div className="ab-phone-img savely tilt-c" aria-hidden="true">
-                    <div className="crop">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/savely-hero.webp" alt="" width={660} height={1374} loading="lazy" />
-                    </div>
+                <div className="ab-phone-slot center" aria-label="Alisio preview">
+                  <div className="ab-phone-img alisio tilt-c" aria-hidden="true">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/cases/alisio-vitrine.webp" alt="" width={600} height={1304} loading="lazy" />
                   </div>
                   <div className="caption">
-                    <span className="n">Savely</span>
-                    <span className="s">iOS · 2025</span>
+                    <span className="n">Alisio</span>
+                    <span className="s">iOS · watchOS · 2026</span>
                   </div>
                 </div>
 
@@ -593,6 +616,12 @@ export default function PortfolioPage() {
                     tag: t("cases.pass.tag"),
                     stack: ["Serverless", "AWS", "PassKit"],
                     mshow: "Backend · AWS · PassKit →",
+                  },
+                  alisio: {
+                    name: { pre: "Alisio", it: ` — ${t("cases.alisio.titleIt")}` },
+                    tag: t("cases.alisio.tag"),
+                    stack: ["iOS", "watchOS", "HealthKit"],
+                    mshow: "iOS · Apple Watch · App Store →",
                   },
                 }
                 const { name, tag, stack, mshow } = indexInfo[key]
@@ -949,6 +978,20 @@ function CasePreview({ which }: { which: CaseKey }) {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    )
+  }
+  if (which === "alisio") {
+    return (
+      <div className="ab-alisio-combo" aria-hidden="true">
+        <div className="ab-phone-img alisio">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/cases/alisio-hero.webp" alt="" width={953} height={2109} loading="lazy" />
+        </div>
+        <div className="ab-alisio-watch">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/cases/alisio-watch.webp" alt="" width={249} height={293} loading="lazy" />
         </div>
       </div>
     )
