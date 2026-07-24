@@ -527,6 +527,21 @@
         "metaStatus": "Disponible en App Store",
         "actionPrimary": "Ver en App Store",
         "tag": "Zonas de frecuencia que sientes en la muñeca — sin pantallas."
+      },
+      "vitapath": {
+        "titleIt": "respuesta a emergencias, de punta a punta.",
+        "descRich": "Una plataforma de respuesta médica de emergencia. Un paciente con una condición seria dispara un SOS; el paramédico más cercano de una <it>red privada</it> es despachado y rastreado en vivo; el paciente se rutea al hospital correcto por seguro, proximidad y capacidad; una consola hospitalaria maneja despacho, llegada y recepción. Dos apps SwiftUI, una consola React y un backend <it>Spring Boot + PostGIS</it> con una máquina de estados en tiempo real.",
+        "metaStatus": "MVP · verificado e2e",
+        "actionPrimary": "Beta privada",
+        "tag": "Del SOS al hospital — despacho, tracking, ruteo."
+      },
+      "arrhythmia": {
+        "titleIt": "lee el ECG, latido a latido.",
+        "descRich": "Un front end web para un clasificador de arritmias en ECG con <it>FastAPI</it>. Subes un registro WFDB y renderiza la señal completa de una vez, luego clasifica cada latido por clase AAMI (N/S/V/F/Q) con la confianza del modelo — entra a cualquier latido marcado en una ventana real de 60 segundos. Hecho para demostrar un pipeline de ML real, no un notebook: Next.js y TanStack Query al frente, un servicio de modelo en FastAPI detrás.",
+        "metaPlatform": "Web · Responsiva",
+        "metaStatus": "Demo funcional",
+        "actionPrimary": "Ver el backend ML",
+        "tag": "Sube un ECG, clasifica cada latido (AAMI)."
       }
     }
   }

@@ -527,6 +527,21 @@
         "metaStatus": "Live on the App Store",
         "actionPrimary": "View on App Store",
         "tag": "Heart-rate zones you feel on your wrist — no screen to study."
+      },
+      "vitapath": {
+        "titleIt": "emergency response, end to end.",
+        "descRich": "An emergency medical-response platform. A patient with a serious condition fires an SOS; the nearest paramedic from a <it>private network</it> is dispatched and tracked live; the patient is routed to the right hospital by insurance, proximity and capability; a hospital console runs dispatch, arrival and reception. Two SwiftUI apps, a React console, and a <it>Spring Boot + PostGIS</it> backend with a real-time emergency state machine.",
+        "metaStatus": "MVP · e2e-verified",
+        "actionPrimary": "Private beta",
+        "tag": "SOS to hospital handoff — dispatched, tracked, routed."
+      },
+      "arrhythmia": {
+        "titleIt": "read the ECG, beat by beat.",
+        "descRich": "A web front end for a <it>FastAPI</it> ECG arrhythmia classifier. Upload a WFDB record and it renders the whole signal at once, then classifies every beat by AAMI class (N/S/V/F/Q) with model confidence — drill into any flagged beat in a real 60-second context window. Built to prove a genuine ML pipeline, not a notebook: Next.js and TanStack Query on the front, a FastAPI model service behind.",
+        "metaPlatform": "Web · Responsive",
+        "metaStatus": "Working demo",
+        "actionPrimary": "View the ML backend",
+        "tag": "Upload an ECG, classify every beat (AAMI)."
       }
     }
   }

@@ -9,8 +9,29 @@ const LANGUAGE_COOKIE = "preferred-language"
 type Lang = "en" | "es"
 type Theme = "light" | "dark"
 
-type CaseKey = "fingo" | "savely" | "mezcal" | "blip" | "briefmark" | "pass" | "alisio"
-const CASE_KEYS: readonly CaseKey[] = ["fingo", "savely", "mezcal", "blip", "briefmark", "pass", "alisio"]
+type CaseKey =
+  | "fingo"
+  | "savely"
+  | "mezcal"
+  | "blip"
+  | "briefmark"
+  | "pass"
+  | "alisio"
+  | "vitapath"
+  | "arrhythmia"
+// Display order of Selected Work (also the deep-link allowlist). This array is
+// the single source of order — CASES render maps over it and `num` follows it.
+const CASE_KEYS: readonly CaseKey[] = [
+  "alisio",
+  "pass",
+  "fingo",
+  "vitapath",
+  "arrhythmia",
+  "mezcal",
+  "briefmark",
+  "savely",
+  "blip",
+]
 
 type CaseAction = {
   label: string
@@ -141,8 +162,57 @@ export default function PortfolioPage() {
 
   // Build CASES per language
   const CASES: Record<CaseKey, CaseData> = useMemo(() => ({
-    fingo: {
+    alisio: {
       num: "01",
+      kicker: "iOS · watchOS · 2026",
+      title: {
+        pre: "Alisio — ",
+        it: t("cases.alisio.titleIt"),
+      },
+      desc: t.rich("cases.alisio.descRich", { it: (chunks) => <em>{chunks}</em> }),
+      meta: [
+        [t("cases.meta.platform"), "iOS · watchOS"],
+        [t("cases.meta.stack"), "SwiftUI · HealthKit · WatchConnectivity"],
+        [t("cases.meta.status"), t("cases.alisio.metaStatus")],
+        [t("cases.meta.year"), "2026"],
+      ],
+      actions: [
+        {
+          label: t("cases.alisio.actionPrimary"),
+          href: "https://apps.apple.com/mx/app/alisio/id6793006694",
+          kind: "primary",
+          ext: true,
+          icon: "external",
+        },
+      ],
+      preview: "alisio",
+    },
+    pass: {
+      num: "02",
+      kicker: "Backend · Serverless · 2026",
+      title: {
+        pre: "Pass — ",
+        it: t("cases.pass.titleIt"),
+      },
+      desc: t.rich("cases.pass.descRich", { it: (chunks) => <em>{chunks}</em> }),
+      meta: [
+        [t("cases.meta.platform"), t("cases.pass.metaPlatform")],
+        [t("cases.meta.stack"), "Node.js · AWS Lambda · DynamoDB · PassKit"],
+        [t("cases.meta.status"), t("cases.pass.metaStatus")],
+        [t("cases.meta.year"), "2026"],
+      ],
+      actions: [
+        {
+          label: t("cases.pass.actionPrimary"),
+          href: "#",
+          kind: "primary disabled",
+          icon: "clock",
+        },
+      ],
+      preview: "pass",
+    },
+    fingo: {
+      num: "03",
       kicker: "iOS · 2025",
       title: {
         pre: "Fingo — ",
@@ -172,8 +242,105 @@ export default function PortfolioPage() {
       ],
       preview: "fingo",
     },
+    vitapath: {
+      num: "04",
+      kicker: "System · Healthtech · 2026",
+      title: {
+        pre: "Vitapath — ",
+        it: t("cases.vitapath.titleIt"),
+      },
+      desc: t.rich("cases.vitapath.descRich", { it: (chunks) => <em>{chunks}</em> }),
+      meta: [
+        [t("cases.meta.platform"), "iOS · Web · Spring"],
+        [t("cases.meta.stack"), "SwiftUI · Spring Boot · PostGIS · STOMP"],
+        [t("cases.meta.status"), t("cases.vitapath.metaStatus")],
+        [t("cases.meta.year"), "2026"],
+      ],
+      actions: [
+        {
+          label: t("cases.vitapath.actionPrimary"),
+          href: "#",
+          kind: "primary disabled",
+        },
+      ],
+      preview: "vitapath",
+    },
+    arrhythmia: {
+      num: "05",
+      kicker: "Web · ML · 2026",
+      title: {
+        pre: "Arrhythmia Detector — ",
+        it: t("cases.arrhythmia.titleIt"),
+      },
+      desc: t.rich("cases.arrhythmia.descRich", { it: (chunks) => <em>{chunks}</em> }),
+      meta: [
+        [t("cases.meta.platform"), t("cases.arrhythmia.metaPlatform")],
+        [t("cases.meta.stack"), "Next.js · TypeScript · FastAPI · TanStack Query"],
+        [t("cases.meta.status"), t("cases.arrhythmia.metaStatus")],
+        [t("cases.meta.year"), "2026"],
+      ],
+      actions: [
+        {
+          label: t("cases.arrhythmia.actionPrimary"),
+          href: "https://github.com/Ivan-LB/arrhythmia-detector-backend",
+          kind: "primary",
+          ext: true,
+          icon: "external",
+        },
+      ],
+      preview: "arrhythmia",
+    },
+    mezcal: {
+      num: "06",
+      kicker: "Web · E-commerce · 2025",
+      title: {
+        pre: "Mi Mezcal — ",
+        it: "Destilería Lorenzana.",
+      },
+      desc: t.rich("cases.mezcal.descRich", { it: (chunks) => <em>{chunks}</em> }),
+      meta: [
+        [t("cases.meta.platform"), t("cases.mezcal.metaPlatform")],
+        [t("cases.meta.stack"), "Next.js · TypeScript · Stripe"],
+        [t("cases.meta.status"), t("cases.mezcal.metaStatus")],
+        [t("cases.meta.year"), "2025"],
+      ],
+      actions: [
+        {
+          label: t("cases.mezcal.actionPrimary"),
+          href: "https://www.destilerialorenzana.com/",
+          kind: "primary",
+          ext: true,
+          icon: "external",
+        },
+      ],
+      preview: "mezcal",
+    },
+    briefmark: {
+      num: "07",
+      kicker: "iOS · AI · 2026",
+      title: {
+        pre: "Briefmark — ",
+        it: t("cases.briefmark.titleIt"),
+      },
+      desc: t.rich("cases.briefmark.descRich", { it: (chunks) => <em>{chunks}</em> }),
+      meta: [
+        [t("cases.meta.platform"), "iOS 26+"],
+        [t("cases.meta.stack"), "SwiftUI · Swift · Node · Claude API"],
+        [t("cases.meta.status"), t("cases.briefmark.metaStatus")],
+        [t("cases.meta.year"), "2026"],
+      ],
+      actions: [
+        {
+          label: t("cases.briefmark.actionPrimary"),
+          href: "#",
+          kind: "primary disabled",
+          icon: "clock",
+        },
+      ],
+      preview: "briefmark",
+    },
     savely: {
-      num: "02",
+      num: "08",
       kicker: "iOS · Fintech · 2026",
       title: {
         pre: "Savely — ",
@@ -202,33 +369,8 @@ export default function PortfolioPage() {
       ],
       preview: "savely",
     },
-    mezcal: {
-      num: "03",
-      kicker: "Web · E-commerce · 2025",
-      title: {
-        pre: "Mi Mezcal — ",
-        it: "Destilería Lorenzana.",
-      },
-      desc: t.rich("cases.mezcal.descRich", { it: (chunks) => <em>{chunks}</em> }),
-      meta: [
-        [t("cases.meta.platform"), t("cases.mezcal.metaPlatform")],
-        [t("cases.meta.stack"), "Next.js · TypeScript · Stripe"],
-        [t("cases.meta.status"), t("cases.mezcal.metaStatus")],
-        [t("cases.meta.year"), "2025"],
-      ],
-      actions: [
-        {
-          label: t("cases.mezcal.actionPrimary"),
-          href: "https://www.destilerialorenzana.com/",
-          kind: "primary",
-          ext: true,
-          icon: "external",
-        },
-      ],
-      preview: "mezcal",
-    },
     blip: {
-      num: "04",
+      num: "09",
       kicker: "Web · PWA · 2026",
       title: {
         pre: "BLIP — ",
@@ -250,79 +392,6 @@ export default function PortfolioPage() {
         },
       ],
       preview: "blip",
-    },
-    briefmark: {
-      num: "05",
-      kicker: "iOS · AI · 2026",
-      title: {
-        pre: "Briefmark — ",
-        it: t("cases.briefmark.titleIt"),
-      },
-      desc: t.rich("cases.briefmark.descRich", { it: (chunks) => <em>{chunks}</em> }),
-      meta: [
-        [t("cases.meta.platform"), "iOS 26+"],
-        [t("cases.meta.stack"), "SwiftUI · Swift · Node · Claude API"],
-        [t("cases.meta.status"), t("cases.briefmark.metaStatus")],
-        [t("cases.meta.year"), "2026"],
-      ],
-      actions: [
-        {
-          label: t("cases.briefmark.actionPrimary"),
-          href: "#",
-          kind: "primary disabled",
-          icon: "clock",
-        },
-      ],
-      preview: "briefmark",
-    },
-    pass: {
-      num: "06",
-      kicker: "Backend · Serverless · 2026",
-      title: {
-        pre: "Pass — ",
-        it: t("cases.pass.titleIt"),
-      },
-      desc: t.rich("cases.pass.descRich", { it: (chunks) => <em>{chunks}</em> }),
-      meta: [
-        [t("cases.meta.platform"), t("cases.pass.metaPlatform")],
-        [t("cases.meta.stack"), "Node.js · AWS Lambda · DynamoDB · PassKit"],
-        [t("cases.meta.status"), t("cases.pass.metaStatus")],
-        [t("cases.meta.year"), "2026"],
-      ],
-      actions: [
-        {
-          label: t("cases.pass.actionPrimary"),
-          href: "#",
-          kind: "primary disabled",
-          icon: "clock",
-        },
-      ],
-      preview: "pass",
-    },
-    alisio: {
-      num: "07",
-      kicker: "iOS · watchOS · 2026",
-      title: {
-        pre: "Alisio — ",
-        it: t("cases.alisio.titleIt"),
-      },
-      desc: t.rich("cases.alisio.descRich", { it: (chunks) => <em>{chunks}</em> }),
-      meta: [
-        [t("cases.meta.platform"), "iOS · watchOS"],
-        [t("cases.meta.stack"), "SwiftUI · HealthKit · WatchConnectivity"],
-        [t("cases.meta.status"), t("cases.alisio.metaStatus")],
-        [t("cases.meta.year"), "2026"],
-      ],
-      actions: [
-        {
-          label: t("cases.alisio.actionPrimary"),
-          href: "https://apps.apple.com/mx/app/alisio/id6793006694",
-          kind: "primary",
-          ext: true,
-          icon: "external",
-        },
-      ],
-      preview: "alisio",
     },
   }), [t, locale])
 
@@ -575,7 +644,7 @@ export default function PortfolioPage() {
             </div>
 
             <div className="ab-index-list" role="list">
-              {(Object.keys(CASES) as CaseKey[]).map((key) => {
+              {CASE_KEYS.map((key) => {
                 const c = CASES[key]
                 const indexInfo: Record<
                   CaseKey,
@@ -622,6 +691,18 @@ export default function PortfolioPage() {
                     tag: t("cases.alisio.tag"),
                     stack: ["iOS", "watchOS", "HealthKit"],
                     mshow: "iOS · Apple Watch · App Store →",
+                  },
+                  vitapath: {
+                    name: { pre: "Vitapath", it: ` — ${t("cases.vitapath.titleIt")}` },
+                    tag: t("cases.vitapath.tag"),
+                    stack: ["Spring Boot", "PostGIS", "SwiftUI"],
+                    mshow: "iOS · Web · Spring · PostGIS →",
+                  },
+                  arrhythmia: {
+                    name: { pre: "Arrhythmia Detector", it: ` — ${t("cases.arrhythmia.titleIt")}` },
+                    tag: t("cases.arrhythmia.tag"),
+                    stack: ["Next.js", "FastAPI", "ML"],
+                    mshow: "Web · ML · FastAPI →",
                   },
                 }
                 const { name, tag, stack, mshow } = indexInfo[key]
@@ -829,7 +910,7 @@ export default function PortfolioPage() {
         {activeCase && (
           <div className="ab-case-body">
             <div
-              className={`ab-case-preview${["mezcal", "blip", "briefmark", "pass"].includes(activeCase.preview) ? " web-preview" : ""}`}
+              className={`ab-case-preview${["mezcal", "blip", "briefmark", "pass", "vitapath", "arrhythmia"].includes(activeCase.preview) ? " web-preview" : ""}`}
             >
               <CasePreview which={activeCase.preview} />
             </div>
@@ -993,6 +1074,34 @@ function CasePreview({ which }: { which: CaseKey }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/cases/alisio-watch.webp" alt="" width={249} height={293} loading="lazy" />
         </div>
+      </div>
+    )
+  }
+  if (which === "arrhythmia") {
+    return (
+      <div className="ab-browser-frame has-shot" aria-hidden="true">
+        <div className="ab-browser-bar">
+          <span className="bdot" />
+          <span className="bdot" />
+          <span className="bdot" />
+          <span className="url">arrhythmia-detector</span>
+        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="ab-browser-shot" src="/cases/arrhythmia-hero.webp" alt="" width={900} height={562} loading="lazy" />
+      </div>
+    )
+  }
+  if (which === "vitapath") {
+    return (
+      <div className="ab-browser-frame has-shot" aria-hidden="true">
+        <div className="ab-browser-bar">
+          <span className="bdot" />
+          <span className="bdot" />
+          <span className="bdot" />
+          <span className="url">vitapath · consola de despacho</span>
+        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="ab-browser-shot" src="/cases/vitapath-hero.webp" alt="" width={1000} height={625} loading="lazy" />
       </div>
     )
   }
