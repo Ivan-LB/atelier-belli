@@ -33,10 +33,12 @@ Fully bilingual EN/ES. Static site (no database, no auth, no server actions).
 
 ### Case studies (Selected Work)
 
-Seven cases as of 2026-07-21: `fingo`, `savely`, `mezcal` (originals) + `blip`,
-`briefmark`, `pass` (projects-reorg session) + `alisio` (iOS + Apple Watch
-zone-training app, num `07`, live on the App Store). All case data lives
-in `app/[locale]/page.tsx` — there are NO per-case route files. To add a case:
+Nine cases as of 2026-07-24, in this display order: `alisio`, `pass`, `fingo`,
+`vitapath`, `arrhythmia`, `mezcal`, `briefmark`, `savely`, `blip`. **Order is
+defined once by the `CASE_KEYS` array** (top of `page.tsx`) — the Selected Work
+list maps over it, and each `CASES` entry's `num` must match its position
+(01–09). All case data lives in `app/[locale]/page.tsx` — there are NO per-case
+route files. To add (or reorder) a case:
 
 1. Extend the `CaseKey` union.
 2. Add an entry to the `CASES` record (inside `useMemo`) — num, kicker, title,
@@ -46,9 +48,11 @@ in `app/[locale]/page.tsx` — there are NO per-case route files. To add a case:
 5. Add `cases.<key>` to **both** `messages/en.json` and `messages/es.json`
    (titleIt, descRich with `<it>` tags, metaStatus, actionPrimary, tag,
    metaPlatform when not iOS).
-6. Add the new key to `CASE_KEYS` (the deep-link allowlist, right below the
-   `CaseKey` union in `page.tsx`), and bump the seven-case count assertion in
-   `tests/e2e/smoke.spec.ts` (the comment on Test 5).
+6. Insert the key into `CASE_KEYS` at the desired display position (it is BOTH
+   the render order AND the deep-link allowlist), then fix every `num` so it
+   matches its position. Bump the nine-case count assertion **and** the
+   first-case (`alisio`) deep-link check in `tests/e2e/smoke.spec.ts`
+   (Tests 5 and 7).
 
 **Previews:** project screenshots live in `public/cases/` (fingo/savely
 predate the folder and keep their root-level `public/*-hero.*` files).
@@ -74,6 +78,21 @@ the App Store **marketing** frames in
 bezel stripped so the raw screen sits in the CSS frame). Shipped 2026-07-23:
 the primary action links to `apps.apple.com/mx/app/alisio/id6793006694`
 (`kind: "primary"`, external) and `metaStatus` reads "Live on the App Store".
+
+**arrhythmia** (web · ML, num `05`) uses a REAL screenshot
+(`public/cases/arrhythmia-hero.webp`, 900×562, 16:10, cropped from that repo's
+`docs/screenshots/02-trace-overview.png`) in the `ab-browser-frame has-shot`
+treatment; its primary action links to the **public** backend repo
+`github.com/Ivan-LB/arrhythmia-detector-backend` (verified 200 unauth).
+**vitapath** (iOS + Web + Spring, num `04`, private repos, MVP) uses a REAL
+screenshot of the hospital console's **live dispatch map** (Baja California with
+paramedic markers) — `public/cases/vitapath-hero.webp`, 1200×750, 16:10 — in
+`ab-browser-frame has-shot`. Captured with Playwright by logging into the
+`web-hospital` Vite dev server (:5173) against the full local stack (Spring Boot
+on :8080 + PostGIS/MinIO via `backend-spring` → `docker compose up`; seeded admin
+`hospital@example.com`). To re-capture: bring that stack up, then rerun the
+login+screenshot Playwright script against `/mapa`. Its action is a disabled
+"Private beta". Both vitapath and arrhythmia are in the `web-preview` list.
 
 **Vitrine (hero showcase):** three pieces — Fingo and **Alisio** phones
 plus Destilería Lorenzana as a responsive-showcase combo. Alisio replaced
