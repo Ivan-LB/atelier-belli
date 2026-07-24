@@ -73,11 +73,11 @@ test("theme toggle flips data-theme and persists to localStorage", async ({
   expect(stored).toBe(flippedTheme);
 });
 
-// ── Test 5: /es/ shows all seven cases ───────────────────────────────────────
-// Bump this count when an 8th case ships (also update CASE_KEYS in page.tsx).
-test("/es/ shows all seven cases", async ({ page }) => {
+// ── Test 5: /es/ shows all nine cases ────────────────────────────────────────
+// Bump this count when a 10th case ships (also update CASE_KEYS in page.tsx).
+test("/es/ shows all nine cases", async ({ page }) => {
   await page.goto("/es/");
-  await expect(page.locator("button.ab-index-row")).toHaveCount(7);
+  await expect(page.locator("button.ab-index-row")).toHaveCount(9);
 });
 
 // ── Test 6: deep link opens the right case ────────────────────────────────────
@@ -98,14 +98,14 @@ test("?case=blip deep link opens the BLIP modal; Escape clears the param", async
 });
 
 // ── Test 7: opening a case writes the ?case= param ───────────────────────────
-test("clicking a case row adds ?case=fingo to the URL", async ({ page }) => {
+test("clicking a case row adds ?case=alisio to the URL", async ({ page }) => {
   await page.goto("/en/");
 
   const firstRow = page.locator("button.ab-index-row").first();
   await firstRow.click();
 
-  // URL should now contain ?case=fingo (fingo is the first case)
-  await expect(page).toHaveURL(/[?&]case=fingo/);
+  // URL should now contain ?case=alisio (alisio is the first case)
+  await expect(page).toHaveURL(/[?&]case=alisio/);
 
   // Escape removes the param
   await page.keyboard.press("Escape");
