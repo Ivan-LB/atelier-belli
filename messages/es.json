@@ -574,7 +574,7 @@
           "Ruteo hospitalario por seguro, proximidad y capacidad",
           "Auth JWT con refresh rotativo y bitácora de acceso a PHI"
         ],
-        "mediaCaption": "La consola de despacho: una emergencia en vivo sobre Tijuana, con la ruta vial y un traslado simulado.",
+        "mediaCaption": "Una emergencia real, dos superficies en el mismo instante: la consola la muestra despachada y esperando paramédico mientras la oferta le llega al teléfono del paramédico. Él acepta, se resuelve el ruteo hospitalario y ambas pasan a en ruta.",
         "galleryCaption": "La app del paciente, en la misma emergencia: el botón SOS, el tracking en vivo con la ruta vial real del paramédico y su ETA, y la tarjeta de emergencia que leen los rescatistas al llegar."
       },
       "arrhythmia": {

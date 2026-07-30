@@ -326,12 +326,11 @@ export default function PortfolioPage() {
       media: [
         {
           kind: "video",
-          src: "/cases/video/vitapath-demo.mp4",
-          poster: "/cases/video/vitapath-demo-poster.webp",
-          w: 1120,
-          h: 700,
-          frame: "browser",
-          url: "vitapath · despacho en vivo",
+          src: "/cases/video/vitapath-system.mp4",
+          poster: "/cases/video/vitapath-system-poster.webp",
+          w: 1600,
+          h: 760,
+          frame: "bare",
           caption: t("cases.vitapath.mediaCaption"),
         },
         {
@@ -1029,7 +1028,7 @@ export default function PortfolioPage() {
         {activeCase && (
           <div className="ab-case-body">
             <div
-              className={`ab-case-preview${["mezcal", "blip", "briefmark", "pass", "vitapath", "arrhythmia"].includes(activeCase.preview) ? " web-preview" : ""}${activeCase.preview === "alisio" ? " tall-preview" : ""}`}
+              className={`ab-case-preview${["mezcal", "blip", "pass", "vitapath", "arrhythmia"].includes(activeCase.preview) ? " web-preview" : ""}${activeCase.preview === "alisio" ? " tall-preview" : ""}`}
             >
               <CasePreview which={activeCase.preview} />
             </div>
@@ -1252,29 +1251,9 @@ function CasePreview({ which }: { which: CaseKey }) {
   }
   if (which === "briefmark") {
     return (
-      <div className="ab-browser-frame">
-        <div className="ab-browser-bar">
-          <span className="bdot" />
-          <span className="bdot" />
-          <span className="bdot" />
-          <span className="url">Briefmark — iOS</span>
-        </div>
-        <div className="ab-mez-site">
-          <span className="ms-eye">TikTok → smart bookmark</span>
-          <h3>Brief + Mark.</h3>
-          <div className="ms-row">
-            <div>
-              <p>
-                Comparte un video y la IA extrae cada recomendación — recetas, películas, libros,
-                lugares — en tarjetas accionables.
-              </p>
-              <div className="ms-cta">
-                <b>Analizar video</b>
-                <b>Mis marcas</b>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="ab-phone-img briefmark" aria-hidden="true" style={{ ["--w" as any]: "252px" }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/cases/briefmark-hero.webp" alt="" width={600} height={1304} loading="lazy" />
       </div>
     )
   }

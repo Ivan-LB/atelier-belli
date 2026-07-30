@@ -58,10 +58,11 @@ route files. To add (or reorder) a case:
 predate the folder and keep their root-level `public/*-hero.*` files).
 fingo/savely use the `ab-phone-img` phone frame; blip and mezcal render real
 captures inside `ab-browser-frame` via the `.ab-browser-shot` img class
-(16:10, explicit width/height). briefmark/pass are still styled
-*placeholders* reusing `ab-browser-frame` + `ab-mez-site` — swap for real
-images when available (briefmark is iOS → phone frame; pass → Apple Wallet
-screenshot). The modal wrapper adds `web-preview` for every browser-frame
+(16:10, explicit width/height). **briefmark** now uses a real capture of its
+onboarding screen (`public/cases/briefmark-hero.webp`, 600×1304) in the
+`.ab-phone-img.briefmark` phone frame — it replaced the fake `ab-mez-site`
+HTML mock, which read as a broken image; that mock's CSS was deleted with it.
+**pass** has no UI at all, so it renders the `.ab-arch` architecture SVG. The modal wrapper adds `web-preview` for every browser-frame
 preview via an `includes([...])` check — keep that list in sync (alisio is a
 device combo, NOT web, so it stays OUT of that list). **All
 preview imgs must carry explicit `width`/`height`** — without them the
@@ -138,9 +139,23 @@ sideways on mobile with text clipped. `.ab-case-media img/video` also cap at
   side by side with ffmpeg `overlay` + `drawbox` borders. It shows one live
   session: started on the phone, measured on the Watch, mirrored back, with the
   in-zone/out-of-zone badge flipping. That is the case's whole thesis.
+- `vitapath-system.mp4` (1600×760) is the same trick across a **browser and a
+  phone**: a Playwright `recordVideo` of the console started alongside a simctl
+  recording of the paramedic app, then the SOS fired by API ~10s in so both
+  surfaces capture the same emergency. Cut to the synchronised window and
+  composited console-left / phone-right. It shows the console holding the
+  emergency as "esperando paramédico" while the offer lands on the phone, the
+  accept, and both flipping to en route with the real OSRM road route.
+  The paramedic app's own **"Simulate movement"** debug chip drives the pin
+  along the route and trips the arrival geofence, which unlocks Transport /
+  Complete and reveals the patient PHI — good footage, no real device needed.
 - Vitapath's patient-app stills came from a real API-driven emergency (SOS →
   accept), captured with `simctl io screenshot` after relaunching the app so it
   reopened on the live-tracking screen.
+- Login walls: both Vitapath apps gate everything behind auth, and each has a
+  **debug autofill icon** in the nav bar that fills the current onboarding step
+  (6 steps for the patient profile). Accounts and the full runbook live in
+  `~/Projects/vitapath/DEMO.md`.
 
 **Vitrine (hero showcase):** three pieces, all 2026 as of 2026-07-30 —
 **Vitapath** (`.ab-vit-web-combo tilt-l`: console capture in the browser frame

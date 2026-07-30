@@ -574,7 +574,7 @@
           "Hospital routing by insurance, proximity and capability",
           "JWT auth with rotating refresh, and a PHI access audit trail"
         ],
-        "mediaCaption": "The dispatch console: a live emergency over Tijuana, with the road route and a simulated transport.",
+        "mediaCaption": "One real emergency, two surfaces at the same moment: the console shows it dispatched and waiting for a paramedic while the offer lands on the paramedic's phone. He accepts, hospital routing resolves, and both flip to en route.",
         "galleryCaption": "The patient app, same emergency: the SOS button, live tracking with the paramedic's real road route and ETA, and the emergency card responders read on arrival."
       },
       "arrhythmia": {
