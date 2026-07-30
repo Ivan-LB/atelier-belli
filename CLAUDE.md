@@ -58,10 +58,11 @@ route files. To add (or reorder) a case:
 predate the folder and keep their root-level `public/*-hero.*` files).
 fingo/savely use the `ab-phone-img` phone frame; blip and mezcal render real
 captures inside `ab-browser-frame` via the `.ab-browser-shot` img class
-(16:10, explicit width/height). briefmark/pass are still styled
-*placeholders* reusing `ab-browser-frame` + `ab-mez-site` — swap for real
-images when available (briefmark is iOS → phone frame; pass → Apple Wallet
-screenshot). The modal wrapper adds `web-preview` for every browser-frame
+(16:10, explicit width/height). **briefmark** now uses a real capture of its
+onboarding screen (`public/cases/briefmark-hero.webp`, 600×1304) in the
+`.ab-phone-img.briefmark` phone frame — it replaced the fake `ab-mez-site`
+HTML mock, which read as a broken image; that mock's CSS was deleted with it.
+**pass** has no UI at all, so it renders the `.ab-arch` architecture SVG. The modal wrapper adds `web-preview` for every browser-frame
 preview via an `includes([...])` check — keep that list in sync (alisio is a
 device combo, NOT web, so it stays OUT of that list). **All
 preview imgs must carry explicit `width`/`height`** — without them the
@@ -94,13 +95,78 @@ on :8080 + PostGIS/MinIO via `backend-spring` → `docker compose up`; seeded ad
 login+screenshot Playwright script against `/mapa`. Its action is a disabled
 "Private beta". Both vitapath and arrhythmia are in the `web-preview` list.
 
-**Vitrine (hero showcase):** three pieces — Fingo and **Alisio** phones
-plus Destilería Lorenzana as a responsive-showcase combo. Alisio replaced
-Savely in the center slot on 2026-07-21; it reuses the Fingo treatment (a
-full App Store **marketing frame** — headline + device — in the rounded
-`.ab-phone-img.alisio` card, NOT a raw screen), via
-`public/cases/alisio-vitrine.webp` (600×1304, cropped from
-`iphone_01_train.png`). Sized to the former Savely 272px through
+**Case-study depth (`story` / `highlights` / `media`)** — added 2026-07-30. A
+`CaseData` entry may carry three optional fields that render as full-width bands
+**inside the modal's existing scroll area**, below the two-column fold. The fold
+stays the 30-second glance; the bands are the 5-minute read (PRODUCT.md
+principle 2). Only the four flagship cases (`alisio`, `pass`, `vitapath`,
+`arrhythmia`) carry them; the other five degrade gracefully to the compact
+modal, so narrative can be added later without touching code.
+
+- `story`: exactly three `[label, body]` beats built by the `storyOf(key)` helper
+  inside the `CASES` `useMemo`, reading `cases.storyLabels.*` (shared) plus
+  `cases.<key>.story.{problem,approach,result}`. Rendered with **serif-italic
+  run-in lead-ins** (`.ab-case-beats h4`), deliberately NOT another tracked-caps
+  eyebrow — the modal already spends that idiom once in `.ab-case-head .eye`.
+- `highlights`: `t.raw("cases.<key>.highlights")` string array; a typographic
+  list with accent dashes, two roomy columns via
+  `minmax(min(100%, 400px), 1fr)`. Not a card grid.
+- `media`: an **array** of blocks, each `{kind: "video"}` or `{kind: "gallery"}`.
+  Videos use `preload="none"` + an IntersectionObserver so nothing is fetched
+  until the band scrolls into view and only the visible clip plays;
+  `prefers-reduced-motion` swaps autoplay for a poster plus real controls.
+  `frame` picks the chrome: `browser` (browser frame), `phone`
+  (`.ab-phone-img`), or `bare` (no chrome, natural aspect — for multi-surface
+  composites, rendered with the `wide` figure).
+
+**Gotcha (fixed, do not regress):** `.ab-case-body > * { min-width: 0 }` is
+load-bearing. Without it the intrinsic width of the media (a 1400px composite, a
+1200px capture) sets the grid track's min-content and the whole modal scrolls
+sideways on mobile with text clipped. `.ab-case-media img/video` also cap at
+`max-width: 100%`.
+
+**Demo media capture recipes** (all assets are real captures, never mockups):
+- Web surfaces: Playwright `recordVideo` against the running app, then ffmpeg
+  (`setpts` to speed up, `libx264 -crf 30`). Console/ML clips are 1120×700.
+- iOS/watchOS: `xcrun simctl io <udid> recordVideo` (headless; the GUI window is
+  only needed to drive taps). In Xcode 27 the Simulator app is **Device Hub** —
+  request computer-use access to "Device Hub", not "Simulator". Tap keys with
+  small waits: rapid consecutive taps coalesce, and `type` triggers the iOS
+  accent popup. `xcrun simctl privacy <udid> grant <service> <bundle>` skips the
+  permission dialogs.
+- `alisio-system.mp4` (1400×760) is two **simultaneous** simctl recordings
+  (iPhone + paired Watch, started together so they stay in sync) composited
+  side by side with ffmpeg `overlay` + `drawbox` borders. It shows one live
+  session: started on the phone, measured on the Watch, mirrored back, with the
+  in-zone/out-of-zone badge flipping. That is the case's whole thesis.
+- `vitapath-system.mp4` (1600×760) is the same trick across a **browser and a
+  phone**: a Playwright `recordVideo` of the console started alongside a simctl
+  recording of the paramedic app, then the SOS fired by API ~10s in so both
+  surfaces capture the same emergency. Cut to the synchronised window and
+  composited console-left / phone-right. It shows the console holding the
+  emergency as "esperando paramédico" while the offer lands on the phone, the
+  accept, and both flipping to en route with the real OSRM road route.
+  The paramedic app's own **"Simulate movement"** debug chip drives the pin
+  along the route and trips the arrival geofence, which unlocks Transport /
+  Complete and reveals the patient PHI — good footage, no real device needed.
+- Vitapath's patient-app stills came from a real API-driven emergency (SOS →
+  accept), captured with `simctl io screenshot` after relaunching the app so it
+  reopened on the live-tracking screen.
+- Login walls: both Vitapath apps gate everything behind auth, and each has a
+  **debug autofill icon** in the nav bar that fills the current onboarding step
+  (6 steps for the patient profile). Accounts and the full runbook live in
+  `~/Projects/vitapath/DEMO.md`.
+
+**Vitrine (hero showcase):** three pieces, all 2026 as of 2026-07-30 —
+**Vitapath** (`.ab-vit-web-combo tilt-l`: console capture in the browser frame
+plus the patient app's live-tracking screen as the mini phone, so the hero shows
+the multi-surface nature at a glance), **Alisio** (center, emphasized slot) and
+**Arrhythmia Detector** (`.ab-vit-web-combo tilt-r`, browser only). This
+replaced Fingo (2024) and Destilería (2025) — the trio now leads with the
+strongest recent work. Alisio reuses the Fingo treatment (a full App Store
+**marketing frame** — headline + device — in the rounded `.ab-phone-img.alisio`
+card, NOT a raw screen), via `public/cases/alisio-vitrine.webp` (600×1304,
+cropped from `iphone_01_train.png`). Sized to 272px through
 `.ab-vitrine .ab-phone-img.alisio` so the modal's 244px is untouched.
 (`.ab-vit-web-combo`): a 400×260 browser window with the desktop capture and
 a mini phone overlapping its corner with the mobile capture
