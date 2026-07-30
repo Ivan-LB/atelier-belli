@@ -475,6 +475,11 @@
         "status": "Estado",
         "year": "Año"
       },
+      "storyLabels": {
+        "problem": "El problema.",
+        "approach": "El enfoque.",
+        "result": "El resultado."
+      },
       "fingo": {
         "titleIt": "decisiones en grupo, fácil.",
         "descRich": "Una app de iOS para decidir en grupo al instante — ruletas, monedas, flechas giratorias, toque-para-elegir. Totalmente personalizable, con <it>háptics</it> que hacen que cada elección se sienta intencional. Construida con SwiftUI.",
@@ -519,21 +524,58 @@
         "metaPlatform": "AWS · Serverless",
         "metaStatus": "En producción",
         "actionPrimary": "Código próximamente",
-        "tag": "Pases de Apple Wallet — emitidos, actualizados, vivos."
+        "tag": "Pases de Apple Wallet — emitidos, actualizados, vivos.",
+        "story": {
+          "problem": "Un pase de Wallet no se refresca desde la app. Sin el web service de pases de Apple, la tarjeta se queda vieja en el Wallet del usuario, y una tarjeta vieja es una tarjeta que borra.",
+          "approach": "Un backend serverless que implementa el protocolo completo: registro de dispositivos, versionado del pase, firma con PassKit y el push que le dice al dispositivo que vuelva por la versión nueva.",
+          "result": "En producción. Las membresías y tarjetas de sellos se emiten por API y cambian en la tarjeta del usuario en tiempo real, sin que él abra nada."
+        },
+        "highlights": [
+          "El web service completo de Apple Wallet, no solo generar el .pkpass",
+          "Push por APNs: el pase se actualiza en su lugar, en la tarjeta",
+          "Lambda, API Gateway, DynamoDB y S3, desplegados con SAM",
+          "Emisión por API: membresías de gym y tarjetas de sellos"
+        ]
       },
       "alisio": {
         "titleIt": "entrena por zonas de frecuencia.",
         "descRich": "Una app de iOS y Apple Watch para entrenar por zonas. Elige una zona y el reloj <it>te avisa en la muñeca</it> en cuanto te sales — el entrenamiento vuelve a ser un vistazo de dos segundos, no una pantalla que estudias a media serie. Arranca solo desde el reloj, se refleja en vivo en el iPhone y guarda cada sesión <it>en el dispositivo</it>, sin cuentas. Hecha con SwiftUI y HealthKit.",
         "metaStatus": "Disponible en App Store",
         "actionPrimary": "Ver en App Store",
-        "tag": "Zonas de frecuencia que sientes en la muñeca — sin pantallas."
+        "tag": "Zonas de frecuencia que sientes en la muñeca — sin pantallas.",
+        "story": {
+          "problem": "Entrenar por zonas implica revisar la muñeca a media serie. A ese ritmo el número llega tarde, y buscarlo rompe justo el esfuerzo que querías sostener.",
+          "approach": "El reloj mide y avisa con vibraciones: al entrar a la zona, al salirte y al cumplir la meta. El iPhone solo refleja lo que el reloj mide. Las zonas salen de tu perfil real (Karvonen sobre la fórmula de Tanaka), no de una tabla genérica.",
+          "result": "Publicada en el App Store. Una sesión corre sin mirar la pantalla: eliges zona y tiempo, y el resto llega a tu muñeca. Todo se queda en el dispositivo, sin cuenta."
+        },
+        "highlights": [
+          "Avisos hápticos al entrar, salir y cumplir la meta",
+          "Zonas por perfil: Karvonen o Simple (base Tanaka 2001)",
+          "El Watch arranca la sesión solo, sin iPhone cerca",
+          "Perfil e historial se sincronizan entre dispositivos; nada sale de ellos"
+        ],
+        "mediaCaption": "Una sesión en vivo en los dos dispositivos: arrancada desde el iPhone, medida en el Watch y espejeada de vuelta. Mira el badge cambiar cuando el pulso se sale de la Zona 2 y regresa.",
+        "watchCaption": "Solo con el reloj: elegir zona con la corona, la sesión en vivo, meta cumplida y la complicación en la carátula."
       },
       "vitapath": {
         "titleIt": "respuesta a emergencias, de punta a punta.",
         "descRich": "Una plataforma de respuesta médica de emergencia. Un paciente con una condición seria dispara un SOS; el paramédico más cercano de una <it>red privada</it> es despachado y rastreado en vivo; el paciente se rutea al hospital correcto por seguro, proximidad y capacidad; una consola hospitalaria maneja despacho, llegada y recepción. Dos apps SwiftUI, una consola React y un backend <it>Spring Boot + PostGIS</it> con una máquina de estados en tiempo real.",
         "metaStatus": "MVP · verificado e2e",
         "actionPrimary": "Beta privada",
-        "tag": "Del SOS al hospital — despacho, tracking, ruteo."
+        "tag": "Del SOS al hospital — despacho, tracking, ruteo.",
+        "story": {
+          "problem": "En una emergencia los minutos se van decidiendo quién responde y a dónde se lleva al paciente. Si el hospital no cubre su seguro o no puede con el caso, el traslado se hace dos veces.",
+          "approach": "Una sola máquina de estados de la emergencia en Spring Boot. PostGIS elige al paramédico disponible más cercano con barrido de escalación, STOMP mantiene el mapa y el ETA vivos en las tres superficies, y el ruteo hospitalario pondera seguro, proximidad y capacidad con ETAs reales de manejo (OSRM).",
+          "result": "Un MVP verificado de punta a punta: SOS, oferta, aceptación, traslado, handshake con el hospital y recepción, en dos apps SwiftUI y una consola React, con 207 pruebas unitarias detrás."
+        },
+        "highlights": [
+          "Despacho geoespacial: PostGIS nearest-N más barrido de escalación",
+          "Tiempo real por STOMP: mapa y ETA vivos en teléfono, muñeca y consola",
+          "Ruteo hospitalario por seguro, proximidad y capacidad",
+          "Auth JWT con refresh rotativo y bitácora de acceso a PHI"
+        ],
+        "mediaCaption": "Una emergencia real, dos superficies en el mismo instante: la consola la muestra despachada y esperando paramédico mientras la oferta le llega al teléfono del paramédico. Él acepta, se resuelve el ruteo hospitalario y ambas pasan a en ruta.",
+        "galleryCaption": "La app del paciente, en la misma emergencia: el botón SOS, el tracking en vivo con la ruta vial real del paramédico y su ETA, y la tarjeta de emergencia que leen los rescatistas al llegar."
       },
       "arrhythmia": {
         "titleIt": "lee el ECG, latido a latido.",
@@ -541,7 +583,20 @@
         "metaPlatform": "Web · Responsiva",
         "metaStatus": "Demo funcional",
         "actionPrimary": "Ver el backend ML",
-        "tag": "Sube un ECG, clasifica cada latido (AAMI)."
+        "tag": "Sube un ECG, clasifica cada latido (AAMI).",
+        "story": {
+          "problem": "El original era una app de escritorio que graficaba los primeros cuatro segundos del registro y diagnosticaba un latido por clic. Peor: evaluaba mezclando pacientes entre particiones, lo que infla todas las métricas que reportaba.",
+          "approach": "Un pipeline de features por ventana alrededor de cada latido (FFT/PSD, wavelets, estadísticas) alimenta una red neuronal entrenada con MIT-BIH, servida detrás de FastAPI. Reconstruido con un protocolo inter-paciente sin fuga de datos, para que el baseline sea honesto en lugar de halagador.",
+          "result": "Una demo funcional: subes un registro WFDB y lees la traza completa de un jalón, con cada latido clasificado en su clase AAMI y la confianza del modelo al lado. 168 pruebas, y el backend es público."
+        },
+        "highlights": [
+          "5 clases AAMI EC57 (N/S/V/F/Q) con confianza por latido",
+          "Evaluación inter-paciente sin fuga: un baseline honesto",
+          "El registro completo de 30 minutos, no una rebanada de cuatro segundos",
+          "FastAPI y Next.js, con el modelo versionado de forma explícita"
+        ],
+        "mediaCaption": "Registro 230 de MIT-BIH: 2,464 latidos, 123 marcados, clasificados contra el modelo en vivo.",
+        "galleryCaption": "La subida del registro, y un latido marcado abierto en su ventana real de 60 segundos."
       }
     }
   }
