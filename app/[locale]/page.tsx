@@ -41,6 +41,26 @@ type CaseAction = {
   icon?: "external" | "help" | "clock"
 }
 
+/** Demo media for a case: a captured clip, or a strip of real screenshots. */
+type CaseMedia =
+  | {
+      kind: "video"
+      src: string
+      poster: string
+      w: number
+      h: number
+      /** `bare` = no device chrome, natural aspect (multi-surface composites). */
+      frame: "browser" | "phone" | "bare"
+      url?: string
+      caption: string
+    }
+  | {
+      kind: "gallery"
+      wide?: boolean
+      items: Array<{ src: string; w: number; h: number }>
+      caption: string
+    }
+
 type CaseData = {
   num: string
   kicker: string
@@ -49,6 +69,10 @@ type CaseData = {
   meta: Array<[string, string]>
   actions: CaseAction[]
   preview: CaseKey
+  /** problem → approach → result. Optional: only the flagship cases carry it. */
+  story?: Array<[string, string]>
+  highlights?: string[]
+  media?: CaseMedia[]
 }
 
 const BRAND_LOGO = (
@@ -161,7 +185,15 @@ export default function PortfolioPage() {
   }, [])
 
   // Build CASES per language
-  const CASES: Record<CaseKey, CaseData> = useMemo(() => ({
+  const CASES: Record<CaseKey, CaseData> = useMemo(() => {
+    // problem → approach → result. The labels are shared; the bodies live per case.
+    const storyOf = (key: CaseKey): Array<[string, string]> => [
+      [t("cases.storyLabels.problem"), t(`cases.${key}.story.problem`)],
+      [t("cases.storyLabels.approach"), t(`cases.${key}.story.approach`)],
+      [t("cases.storyLabels.result"), t(`cases.${key}.story.result`)],
+    ]
+
+    return {
     alisio: {
       num: "01",
       kicker: "iOS · watchOS · 2026",
@@ -186,6 +218,29 @@ export default function PortfolioPage() {
         },
       ],
       preview: "alisio",
+      story: storyOf("alisio"),
+      highlights: t.raw("cases.alisio.highlights") as string[],
+      media: [
+        {
+          kind: "video",
+          src: "/cases/video/alisio-system.mp4",
+          poster: "/cases/video/alisio-system-poster.webp",
+          w: 1400,
+          h: 760,
+          frame: "bare",
+          caption: t("cases.alisio.mediaCaption"),
+        },
+        {
+          kind: "gallery",
+          items: [
+            { src: "/cases/gallery/alisio-w1.webp", w: 300, h: 358 },
+            { src: "/cases/gallery/alisio-w2.webp", w: 300, h: 358 },
+            { src: "/cases/gallery/alisio-w3.webp", w: 300, h: 358 },
+            { src: "/cases/gallery/alisio-w4.webp", w: 300, h: 358 },
+          ],
+          caption: t("cases.alisio.watchCaption"),
+        },
+      ],
     },
     pass: {
       num: "02",
@@ -210,6 +265,8 @@ export default function PortfolioPage() {
         },
       ],
       preview: "pass",
+      story: storyOf("pass"),
+      highlights: t.raw("cases.pass.highlights") as string[],
     },
     fingo: {
       num: "03",
@@ -264,6 +321,29 @@ export default function PortfolioPage() {
         },
       ],
       preview: "vitapath",
+      story: storyOf("vitapath"),
+      highlights: t.raw("cases.vitapath.highlights") as string[],
+      media: [
+        {
+          kind: "video",
+          src: "/cases/video/vitapath-demo.mp4",
+          poster: "/cases/video/vitapath-demo-poster.webp",
+          w: 1120,
+          h: 700,
+          frame: "browser",
+          url: "vitapath · despacho en vivo",
+          caption: t("cases.vitapath.mediaCaption"),
+        },
+        {
+          kind: "gallery",
+          items: [
+            { src: "/cases/gallery/vitapath-p1.webp", w: 420, h: 913 },
+            { src: "/cases/gallery/vitapath-p2.webp", w: 420, h: 913 },
+            { src: "/cases/gallery/vitapath-p3.webp", w: 420, h: 913 },
+          ],
+          caption: t("cases.vitapath.galleryCaption"),
+        },
+      ],
     },
     arrhythmia: {
       num: "05",
@@ -289,6 +369,29 @@ export default function PortfolioPage() {
         },
       ],
       preview: "arrhythmia",
+      story: storyOf("arrhythmia"),
+      highlights: t.raw("cases.arrhythmia.highlights") as string[],
+      media: [
+        {
+          kind: "video",
+          src: "/cases/video/arrhythmia-demo.mp4",
+          poster: "/cases/video/arrhythmia-demo-poster.webp",
+          w: 1120,
+          h: 700,
+          frame: "browser",
+          url: "arrhythmia-detector",
+          caption: t("cases.arrhythmia.mediaCaption"),
+        },
+        {
+          kind: "gallery",
+          wide: true,
+          items: [
+            { src: "/cases/gallery/arrhythmia-01.webp", w: 760, h: 642 },
+            { src: "/cases/gallery/arrhythmia-02.webp", w: 760, h: 946 },
+          ],
+          caption: t("cases.arrhythmia.galleryCaption"),
+        },
+      ],
     },
     mezcal: {
       num: "06",
@@ -393,7 +496,8 @@ export default function PortfolioPage() {
       ],
       preview: "blip",
     },
-  }), [t, locale])
+    }
+  }, [t, locale])
 
   const openCase = useCallback((key: CaseKey, trigger?: HTMLElement) => {
     lastFocusRef.current = trigger ?? (document.activeElement as HTMLElement | null)
@@ -564,14 +668,39 @@ export default function PortfolioPage() {
               </div>
 
               <div className="ab-phones">
-                <div className="ab-phone-slot" aria-label="Fingo preview">
-                  <div className="ab-phone-img fingo tilt-l" aria-hidden="true">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/fingo-hero.webp" alt="" width={460} height={997} loading="lazy" />
+                <div className="ab-phone-slot web-slot" aria-label="Vitapath preview">
+                  <div className="ab-vit-web-combo tilt-l" aria-hidden="true">
+                    <div className="ab-vit-browser">
+                      <div className="bb">
+                        <span className="d" />
+                        <span className="d" />
+                        <span className="d" />
+                        <span className="u">◌</span>
+                      </div>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        className="shot"
+                        src="/cases/vitapath-hero.webp"
+                        alt=""
+                        width={1200}
+                        height={750}
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="ab-vit-mini-phone">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src="/cases/gallery/vitapath-p2.webp"
+                        alt=""
+                        width={420}
+                        height={913}
+                        loading="lazy"
+                      />
+                    </div>
                   </div>
                   <div className="caption">
-                    <span className="n">Fingo</span>
-                    <span className="s">iOS · 2024</span>
+                    <span className="n">Vitapath</span>
+                    <span className="s">iOS · Web · 2026</span>
                   </div>
                 </div>
 
@@ -586,7 +715,7 @@ export default function PortfolioPage() {
                   </div>
                 </div>
 
-                <div className="ab-phone-slot web-slot" aria-label="Destilería Lorenzana preview">
+                <div className="ab-phone-slot web-slot" aria-label="Arrhythmia Detector preview">
                   <div className="ab-vit-web-combo tilt-r" aria-hidden="true">
                     <div className="ab-vit-browser">
                       <div className="bb">
@@ -598,27 +727,17 @@ export default function PortfolioPage() {
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         className="shot"
-                        src="/cases/mezcal-hero.webp"
+                        src="/cases/arrhythmia-hero.webp"
                         alt=""
-                        width={1600}
-                        height={1000}
-                        loading="lazy"
-                      />
-                    </div>
-                    <div className="ab-vit-mini-phone">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src="/cases/mezcal-mobile.webp"
-                        alt=""
-                        width={600}
-                        height={1299}
+                        width={900}
+                        height={562}
                         loading="lazy"
                       />
                     </div>
                   </div>
                   <div className="caption">
-                    <span className="n">Destilería Lorenzana</span>
-                    <span className="s">Web · 2025</span>
+                    <span className="n">Arrhythmia Detector</span>
+                    <span className="s">Web · ML · 2026</span>
                   </div>
                 </div>
               </div>
@@ -910,7 +1029,7 @@ export default function PortfolioPage() {
         {activeCase && (
           <div className="ab-case-body">
             <div
-              className={`ab-case-preview${["mezcal", "blip", "briefmark", "pass", "vitapath", "arrhythmia"].includes(activeCase.preview) ? " web-preview" : ""}`}
+              className={`ab-case-preview${["mezcal", "blip", "briefmark", "pass", "vitapath", "arrhythmia"].includes(activeCase.preview) ? " web-preview" : ""}${activeCase.preview === "alisio" ? " tall-preview" : ""}`}
             >
               <CasePreview which={activeCase.preview} />
             </div>
@@ -951,6 +1070,43 @@ export default function PortfolioPage() {
                 })}
               </div>
             </div>
+
+            {activeCase.story && (
+              <div className="ab-case-story">
+                <div className="ab-case-beats">
+                  {activeCase.story.map(([label, body]) => (
+                    <div key={label}>
+                      <h4>{label}</h4>
+                      <p>{body}</p>
+                    </div>
+                  ))}
+                </div>
+                {activeCase.highlights && activeCase.highlights.length > 0 && (
+                  <ul className="ab-case-highlights">
+                    {activeCase.highlights.map((h) => (
+                      <li key={h}>{h}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
+
+            {activeCase.media?.map((block) => (
+              <div className="ab-case-media" key={block.caption}>
+                <figure
+                  className={
+                    block.kind === "gallery" || block.frame === "bare" ? "wide" : undefined
+                  }
+                >
+                  {block.kind === "video" ? (
+                    <CaseVideo media={block} />
+                  ) : (
+                    <CaseGallery media={block} />
+                  )}
+                  <figcaption>{block.caption}</figcaption>
+                </figure>
+              </div>
+            ))}
           </div>
         )}
       </div>
@@ -972,6 +1128,93 @@ function toRoman(n: number) {
     10: "x",
   }
   return map[n] ?? String(n)
+}
+
+/**
+ * Demo clip. `preload="none"` means nothing is fetched until the band scrolls
+ * into view, and playback is tied to visibility so an open modal never keeps a
+ * hidden video decoding. Reduced motion gets a poster plus real controls
+ * instead of autoplay.
+ */
+function CaseVideo({ media }: { media: Extract<CaseMedia, { kind: "video" }> }) {
+  const ref = useRef<HTMLVideoElement | null>(null)
+  const [reduced, setReduced] = useState(false)
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
+    setReduced(mq.matches)
+    const onChange = () => setReduced(mq.matches)
+    mq.addEventListener("change", onChange)
+    return () => mq.removeEventListener("change", onChange)
+  }, [])
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el || reduced) return
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) void el.play().catch(() => {})
+          else el.pause()
+        }
+      },
+      { threshold: 0.35 },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [reduced])
+
+  const video = (
+    <video
+      ref={ref}
+      className={`ab-case-video${media.frame === "phone" ? " portrait" : ""}${media.frame === "bare" ? " bare" : ""}`}
+      poster={media.poster}
+      width={media.w}
+      height={media.h}
+      muted
+      loop
+      playsInline
+      preload="none"
+      controls={reduced}
+    >
+      <source src={media.src} type="video/mp4" />
+    </video>
+  )
+
+  if (media.frame === "phone") {
+    return <div className="ab-phone-img">{video}</div>
+  }
+  if (media.frame === "bare") {
+    return video
+  }
+  return (
+    <div className="ab-browser-frame has-shot">
+      <div className="ab-browser-bar">
+        <span className="bdot" />
+        <span className="bdot" />
+        <span className="bdot" />
+        <span className="url">{media.url}</span>
+      </div>
+      {video}
+    </div>
+  )
+}
+
+/** Horizontal strip of real captures. Scrollable by pointer, wheel and keyboard. */
+function CaseGallery({ media }: { media: Extract<CaseMedia, { kind: "gallery" }> }) {
+  return (
+    <div
+      className={`ab-case-gallery${media.wide ? " wide" : ""}`}
+      role="group"
+      aria-label={media.caption}
+      tabIndex={0}
+    >
+      {media.items.map((item) => (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img key={item.src} src={item.src} alt="" width={item.w} height={item.h} loading="lazy" />
+      ))}
+    </div>
+  )
 }
 
 function CasePreview({ which }: { which: CaseKey }) {
@@ -1036,31 +1279,47 @@ function CasePreview({ which }: { which: CaseKey }) {
     )
   }
   if (which === "pass") {
+    /* A serverless platform has no screen of its own, so the case shows the
+       path a pass actually travels: issue, store, push, update in place. */
     return (
-      <div className="ab-browser-frame">
-        <div className="ab-browser-bar">
-          <span className="bdot" />
-          <span className="bdot" />
-          <span className="bdot" />
-          <span className="url">api.pass — AWS</span>
-        </div>
-        <div className="ab-mez-site">
-          <span className="ms-eye">Apple Wallet · Serverless</span>
-          <h3>Pases vivos en Wallet.</h3>
-          <div className="ms-row">
-            <div>
-              <p>
-                Membresías y tarjetas de sellos emitidas por API — y actualizadas en tiempo real
-                directo en la tarjeta del usuario.
-              </p>
-              <div className="ms-cta">
-                <b>POST /generate</b>
-                <b>PATCH /update</b>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <svg className="ab-arch" viewBox="0 0 460 250" role="img" aria-label="Pass architecture: API Gateway to Lambda to DynamoDB, with an APNs push updating the pass in Apple Wallet">
+        <text className="sub" x="4" y="52">POST /generate</text>
+        <text className="sub" x="4" y="106">PATCH /update</text>
+        <path className="flow" d="M92 48 H118" />
+        <path className="flow" d="M92 102 H108 V52 H118" />
+        <path className="ah" d="M118 44.5 l7 3.5 -7 3.5 z" />
+
+        <rect className="n" x="126" y="30" width="112" height="36" rx="8" />
+        <text className="lbl" x="182" y="52" textAnchor="middle">API Gateway</text>
+
+        <path className="flow" d="M182 66 V88" />
+        <path className="ah" d="M178.5 88 l3.5 7 3.5 -7 z" />
+
+        <rect className="n" x="126" y="94" width="112" height="42" rx="8" />
+        <text className="lbl" x="182" y="112" textAnchor="middle">Lambda</text>
+        <text className="sub" x="182" y="126" textAnchor="middle">PassKit signing</text>
+
+        <path className="flow" d="M182 136 V158" />
+        <path className="ah" d="M178.5 158 l3.5 7 3.5 -7 z" />
+
+        <rect className="n" x="126" y="164" width="112" height="42" rx="8" />
+        <text className="lbl" x="182" y="182" textAnchor="middle">DynamoDB</text>
+        <text className="sub" x="182" y="196" textAnchor="middle">pass state</text>
+
+        <path className="push" d="M238 115 H286" />
+        <path className="ah-a" d="M286 111.5 l7 3.5 -7 3.5 z" />
+        <text className="pushlbl" x="262" y="105" textAnchor="middle">APNs</text>
+
+        <rect className="card" x="296" y="46" width="152" height="140" rx="12" />
+        <rect className="stripe" x="296" y="46" width="152" height="6" rx="3" />
+        <text className="lbl" x="312" y="78">Wallet pass</text>
+        <path className="flow" d="M312 92 H432" opacity="0.5" />
+        <text className="sub" x="312" y="110">MEMBER · 4821</text>
+        <path className="flow" d="M312 122 H432" opacity="0.5" />
+        <text className="sub" x="312" y="140">STAMPS · 7 / 10</text>
+        <path className="flow" d="M312 152 H432" opacity="0.5" />
+        <text className="sub" x="312" y="170">updates in place</text>
+      </svg>
     )
   }
   if (which === "alisio") {

@@ -475,6 +475,11 @@
         "status": "Status",
         "year": "Year"
       },
+      "storyLabels": {
+        "problem": "The problem.",
+        "approach": "The approach.",
+        "result": "The result."
+      },
       "fingo": {
         "titleIt": "group choice, made easy.",
         "descRich": "An iOS app for making group decisions instantly — wheels, coins, spinning arrows, tap-to-choose. Fully customizable, with <it>haptics</it> that make each pick feel deliberate. Built with SwiftUI.",
@@ -519,21 +524,58 @@
         "metaPlatform": "AWS · Serverless",
         "metaStatus": "Running in production",
         "actionPrimary": "Code coming soon",
-        "tag": "Apple Wallet passes — issued, updated, alive."
+        "tag": "Apple Wallet passes — issued, updated, alive.",
+        "story": {
+          "problem": "A Wallet pass cannot be refreshed from an app. Without Apple's pass web service the card goes stale in the user's Wallet, and a stale card is one they delete.",
+          "approach": "A serverless backend that implements the protocol end to end: device registration, pass versioning, PassKit signing and the push that tells the device to come back for a new version.",
+          "result": "Running in production. Memberships and stamp cards are issued over an API and change on the user's card in real time, without them opening anything."
+        },
+        "highlights": [
+          "The full Apple Wallet web service, not just .pkpass generation",
+          "APNs push: the pass updates in place on the card",
+          "Lambda, API Gateway, DynamoDB and S3, deployed with SAM",
+          "Issued over an API: gym memberships and loyalty stamp cards"
+        ]
       },
       "alisio": {
         "titleIt": "train by heart-rate zones.",
         "descRich": "An iOS and Apple Watch app for zone training. Pick a zone and your watch <it>taps your wrist</it> the moment you drift out — a workout stays a two-second glance, not a screen you study mid-set. It starts standalone from the watch, mirrors live on iPhone, and keeps every session <it>on-device</it>, no account. Built with SwiftUI and HealthKit.",
         "metaStatus": "Live on the App Store",
         "actionPrimary": "View on App Store",
-        "tag": "Heart-rate zones you feel on your wrist — no screen to study."
+        "tag": "Heart-rate zones you feel on your wrist — no screen to study.",
+        "story": {
+          "problem": "Training by zone means checking your wrist mid-set. At that pace the number arrives late, and looking for it breaks the effort you were trying to hold.",
+          "approach": "The Watch measures and taps: entering the zone, leaving it, hitting the goal. The iPhone only mirrors what the Watch tracks. Zones come from your own profile (Karvonen over the Tanaka formula), not a generic table.",
+          "result": "Shipped to the App Store. A session runs without looking at a screen: pick a zone and a time, and the rest arrives on your wrist. Everything stays on-device, no account."
+        },
+        "highlights": [
+          "Haptic alerts on entering, leaving and completing the goal",
+          "Zones from your profile: Karvonen or Simple (Tanaka 2001 basis)",
+          "The Watch starts a session on its own, no iPhone nearby",
+          "Profile and history sync between devices; nothing leaves them"
+        ],
+        "mediaCaption": "One live session across both devices: started from the iPhone, measured on the Watch, mirrored back. Watch the badge flip as the heart rate drifts out of Zone 2 and returns.",
+        "watchCaption": "On the wrist alone: pick a zone with the crown, the live session, goal reached, and the watch-face complication."
       },
       "vitapath": {
         "titleIt": "emergency response, end to end.",
         "descRich": "An emergency medical-response platform. A patient with a serious condition fires an SOS; the nearest paramedic from a <it>private network</it> is dispatched and tracked live; the patient is routed to the right hospital by insurance, proximity and capability; a hospital console runs dispatch, arrival and reception. Two SwiftUI apps, a React console, and a <it>Spring Boot + PostGIS</it> backend with a real-time emergency state machine.",
         "metaStatus": "MVP · e2e-verified",
         "actionPrimary": "Private beta",
-        "tag": "SOS to hospital handoff — dispatched, tracked, routed."
+        "tag": "SOS to hospital handoff — dispatched, tracked, routed.",
+        "story": {
+          "problem": "In an emergency the minutes go to deciding who responds and where the patient is taken. Send them to a hospital that does not take their insurance, or cannot handle the case, and the transfer happens twice.",
+          "approach": "One emergency state machine in Spring Boot. PostGIS picks the nearest available paramedic with an escalation sweep, STOMP keeps the map and ETA live across all three surfaces, and hospital routing scores insurance, proximity and capability with real driving ETAs from OSRM.",
+          "result": "An MVP verified end to end: SOS, offer, accept, transport, hospital handshake and reception, across two SwiftUI apps and a React console, behind 207 unit tests."
+        },
+        "highlights": [
+          "Geospatial dispatch: PostGIS nearest-N plus an escalation sweep",
+          "Realtime over STOMP: map and ETA live on phone, wrist and console",
+          "Hospital routing by insurance, proximity and capability",
+          "JWT auth with rotating refresh, and a PHI access audit trail"
+        ],
+        "mediaCaption": "The dispatch console: a live emergency over Tijuana, with the road route and a simulated transport.",
+        "galleryCaption": "The patient app, same emergency: the SOS button, live tracking with the paramedic's real road route and ETA, and the emergency card responders read on arrival."
       },
       "arrhythmia": {
         "titleIt": "read the ECG, beat by beat.",
@@ -541,7 +583,20 @@
         "metaPlatform": "Web · Responsive",
         "metaStatus": "Working demo",
         "actionPrimary": "View the ML backend",
-        "tag": "Upload an ECG, classify every beat (AAMI)."
+        "tag": "Upload an ECG, classify every beat (AAMI).",
+        "story": {
+          "problem": "The original was a desktop app that plotted the first four seconds of a record and diagnosed one beat per button press. Worse, it evaluated by mixing patients across the split, which inflates every metric it reported.",
+          "approach": "A windowed feature pipeline (FFT/PSD, wavelets, statistics) around each beat feeds a neural network trained on MIT-BIH, served behind FastAPI. Rebuilt with a leakage-free inter-patient protocol, so the baseline is honest instead of flattering.",
+          "result": "A working demo: upload a WFDB record and read the whole trace at once, with every beat classified into its AAMI class and the model's confidence next to it. 168 tests, and the backend is public."
+        },
+        "highlights": [
+          "5 AAMI EC57 classes (N/S/V/F/Q) with per-beat confidence",
+          "Leakage-free inter-patient evaluation: an honest baseline",
+          "The full 30-minute record, not a four-second slice",
+          "FastAPI and Next.js, with an explicitly versioned model"
+        ],
+        "mediaCaption": "MIT-BIH record 230: 2,464 beats, 123 flagged, classified against the live model.",
+        "galleryCaption": "Uploading the record, and a flagged beat opened in its real 60-second context window."
       }
     }
   }
