@@ -1494,6 +1494,25 @@
   --w: 272px;
 }
 
+/* Between the carousel breakpoint and ~1280px the vitrine is still the 3-column
+   grid but its children are fixed px (400/272/400), so the tracks stay wider
+   than the viewport and `.ab-vitrine { overflow: hidden }` silently amputates
+   the third card: 333px of it at 821px, still 150px at iPad-landscape 1024px.
+   Scale the cards with the viewport across that band. */
+@media (min-width: 821px) and (max-width: 1279px) {
+  .ab-vitrine .ab-vit-web-combo .ab-vit-browser,
+  .ab-vitrine .ab-vit-browser {
+    --w: min(400px, 30vw);
+    --h: min(260px, 19.5vw);
+  }
+  .ab-vitrine .ab-phone-img.alisio {
+    --w: min(272px, 21vw);
+  }
+  .ab-vitrine .ab-vit-mini-phone {
+    width: min(102px, 8vw);
+  }
+}
+
 /* Swap the vitrine hint by input capability, not by width: a narrow desktop
    window still has a pointer, and a wide tablet still does not. */
 .ab-vitrine-cap .on-touch {
@@ -1600,12 +1619,15 @@
   color: #8a8178;
 }
 
+/* No overflow of its own: as a grid item with non-visible overflow its automatic
+   minimum size becomes 0, so the auto-sized row never grows to fit and the whole
+   text column (title, description, meta, CTA) collapses to its padding.
+   `.ab-case-body` already owns the modal's scroll. */
 .ab-case-content {
   padding: 28px 32px 32px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  overflow-y: auto;
 }
 .ab-case-title {
   font-family: var(--ab-serif);

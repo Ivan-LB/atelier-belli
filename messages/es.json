@@ -571,7 +571,7 @@
         },
         "highlights": [
           "Despacho geoespacial: PostGIS nearest-N más barrido de escalación",
-          "Tiempo real por STOMP: mapa y ETA vivos en teléfono, muñeca y consola",
+          "Tiempo real por STOMP: mapa y ETA vivos en ambas apps y la consola",
           "Ruteo hospitalario por seguro, proximidad y capacidad",
           "Auth JWT con refresh rotativo y bitácora de acceso a PHI"
         ],

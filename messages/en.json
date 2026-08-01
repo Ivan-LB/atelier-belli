@@ -571,7 +571,7 @@
         },
         "highlights": [
           "Geospatial dispatch: PostGIS nearest-N plus an escalation sweep",
-          "Realtime over STOMP: map and ETA live on phone, wrist and console",
+          "Realtime over STOMP: map and ETA live on both apps and the console",
           "Hospital routing by insurance, proximity and capability",
           "JWT auth with rotating refresh, and a PHI access audit trail"
         ],
