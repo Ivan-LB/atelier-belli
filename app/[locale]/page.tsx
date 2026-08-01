@@ -663,7 +663,11 @@ export default function PortfolioPage() {
                     <em>{t("vitrine.titleIt")}</em>
                   </h2>
                 </div>
-                <span className="m">{t("vitrine.hint")}</span>
+                <span className="m">
+                  {/* "Hover" is meaningless on a touch device, where this is a swipe carousel. */}
+                  <span className="on-hover">{t("vitrine.hint")}</span>
+                  <span className="on-touch">{t("vitrine.hintTouch")}</span>
+                </span>
               </div>
 
               <div className="ab-phones">

@@ -431,10 +431,11 @@
       "signed": "Firmado"
     },
     "vitrine": {
-      "eyebrow": "Vitrina — 2025",
+      "eyebrow": "Vitrina — 2026",
       "titlePre": "Tres piezas ",
       "titleIt": "recientes.",
-      "hint": "— Pasa el cursor para enfocar"
+      "hint": "— Pasa el cursor para enfocar",
+      "hintTouch": "— Desliza para verlas"
     },
     "work": {
       "eyebrow": "La obra",

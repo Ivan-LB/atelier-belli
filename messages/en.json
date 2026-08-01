@@ -431,10 +431,11 @@
       "signed": "Signed"
     },
     "vitrine": {
-      "eyebrow": "Showcase — 2025",
+      "eyebrow": "Showcase — 2026",
       "titlePre": "Three recent ",
       "titleIt": "pieces.",
-      "hint": "— Hover to focus"
+      "hint": "— Hover to focus",
+      "hintTouch": "— Swipe to browse"
     },
     "work": {
       "eyebrow": "The work",

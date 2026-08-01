@@ -1297,15 +1297,20 @@
   .ab-nav-end {
     gap: 8px;
   }
+  /* Carousel: the slot must be WIDER than the card it holds, or neighbours bleed
+     in and the cards visually overlap. `%` here resolves against the track's
+     content box, so the side padding has to be paid for in the percentage. */
   .ab-phones {
     grid-template-columns: none;
     grid-auto-flow: column;
-    grid-auto-columns: 82%;
+    /* Cap the slot so a tablet-width carousel does not park a phone-sized card
+       in the middle of a 550px box. */
+    grid-auto-columns: min(88%, 330px);
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    padding: 12px 10% 20px;
+    padding: 12px 6% 20px;
     -webkit-overflow-scrolling: touch;
-    gap: 24px;
+    gap: 16px;
     align-items: center;
   }
   .ab-phones::-webkit-scrollbar {
@@ -1314,8 +1319,14 @@
   .ab-phones {
     scrollbar-width: none;
   }
+  /* You only ever see one card at a time here, so there is nothing to align
+     captions against: a forced common height just parks the short cards at the
+     bottom of a tall empty box. Let each card size itself and centre it. */
   .ab-phone-slot {
     scroll-snap-align: center;
+    min-height: auto;
+    justify-content: center;
+    gap: 16px;
   }
 }
 
@@ -1481,6 +1492,43 @@
    disturbing the modal preview above (244px). */
 .ab-vitrine .ab-phone-img.alisio {
   --w: 272px;
+}
+
+/* Swap the vitrine hint by input capability, not by width: a narrow desktop
+   window still has a pointer, and a wide tablet still does not. */
+.ab-vitrine-cap .on-touch {
+  display: none;
+}
+@media (hover: none) {
+  .ab-vitrine-cap .on-hover {
+    display: none;
+  }
+  .ab-vitrine-cap .on-touch {
+    display: inline;
+  }
+}
+
+/* Mobile sizing for the vitrine cards MUST live after the desktop rules above:
+   same specificity means source order decides, and the carousel's media block
+   sits earlier in this file. Each card has to fit inside its carousel slot or
+   the neighbours bleed in and the cards visually overlap. */
+@media (max-width: 820px) {
+  /* Fluid, not fixed: a single size overflows the slot at 320px and looks lost
+     in the wide slot at 768px. These track the viewport and cap at the size
+     that reads well on a phone. */
+  .ab-vitrine .ab-phone-img.alisio {
+    --w: min(200px, 56vw);
+  }
+  .ab-vitrine .ab-vit-web-combo .ab-vit-browser {
+    --w: min(236px, 66vw);
+    --h: min(156px, 44vw);
+  }
+  .ab-vitrine .ab-vit-mini-phone {
+    width: min(58px, 16vw);
+    right: -6px;
+    bottom: -8px;
+    border-width: 3px;
+  }
 }
 .ab-alisio-watch {
   position: absolute;
