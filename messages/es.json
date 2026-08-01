@@ -575,7 +575,7 @@
           "Ruteo hospitalario por seguro, proximidad y capacidad",
           "Auth JWT con refresh rotativo y bitácora de acceso a PHI"
         ],
-        "mediaCaption": "Una emergencia real, dos superficies en el mismo instante: la consola la muestra despachada y esperando paramédico mientras la oferta le llega al teléfono del paramédico. Él acepta, se resuelve el ruteo hospitalario y ambas pasan a en ruta.",
+        "mediaCaption": "Una emergencia real en las tres superficies al mismo tiempo. La oferta llega al teléfono de la paramédica, ella acepta, y la consola resuelve el hospital por seguro y red mientras la paciente ve esa misma ruta acercarse en su propio mapa.",
         "galleryCaption": "La app del paciente, en la misma emergencia: el botón SOS, el tracking en vivo con la ruta vial real del paramédico y su ETA, y la tarjeta de emergencia que leen los rescatistas al llegar."
       },
       "arrhythmia": {
