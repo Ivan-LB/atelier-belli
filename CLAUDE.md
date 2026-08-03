@@ -177,6 +177,27 @@ sideways on mobile with text clipped. `.ab-case-media img/video` also cap at
   (6 steps for the patient profile). Accounts and the full runbook live in
   `~/Projects/vitapath/DEMO.md`.
 
+**Vitrine composition below 820px (do not revert to centring).** The carousel
+row is sized by its tallest slide, and the slides cannot be equalised: the
+Alisio card is a portrait phone (aspect 0.4601, so height = width × 2.1733)
+while the other two are landscape browser frames (400:260). Even with the phone
+at its legibility floor (~150px wide) and a combo at the widest the
+`min(88%, 330px)` slot allows, the heights still differ ~1.5×. That slack is
+structural. `.ab-phones` therefore uses **`align-items: end`** and
+`.ab-phone-slot` **`justify-content: flex-end`**, so all three captions land on
+one baseline and the whole slack sits as one band above the short cards. It
+previously used `center`, which halved the slack: that stranded the combo cards
+mid-row and put their captions **116px** off the phone's, so a swipe made the
+caption jump. The old comment justified centring with "you only ever see one
+card at a time" — measured and false: a neighbour always peeks and at 820px two
+full cards show. Do **not** reinstate the desktop's `min-height: 640px` here; it
+would add ~140px of dead space to every slide, and `align-items: end` already
+buys the shared baseline. Do **not** shrink `.ab-phone-img.alisio` to close the
+gap either — Alisio is the emphasized slot (`1.15fr`, `.center`, `scale(1.06)`,
+`z-index: 2`, its own 272px vitrine override), so shrinking it trades the
+hierarchy for whitespace. Verified capSpread 0 at 320/375/414/500/640/723/820 in
+both locales and both themes, with ≥821px bit-identical to before.
+
 **Vitrine (hero showcase):** three pieces, all 2026 as of 2026-07-30 —
 **Vitapath** (`.ab-vit-web-combo tilt-l`: console capture in the browser frame
 plus the patient app's live-tracking screen as the mini phone, so the hero shows

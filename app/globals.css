@@ -1311,7 +1311,16 @@
     padding: 12px 6% 20px;
     -webkit-overflow-scrolling: touch;
     gap: 16px;
-    align-items: center;
+    /* Load-bearing. The row is sized by the tallest slide (the Alisio phone),
+       and a portrait phone is ~2x the height of a landscape browser card no
+       matter how they are sized — that slack is structural, not a bug to
+       remove. `center` split it in half, which stranded the short cards in the
+       middle of the row AND put their captions 116px off the phone's. Hanging
+       every slide from the bottom puts the whole slack in one band above the
+       short cards and lands all three captions on one baseline, which is
+       exactly what the desktop grid buys with justify-content: flex-end. It
+       also stops the caption from jumping on every swipe. */
+    align-items: end;
   }
   .ab-phones::-webkit-scrollbar {
     display: none;
@@ -1319,13 +1328,17 @@
   .ab-phones {
     scrollbar-width: none;
   }
-  /* You only ever see one card at a time here, so there is nothing to align
-     captions against: a forced common height just parks the short cards at the
-     bottom of a tall empty box. Let each card size itself and centre it. */
+  /* This used to read "you only ever see one card at a time here, so there is
+     nothing to align captions against". That premise was measured and is false:
+     a neighbour always peeks, and at 820px TWO full cards show side by side —
+     which is precisely when the mismatched captions read as an accident.
+     `min-height` stays auto on purpose: the desktop's 640px floor would add
+     ~140px of dead space to every slide, and `align-items: end` on the track
+     already gives the shared baseline for free. */
   .ab-phone-slot {
     scroll-snap-align: center;
     min-height: auto;
-    justify-content: center;
+    justify-content: flex-end;
     gap: 16px;
   }
 }
@@ -1538,9 +1551,14 @@
   .ab-vitrine .ab-phone-img.alisio {
     --w: min(200px, 56vw);
   }
+  /* The carousel slot is min(88%, 330px), so from ~455px up it is 330px wide
+     while a 236px card sat in it looking undersized. Let the browser grow into
+     its slot; the vw arm still keeps it inside the narrower slots below that.
+     --w : --h must stay 400:260 (1.538) or the screenshot re-crops: 300/195,
+     and the vw arms 66:43 hold the same ratio to within 0.3%. */
   .ab-vitrine .ab-vit-web-combo .ab-vit-browser {
-    --w: min(236px, 66vw);
-    --h: min(156px, 44vw);
+    --w: min(300px, 66vw);
+    --h: min(195px, 43vw);
   }
   .ab-vitrine .ab-vit-mini-phone {
     width: min(58px, 16vw);
