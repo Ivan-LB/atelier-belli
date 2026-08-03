@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Fraunces, Inter } from "next/font/google"
 import { notFound } from "next/navigation"
 import { NextIntlClientProvider } from "next-intl"
 import { getTranslations, getMessages, unstable_setRequestLocale } from "next-intl/server"
@@ -11,6 +11,22 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
+})
+
+/* Fraunces sets every display heading, so it IS the LCP element — and it used to
+   arrive through a 3-hop dependent chain (HTML -> layout.css -> fonts.googleapis
+   -> fonts.gstatic) with no preconnect on either cross-origin host: measured
+   1410ms to even request the woff2 on a 150ms-RTT connection. next/font
+   self-hosts it same-origin, which removes all three hops, and its generated
+   size-adjust fallback matches Fraunces' metrics so the swap stops re-wrapping
+   the headings. Keep it out of the globals.css @import (the other four families
+   still load there). */
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  axes: ["SOFT", "opsz"],
+  style: ["normal", "italic"],
+  display: "swap",
+  variable: "--font-fraunces",
 })
 
 export async function generateMetadata({
@@ -65,7 +81,7 @@ export default async function LocaleLayout({
   const messages = await getMessages()
 
   return (
-    <html lang={locale} className={inter.variable}>
+    <html lang={locale} className={`${inter.variable} ${fraunces.variable}`}>
       <head>
         <meta name="theme-color" content="#FAF8F3" />
       </head>

@@ -1452,7 +1452,7 @@ function CasePreview({ which }: { which: CaseKey }) {
         </div>
         <div className="ab-alisio-watch">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/cases/alisio-watch.webp" alt="" width={249} height={293} loading="lazy" />
+          <img src="/cases/alisio-watch.webp" alt="" width={249} height={317} loading="lazy" />
         </div>
       </div>
     )

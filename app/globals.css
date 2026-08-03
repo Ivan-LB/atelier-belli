@@ -1,4 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@300;400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap");
+/* Fraunces is NOT here on purpose: it is the LCP element and now loads via
+   next/font in app/[locale]/layout.tsx, self-hosted same-origin. Adding it back
+   would restore the 3-hop chain this @import still costs the families below. */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -131,7 +134,12 @@
   --mute-2: #a8a19a;
   --rule: #1a1a1a12;
   --rule-strong: #1a1a1a22;
-  --accent-color: #2f8a99;
+  /* #2f8a99 measured 3.79:1 on --ab-bg (#faf8f3): fine for large display type,
+     but it is also used as small body emphasis (.ab-h-sub em, .ab-cta .eye em,
+     .ab-case-desc em), where 4.5:1 is the bar. #277684 is the same hue at
+     4.93:1 — enough headroom that browser rounding cannot drop it under.
+     The dark theme already passes and is left alone. */
+  --accent-color: #277684;
   --accent-soft: #56b3c2;
   --accent-deep: #1f6f7c;
   --good: #3e8a5e;
@@ -145,7 +153,7 @@
   --line: var(--rule);
   --line-2: var(--rule-strong);
 
-  --ab-serif: "Fraunces", "Cormorant Garamond", ui-serif, Georgia, serif;
+  --ab-serif: var(--font-fraunces), "Cormorant Garamond", ui-serif, Georgia, serif;
   --ab-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
 
   --ab-max: 1320px;
@@ -562,7 +570,11 @@
   display: grid;
   grid-template-columns: 1fr 1.15fr 1fr;
   gap: clamp(18px, 3vw, 48px);
-  align-items: center;
+  /* `center` defeated the very device the slots use to line their captions up:
+     Alisio's slot measures 659.8px against the 640px min-height, so the two
+     shorter slots were lifted ~10px and the three captions sat on two baselines
+     across the whole desktop range. Bottom-align, like the carousel below 820px. */
+  align-items: end;
   margin-top: clamp(40px, 6vw, 76px);
   position: relative;
 }
@@ -1417,7 +1429,9 @@
 .ab-case-head .eye .num {
   font-family: var(--ab-serif);
   font-feature-settings: "tnum";
-  color: var(--accent-soft);
+  /* --accent-soft is 2.29:1 on the light background — it is a decorative/hover
+     token elsewhere, so darken here rather than globally. This is 11px text. */
+  color: var(--accent-deep);
 }
 .ab-case-close {
   width: 34px;
@@ -2058,6 +2072,12 @@
     border-bottom: 1px solid var(--line);
     min-height: 380px;
     padding: 28px 16px;
+  }
+  /* Alisio's `.tall-preview` floor is (0,2,0) and this block's `.ab-case-preview`
+     is only (0,1,0), so the 640px desktop floor survived on phones and pushed the
+     case title 106px below the fold on a 393x659 screen. Same specificity wins. */
+  .ab-case-preview.tall-preview {
+    min-height: auto;
   }
   .ab-case-modal {
     width: calc(100vw - 16px);
