@@ -80,6 +80,26 @@ bezel stripped so the raw screen sits in the CSS frame). Shipped 2026-07-23:
 the primary action links to `apps.apple.com/mx/app/alisio/id6793006694`
 (`kind: "primary"`, external) and `metaStatus` reads "Live on the App Store".
 
+Its **watch gallery** (`public/cases/gallery/alisio-w1..w4.webp`, 416×496) is
+four raw watchOS captures taken with `xcrun simctl io <watch-udid> screenshot`
+during one real session, and they read as a sequence: pick a zone with the
+crown → out of zone (amber) → back in zone (green) → goal completed with the
+ring closed. They replaced four **App Store marketing frames** (headline over a
+saturated colour block, crop marks) that looked like ads dropped into a case
+study while every other gallery held product captures. To reproduce: boot the
+paired iPhone 17 Pro Max + Apple Watch Series 11 (46mm), launch the watch app
+**first** so `WCSession` reports the app installed (otherwise the phone's
+"Start on Apple Watch" CTA stays disabled), start the session from the phone,
+and screenshot the watch on a timer — the mock heart rate drifts in and out of
+Zone 2 on its own. For a goal-completed frame, step the phone's "Time in zone"
+down to **5 min** with the −5 stepper; in-zone time accrues at roughly half of
+wall clock, so it closes in ~11 minutes. The watch's End button is **below the
+fold** — drag up on the live screen to reveal it. There is no goal-celebration
+screen on the watch (the ring simply completes) and no session summary either;
+the summary lives on the phone. A `Alisio Watch Complication` target does exist,
+but the simulator's default face has no complication slots, so the gallery does
+not show one — do not re-add that claim to `watchCaption`.
+
 **arrhythmia** (web · ML, num `05`) uses a REAL screenshot
 (`public/cases/arrhythmia-hero.webp`, 900×562, 16:10, cropped from that repo's
 `docs/screenshots/02-trace-overview.png`) in the `ab-browser-frame has-shot`
@@ -163,10 +183,19 @@ plus the patient app's live-tracking screen as the mini phone, so the hero shows
 the multi-surface nature at a glance), **Alisio** (center, emphasized slot) and
 **Arrhythmia Detector** (`.ab-vit-web-combo tilt-r`, browser only). This
 replaced Fingo (2024) and Destilería (2025) — the trio now leads with the
-strongest recent work. Alisio reuses the Fingo treatment (a full App Store
-**marketing frame** — headline + device — in the rounded `.ab-phone-img.alisio`
-card, NOT a raw screen), via `public/cases/alisio-vitrine.webp` (600×1304,
-cropped from `iphone_01_train.png`). Sized to 272px through
+strongest recent work. Alisio renders a **raw device capture** of the Train
+screen in the rounded `.ab-phone-img.alisio` card, via
+`public/cases/alisio-vitrine.webp` (600×1304). It used to be the full App Store
+marketing frame `iphone_01_train.png`, but that poster carried crop marks, an
+"ALISIO" slug, a sliced tab bar and — inside the screenshot itself — a
+**disabled** "Start on Apple Watch" CTA under an amber "Install Alisio on your
+Apple Watch to start" warning: the hero of the vitrine advertised a broken
+state. The replacement is `xcrun simctl io … screenshot` of the real app with
+the Watch app installed (CTA green, no warning), resized 1320×2868 → 600×1304.
+That resize is exact — the App Store 6.9" poster has the same aspect as the
+device screen — so **no CSS or `page.tsx` change was needed**, and the vitrine
+is now three real product captures instead of two captures plus one ad.
+Sized to 272px through
 `.ab-vitrine .ab-phone-img.alisio` so the modal's 244px is untouched.
 (`.ab-vit-web-combo`): a 400×260 browser window with the desktop capture and
 a mini phone overlapping its corner with the mobile capture

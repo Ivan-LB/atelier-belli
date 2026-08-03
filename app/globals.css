@@ -1836,6 +1836,11 @@
 }
 .ab-case-gallery {
   display: flex;
+  /* Load-bearing: the default `stretch` makes every `height: auto` image grow to
+     the tallest sibling's height. A gallery mixing aspect ratios then renders the
+     shorter ones squashed — the 760×642 Arrhythmia still was stretched to the
+     760×946 one's box, a 32% aspect error. Top-align so each keeps its own. */
+  align-items: flex-start;
   gap: 12px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;

@@ -233,10 +233,10 @@ export default function PortfolioPage() {
         {
           kind: "gallery",
           items: [
-            { src: "/cases/gallery/alisio-w1.webp", w: 300, h: 358 },
-            { src: "/cases/gallery/alisio-w2.webp", w: 300, h: 358 },
-            { src: "/cases/gallery/alisio-w3.webp", w: 300, h: 358 },
-            { src: "/cases/gallery/alisio-w4.webp", w: 300, h: 358 },
+            { src: "/cases/gallery/alisio-w1.webp", w: 416, h: 496 },
+            { src: "/cases/gallery/alisio-w2.webp", w: 416, h: 496 },
+            { src: "/cases/gallery/alisio-w3.webp", w: 416, h: 496 },
+            { src: "/cases/gallery/alisio-w4.webp", w: 416, h: 496 },
           ],
           caption: t("cases.alisio.watchCaption"),
         },

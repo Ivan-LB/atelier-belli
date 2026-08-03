@@ -556,7 +556,7 @@
           "Profile and history sync between devices; nothing leaves them"
         ],
         "mediaCaption": "One live session across both devices: started from the iPhone, measured on the Watch, mirrored back. Watch the badge flip as the heart rate drifts out of Zone 2 and returns.",
-        "watchCaption": "On the wrist alone: pick a zone with the crown, the live session, goal reached, and the watch-face complication."
+        "watchCaption": "On the wrist alone: pick a zone with the crown, then the live session — the badge slipping out of zone and back in — through to the goal completed."
       },
       "vitapath": {
         "titleIt": "emergency response, end to end.",
