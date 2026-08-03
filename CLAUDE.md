@@ -285,11 +285,37 @@ Package manager: **pnpm** (lockfile: `pnpm-lock.yaml`). Never suggest
 exist — there is no root `app/layout.tsx`, only `app/[locale]/layout.tsx`.
 `generateStaticParams()` pre-renders both locales at build time.
 
-Routing (via `middleware.ts` using `next-intl/middleware`):
+**The locale is NOT in the URL** (changed 2026-08-02, at the owner's request).
+`middleware.ts` sets `localePrefix: "never"`, so one set of URLs serves both
+languages and next-intl rewrites internally onto the `app/[locale]/*` tree:
 
-- `/` → redirects to `/en` or `/es` (cookie or `Accept-Language` fallback)
-- `/en/...` and `/es/...` render the locale tree
-- `defaultLocale: "en"`, `matcher: ["/", "/(es|en)/:path*"]`
+- `/`, `/privacy/`, `/terms/`, `/fingo/support/` … — the only public URLs
+- Which language they serve is decided by the **`NEXT_LOCALE` cookie**, falling
+  back to `Accept-Language`, falling back to `defaultLocale: "en"`
+- Legacy `/en/...` and `/es/...` still **redirect** to the unprefixed route, so
+  inbound links keep working (covered by an e2e test)
+- `matcher` must be broad (`/((?!api|_next/static|_next/image|.*\.[\w]+$).*)`).
+  The old `/(es|en)/:path*` matcher would never fire again.
+- The `[locale]` folder stays on disk and `useParams().locale` keeps working —
+  the segment is filled by the rewrite, it is just never visible.
+
+**The language toggle writes the cookie and calls `router.refresh()`** — there is
+no longer a URL to navigate to. `LOCALE_COOKIE` is exported from `i18n.ts`; the
+old app-specific `preferred-language` cookie is gone. Both the homepage and the
+404 island (`_not-found-controls.tsx`) use this path.
+
+**Known, accepted trade-off:** Spanish no longer has a URL of its own, so it
+cannot be indexed separately, and a shared link does not carry the language.
+The `hreflang`/`languages` alternates were removed rather than left pointing at
+routes that now 404. This was raised explicitly and chosen anyway — do not
+"fix" it back without asking. (`localePrefix: "as-needed"` is the middle ground
+if that ever gets revisited.)
+
+Related fix in the same change: `generateMetadata` in the locale layout used to
+set `canonical: /${locale}/`, which every nested route **inherited** — so
+`/privacy`, `/terms` and both support pages each declared the homepage as their
+canonical, i.e. told crawlers they were duplicates of it. The layout now sets no
+`canonical` at all; add one per-route if a specific page ever needs it.
 
 **Build output is mostly SSG with one dynamic route.** `generateStaticParams()`
 pre-renders every named route for both locales. The single exception is the

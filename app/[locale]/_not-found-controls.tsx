@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-
-const LANGUAGE_COOKIE = "preferred-language"
+import { LOCALE_COOKIE } from "@/i18n"
 
 type Theme = "light" | "dark"
 
@@ -49,10 +48,10 @@ export function NotFoundControls({
   const toggleTheme = () => setTheme((p) => (p === "dark" ? "light" : "dark"))
 
   const switchLocale = () => {
-    const expires = new Date()
-    expires.setFullYear(expires.getFullYear() + 1)
-    document.cookie = `${LANGUAGE_COOKIE}=${otherLocale}; expires=${expires.toUTCString()}; path=/; SameSite=Lax`
-    router.push(`/${otherLocale}`)
+    // No locale in the URL: the cookie is the language, and refresh re-resolves
+    // it through the middleware without leaving the page.
+    document.cookie = `${LOCALE_COOKIE}=${otherLocale}; max-age=${60 * 60 * 24 * 365}; path=/; SameSite=Lax`
+    router.refresh()
   }
 
   const themeLabel = theme === "dark" ? themeLightLabel : themeDarkLabel

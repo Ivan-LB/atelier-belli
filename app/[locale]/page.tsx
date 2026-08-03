@@ -3,8 +3,9 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
+import Link from "next/link"
+import { LOCALE_COOKIE } from "@/i18n"
 
-const LANGUAGE_COOKIE = "preferred-language"
 
 /* Module scope on purpose: inside the component this would be a new string every
    render, and the modal effect that depends on it would re-run each time. */
@@ -174,10 +175,12 @@ export default function PortfolioPage() {
 
   const switchLocale = () => {
     const target: Lang = locale === "es" ? "en" : "es"
-    const expires = new Date()
-    expires.setFullYear(expires.getFullYear() + 1)
-    document.cookie = `${LANGUAGE_COOKIE}=${target}; expires=${expires.toUTCString()}; path=/; SameSite=Lax`
-    router.push(`/${target}`)
+    // The URL carries no locale any more, so there is nowhere to navigate to:
+    // the cookie IS the language, and the middleware re-resolves it on the next
+    // request. router.refresh() re-fetches the current route through it, which
+    // keeps the user on the page (and the case) they were reading.
+    document.cookie = `${LOCALE_COOKIE}=${target}; max-age=${60 * 60 * 24 * 365}; path=/; SameSite=Lax`
+    router.refresh()
   }
 
   // Reveal-on-scroll
@@ -306,7 +309,7 @@ export default function PortfolioPage() {
         },
         {
           label: t("cases.fingo.actionGhost"),
-          href: `/${locale}/fingo/support`,
+          href: "/fingo/support",
           kind: "ghost",
           icon: "help",
         },
@@ -478,7 +481,7 @@ export default function PortfolioPage() {
         },
         {
           label: t("cases.savely.actionGhost"),
-          href: `/${locale}/savely/support`,
+          href: "/savely/support",
           kind: "ghost",
           icon: "help",
         },
@@ -510,7 +513,10 @@ export default function PortfolioPage() {
       preview: "blip",
     },
     }
-  }, [t, locale])
+    /* `locale` is gone from the deps: the support hrefs used to be built as
+       `/${locale}/fingo/support`, and with the prefix dropped nothing in here
+       reads it any more. */
+  }, [t])
 
   const openCase = useCallback((key: CaseKey, trigger?: HTMLElement) => {
     lastFocusRef.current = trigger ?? (document.activeElement as HTMLElement | null)
@@ -1067,9 +1073,9 @@ export default function PortfolioPage() {
               </div>
               <div className="mid">Atelier Belli</div>
               <div className="right">
-                <a href={`/${locale}/privacy`}>{t("footer.privacy")}</a>
+                <Link href="/privacy">{t("footer.privacy")}</Link>
                 &nbsp;·&nbsp;
-                <a href={`/${locale}/terms`}>{t("footer.terms")}</a>
+                <Link href="/terms">{t("footer.terms")}</Link>
               </div>
             </footer>
           </div>
