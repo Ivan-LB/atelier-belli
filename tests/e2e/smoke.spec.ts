@@ -43,6 +43,22 @@ test("case modal opens, traps focus, closes on Escape, restores trigger focus", 
   const closeBtn = page.locator("button.ab-case-close");
   await expect(closeBtn).toBeFocused();
 
+  // Focus must STAY inside the dialog. This used to be only implied by the test
+  // name while nothing pressed Tab — and it was false: focus escaped on the
+  // third press and the page behind stayed tabbable.
+  for (let i = 0; i < 8; i++) {
+    await page.keyboard.press("Tab");
+    const insideModal = await page.evaluate(
+      () => !!document.activeElement?.closest(".ab-case-modal"),
+    );
+    expect(insideModal, `focus left the modal on Tab #${i + 1}`).toBe(true);
+  }
+
+  // The page behind the backdrop must be inert while the dialog is open,
+  // otherwise aria-modal="true" is a lie to screen readers.
+  await expect(page.locator("main#main-content")).toHaveAttribute("inert", "");
+  await expect(page.locator("header.ab-nav")).toHaveAttribute("inert", "");
+
   // Press Escape to close
   await page.keyboard.press("Escape");
 
@@ -51,6 +67,37 @@ test("case modal opens, traps focus, closes on Escape, restores trigger focus", 
 
   // Focus should return to the trigger row that was clicked
   await expect(firstRow).toBeFocused();
+
+  // ...and the background must be interactive again
+  await expect(page.locator("main#main-content")).not.toHaveAttribute("inert", "");
+});
+
+test("deep-linked modal restores focus to its Selected Work row on close", async ({
+  page,
+}) => {
+  // The click path seeds lastFocusRef; a ?case= deep link does not, so closing
+  // used to strand focus on the hidden close button inside aria-hidden="true".
+  await page.goto("/en?case=alisio");
+  await expect(page.locator(".ab-case-modal.open")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.locator(".ab-case-modal.open")).toHaveCount(0);
+  await expect(page.locator('button.ab-index-row[data-case="alisio"]')).toBeFocused();
+});
+
+test("closed case modal is not reachable by keyboard", async ({ page }) => {
+  await page.goto("/en/");
+  // `opacity: 0` alone left the close button in the tab order as the last stop
+  // on every homepage load.
+  await expect(page.locator(".ab-case-modal")).toHaveCSS("visibility", "hidden");
+  for (let i = 0; i < 40; i++) {
+    await page.keyboard.press("Tab");
+    const onClose = await page.evaluate(
+      () => !!document.activeElement?.classList.contains("ab-case-close"),
+    );
+    expect(onClose, `reached the closed modal's close button on Tab #${i + 1}`).toBe(
+      false,
+    );
+  }
 });
 
 // ── Test 4: Theme toggle flips data-theme and persists to localStorage ───────

@@ -868,7 +868,11 @@
   border-bottom: 0.5px solid var(--line-2);
   cursor: pointer;
   position: relative;
-  transition: padding var(--ab-trans);
+  /* transform, not padding: padding is layout-triggering, and the hover shrank
+     the content box enough for .p-tag to re-wrap — measured at 1024px the row
+     grew 21px and pushed every row below it down (CLS 0.0144 per hover). The
+     row's own ::before and .arr already animate transform. */
+  transition: transform var(--ab-trans);
   background: transparent;
   border-top: 0;
   border-left: 0;
@@ -879,7 +883,7 @@
   font: inherit;
 }
 .ab-index-row:hover {
-  padding-left: 16px;
+  transform: translateX(12px);
 }
 .ab-index-row::before {
   content: "";
@@ -1040,7 +1044,7 @@
   flex-direction: column;
   gap: clamp(26px, 3vw, 40px);
 }
-.ab-wb-group h4 {
+.ab-wb-group h3 {
   font-family: var(--ab-sans);
   font-weight: 500;
   font-size: 11px;
@@ -1052,13 +1056,13 @@
   align-items: center;
   gap: 10px;
 }
-.ab-wb-group h4::before {
+.ab-wb-group h3::before {
   content: "";
   width: 14px;
   height: 1px;
   background: var(--line-2);
 }
-.ab-wb-group h4 .gn {
+.ab-wb-group h3 .gn {
   font-family: var(--ab-serif);
   font-feature-settings: "tnum";
   font-style: italic;
@@ -1373,8 +1377,14 @@
   box-shadow: 0 30px 80px -20px #00000060, 0 10px 40px -10px #00000030;
   opacity: 0;
   pointer-events: none;
+  /* Load-bearing for keyboard users. Transparent is not hidden: with only
+     `opacity: 0` the closed dialog kept its close button in the tab order —
+     measured as the LAST tab stop on every homepage load, in both locales,
+     sitting inside aria-hidden="true" with no visible focus ring. The 320ms
+     delay lets the exit fade finish before visibility flips. */
+  visibility: hidden;
   transition: opacity 320ms cubic-bezier(0.2, 0.6, 0.2, 1),
-    transform 320ms cubic-bezier(0.2, 0.6, 0.2, 1);
+    transform 320ms cubic-bezier(0.2, 0.6, 0.2, 1), visibility 0s linear 320ms;
   display: flex;
   flex-direction: column;
   color: var(--ab-fg);
@@ -1382,7 +1392,10 @@
 .ab-case-modal.open {
   opacity: 1;
   pointer-events: auto;
+  visibility: visible;
   transform: translate(-50%, -50%) scale(1);
+  transition: opacity 320ms cubic-bezier(0.2, 0.6, 0.2, 1),
+    transform 320ms cubic-bezier(0.2, 0.6, 0.2, 1), visibility 0s;
 }
 .ab-case-head {
   display: flex;
@@ -1734,9 +1747,20 @@
 .ab-case-btn.ghost:hover {
   background: var(--bg-2);
 }
-.ab-case-btn.disabled {
-  opacity: 0.5;
-  pointer-events: none;
+/* These render as real <button disabled> now, so the styling no longer has to
+   fake anything. Explicit colours instead of `opacity: .5`: halving the opacity
+   of an accent pill made the label's contrast a function of whatever sat behind
+   it, which failed AA in the light theme. `pointer-events` is gone because a
+   disabled button already ignores input — keeping it hid the cursor feedback. */
+.ab-case-btn.disabled,
+.ab-case-btn.disabled:hover {
+  opacity: 1;
+  background: var(--bg-2);
+  color: var(--ab-muted);
+  border-color: var(--line-2);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 .ab-case-btn svg {
   width: 14px;
@@ -1765,6 +1789,61 @@
   padding-left: clamp(20px, 2.4vw, 30px);
 }
 /* Serif-italic run-in lead-ins, not another tracked-caps eyebrow. */
+/* Pause/play for the demo clips. Deliberately not native <video controls>: a
+   full control bar on three clips would shout over the editorial register. This
+   is one quiet pill in the corner that shows itself on hover/focus and stays
+   permanently visible on touch, where there is no hover to reveal it. */
+.ab-case-clip {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+.ab-case-clip-toggle {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid #ffffff2e;
+  background: #12141599;
+  color: #fff;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 220ms ease, transform 220ms ease, background 220ms ease;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.ab-case-clip-toggle svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+  stroke: none;
+}
+.ab-case-clip:hover .ab-case-clip-toggle,
+.ab-case-clip-toggle:focus-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.ab-case-clip-toggle:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+@media (hover: none) {
+  .ab-case-clip-toggle {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ab-case-clip-toggle {
+    transition: none;
+  }
+}
+
 .ab-case-beats h4 {
   font-family: var(--ab-serif);
   font-style: italic;
