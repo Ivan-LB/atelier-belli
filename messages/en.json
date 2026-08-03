@@ -431,10 +431,11 @@
       "signed": "Signed"
     },
     "vitrine": {
-      "eyebrow": "Showcase — 2025",
+      "eyebrow": "Showcase — 2026",
       "titlePre": "Three recent ",
       "titleIt": "pieces.",
-      "hint": "— Hover to focus"
+      "hint": "— Hover to focus",
+      "hintTouch": "— Swipe to browse"
     },
     "work": {
       "eyebrow": "The work",
@@ -466,7 +467,10 @@
       "terms": "Terms"
     },
     "modal": {
-      "close": "Close"
+      "close": "Close",
+      "pauseClip": "Pause clip",
+      "playClip": "Play clip",
+      "caseStudy": "Case study"
     },
     "cases": {
       "meta": {
@@ -494,14 +498,16 @@
         "metaStatus": "In review · App Store soon",
         "actionPrimary": "Coming soon",
         "actionGhost": "Support",
-        "tag": "Balance, budgets, alerts — a calm financial assistant."
+        "tag": "Balance, budgets, alerts — a calm financial assistant.",
+        "mshowStatus": "In review"
       },
       "mezcal": {
         "descRich": "Storefront and story for an artisanal mezcal brand out of Oaxaca. A quiet, editorial site built to sell — varieties, origin, direct orders. <it>Hand-built</it> from brand to checkout.",
         "metaPlatform": "Web · Responsive",
         "metaStatus": "Live",
         "actionPrimary": "Visit site",
-        "tag": "An artisanal mezcal brand — storefront and story."
+        "tag": "An artisanal mezcal brand — storefront and story.",
+        "mshowStatus": "Live"
       },
       "blip": {
         "titleIt": "the restock radar.",
@@ -555,7 +561,7 @@
           "Profile and history sync between devices; nothing leaves them"
         ],
         "mediaCaption": "One live session across both devices: started from the iPhone, measured on the Watch, mirrored back. Watch the badge flip as the heart rate drifts out of Zone 2 and returns.",
-        "watchCaption": "On the wrist alone: pick a zone with the crown, the live session, goal reached, and the watch-face complication."
+        "watchCaption": "On the wrist alone: pick a zone with the crown, then the live session — the badge slipping out of zone and back in — through to the goal completed."
       },
       "vitapath": {
         "titleIt": "emergency response, end to end.",
@@ -570,12 +576,13 @@
         },
         "highlights": [
           "Geospatial dispatch: PostGIS nearest-N plus an escalation sweep",
-          "Realtime over STOMP: map and ETA live on phone, wrist and console",
+          "Realtime over STOMP: map and ETA live on both apps and the console",
           "Hospital routing by insurance, proximity and capability",
           "JWT auth with rotating refresh, and a PHI access audit trail"
         ],
-        "mediaCaption": "One real emergency, two surfaces at the same moment: the console shows it dispatched and waiting for a paramedic while the offer lands on the paramedic's phone. He accepts, hospital routing resolves, and both flip to en route.",
-        "galleryCaption": "The patient app, same emergency: the SOS button, live tracking with the paramedic's real road route and ETA, and the emergency card responders read on arrival."
+        "mediaCaption": "One real emergency across all three surfaces at the same moment. The offer lands on the paramedic's phone, she accepts, and the console resolves the hospital by insurance and network while the patient watches the same road route close in on her own map.",
+        "galleryCaption": "The patient app: the SOS button, live tracking with the paramedic's real road route and ETA, and the emergency card responders read on arrival.",
+        "kicker": "System · Healthtech · 2026"
       },
       "arrhythmia": {
         "titleIt": "read the ECG, beat by beat.",

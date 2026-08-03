@@ -6,6 +6,11 @@ import { useTranslations } from "next-intl"
 
 const LANGUAGE_COOKIE = "preferred-language"
 
+/* Module scope on purpose: inside the component this would be a new string every
+   render, and the modal effect that depends on it would re-run each time. */
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
+
 type Lang = "en" | "es"
 type Theme = "light" | "dark"
 
@@ -128,6 +133,15 @@ export default function PortfolioPage() {
   const lastFocusRef = useRef<HTMLElement | null>(null)
   const closeBtnRef = useRef<HTMLButtonElement | null>(null)
   const mainRef = useRef<HTMLElement | null>(null)
+  const modalRef = useRef<HTMLDivElement | null>(null)
+  /* The close effect also runs on mount; this tells the two apart so a normal
+     page load never has its focus yanked. */
+  const wasOpenRef = useRef(false)
+  /* Lags `openCaseKey` by design: the modal fades out over 320ms, and nulling the
+     case on the same tick collapsed it to a 73px bar reading the English fallback
+     "— CASE STUDY" — mid-animation, on /es too. Keeping the last case rendered
+     lets the exit play with the real content in the real language. */
+  const [renderedCaseKey, setRenderedCaseKey] = useState<CaseKey | null>(null)
 
   useEffect(() => {
     let initial: Theme
@@ -233,10 +247,10 @@ export default function PortfolioPage() {
         {
           kind: "gallery",
           items: [
-            { src: "/cases/gallery/alisio-w1.webp", w: 300, h: 358 },
-            { src: "/cases/gallery/alisio-w2.webp", w: 300, h: 358 },
-            { src: "/cases/gallery/alisio-w3.webp", w: 300, h: 358 },
-            { src: "/cases/gallery/alisio-w4.webp", w: 300, h: 358 },
+            { src: "/cases/gallery/alisio-w1.webp", w: 416, h: 496 },
+            { src: "/cases/gallery/alisio-w2.webp", w: 416, h: 496 },
+            { src: "/cases/gallery/alisio-w3.webp", w: 416, h: 496 },
+            { src: "/cases/gallery/alisio-w4.webp", w: 416, h: 496 },
           ],
           caption: t("cases.alisio.watchCaption"),
         },
@@ -301,7 +315,7 @@ export default function PortfolioPage() {
     },
     vitapath: {
       num: "04",
-      kicker: "System · Healthtech · 2026",
+      kicker: t("cases.vitapath.kicker"),
       title: {
         pre: "Vitapath — ",
         it: t("cases.vitapath.titleIt"),
@@ -516,22 +530,81 @@ export default function PortfolioPage() {
   useEffect(() => {
     if (!openCaseKey) {
       document.body.style.overflow = ""
-      if (lastFocusRef.current && lastFocusRef.current.focus) lastFocusRef.current.focus()
+      // Guarded: this effect also runs on mount, and focusing anything there
+      // would fight the browser's own restore on a normal page load.
+      if (wasOpenRef.current) {
+        wasOpenRef.current = false
+        // The body stays mounted through the fade (see renderedCaseKey), and an
+        // IntersectionObserver only knows geometry — it would happily keep a
+        // clip playing behind a hidden modal.
+        modalRef.current?.querySelectorAll("video").forEach((v) => v.pause())
+        const target =
+          lastFocusRef.current ??
+          document.querySelector<HTMLElement>("button.ab-index-row")
+        target?.focus()
+      }
       return
     }
+    wasOpenRef.current = true
+    setRenderedCaseKey(openCaseKey)
     document.body.style.overflow = "hidden"
+    // A ?case= deep link opens the modal without any click, so lastFocusRef is
+    // still null and closing used to strand focus on the hidden close button.
+    // Seed it with the row this case belongs to: same landing as the click path.
+    if (!lastFocusRef.current) {
+      lastFocusRef.current = document.querySelector<HTMLElement>(
+        `button.ab-index-row[data-case="${openCaseKey}"]`
+      )
+    }
     const t = setTimeout(() => closeBtnRef.current?.focus(), 50)
+
+    // Without this the page behind stays tabbable: Tab walked out of the dialog
+    // on the third press and needed 27 more to get back in, which also made
+    // aria-modal="true" a lie. `inert` removes it from tab order AND the a11y tree.
+    const behind = [
+      mainRef.current,
+      document.querySelector<HTMLElement>("header.ab-nav"),
+    ].filter((el): el is HTMLElement => el != null)
+    behind.forEach((el) => el.setAttribute("inert", ""))
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeCase()
+      if (e.key === "Escape") {
+        closeCase()
+        return
+      }
+      if (e.key !== "Tab" || !modalRef.current) return
+      const nodes = Array.from(
+        modalRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)
+      )
+      if (!nodes.length) return
+      const first = nodes[0]
+      const last = nodes[nodes.length - 1]
+      const active = document.activeElement
+      const outside = !modalRef.current.contains(active)
+      if (e.shiftKey && (active === first || outside)) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && (active === last || outside)) {
+        e.preventDefault()
+        first.focus()
+      }
     }
     document.addEventListener("keydown", onKey)
     return () => {
       clearTimeout(t)
       document.removeEventListener("keydown", onKey)
+      behind.forEach((el) => el.removeAttribute("inert"))
     }
   }, [openCaseKey, closeCase])
 
-  const activeCase = openCaseKey ? CASES[openCaseKey] : null
+  /* What the modal PAINTS. It keeps showing the last case while the dialog fades
+     out, so the exit animation no longer collapses the head to a bare fallback.
+     `openCaseKey` still drives .open / aria-hidden / the focus trap. */
+  const activeCase = openCaseKey
+    ? CASES[openCaseKey]
+    : renderedCaseKey
+      ? CASES[renderedCaseKey]
+      : null
   const year = new Date().getFullYear()
 
   return (
@@ -663,7 +736,11 @@ export default function PortfolioPage() {
                     <em>{t("vitrine.titleIt")}</em>
                   </h2>
                 </div>
-                <span className="m">{t("vitrine.hint")}</span>
+                <span className="m">
+                  {/* "Hover" is meaningless on a touch device, where this is a swipe carousel. */}
+                  <span className="on-hover">{t("vitrine.hint")}</span>
+                  <span className="on-touch">{t("vitrine.hintTouch")}</span>
+                </span>
               </div>
 
               <div className="ab-phones">
@@ -778,13 +855,13 @@ export default function PortfolioPage() {
                     name: { pre: "Savely", it: ` — ${t("cases.savely.titleIt")}` },
                     tag: t("cases.savely.tag"),
                     stack: ["iOS", "Fintech", "Banking APIs"],
-                    mshow: "iOS · Fintech · In review →",
+                    mshow: `iOS · Fintech · ${t("cases.savely.mshowStatus")} →`,
                   },
                   mezcal: {
                     name: { pre: "Mi Mezcal", it: " — Destilería Lorenzana." },
                     tag: t("cases.mezcal.tag"),
                     stack: ["Web", "E-commerce", "Brand"],
-                    mshow: "Web · E-commerce · Live →",
+                    mshow: `Web · E-commerce · ${t("cases.mezcal.mshowStatus")} →`,
                   },
                   blip: {
                     name: { pre: "BLIP", it: ` — ${t("cases.blip.titleIt")}` },
@@ -829,6 +906,9 @@ export default function PortfolioPage() {
                     key={key}
                     type="button"
                     className="ab-index-row"
+                    /* Lets a ?case= deep link find the row this modal belongs to,
+                       so closing it restores focus the same way the click path does. */
+                    data-case={key}
                     onClick={(e) => openCase(key, e.currentTarget)}
                   >
                     <span className="n ab-num">{c.num}</span>
@@ -886,10 +966,10 @@ export default function PortfolioPage() {
 
               <div className="ab-wb-groups">
                 <div className="ab-wb-group">
-                  <h4>
+                  <h3>
                     {t("workbench.groups.frontend")}{" "}
                     <span className="gn">i.</span>
-                  </h4>
+                  </h3>
                   <div className="ab-pills">
                     {["SwiftUI", "Swift", "React", "Next.js", "TypeScript", "Tailwind"].map(
                       (p, i) => (
@@ -902,10 +982,10 @@ export default function PortfolioPage() {
                   </div>
                 </div>
                 <div className="ab-wb-group">
-                  <h4>
+                  <h3>
                     {t("workbench.groups.backend")}{" "}
                     <span className="gn">ii.</span>
-                  </h4>
+                  </h3>
                   <div className="ab-pills">
                     {["Node", "PostgreSQL", "Supabase", "Vercel", "Edge Functions"].map((p, i) => (
                       <span key={p} className="ab-pill">
@@ -916,9 +996,9 @@ export default function PortfolioPage() {
                   </div>
                 </div>
                 <div className="ab-wb-group">
-                  <h4>
+                  <h3>
                     {t("workbench.groups.craft")} <span className="gn">iii.</span>
-                  </h4>
+                  </h3>
                   <div className="ab-pills">
                     {["Figma", "Xcode", "Claude Code", "Git"].map((p, i) => (
                       <span key={p} className="ab-pill">
@@ -1003,6 +1083,7 @@ export default function PortfolioPage() {
         onClick={closeCase}
       />
       <div
+        ref={modalRef}
         className={`ab-case-modal${openCaseKey ? " open" : ""}`}
         role="dialog"
         aria-modal="true"
@@ -1012,7 +1093,7 @@ export default function PortfolioPage() {
         <div className="ab-case-head">
           <div className="eye">
             <span className="num">{activeCase?.num ?? "—"}</span>
-            <span>{activeCase?.kicker ?? "Case study"}</span>
+            <span>{activeCase?.kicker ?? t("modal.caseStudy")}</span>
           </div>
           <button
             ref={closeBtnRef}
@@ -1055,6 +1136,23 @@ export default function PortfolioPage() {
               <div className="ab-case-actions">
                 {activeCase.actions.map((a) => {
                   const Icon = a.icon ? ICONS[a.icon] : null
+                  // "Code coming soon" / "Private beta" used to be <a href="#">
+                  // dimmed to 0.5 with pointer-events:none. That stops the mouse
+                  // and nothing else: they stayed in the tab order, announced as
+                  // ordinary links, and Enter navigated to "#". A real disabled
+                  // button is unfocusable and unactivatable by every input.
+                  if (a.kind.includes("disabled")) {
+                    return (
+                      <button
+                        key={a.label}
+                        type="button"
+                        className={`ab-case-btn ${a.kind}`}
+                        disabled
+                      >
+                        {a.label} {Icon}
+                      </button>
+                    )
+                  }
                   return (
                     <a
                       key={a.label}
@@ -1075,6 +1173,7 @@ export default function PortfolioPage() {
                 <div className="ab-case-beats">
                   {activeCase.story.map(([label, body]) => (
                     <div key={label}>
+                      {/* h4 is correct here: it sits under the modal's h3 title. */}
                       <h4>{label}</h4>
                       <p>{body}</p>
                     </div>
@@ -1136,8 +1235,13 @@ function toRoman(n: number) {
  * instead of autoplay.
  */
 function CaseVideo({ media }: { media: Extract<CaseMedia, { kind: "video" }> }) {
+  const t = useTranslations("home")
   const ref = useRef<HTMLVideoElement | null>(null)
   const [reduced, setReduced] = useState(false)
+  /* WCAG 2.2.2: these clips run 9-17s and loop forever. Autoplaying motion that
+     long with no way to stop it is a failure, so the default path gets a real
+     toggle. The reduced-motion path already ships native controls. */
+  const [paused, setPaused] = useState(false)
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
@@ -1153,15 +1257,33 @@ function CaseVideo({ media }: { media: Extract<CaseMedia, { kind: "video" }> }) 
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) void el.play().catch(() => {})
+          // Once the viewer has pressed pause, scrolling must not undo it.
+          if (entry.isIntersecting && !paused) void el.play().catch(() => {})
           else el.pause()
         }
       },
       { threshold: 0.35 },
     )
     io.observe(el)
-    return () => io.disconnect()
-  }, [reduced])
+    return () => {
+      io.disconnect()
+      // Turning reduce-motion on mid-session used to leave a clip playing,
+      // because this cleanup only disconnected the observer.
+      el.pause()
+    }
+  }, [reduced, paused])
+
+  const toggle = () => {
+    const el = ref.current
+    if (!el) return
+    if (el.paused) {
+      void el.play().catch(() => {})
+      setPaused(false)
+    } else {
+      el.pause()
+      setPaused(true)
+    }
+  }
 
   const video = (
     <video
@@ -1170,6 +1292,9 @@ function CaseVideo({ media }: { media: Extract<CaseMedia, { kind: "video" }> }) 
       poster={media.poster}
       width={media.w}
       height={media.h}
+      /* Under reduced motion this becomes a focusable media widget, and an
+         unnamed one is announced as just "video". */
+      aria-label={media.caption}
       muted
       loop
       playsInline
@@ -1180,21 +1305,38 @@ function CaseVideo({ media }: { media: Extract<CaseMedia, { kind: "video" }> }) 
     </video>
   )
 
-  if (media.frame === "phone") {
-    return <div className="ab-phone-img">{video}</div>
-  }
-  if (media.frame === "bare") {
-    return video
-  }
-  return (
-    <div className="ab-browser-frame has-shot">
-      <div className="ab-browser-bar">
-        <span className="bdot" />
-        <span className="bdot" />
-        <span className="bdot" />
-        <span className="url">{media.url}</span>
+  const framed =
+    media.frame === "phone" ? (
+      <div className="ab-phone-img">{video}</div>
+    ) : media.frame === "bare" ? (
+      video
+    ) : (
+      <div className="ab-browser-frame has-shot">
+        <div className="ab-browser-bar">
+          <span className="bdot" />
+          <span className="bdot" />
+          <span className="bdot" />
+          <span className="url">{media.url}</span>
+        </div>
+        {video}
       </div>
-      {video}
+    )
+
+  return (
+    <div className="ab-case-clip">
+      {framed}
+      {!reduced && (
+        <button
+          type="button"
+          className="ab-case-clip-toggle"
+          onClick={toggle}
+          aria-label={paused ? t("modal.playClip") : t("modal.pauseClip")}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            {paused ? <path d="M8 5v14l11-7z" /> : <path d="M7 5h3v14H7zM14 5h3v14h-3z" />}
+          </svg>
+        </button>
+      )}
     </div>
   )
 }
@@ -1310,7 +1452,7 @@ function CasePreview({ which }: { which: CaseKey }) {
         </div>
         <div className="ab-alisio-watch">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/cases/alisio-watch.webp" alt="" width={249} height={293} loading="lazy" />
+          <img src="/cases/alisio-watch.webp" alt="" width={249} height={317} loading="lazy" />
         </div>
       </div>
     )

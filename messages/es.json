@@ -431,10 +431,11 @@
       "signed": "Firmado"
     },
     "vitrine": {
-      "eyebrow": "Vitrina — 2025",
+      "eyebrow": "Vitrina — 2026",
       "titlePre": "Tres piezas ",
       "titleIt": "recientes.",
-      "hint": "— Pasa el cursor para enfocar"
+      "hint": "— Pasa el cursor para enfocar",
+      "hintTouch": "— Desliza para verlas"
     },
     "work": {
       "eyebrow": "La obra",
@@ -466,7 +467,10 @@
       "terms": "Términos"
     },
     "modal": {
-      "close": "Cerrar"
+      "close": "Cerrar",
+      "pauseClip": "Pausar clip",
+      "playClip": "Reproducir clip",
+      "caseStudy": "Caso de estudio"
     },
     "cases": {
       "meta": {
@@ -494,14 +498,16 @@
         "metaStatus": "En revisión · Próximamente",
         "actionPrimary": "Próximamente",
         "actionGhost": "Soporte",
-        "tag": "Balance, presupuesto, alertas — un asistente financiero tranquilo."
+        "tag": "Balance, presupuesto, alertas — un asistente financiero tranquilo.",
+        "mshowStatus": "En revisión"
       },
       "mezcal": {
         "descRich": "Tienda e historia para una marca de mezcal artesanal de Oaxaca. Un sitio editorial y tranquilo construido para vender — variedades, origen, pedidos directos. <it>Hecho a mano</it> de la marca al checkout.",
         "metaPlatform": "Web · Responsiva",
         "metaStatus": "En vivo",
         "actionPrimary": "Visitar sitio",
-        "tag": "Una marca de mezcal artesanal — tienda e historia."
+        "tag": "Una marca de mezcal artesanal — tienda e historia.",
+        "mshowStatus": "En vivo"
       },
       "blip": {
         "titleIt": "el radar de restocks.",
@@ -555,7 +561,7 @@
           "Perfil e historial se sincronizan entre dispositivos; nada sale de ellos"
         ],
         "mediaCaption": "Una sesión en vivo en los dos dispositivos: arrancada desde el iPhone, medida en el Watch y espejeada de vuelta. Mira el badge cambiar cuando el pulso se sale de la Zona 2 y regresa.",
-        "watchCaption": "Solo con el reloj: elegir zona con la corona, la sesión en vivo, meta cumplida y la complicación en la carátula."
+        "watchCaption": "Solo con el reloj: elegir zona con la corona y la sesión en vivo — el distintivo saliéndose de zona y regresando — hasta cumplir la meta."
       },
       "vitapath": {
         "titleIt": "respuesta a emergencias, de punta a punta.",
@@ -570,12 +576,13 @@
         },
         "highlights": [
           "Despacho geoespacial: PostGIS nearest-N más barrido de escalación",
-          "Tiempo real por STOMP: mapa y ETA vivos en teléfono, muñeca y consola",
+          "Tiempo real por STOMP: mapa y ETA vivos en ambas apps y la consola",
           "Ruteo hospitalario por seguro, proximidad y capacidad",
           "Auth JWT con refresh rotativo y bitácora de acceso a PHI"
         ],
-        "mediaCaption": "Una emergencia real, dos superficies en el mismo instante: la consola la muestra despachada y esperando paramédico mientras la oferta le llega al teléfono del paramédico. Él acepta, se resuelve el ruteo hospitalario y ambas pasan a en ruta.",
-        "galleryCaption": "La app del paciente, en la misma emergencia: el botón SOS, el tracking en vivo con la ruta vial real del paramédico y su ETA, y la tarjeta de emergencia que leen los rescatistas al llegar."
+        "mediaCaption": "Una emergencia real en las tres superficies al mismo tiempo. La oferta llega al teléfono de la paramédica, ella acepta, y la consola resuelve el hospital por seguro y red mientras la paciente ve esa misma ruta acercarse en su propio mapa.",
+        "galleryCaption": "La app del paciente: el botón SOS, el tracking en vivo con la ruta vial real del paramédico y su ETA, y la tarjeta de emergencia que leen los rescatistas al llegar.",
+        "kicker": "Sistema · Healthtech · 2026"
       },
       "arrhythmia": {
         "titleIt": "lee el ECG, latido a latido.",
