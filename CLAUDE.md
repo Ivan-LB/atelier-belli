@@ -177,6 +177,25 @@ sideways on mobile with text clipped. `.ab-case-media img/video` also cap at
   (6 steps for the patient profile). Accounts and the full runbook live in
   `~/Projects/vitapath/DEMO.md`.
 
+**Case modal accessibility invariants (2026-08-02).** All four were measured
+broken and are now covered by e2e tests — if a test named for them fails, the
+regression is real, not the test being fussy.
+
+- The modal **traps focus**: the `openCaseKey` effect handles `Tab`/`Shift+Tab`
+  and wraps inside `modalRef`, and it sets `inert` on `<main>` + `header.ab-nav`
+  while open. Without the `inert` half, `aria-modal="true"` is a lie.
+- `.ab-case-modal` closed carries **`visibility: hidden`** (with a 320 ms-delayed
+  transition so the exit fade still plays). `opacity: 0` alone left its close
+  button in the tab order as the last stop on every homepage load.
+- Rows carry **`data-case`**, and a `?case=` deep link seeds `lastFocusRef` from
+  it, so closing lands on the matching row instead of stranding focus.
+- `renderedCaseKey` lags `openCaseKey` on purpose so the modal keeps painting the
+  last case through the 320 ms exit. Nulling it immediately collapsed the dialog
+  to a 73 px bar showing the English fallback — on `/es` too. Because the body
+  stays mounted, the close path explicitly pauses any `<video>` inside.
+- Disabled case actions are **`<button disabled>`**, never `<a href="#">` dimmed
+  with `pointer-events: none` — that stops the mouse and nothing else.
+
 **Vitrine composition below 820px (do not revert to centring).** The carousel
 row is sized by its tallest slide, and the slides cannot be equalised: the
 Alisio card is a portrait phone (aspect 0.4601, so height = width × 2.1733)
@@ -185,7 +204,10 @@ at its legibility floor (~150px wide) and a combo at the widest the
 `min(88%, 330px)` slot allows, the heights still differ ~1.5×. That slack is
 structural. `.ab-phones` therefore uses **`align-items: end`** and
 `.ab-phone-slot` **`justify-content: flex-end`**, so all three captions land on
-one baseline and the whole slack sits as one band above the short cards. It
+one baseline. The desktop grid (`.ab-phones`, >820px) now uses `align-items: end`
+for the same reason: its slots' `min-height: 640px` exists to share a caption
+baseline, but Alisio's slot measures 659.8px, so `center` lifted the two side
+captions ~10px and defeated it and the whole slack sits as one band above the short cards. It
 previously used `center`, which halved the slack: that stranded the combo cards
 mid-row and put their captions **116px** off the phone's, so a swipe made the
 caption jump. The old comment justified centring with "you only ever see one
@@ -284,13 +306,27 @@ that reads `getTranslations("notFound")`, then renders the `.ab-nf-*` editorial
 single Client Component and broke on production; PR #18 split it into the
 current Server + island shape.
 
-**Hybrid font loading** (intentional — see gotcha `google-fonts-hybrid-loading`):
+**Hybrid font loading** (intentional — see gotcha `google-fonts-hybrid-loading`,
+but note the split changed 2026-08-02):
 
-- `@import` at the top of `app/globals.css` ships Fraunces, Inter, EB Garamond,
-  Instrument Serif, IBM Plex Mono for CSS-level `font-family` references.
-- `next/font/google` in `app/[locale]/layout.tsx` **also** loads Inter as
-  `--font-inter`, applied via `<html className={inter.variable}>`, to benefit
-  from Next's font subsetting and preload for body copy.
+- `next/font/google` in `app/[locale]/layout.tsx` loads **Inter** as
+  `--font-inter` **and Fraunces** as `--font-fraunces` (axes `SOFT` + `opsz`,
+  normal + italic), both applied via `<html className={...}>`.
+- `@import` at the top of `app/globals.css` ships only **Inter, EB Garamond,
+  Instrument Serif, IBM Plex Mono** for CSS-level `font-family` references.
+
+**Do not move Fraunces back into the `@import`.** It sets every display heading,
+so it is the LCP element, and the `@import` reaches it through three dependent
+hops — HTML → `layout.css` → `fonts.googleapis.com` → `fonts.gstatic.com` — with
+no `preconnect` on either cross-origin host. Measured on a 150 ms-RTT link the
+woff2 was not even *requested* until 1410 ms. It was also the site's CLS: the
+swap from the fallback re-wrapped the headings. `next/font` self-hosts it under
+`/_next/static/media` (same origin as the document, so all three hops go away)
+and emits a metric-matched `"Fraunces Fallback"` face, which is what removes the
+reflow. `--ab-serif` therefore reads `var(--font-fraunces)`, **not** a literal
+`"Fraunces"` — a literal would silently fall through to Cormorant/Georgia.
+Verified in dev: 0 cross-origin Fraunces requests, 0 `googleapis` CSS requests.
+**Amplify-smoke this region before merging** (same rule as the i18n provider).
 
 **Deploy**: AWS Amplify. No `amplify.yml` in the repo — build config is in the
 Amplify console. No `.github/workflows/` — there is no CI beyond Amplify.
