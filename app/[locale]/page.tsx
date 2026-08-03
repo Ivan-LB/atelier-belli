@@ -242,8 +242,8 @@ export default function PortfolioPage() {
           kind: "video",
           src: "/cases/video/alisio-system.mp4",
           poster: "/cases/video/alisio-system-poster.webp",
-          w: 1400,
-          h: 760,
+          w: 740,
+          h: 740,
           frame: "bare",
           caption: t("cases.alisio.mediaCaption"),
         },
@@ -1299,7 +1299,13 @@ function CaseVideo({ media }: { media: Extract<CaseMedia, { kind: "video" }> }) 
   const video = (
     <video
       ref={ref}
-      className={`ab-case-video${media.frame === "phone" ? " portrait" : ""}${media.frame === "bare" ? " bare" : ""}`}
+      /* A `bare` composite is as wide as its devices need. The Vitapath one is
+         2.3:1 and fills 920px happily; the Alisio one is square, and at 920px it
+         would render ~900px tall and push its own caption off the fold. Cap the
+         width for anything squarer than 1.4:1 instead of letterboxing it. */
+      className={`ab-case-video${media.frame === "phone" ? " portrait" : ""}${
+        media.frame === "bare" ? (media.w / media.h < 1.4 ? " bare bare-square" : " bare") : ""
+      }`}
       poster={media.poster}
       width={media.w}
       height={media.h}

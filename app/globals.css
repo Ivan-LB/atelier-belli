@@ -1955,6 +1955,13 @@
   border-radius: 10px;
   background: #17191a;
 }
+/* Squarer than 1.4:1 (see CaseVideo). A square composite at the 920px cap would
+   render ~900px tall — twice the landscape one — and shove its caption off the
+   fold. 620px keeps it a comfortable band while the tighter crop still shows the
+   devices much larger than the old letterboxed frame did. */
+.ab-case-video.bare.bare-square {
+  max-width: 620px;
+}
 .ab-phone-img video {
   display: block;
   width: 100%;
