@@ -1,35 +1,51 @@
 import { test, expect } from "@playwright/test";
 
-// ── Test 1: /en/ and /es/ both render an h1 ──────────────────────────────────
-test("/en/ renders h1", async ({ page }) => {
-  await page.goto("/en/");
+// ── Test 1: one URL renders either language ─────────────────────────────────
+// The locale is no longer in the path (localePrefix: "never"), so the SAME url
+// has to serve both languages depending on the NEXT_LOCALE cookie.
+test("/ renders an h1 in English by default", async ({ page }) => {
+  await page.goto("/");
   await expect(page.locator("h1")).toBeVisible();
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
 });
 
-test("/es/ renders h1", async ({ page }) => {
-  await page.goto("/es/");
+test("/ renders Spanish when NEXT_LOCALE=es, at the same URL", async ({ browser }) => {
+  const context = await browser.newContext();
+  await context.addCookies([
+    { name: "NEXT_LOCALE", value: "es", url: "http://localhost:3100" },
+  ]);
+  const page = await context.newPage();
+  await page.goto("/");
   await expect(page.locator("h1")).toBeVisible();
+  await expect(page.locator("html")).toHaveAttribute("lang", "es");
+  expect(new URL(page.url()).pathname).toBe("/");
+  await context.close();
 });
 
-// ── Test 2: Root redirect honours Accept-Language ────────────────────────────
-// Use Playwright's locale option — it sets the browser's Accept-Language header.
-// next-intl middleware reads that header and redirects / → /es/.
-test("/ with Accept-Language: es redirects to /es/", async ({ browser }) => {
-  const context = await browser.newContext({
-    locale: "es-MX",
-  });
+// ── Test 2: Accept-Language still negotiates, without changing the URL ───────
+test("/ with Accept-Language: es serves Spanish and stays on /", async ({ browser }) => {
+  const context = await browser.newContext({ locale: "es-MX" });
   const page = await context.newPage();
   await page.goto("/");
   await page.waitForLoadState("networkidle");
-  expect(page.url()).toContain("/es");
+  await expect(page.locator("html")).toHaveAttribute("lang", "es");
+  expect(new URL(page.url()).pathname).toBe("/");
   await context.close();
+});
+
+// ── Test 2b: the old prefixed URLs must keep working for inbound links ───────
+test("legacy /en and /es URLs redirect to the unprefixed route", async ({ page }) => {
+  await page.goto("/en/privacy/");
+  expect(new URL(page.url()).pathname).toBe("/privacy/");
+  await page.goto("/es/");
+  expect(new URL(page.url()).pathname).toBe("/");
 });
 
 // ── Test 3: Case modal — open, focus, Escape, trigger-focus-restore ──────────
 test("case modal opens, traps focus, closes on Escape, restores trigger focus", async ({
   page,
 }) => {
-  await page.goto("/en/");
+  await page.goto("/");
 
   // Click the first case row
   const firstRow = page.locator("button.ab-index-row").first();
@@ -77,7 +93,7 @@ test("deep-linked modal restores focus to its Selected Work row on close", async
 }) => {
   // The click path seeds lastFocusRef; a ?case= deep link does not, so closing
   // used to strand focus on the hidden close button inside aria-hidden="true".
-  await page.goto("/en?case=alisio");
+  await page.goto("/?case=alisio");
   await expect(page.locator(".ab-case-modal.open")).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(page.locator(".ab-case-modal.open")).toHaveCount(0);
@@ -85,7 +101,7 @@ test("deep-linked modal restores focus to its Selected Work row on close", async
 });
 
 test("closed case modal is not reachable by keyboard", async ({ page }) => {
-  await page.goto("/en/");
+  await page.goto("/");
   // `opacity: 0` alone left the close button in the tab order as the last stop
   // on every homepage load.
   await expect(page.locator(".ab-case-modal")).toHaveCSS("visibility", "hidden");
@@ -104,7 +120,7 @@ test("closed case modal is not reachable by keyboard", async ({ page }) => {
 test("theme toggle flips data-theme and persists to localStorage", async ({
   page,
 }) => {
-  await page.goto("/en/");
+  await page.goto("/");
 
   const root = page.locator(".ab-root");
   const initialTheme = await root.getAttribute("data-theme");
@@ -120,18 +136,25 @@ test("theme toggle flips data-theme and persists to localStorage", async ({
   expect(stored).toBe(flippedTheme);
 });
 
-// ── Test 5: /es/ shows all nine cases ────────────────────────────────────────
+// ── Test 5: Spanish shows all nine cases ─────────────────────────────────────
 // Bump this count when a 10th case ships (also update CASE_KEYS in page.tsx).
-test("/es/ shows all nine cases", async ({ page }) => {
-  await page.goto("/es/");
+test("Spanish shows all nine cases", async ({ browser }) => {
+  const context = await browser.newContext();
+  await context.addCookies([
+    { name: "NEXT_LOCALE", value: "es", url: "http://localhost:3100" },
+  ]);
+  const page = await context.newPage();
+  await page.goto("/");
+  await expect(page.locator("html")).toHaveAttribute("lang", "es");
   await expect(page.locator("button.ab-index-row")).toHaveCount(9);
+  await context.close();
 });
 
 // ── Test 6: deep link opens the right case ────────────────────────────────────
 test("?case=blip deep link opens the BLIP modal; Escape clears the param", async ({
   page,
 }) => {
-  await page.goto("/en/?case=blip");
+  await page.goto("/?case=blip");
 
   // Modal should be visible and contain the case title
   const modal = page.locator(".ab-case-modal.open");
@@ -146,7 +169,7 @@ test("?case=blip deep link opens the BLIP modal; Escape clears the param", async
 
 // ── Test 7: opening a case writes the ?case= param ───────────────────────────
 test("clicking a case row adds ?case=alisio to the URL", async ({ page }) => {
-  await page.goto("/en/");
+  await page.goto("/");
 
   const firstRow = page.locator("button.ab-index-row").first();
   await firstRow.click();
@@ -163,7 +186,7 @@ test("clicking a case row adds ?case=alisio to the URL", async ({ page }) => {
 
 // ── Test 8: invalid ?case= key is silently ignored ───────────────────────────
 test("?case=notreal does not open any modal", async ({ page }) => {
-  await page.goto("/en/?case=notreal");
+  await page.goto("/?case=notreal");
 
   // No open modal
   await expect(page.locator(".ab-case-modal.open")).toHaveCount(0);

@@ -470,7 +470,8 @@
       "close": "Close",
       "pauseClip": "Pause clip",
       "playClip": "Play clip",
-      "caseStudy": "Case study"
+      "caseStudy": "Case study",
+      "galleryAria": "Screenshot gallery"
     },
     "cases": {
       "meta": {
@@ -560,7 +561,7 @@
           "The Watch starts a session on its own, no iPhone nearby",
           "Profile and history sync between devices; nothing leaves them"
         ],
-        "mediaCaption": "One live session across both devices: started from the iPhone, measured on the Watch, mirrored back. Watch the badge flip as the heart rate drifts out of Zone 2 and returns.",
+        "mediaCaption": "One live session across both devices: started on the iPhone, measured on the Watch, mirrored back to the phone. See the badge flip as the heart rate drifts out of Zone 2 and returns.",
         "watchCaption": "On the wrist alone: pick a zone with the crown, then the live session — the badge slipping out of zone and back in — through to the goal completed."
       },
       "vitapath": {
@@ -582,7 +583,8 @@
         ],
         "mediaCaption": "One real emergency across all three surfaces at the same moment. The offer lands on the paramedic's phone, she accepts, and the console resolves the hospital by insurance and network while the patient watches the same road route close in on her own map.",
         "galleryCaption": "The patient app: the SOS button, live tracking with the paramedic's real road route and ETA, and the emergency card responders read on arrival.",
-        "kicker": "System · Healthtech · 2026"
+        "kicker": "System · Healthtech · 2026",
+        "previewUrl": "vitapath · dispatch console"
       },
       "arrhythmia": {
         "titleIt": "read the ECG, beat by beat.",

@@ -470,7 +470,8 @@
       "close": "Cerrar",
       "pauseClip": "Pausar clip",
       "playClip": "Reproducir clip",
-      "caseStudy": "Caso de estudio"
+      "caseStudy": "Caso de estudio",
+      "galleryAria": "Galería de capturas"
     },
     "cases": {
       "meta": {
@@ -557,10 +558,10 @@
         "highlights": [
           "Avisos hápticos al entrar, salir y cumplir la meta",
           "Zonas por perfil: Karvonen o Simple (base Tanaka 2001)",
-          "El Watch arranca la sesión solo, sin iPhone cerca",
+          "El reloj arranca la sesión solo, sin iPhone cerca",
           "Perfil e historial se sincronizan entre dispositivos; nada sale de ellos"
         ],
-        "mediaCaption": "Una sesión en vivo en los dos dispositivos: arrancada desde el iPhone, medida en el Watch y espejeada de vuelta. Mira el badge cambiar cuando el pulso se sale de la Zona 2 y regresa.",
+        "mediaCaption": "Una sesión en vivo en los dos dispositivos: arranca en el iPhone, se mide en el reloj y se refleja de vuelta en el teléfono. Mira el distintivo cambiar cuando el pulso se sale de la Zona 2 y regresa.",
         "watchCaption": "Solo con el reloj: elegir zona con la corona y la sesión en vivo — el distintivo saliéndose de zona y regresando — hasta cumplir la meta."
       },
       "vitapath": {
@@ -582,7 +583,8 @@
         ],
         "mediaCaption": "Una emergencia real en las tres superficies al mismo tiempo. La oferta llega al teléfono de la paramédica, ella acepta, y la consola resuelve el hospital por seguro y red mientras la paciente ve esa misma ruta acercarse en su propio mapa.",
         "galleryCaption": "La app del paciente: el botón SOS, el tracking en vivo con la ruta vial real del paramédico y su ETA, y la tarjeta de emergencia que leen los rescatistas al llegar.",
-        "kicker": "Sistema · Healthtech · 2026"
+        "kicker": "Sistema · Healthtech · 2026",
+        "previewUrl": "vitapath · consola de despacho"
       },
       "arrhythmia": {
         "titleIt": "lee el ECG, latido a latido.",

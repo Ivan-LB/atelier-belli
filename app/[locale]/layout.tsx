@@ -41,15 +41,18 @@ export async function generateMetadata({
     title: t("metaTitle"),
     description: t("metaDescription"),
     icons: { icon: "/AtelierBelli.svg", shortcut: "/AtelierBelli.png" },
-    alternates: {
-      canonical: `/${locale}/`,
-      languages: { en: "/en/", es: "/es/", "x-default": "/en/" },
-    },
+    // No `alternates` here on purpose, for two separate reasons.
+    // 1. hreflang: with `localePrefix: "never"` the Spanish version has no URL
+    //    of its own, so language alternates would point at routes that 404.
+    // 2. canonical: this metadata is inherited by EVERY route under the layout.
+    //    It used to hard-code the homepage, so /privacy, /terms and both
+    //    support pages each declared the homepage as their canonical — telling
+    //    crawlers they were duplicates of it. With no tag, each page is its own
+    //    canonical, which is what we want. Only add one back per-route.
     openGraph: {
       type: "website",
       siteName: "Atelier Belli",
       locale: locale === "es" ? "es_MX" : "en_US",
-      url: `/${locale}/`,
       title: t("metaTitle"),
       description: t("metaDescription"),
       images: [{ url: "/og.png", width: 1200, height: 630, alt: t("ogAlt") }],

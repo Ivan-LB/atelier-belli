@@ -148,6 +148,14 @@
   --bg-2: var(--cream-2);
   --ab-fg: var(--ab-ink);
   --fg-2: var(--ink-2);
+
+  /* One 10-11px uppercase idiom was spelled with five different tracking values
+     across 23 call sites and zero tokens. Worst case: .p-stack (0.16em) and
+     .p-plat (0.2em) are literal DOM siblings in the same Selected Work row.
+     Two tokens now: labels/eyebrows, and the smaller meta rank.
+     NOT applied to .sup-* — the support pages are a separate token system. */
+  --track-eyebrow: 0.22em;
+  --track-meta: 0.18em;
   --ab-muted: var(--mute);
   --muted-2: var(--mute-2);
   --line: var(--rule);
@@ -224,7 +232,7 @@
   font-family: var(--ab-sans);
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.22em;
+  letter-spacing: var(--track-eyebrow);
   text-transform: uppercase;
   color: var(--ab-muted);
 }
@@ -354,7 +362,7 @@
   border: 1px solid var(--line-2);
   border-radius: 999px;
   font-size: 11px;
-  letter-spacing: 0.18em;
+  letter-spacing: var(--track-meta);
   text-transform: uppercase;
   color: var(--fg-2);
   transition: background var(--ab-trans), color var(--ab-trans), border-color var(--ab-trans);
@@ -481,7 +489,7 @@
 .ab-colophon .row .k {
   color: var(--ab-muted);
   font-size: 11px;
-  letter-spacing: 0.2em;
+  letter-spacing: var(--track-meta);
   text-transform: uppercase;
 }
 .ab-colophon .row .v {
@@ -560,7 +568,7 @@
 }
 .ab-vitrine-cap .m {
   font-size: 11px;
-  letter-spacing: 0.22em;
+  letter-spacing: var(--track-eyebrow);
   text-transform: uppercase;
   white-space: nowrap;
   padding-bottom: 10px;
@@ -603,7 +611,7 @@
 }
 .ab-phone-slot .caption .s {
   font-size: 11px;
-  letter-spacing: 0.2em;
+  letter-spacing: var(--track-meta);
   text-transform: uppercase;
   color: var(--ab-muted);
   margin-top: 4px;
@@ -863,7 +871,7 @@
   color: var(--ab-muted);
   text-align: right;
   font-size: 11px;
-  letter-spacing: 0.22em;
+  letter-spacing: var(--track-eyebrow);
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -944,7 +952,7 @@
   flex-wrap: wrap;
   gap: 6px 10px;
   font-size: 11px;
-  letter-spacing: 0.16em;
+  letter-spacing: var(--track-meta);
   text-transform: uppercase;
   color: var(--fg-2);
 }
@@ -958,7 +966,7 @@
 }
 .ab-index-row .p-plat {
   font-size: 11px;
-  letter-spacing: 0.2em;
+  letter-spacing: var(--track-meta);
   text-transform: uppercase;
   color: var(--muted-2);
   font-family: var(--ab-sans);
@@ -1060,7 +1068,7 @@
   font-family: var(--ab-sans);
   font-weight: 500;
   font-size: 11px;
-  letter-spacing: 0.22em;
+  letter-spacing: var(--track-eyebrow);
   text-transform: uppercase;
   color: var(--ab-muted);
   margin: 0 0 14px;
@@ -1168,7 +1176,7 @@
 }
 .ab-btn-mail .lbl {
   font-size: 11px;
-  letter-spacing: 0.22em;
+  letter-spacing: var(--track-eyebrow);
   text-transform: uppercase;
   color: var(--ab-muted);
   padding-right: 14px;
@@ -1232,7 +1240,7 @@
   align-items: center;
   color: var(--ab-muted);
   font-size: 11px;
-  letter-spacing: 0.2em;
+  letter-spacing: var(--track-meta);
   text-transform: uppercase;
 }
 .ab-colofon-foot .mid {
@@ -1279,7 +1287,7 @@
     display: block;
     margin-top: 8px;
     font-size: 11px;
-    letter-spacing: 0.18em;
+    letter-spacing: var(--track-meta);
     text-transform: uppercase;
     color: var(--ab-muted);
   }
@@ -1419,7 +1427,7 @@
 }
 .ab-case-head .eye {
   font-size: 11px;
-  letter-spacing: 0.22em;
+  letter-spacing: var(--track-eyebrow);
   text-transform: uppercase;
   color: var(--ab-muted);
   display: flex;
@@ -1708,7 +1716,7 @@
 }
 .ab-case-meta dt {
   font-size: 10px;
-  letter-spacing: 0.22em;
+  letter-spacing: var(--track-eyebrow);
   text-transform: uppercase;
   color: var(--ab-muted);
   padding-top: 2px;
@@ -1870,7 +1878,11 @@
 .ab-case-beats p {
   font-size: 13.5px;
   line-height: 1.62;
-  color: var(--ab-muted);
+  /* Was --ab-muted, which made the narrative the lightest text in the modal
+     while the highlights list below it inherited full-strength foreground —
+     the hierarchy was upside down. --fg-2 is what .ab-case-desc uses, so the
+     story now reads at the same weight as the deck it continues. */
+  color: var(--fg-2);
   max-width: 46ch;
   text-wrap: pretty;
 }
@@ -1889,6 +1901,9 @@
   padding-left: 16px;
   font-size: 13px;
   line-height: 1.5;
+  /* A spec list is reference, not narrative: it should sit below the prose in
+     the reading order, not out-rank it. */
+  color: var(--ab-muted);
 }
 .ab-case-highlights li::before {
   content: "";
@@ -1901,7 +1916,11 @@
 }
 /* A framed clip sits centred with its caption; a gallery strip runs full width. */
 .ab-case-media figure {
-  margin: 0 auto;
+  /* No `margin: 0 auto`: a browser-framed video is the only block that is not
+     `.wide`, so centring indented it 237px while the gallery beside it sat
+     flush at the band edge. Everything now shares the content-box left edge,
+     which also re-aligns each caption with its own visual. */
+  margin: 0;
   max-width: 560px;
 }
 .ab-case-media figure.wide {
@@ -1930,7 +1949,8 @@
   aspect-ratio: auto;
   object-fit: contain;
   max-width: 920px;
-  margin-inline: auto;
+  /* Second, independent centring rule — see .ab-case-media figure above. */
+  margin-inline: 0;
   border: 1px solid var(--line-2);
   border-radius: 10px;
   background: #17191a;
@@ -2167,7 +2187,7 @@
 .ab-legal-meta {
   font-family: var(--ab-sans);
   font-size: 12px;
-  letter-spacing: 0.18em;
+  letter-spacing: var(--track-meta);
   text-transform: uppercase;
   color: var(--ab-muted);
   margin: 0 0 clamp(32px, 4vw, 56px);
@@ -2315,7 +2335,7 @@
   border: 0;
   color: var(--ab-muted);
   font: 500 11px/1 var(--ab-sans);
-  letter-spacing: 0.18em;
+  letter-spacing: var(--track-meta);
   text-transform: uppercase;
   padding: 8px 10px;
   cursor: pointer;
@@ -2429,7 +2449,7 @@
   color: var(--ab-bg);
   text-decoration: none;
   font: 500 11px/1 var(--ab-sans);
-  letter-spacing: 0.22em;
+  letter-spacing: var(--track-eyebrow);
   text-transform: uppercase;
   border: 1px solid var(--accent-color);
   transition:
@@ -2461,7 +2481,7 @@
 .ab-nf-copy,
 .ab-nf-meta {
   font: 500 11px/1 var(--ab-sans);
-  letter-spacing: 0.18em;
+  letter-spacing: var(--track-meta);
   text-transform: uppercase;
   color: var(--ab-muted);
 }

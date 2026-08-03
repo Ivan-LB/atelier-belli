@@ -3,8 +3,9 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
+import Link from "next/link"
+import { LOCALE_COOKIE } from "@/i18n"
 
-const LANGUAGE_COOKIE = "preferred-language"
 
 /* Module scope on purpose: inside the component this would be a new string every
    render, and the modal effect that depends on it would re-run each time. */
@@ -174,10 +175,12 @@ export default function PortfolioPage() {
 
   const switchLocale = () => {
     const target: Lang = locale === "es" ? "en" : "es"
-    const expires = new Date()
-    expires.setFullYear(expires.getFullYear() + 1)
-    document.cookie = `${LANGUAGE_COOKIE}=${target}; expires=${expires.toUTCString()}; path=/; SameSite=Lax`
-    router.push(`/${target}`)
+    // The URL carries no locale any more, so there is nowhere to navigate to:
+    // the cookie IS the language, and the middleware re-resolves it on the next
+    // request. router.refresh() re-fetches the current route through it, which
+    // keeps the user on the page (and the case) they were reading.
+    document.cookie = `${LOCALE_COOKIE}=${target}; max-age=${60 * 60 * 24 * 365}; path=/; SameSite=Lax`
+    router.refresh()
   }
 
   // Reveal-on-scroll
@@ -306,7 +309,7 @@ export default function PortfolioPage() {
         },
         {
           label: t("cases.fingo.actionGhost"),
-          href: `/${locale}/fingo/support`,
+          href: "/fingo/support",
           kind: "ghost",
           icon: "help",
         },
@@ -478,7 +481,7 @@ export default function PortfolioPage() {
         },
         {
           label: t("cases.savely.actionGhost"),
-          href: `/${locale}/savely/support`,
+          href: "/savely/support",
           kind: "ghost",
           icon: "help",
         },
@@ -510,7 +513,10 @@ export default function PortfolioPage() {
       preview: "blip",
     },
     }
-  }, [t, locale])
+    /* `locale` is gone from the deps: the support hrefs used to be built as
+       `/${locale}/fingo/support`, and with the prefix dropped nothing in here
+       reads it any more. */
+  }, [t])
 
   const openCase = useCallback((key: CaseKey, trigger?: HTMLElement) => {
     lastFocusRef.current = trigger ?? (document.activeElement as HTMLElement | null)
@@ -726,7 +732,7 @@ export default function PortfolioPage() {
           </div>
 
           {/* VITRINE */}
-          <div className="ab-vitrine" aria-label="Showcase">
+          <div className="ab-vitrine">
             <div className="ab-wrap-full" style={{ maxWidth: 1480, margin: "0 auto" }}>
               <div className="ab-vitrine-cap">
                 <div>
@@ -744,7 +750,7 @@ export default function PortfolioPage() {
               </div>
 
               <div className="ab-phones">
-                <div className="ab-phone-slot web-slot" aria-label="Vitapath preview">
+                <div className="ab-phone-slot web-slot">
                   <div className="ab-vit-web-combo tilt-l" aria-hidden="true">
                     <div className="ab-vit-browser">
                       <div className="bb">
@@ -766,10 +772,12 @@ export default function PortfolioPage() {
                     <div className="ab-vit-mini-phone">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src="/cases/gallery/vitapath-p2.webp"
+                        /* Purpose-built crop: the gallery still is 420x913 / 49KB
+                           and this slot renders at ~102px CSS. */
+                        src="/cases/vitapath-mini.webp"
                         alt=""
-                        width={420}
-                        height={913}
+                        width={220}
+                        height={478}
                         loading="lazy"
                       />
                     </div>
@@ -780,7 +788,7 @@ export default function PortfolioPage() {
                   </div>
                 </div>
 
-                <div className="ab-phone-slot center" aria-label="Alisio preview">
+                <div className="ab-phone-slot center">
                   <div className="ab-phone-img alisio tilt-c" aria-hidden="true">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src="/cases/alisio-vitrine.webp" alt="" width={600} height={1304} loading="lazy" />
@@ -791,7 +799,7 @@ export default function PortfolioPage() {
                   </div>
                 </div>
 
-                <div className="ab-phone-slot web-slot" aria-label="Arrhythmia Detector preview">
+                <div className="ab-phone-slot web-slot">
                   <div className="ab-vit-web-combo tilt-r" aria-hidden="true">
                     <div className="ab-vit-browser">
                       <div className="bb">
@@ -838,7 +846,10 @@ export default function PortfolioPage() {
               <div className="s-meta">{t("work.indexMeta")}</div>
             </div>
 
-            <div className="ab-index-list" role="list">
+            {/* No role="list": the children are <button>, not listitem, which axe
+                flags as aria-required-children and some screen readers announce as
+                "list, 0 items". The visual list needs no role. */}
+            <div className="ab-index-list">
               {CASE_KEYS.map((key) => {
                 const c = CASES[key]
                 const indexInfo: Record<
@@ -1067,9 +1078,9 @@ export default function PortfolioPage() {
               </div>
               <div className="mid">Atelier Belli</div>
               <div className="right">
-                <a href={`/${locale}/privacy`}>{t("footer.privacy")}</a>
+                <Link href="/privacy">{t("footer.privacy")}</Link>
                 &nbsp;·&nbsp;
-                <a href={`/${locale}/terms`}>{t("footer.terms")}</a>
+                <Link href="/terms">{t("footer.terms")}</Link>
               </div>
             </footer>
           </div>
@@ -1343,12 +1354,33 @@ function CaseVideo({ media }: { media: Extract<CaseMedia, { kind: "video" }> }) 
 
 /** Horizontal strip of real captures. Scrollable by pointer, wheel and keyboard. */
 function CaseGallery({ media }: { media: Extract<CaseMedia, { kind: "gallery" }> }) {
+  const t = useTranslations("home")
+  const ref = useRef<HTMLDivElement | null>(null)
+  /* Only a strip that actually overflows is worth a tab stop. At desktop widths
+     none of them do, so `tabIndex={0}` was a dead stop that landed the user on
+     a group they could not scroll. */
+  const [scrollable, setScrollable] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const measure = () => setScrollable(el.scrollWidth > el.clientWidth + 1)
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
   return (
     <div
+      ref={ref}
       className={`ab-case-gallery${media.wide ? " wide" : ""}`}
       role="group"
-      aria-label={media.caption}
-      tabIndex={0}
+      /* Deliberately NOT media.caption: that string is already the figcaption
+         right below, so a screen reader read the same 159-188 char sentence
+         twice and then entered a group whose images are all alt="". */
+      aria-label={t("modal.galleryAria")}
+      tabIndex={scrollable ? 0 : undefined}
     >
       {media.items.map((item) => (
         /* eslint-disable-next-line @next/next/no-img-element */
@@ -1359,6 +1391,7 @@ function CaseGallery({ media }: { media: Extract<CaseMedia, { kind: "gallery" }>
 }
 
 function CasePreview({ which }: { which: CaseKey }) {
+  const t = useTranslations("home")
   if (which === "fingo") {
     return (
       <div className="ab-phone-img fingo" aria-hidden="true" style={{ ["--w" as any]: "280px" }}>
@@ -1478,7 +1511,7 @@ function CasePreview({ which }: { which: CaseKey }) {
           <span className="bdot" />
           <span className="bdot" />
           <span className="bdot" />
-          <span className="url">vitapath · consola de despacho</span>
+          <span className="url">{t("cases.vitapath.previewUrl")}</span>
         </div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="ab-browser-shot" src="/cases/vitapath-hero.webp" alt="" width={1000} height={625} loading="lazy" />
