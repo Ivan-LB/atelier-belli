@@ -6,9 +6,7 @@
 
 ## Estado: audit 40/41 cerrado. Queda UNA cosa: el clip de Vitapath (#6 + #30)
 
-Todo lo demás está en `develop` o esperando merge en
-[PR #47](https://github.com/Ivan-LB/atelier-belli/pull/47)
-(rama `fix/demo-clip-recaptures`).
+Todo lo demás ya está en `develop` (PRs #45, #46 y #47 mergeados).
 
 ---
 
@@ -81,10 +79,18 @@ xcodebuild -project ios-paramedic/VitapathParamedic.xcodeproj \
   SWIFT_ACTIVE_COMPILATION_CONDITIONS="DEBUG CAPTURE_BUILD" build
 ```
 
-Eso depende de un cambio **sin commitear** en
-`ios-paramedic/.../Views/Home/EmergencyView.swift`: el chip quedó como
-`#if DEBUG && !CAPTURE_BUILD`. Los builds normales lo siguen mostrando, así que
-es inocuo — pero sigue sin commitear en el repo de Vitapath.
+Eso depende del gate en
+`ios-paramedic/VitapathParamedic/Views/Home/EmergencyView.swift`, donde el chip
+quedó como `#if DEBUG && !CAPTURE_BUILD`. Los builds normales lo siguen
+mostrando (la bandera no está definida), así que es inocuo.
+
+> **Ojo con los repos:** `ios-patient` e `ios-paramedic` son **repositorios git
+> independientes**. El arreglo del `FlowLayout` vive en el del paciente y ya se
+> mergeó (Vitapath PR #14, un solo archivo: `AppComponents.swift`). El gate
+> `CAPTURE_BUILD` vive en el del **paramédico** y es otra historia: está
+> commiteado en local en la rama `chore/hide-debug-chip-in-captures`,
+> **sin pushear y sin PR** — decisión pendiente de Iván. `v2.1` quedó limpio.
+> Correr `git status` en un repo no dice nada del otro.
 
 **El movimiento NO necesita el chip de debug.** Usa el GPS simulado, que además
 ejercita el flujo real de ubicación:
@@ -177,7 +183,9 @@ encima del encabezado "Medical Surgeries". Arreglado en
   quitarlo del frame habría que hacer que la consola muestre un nombre en vez
   del email (`AppShell.tsx:105` imprime `user?.email`). A tamaño de render mide
   ~6 px.
-- **El cambio `CAPTURE_BUILD`** en el repo de Vitapath sigue sin commitear.
+- **El gate `CAPTURE_BUILD`** (repo `ios-paramedic`) está en la rama local
+  `chore/hide-debug-chip-in-captures`, sin pushear. Decidir: PR o borrarla con
+  `git branch -D`. `v2.1` ya está limpio en cualquier caso.
 - **CV:** 4 decisiones pendientes en `~/Projects/CV/HANDOFF.md`, más la
   actualización de "dos apps en la App Store" ahora que Alisio salió.
 
