@@ -1,5 +1,13 @@
 # Portfolio Homepage — Impeccable Audit & Improvement Plan
 
+> **CLOSED 2026-08-03 — 41 of 41 findings resolved.** Kept as the record of
+> WHY the current code looks the way it does; the file:line findings below are
+> the evidence behind decisions that are now shipped. **The health score and
+> the findings table describe the state on 2026-07-04, not today** — do not
+> read them as open work. One finding (#28, the Alisio Karvonen/Tanaka copy)
+> was checked against Alisio's own source and turned out to be **false**; the
+> copy was correct and was left alone. Current state lives in `HANDOFF.md`.
+
 > Generated 2026-07-04 via `/impeccable audit` (5 dimensions) + a "bolder"
 > opportunity scan, run as a multi-agent workflow over `app/[locale]/page.tsx`
 > and `app/globals.css`. Register = **brand** (see `PRODUCT.md`). Findings are
