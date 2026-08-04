@@ -1,73 +1,288 @@
 # HANDOFF — atelier-belli-portfolio
-> Updated 2026-06-10 (sesión de imágenes reales de previews).
-> Lee `CLAUDE.md` para el contexto estable; este archivo es el estado vivo.
 
-## Estado: cases + previews reales en PR #27, listo para merge
+> Updated **2026-08-03** (sesión larga: audit de UI completo + i18n sin prefijo
+> + recapturas de media). Lee `CLAUDE.md` para el contexto estable; este archivo
+> es el estado vivo.
 
-Rama `feat/add-blip-briefmark-pass-cases`, PR #27 abierto hacia `develop`
-(8 commits, `c6961db..f698919`). Incluye los 3 case studies nuevos
-(BLIP 04, Briefmark 05, Pass 06) **y** la primera ola de screenshots
-reales. Todo verificado: `tsc` limpio, `pnpm build` verde, smoke en
-light/dark, EN/ES, 1440px y 414px.
+## Estado: audit 41/41 cerrado
 
-### Qué cerró esta sesión (2026-06-10, local macOS)
-- ✅ **`public/cases/` nuevo** — carpeta canónica para screenshots de
-  proyectos: `blip-hero.webp`, `mezcal-hero.webp`, `mezcal-mobile.webp`
-  (capturados corriendo BLIP en Vite y el export estático de
-  destileria-lorenzana con Playwright + Chrome del sistema).
-- ✅ **Modal previews reales** para blip y mezcal: img `.ab-browser-shot`
-  dentro de `ab-browser-frame.has-shot` (16:10, width/height explícitos).
-- ✅ **Vitrine**: la pieza de la destilería es ahora un combo responsive
-  (`.ab-vit-web-combo`): browser 400×260 con el hero desktop + mini phone
-  (102px) encimado con la captura móvil. Tilt/hover en el wrapper.
-- ✅ **Fix Savely invisible**: los img de fingo/savely no declaraban
-  dimensiones; el slot colapsaba a 0 de alto hasta que el PNG lazy
-  pintaba. width/height explícitos en vitrine + modal (`5f8e600`).
-- ✅ Gotcha nuevo `next-build-clobbers-dev-cache`: NUNCA `pnpm build` con
-  un dev server vivo — comparten `.next` y el build corrompe los vendor
-  chunks del dev. Recovery: kill dev → `rm -rf .next` → `pnpm dev`.
-- ✅ `.claude/launch.json` con `autoPort: true` (el preview de Claude ya
-  no choca con el dev server del usuario en :3000).
-- (Sesión previa, mismo PR) Pass action disabled "Code coming soon"
-  porque `loyalty-cards` es privado; falsa alarma del "chip flotante"
-  corregida en docs (era el indicador dev de Next).
+`vitapath-system.mp4` re-grabado — #6 y #30 cerrados. Todo lo demás ya está en
+`develop` (PRs #45, #46 y #47 mergeados).
 
-## Próximos pasos (en orden)
-1. **Merge humano del PR #27 a `develop`**, luego release PR
-   `develop` → `main` — idealmente revisar el deploy preview de Amplify
-   antes (regla del repo). Amplify despliega solo en push a `main`.
-2. **Imágenes pendientes que pone Iván en `public/cases/`** (Claude las
-   cablea cuando estén):
-   - `briefmark-hero.png` — screenshot iOS (simulador o device, vertical)
-     → phone frame `ab-phone-img` como fingo/savely.
-   - `pass-hero.png` — screenshot del pase abierto en Apple Wallet
-     (cortadito-cafe o gymfit) → phone frame.
-3. **PR de limpieza de CSS muerto**: el mock viejo de la vitrine quedó
-   huérfano en `globals.css` (`.ab-vit-browser .scr`, `.nav-strip`,
-   `.txt`, `.bottle-col`, `.ab-vit-bottle`); `.ab-mez-site` SIGUE viva
-   (placeholders de briefmark/pass) — solo muere cuando lleguen sus
-   imágenes reales. PR aparte, patrón `dead-deps-removal-dedicated-pr`.
-4. (Opcional) Si `loyalty-cards` se hace público: restaurar en el case
-   `pass` el href + `kind: "primary"` + `ext: true` + icono `external`,
-   y el copy "View on GitHub" / "Ver en GitHub" en ambos JSON.
-5. (Opcional) Decidir si BLIP entra a la vitrine del hero (hoy: Fingo,
-   Savely, Destilería).
-6. (Opcional) Cuando Briefmark salga al App Store: support page como las
-   de fingo/savely (`SupportShell` + `support.briefmark` en messages).
+---
 
-## Notas de proceso (para la próxima sesión)
-- Capturas de proyectos: `/tmp/shotkit/` tiene scripts Playwright
-  (`playwright-core` + `channel: 'chrome'`, sin descargar browsers) —
-  regenerable si /tmp se limpió. El sitio de la destilería necesita
-  nudge de scroll para disparar sus reveals de IntersectionObserver;
-  el preview MCP de Claude no rendea bien este homepage al scrollear
-  (parallax/reveals) — verificar visuales con Playwright en viewport
-  alto (1440×2400) y clip.
-- Worktree vieja `affectionate-moore-aae644` (mayo, solo-merges) sigue
-  borrable con `git worktree remove` cuando quieras.
+## El clip de Vitapath: cerrado, y lo que costó tomas
 
-## Contexto externo
-- CV en `~/Projects/CV/ivanCV.yaml` lista estos 3 proyectos — mantener
-  consistencia si cambias copy.
-- Gotchas cross-proyecto: `~/.claude/knowledge/global-gotchas.md`.
-- Website en CV: `https://atelierbelli.com`.
+**El defecto era (#6, P1):** el pane del paramédico se quedaba en negro 4.71 s a
+media reproducción — 27% de cada loop — bajo un caption que afirma "las tres
+superficies al mismo tiempo". **#30:** exponía la cuenta semilla
+`admin1.fase10@example.com` en el topbar y un chip de debug "Simulate movement".
+
+Ambos cerrados en una sola toma nueva: SOS presionado de verdad en la app del
+paciente, la oferta aterrizando en la paramédica, el accept, y la ambulancia
+recorriendo la ruta vial real de OSRM mientras los dos mapas y la consola bajan
+el ETA de 6 a 3 minutos. Scan de uniformidad **por pane** (el detector de negro
+por frame completo no ve este defecto: los otros dos panes mantienen el frame
+claro):
+
+| pane | VOID(s) | antes |
+|---|---|---|
+| console | 0.00 | 0.00 |
+| paramedic | 0.00 | **3.90** |
+| patient | 0.00 | 0.00 |
+
+De paso: `page.tsx` declaraba `w: 1600` para un archivo que mide **1740** desde
+que se subió, así que el navegador reservaba la caja equivocada. Corregido.
+
+### Gotchas nuevos — no repetirlos
+
+**El primer clic sólo enfoca la ventana.** Si la ventana del simulador no está
+al frente, el primer press la activa y **no llega a la app**. Enfoca primero
+(clic en la barra de título, que no toca contenido) y después actúa. Esto casi
+con seguridad fue lo que arruinó una toma anterior.
+
+**`--speed` de `simctl location` es METROS/SEGUNDO, no km/h.** 24 m/s ≈ 86 km/h.
+
+**zsh no hace word-splitting** de `$VAR` sin comillas: la ruta de 70 waypoints
+llegó como un solo argumento (`Invalid latitude,longitude pair`). Usa un array
+de bash (`read -r -a`).
+
+**`simctl recordVideo` graba a frame rate VARIABLE** — sólo emite frame cuando
+la pantalla cambia. Un `-ss` de entrada hacia un tramo estático cae en un hueco
+sin frames y `overlay` pinta el fondo: **el defecto #6 otra vez, recién creado**.
+Densifica con `fps=30` **antes** de recortar con `trim`; nada de `-ss` de entrada.
+
+**Una emergencia disparada por API NO navega la app del paciente** — se queda en
+la pantalla del SOS (verificado). Por eso la toma vieja relanzó la app a media
+grabación, y por eso su pane del paciente mostraba el splash. Hay que presionar
+el botón.
+
+**No dejes que la paramédica llegue.** Al entrar al geofence de arribo la
+pantalla revela el perfil clínico del paciente. La ruta va truncada a 2.03 km
+(termina a ~886 m) para que no pase.
+
+**Paciente y paramédica no pueden compartir coordenada**, o el arribo se dispara
+al instante: paciente al final de la ruta, paramédica al inicio.
+
+**La consola se graba a 1432×898 y se baja a 995×624.** A tamaño de slot el panel
+de detalle se angosta, `ASIGNACIÓN` se apila y **`RUTEO HOSPITALARIO` se va abajo
+del fold** — y la resolución de hospital por seguro y red es justo lo que promete
+el caption. Ese ancho además deja fuera de cuadro el control `Simular traslado`
+de la propia consola (que **no** está gateado por DEV — ver "Decisiones abiertas").
+
+**Sincroniza por evento, no por reloj.** Los tres grabadores arrancan hasta 0.6 s
+desfasados; el ancla es el frame en que la emergencia aterriza en cada superficie.
+El primer scene-change del paciente **no** es el ancla: es la animación del hold
+del botón, ~0.9 s antes.
+
+Los scripts (`take.sh`, `record-console.mjs`, `compose.sh`, `void-scan.py`)
+quedaron en el scratchpad de la sesión, no en el repo.
+
+### El entorno (hay que rearmarlo)
+
+```bash
+# 1. Backend + infra
+cd ~/Projects/vitapath/backend-spring
+open -a Docker; until docker info >/dev/null 2>&1; do sleep 2; done
+docker compose start                          # postgres + minio + pgweb
+docker compose --profile osrm up -d osrm      # rutas viales reales en :5001
+ETA_PROVIDER=osrm ./run-local.sh              # API en :8080
+
+# 2. Consola web
+npm run dev --prefix ~/Projects/vitapath/web-hospital   # :5173
+```
+
+**Simuladores — uno por rol** (esto ya quedó resuelto):
+
+- **iPhone 17 Pro Max** (`E5804F41-1C31-4EE6-B3CA-197C98DDC9FB`) → app
+  **paciente** (`com.IvanLB.Vitapath`), sesión de `carlos@example.com`
+  (se muestra como "Ana Hernández")
+- **Clon "Vitapath Paramedic"** → app **paramédico**
+  (`IvanLB.VitapathParamedic`), sesión de `dani@example.com` / Daniela Ríos
+
+El clon se crea con `xcrun simctl clone <pro-max-udid> "Vitapath Paramedic"`
+(el origen debe estar apagado). Clonar es lo que **preserva ambas sesiones** sin
+teclear contraseñas.
+
+### Gotchas que costaron dos tomas fallidas — no repetirlos
+
+**No cierres emergencias con SQL.** Cerré la #768 con un `UPDATE` directo y eso
+saltó la máquina de estados: la paramédica quedó en `BUSY` para siempre, el
+dispatch la ignoró y el SOS murió en `TIMED_OUT`. Ciérralas desde la app o la
+API. Si ya pasó: `UPDATE paramedic SET availability='AVAILABLE' WHERE id=2`.
+
+**El backend se pudre si lleva horas corriendo.** Tras varias recompilaciones el
+proceso viejo tiraba
+`NoClassDefFoundError: com/vitapath/realtime/StompAuthChannelInterceptor$1`
+al aceptar, y la app mostraba "Couldn't accept. Please try again." No era bug de
+código — era el classpath cambiado bajo el proceso. **Reinicia el API antes de
+grabar**, y reinicia también **ambas apps**: sus sockets STOMP mueren con él.
+
+**La ventana del clon no se abre sola.** Bootearlo no basta; hay que abrirla
+desde la lista de dispositivos de Device Hub (doble clic). Ojo: puede haber una
+ventana fantasma de un clon borrado ("Vitapath Patient is unavailable") que
+despista.
+
+**Un build en Release pierde la sesión.** Compilé el paramédico en Release para
+quitar el chip de debug y salió pidiendo login: al firmar ad-hoc sin
+entitlements cambia el grupo de keychain `org.vitapath.paramedic.auth`.
+La salida es un **Debug con `CAPTURE_BUILD`**:
+
+```bash
+xcodebuild -project ios-paramedic/VitapathParamedic.xcodeproj \
+  -scheme VitapathParamedic -configuration Debug \
+  -destination 'generic/platform=iOS Simulator' \
+  SWIFT_ACTIVE_COMPILATION_CONDITIONS="DEBUG CAPTURE_BUILD" build
+```
+
+Eso depende del gate en
+`ios-paramedic/VitapathParamedic/Views/Home/EmergencyView.swift`, donde el chip
+quedó como `#if DEBUG && !CAPTURE_BUILD`. Los builds normales lo siguen mostrando
+(la bandera no está definida), así que es inocuo.
+
+> **Ojo con los repos:** los cuatro (`backend-spring` → `Vitapath_Backend`,
+> `web-hospital` → `Vitapath_Web`, `ios-patient` → `Vitapath`, `ios-paramedic` →
+> `Vitapath_Paramedic`) son **repositorios git independientes**. Correr
+> `git status` en uno no dice nada de los otros. La rama
+> `chore/hide-debug-chip-in-captures` del paramédico ya cumplió su función y
+> **se borró** tras verificar el clip (decisión de Iván); `v2.1` quedó limpio.
+> Si hay que re-grabar, se re-aplica el gate: son 3 líneas.
+
+**El movimiento NO necesita el chip de debug.** Usa el GPS simulado, que además
+ejercita el flujo real de ubicación. Ojo con las dos trampas de arriba:
+`--speed` va en **m/s**, y en zsh hay que meter los waypoints en un array de
+bash o llegan como un solo argumento.
+
+```bash
+ROUTE=(32.514868,-117.038169 32.516031,-117.036700 ... 32.528418,-117.018497)
+xcrun simctl location <clone-udid> start --speed=24 --interval=1.0 "${ROUTE[@]}"
+```
+
+La ruta completa (3.2 km, 340 s) sale de OSRM:
+`localhost:5001/route/v1/driving/-117.038169,32.514868;-117.018497,32.528418?overview=full&geometries=geojson`
+→ 149 puntos. Para grabar se **trunca a 2.03 km** (los primeros 70) para no
+disparar el arribo y su PHI.
+
+### Coordenadas calibradas (con ambas ventanas lado a lado)
+
+Tomarlas **después** de colocar las ventanas — reutilizar coordenadas viejas fue
+lo que mandó al paramédico a la pestaña History a media toma.
+
+| Elemento | Coordenada |
+|---|---|
+| Botón SOS (paciente) | **(221, 543)** — a 12 px de ahí NO registra |
+| Pestaña Emergencies (paramédico) | (518, 780) |
+| Botón Accept | (688, 713) |
+
+El SOS es `mouse_move` → `left_mouse_down` → esperar 3–4 s → `left_mouse_up`,
+**con la ventana ya enfocada** (si no, ese press sólo la activa).
+
+### La secuencia
+
+1. Reiniciar API + ambas apps · ubicaciones frescas (paciente al final de la
+   ruta, paramédica al inicio) · paramédica `AVAILABLE`
+2. Enfocar la ventana del paciente (clic en su barra de título)
+3. Arrancar 3 grabaciones: `simctl io <udid> recordVideo` ×2 + Playwright
+   `recordVideo` de la consola a 1432×898. **La consola se autentica inyectando
+   el token** de `localStorage["vitapath.console.token"]` con `addInitScript` —
+   nunca tecleando la contraseña en el formulario.
+4. Hold del SOS → esperar la oferta → enfocar la ventana del paramédico → Accept
+5. El drive arranca **por evento** (cuando la emergencia llega a `ONGOING`),
+   no por reloj: un delay fijo se desincroniza de lo que tarden los taps
+6. Parar todo, componer con ffmpeg `overlay` + `drawbox` (con `fps` antes de
+   `trim`), y verificar con el scan de uniformidad **por pane** que
+   **VOID total = 0.00 s**
+
+> Sanidad antes de grabar: sólo debe haber **una** paramédica elegible. El
+> dispatch ignora a quien tenga la ubicación más vieja que `location-stale-seconds`
+> (300 s), y en la BD hay varias `AVAILABLE` con fixes de hace semanas — por eso
+> la oferta cae siempre en Daniela. Verifícalo, no lo asumas:
+> `SELECT id, availability, now()-last_seen_at FROM paramedic WHERE availability='AVAILABLE';`
+
+---
+
+## Lo que cerró esta sesión
+
+**i18n sin prefijo en la URL** (PR #45, mergeado). `localePrefix: "never"`:
+`/`, `/privacy/`, `/terms/` son las únicas URLs públicas y el idioma sale de la
+cookie `NEXT_LOCALE` → `Accept-Language` → `en`. El toggle escribe la cookie y
+hace `router.refresh()`. Los `/en/...` y `/es/...` viejos **redirigen**, con test
+e2e que lo cubre.
+
+> ⚠️ **Trade-off aceptado explícitamente:** el español ya no tiene URL propia, no
+> se indexa por separado y un link compartido no lleva el idioma. Los `hreflang`
+> se **quitaron** en vez de dejarlos apuntando a rutas que ahora dan 404.
+> `localePrefix: "as-needed"` es el punto medio si algún día se revisa.
+> **No lo "arregles" de vuelta sin preguntar.**
+
+De paso se corrigió un bug de SEO preexistente: `generateMetadata` del layout
+fijaba `canonical: /${locale}/`, y **toda ruta hija hereda el metadata del
+layout** — así que `/privacy`, `/terms` y las dos de soporte declaraban la
+portada como su canonical, o sea le decían a los crawlers que eran duplicados de
+ella. El layout ya no fija canonical.
+
+**El audit de UI: 40 de 41 hallazgos.** Uno resultó **falso** (#28, la copia de
+Alisio sobre Karvonen/Tanaka — contrastada contra el código real de Alisio, es
+correcta). Lo demás cubrió: trampa de foco del modal, modal cerrado inalcanzable
+por teclado, restauración de foco en deep links, acciones deshabilitadas que
+navegaban con Enter, control de pausa en los clips (WCAG 2.2.2), Fraunces
+self-hosted por `next/font` (era el LCP tras 3 saltos sin preconnect, y el 100%
+del CLS), contraste AA, 2.4 MB de assets sin referenciar borrados, jerarquía de
+lectura invertida, alineación de media, tokens de tracking y varios de ARIA.
+
+**Media:** clip de Arrhythmia re-grabado (abría con una disculpa de latencia y
+tenía 4.33 s congelados al final) y composite de Alisio recortado (69% de fondo
+→ 12%). Ambos en PR #47.
+
+**Vitapath:** expediente clínico deduplicado (`Hipertensión` ×3, `Penicilina` ×2,
+`Metformina` ×2 — eran corridas de prueba, no el seed) y la still recapturada.
+Esa captura destapó un **bug real de layout** en la app: `FlowLayout` medía
+contra un ancho y reportaba otro, así que los chips de alergias se dibujaban
+encima del encabezado "Medical Surgeries". Arreglado en
+[Vitapath PR #14](https://github.com/Ivan-LB/Vitapath/pull/14).
+
+**El clip de Vitapath re-grabado** cerró el hallazgo 41/41 — ver arriba.
+
+> **Nota de entorno:** el MCP del simulador de iOS **no funciona con Xcode 27
+> beta**. Busca `SimulatorKit.framework` en
+> `Contents/Developer/Library/PrivateFrameworks/`, y en Xcode 27 se movió a
+> `Contents/SharedFrameworks/`. No hay panel en vivo ni taps por device points;
+> hay que manejar las ventanas de Device Hub con computer-use (de ahí la
+> trampa del clic que sólo enfoca).
+
+---
+
+## Decisiones abiertas
+
+- **`Simular traslado` en la consola no está gateado por DEV.**
+  `canSimulate = !terminal && patient != null && detail.paramedicId != null`
+  (`EmergencyDetailPanel.tsx:108`), así que el botón que mueve la ambulancia por
+  la ruta aparece **también en producción**, para cualquier despachador con una
+  emergencia asignada. El clip lo esquiva por encuadre, no porque no exista.
+  Es la misma familia que el chip del paramédico (#30) pero en el otro lado, y
+  es decisión de producto: gatearlo por DEV o dejarlo como herramienta de demo.
+- **CV:** 4 decisiones pendientes en `~/Projects/CV/HANDOFF.md`, más la
+  actualización de "dos apps en la App Store" ahora que Alisio salió.
+
+## Resuelto esta sesión
+
+- **#30, la mitad del correo** → la consola ya muestra el **nombre** del staff.
+  `MeController` ya resolvía el `HospitalStaff` para sacar `hospitalId`, y esa
+  fila trae `full_name` desde V19, así que el nombre no costó query extra:
+  `/me` devuelve `staffName` y `AppShell` hace `staffName ?? email` (el email se
+  queda en el `title`, y `.mono` sólo aplica al email — un nombre en monoespaciada
+  parece un campo de base de datos). **El `sub` del JWT sigue siendo el email**:
+  es dato de display, no rompe sesiones. Dos PRs: `Vitapath_Backend` y
+  `Vitapath_Web`.
+- **La rama `chore/hide-debug-chip-in-captures`** (repo del paramédico) se borró
+  tras verificar el clip. `v2.1` limpio.
+
+## Reglas de la casa que se aplicaron aquí
+
+- **Nada de firmas de AI** — ni `Co-Authored-By` ni "Generated with Claude Code",
+  ni en commits ni en cuerpos de PR. (Se violó una vez en los PR #45/#46; el
+  criterio ya está corregido.)
+- **Nunca `pnpm build` con el dev server arriba** — comparten `.next`.
+- **Rama nueva desde `develop` recién mergeado** antes de cada tanda. Un commit
+  llegó a quedar colgado sobre una rama ya cerrada (PR #45) y hubo que moverlo
+  con cherry-pick; verifica con `git log origin/develop..HEAD`.

@@ -13,7 +13,7 @@ export default function PrivacyChoicesPage() {
     <div className="ab-root" data-theme="light">
       <header className="ab-legal-nav">
         <div className="ab-legal-nav-inner ab-wrap">
-          <Link href={`/${locale}`} className="ab-legal-back">
+          <Link href="/" className="ab-legal-back">
             ← {t("back")}
           </Link>
         </div>
@@ -78,8 +78,8 @@ export default function PrivacyChoicesPage() {
             {t("allRightsReserved")}
           </span>
           <nav className="ab-legal-foot-nav">
-            <Link href={`/${locale}/privacy`}>{t("privacyShortLabel")}</Link>
-            <Link href={`/${locale}/terms`}>{t("termsShortLabel")}</Link>
+            <Link href="/privacy">{t("privacyShortLabel")}</Link>
+            <Link href="/terms">{t("termsShortLabel")}</Link>
           </nav>
         </div>
       </footer>

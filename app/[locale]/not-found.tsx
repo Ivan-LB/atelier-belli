@@ -14,7 +14,7 @@ export default async function NotFound() {
     <div className="ab-root ab-nf-root" data-theme="light">
       <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       <nav className="ab-nf-nav" aria-label="Atelier Belli">
-        <Link href={`/${locale}`} className="ab-nf-mark" aria-label="Atelier Belli — Home">
+        <Link href="/" className="ab-nf-mark" aria-label="Atelier Belli — Home">
           <svg
             viewBox="0 0 418 439"
             fill="none"
@@ -68,7 +68,7 @@ export default async function NotFound() {
 
           <p className="ab-nf-desc">{t("description")}</p>
 
-          <Link href={`/${locale}`} className="ab-nf-cta">
+          <Link href="/" className="ab-nf-cta">
             <span>{t("backHome")}</span>
             <span className="ab-nf-cta-arrow" aria-hidden="true">
               →

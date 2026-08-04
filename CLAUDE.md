@@ -80,6 +80,26 @@ bezel stripped so the raw screen sits in the CSS frame). Shipped 2026-07-23:
 the primary action links to `apps.apple.com/mx/app/alisio/id6793006694`
 (`kind: "primary"`, external) and `metaStatus` reads "Live on the App Store".
 
+Its **watch gallery** (`public/cases/gallery/alisio-w1..w4.webp`, 416×496) is
+four raw watchOS captures taken with `xcrun simctl io <watch-udid> screenshot`
+during one real session, and they read as a sequence: pick a zone with the
+crown → out of zone (amber) → back in zone (green) → goal completed with the
+ring closed. They replaced four **App Store marketing frames** (headline over a
+saturated colour block, crop marks) that looked like ads dropped into a case
+study while every other gallery held product captures. To reproduce: boot the
+paired iPhone 17 Pro Max + Apple Watch Series 11 (46mm), launch the watch app
+**first** so `WCSession` reports the app installed (otherwise the phone's
+"Start on Apple Watch" CTA stays disabled), start the session from the phone,
+and screenshot the watch on a timer — the mock heart rate drifts in and out of
+Zone 2 on its own. For a goal-completed frame, step the phone's "Time in zone"
+down to **5 min** with the −5 stepper; in-zone time accrues at roughly half of
+wall clock, so it closes in ~11 minutes. The watch's End button is **below the
+fold** — drag up on the live screen to reveal it. There is no goal-celebration
+screen on the watch (the ring simply completes) and no session summary either;
+the summary lives on the phone. A `Alisio Watch Complication` target does exist,
+but the simulator's default face has no complication slots, so the gallery does
+not show one — do not re-add that claim to `watchCaption`.
+
 **arrhythmia** (web · ML, num `05`) uses a REAL screenshot
 (`public/cases/arrhythmia-hero.webp`, 900×562, 16:10, cropped from that repo's
 `docs/screenshots/02-trace-overview.png`) in the `ab-browser-frame has-shot`
@@ -157,16 +177,68 @@ sideways on mobile with text clipped. `.ab-case-media img/video` also cap at
   (6 steps for the patient profile). Accounts and the full runbook live in
   `~/Projects/vitapath/DEMO.md`.
 
+**Case modal accessibility invariants (2026-08-02).** All four were measured
+broken and are now covered by e2e tests — if a test named for them fails, the
+regression is real, not the test being fussy.
+
+- The modal **traps focus**: the `openCaseKey` effect handles `Tab`/`Shift+Tab`
+  and wraps inside `modalRef`, and it sets `inert` on `<main>` + `header.ab-nav`
+  while open. Without the `inert` half, `aria-modal="true"` is a lie.
+- `.ab-case-modal` closed carries **`visibility: hidden`** (with a 320 ms-delayed
+  transition so the exit fade still plays). `opacity: 0` alone left its close
+  button in the tab order as the last stop on every homepage load.
+- Rows carry **`data-case`**, and a `?case=` deep link seeds `lastFocusRef` from
+  it, so closing lands on the matching row instead of stranding focus.
+- `renderedCaseKey` lags `openCaseKey` on purpose so the modal keeps painting the
+  last case through the 320 ms exit. Nulling it immediately collapsed the dialog
+  to a 73 px bar showing the English fallback — on `/es` too. Because the body
+  stays mounted, the close path explicitly pauses any `<video>` inside.
+- Disabled case actions are **`<button disabled>`**, never `<a href="#">` dimmed
+  with `pointer-events: none` — that stops the mouse and nothing else.
+
+**Vitrine composition below 820px (do not revert to centring).** The carousel
+row is sized by its tallest slide, and the slides cannot be equalised: the
+Alisio card is a portrait phone (aspect 0.4601, so height = width × 2.1733)
+while the other two are landscape browser frames (400:260). Even with the phone
+at its legibility floor (~150px wide) and a combo at the widest the
+`min(88%, 330px)` slot allows, the heights still differ ~1.5×. That slack is
+structural. `.ab-phones` therefore uses **`align-items: end`** and
+`.ab-phone-slot` **`justify-content: flex-end`**, so all three captions land on
+one baseline. The desktop grid (`.ab-phones`, >820px) now uses `align-items: end`
+for the same reason: its slots' `min-height: 640px` exists to share a caption
+baseline, but Alisio's slot measures 659.8px, so `center` lifted the two side
+captions ~10px and defeated it and the whole slack sits as one band above the short cards. It
+previously used `center`, which halved the slack: that stranded the combo cards
+mid-row and put their captions **116px** off the phone's, so a swipe made the
+caption jump. The old comment justified centring with "you only ever see one
+card at a time" — measured and false: a neighbour always peeks and at 820px two
+full cards show. Do **not** reinstate the desktop's `min-height: 640px` here; it
+would add ~140px of dead space to every slide, and `align-items: end` already
+buys the shared baseline. Do **not** shrink `.ab-phone-img.alisio` to close the
+gap either — Alisio is the emphasized slot (`1.15fr`, `.center`, `scale(1.06)`,
+`z-index: 2`, its own 272px vitrine override), so shrinking it trades the
+hierarchy for whitespace. Verified capSpread 0 at 320/375/414/500/640/723/820 in
+both locales and both themes, with ≥821px bit-identical to before.
+
 **Vitrine (hero showcase):** three pieces, all 2026 as of 2026-07-30 —
 **Vitapath** (`.ab-vit-web-combo tilt-l`: console capture in the browser frame
 plus the patient app's live-tracking screen as the mini phone, so the hero shows
 the multi-surface nature at a glance), **Alisio** (center, emphasized slot) and
 **Arrhythmia Detector** (`.ab-vit-web-combo tilt-r`, browser only). This
 replaced Fingo (2024) and Destilería (2025) — the trio now leads with the
-strongest recent work. Alisio reuses the Fingo treatment (a full App Store
-**marketing frame** — headline + device — in the rounded `.ab-phone-img.alisio`
-card, NOT a raw screen), via `public/cases/alisio-vitrine.webp` (600×1304,
-cropped from `iphone_01_train.png`). Sized to 272px through
+strongest recent work. Alisio renders a **raw device capture** of the Train
+screen in the rounded `.ab-phone-img.alisio` card, via
+`public/cases/alisio-vitrine.webp` (600×1304). It used to be the full App Store
+marketing frame `iphone_01_train.png`, but that poster carried crop marks, an
+"ALISIO" slug, a sliced tab bar and — inside the screenshot itself — a
+**disabled** "Start on Apple Watch" CTA under an amber "Install Alisio on your
+Apple Watch to start" warning: the hero of the vitrine advertised a broken
+state. The replacement is `xcrun simctl io … screenshot` of the real app with
+the Watch app installed (CTA green, no warning), resized 1320×2868 → 600×1304.
+That resize is exact — the App Store 6.9" poster has the same aspect as the
+device screen — so **no CSS or `page.tsx` change was needed**, and the vitrine
+is now three real product captures instead of two captures plus one ad.
+Sized to 272px through
 `.ab-vitrine .ab-phone-img.alisio` so the modal's 244px is untouched.
 (`.ab-vit-web-combo`): a 400×260 browser window with the desktop capture and
 a mini phone overlapping its corner with the mobile capture
@@ -213,11 +285,37 @@ Package manager: **pnpm** (lockfile: `pnpm-lock.yaml`). Never suggest
 exist — there is no root `app/layout.tsx`, only `app/[locale]/layout.tsx`.
 `generateStaticParams()` pre-renders both locales at build time.
 
-Routing (via `middleware.ts` using `next-intl/middleware`):
+**The locale is NOT in the URL** (changed 2026-08-02, at the owner's request).
+`middleware.ts` sets `localePrefix: "never"`, so one set of URLs serves both
+languages and next-intl rewrites internally onto the `app/[locale]/*` tree:
 
-- `/` → redirects to `/en` or `/es` (cookie or `Accept-Language` fallback)
-- `/en/...` and `/es/...` render the locale tree
-- `defaultLocale: "en"`, `matcher: ["/", "/(es|en)/:path*"]`
+- `/`, `/privacy/`, `/terms/`, `/fingo/support/` … — the only public URLs
+- Which language they serve is decided by the **`NEXT_LOCALE` cookie**, falling
+  back to `Accept-Language`, falling back to `defaultLocale: "en"`
+- Legacy `/en/...` and `/es/...` still **redirect** to the unprefixed route, so
+  inbound links keep working (covered by an e2e test)
+- `matcher` must be broad (`/((?!api|_next/static|_next/image|.*\.[\w]+$).*)`).
+  The old `/(es|en)/:path*` matcher would never fire again.
+- The `[locale]` folder stays on disk and `useParams().locale` keeps working —
+  the segment is filled by the rewrite, it is just never visible.
+
+**The language toggle writes the cookie and calls `router.refresh()`** — there is
+no longer a URL to navigate to. `LOCALE_COOKIE` is exported from `i18n.ts`; the
+old app-specific `preferred-language` cookie is gone. Both the homepage and the
+404 island (`_not-found-controls.tsx`) use this path.
+
+**Known, accepted trade-off:** Spanish no longer has a URL of its own, so it
+cannot be indexed separately, and a shared link does not carry the language.
+The `hreflang`/`languages` alternates were removed rather than left pointing at
+routes that now 404. This was raised explicitly and chosen anyway — do not
+"fix" it back without asking. (`localePrefix: "as-needed"` is the middle ground
+if that ever gets revisited.)
+
+Related fix in the same change: `generateMetadata` in the locale layout used to
+set `canonical: /${locale}/`, which every nested route **inherited** — so
+`/privacy`, `/terms` and both support pages each declared the homepage as their
+canonical, i.e. told crawlers they were duplicates of it. The layout now sets no
+`canonical` at all; add one per-route if a specific page ever needs it.
 
 **Build output is mostly SSG with one dynamic route.** `generateStaticParams()`
 pre-renders every named route for both locales. The single exception is the
@@ -234,13 +332,27 @@ that reads `getTranslations("notFound")`, then renders the `.ab-nf-*` editorial
 single Client Component and broke on production; PR #18 split it into the
 current Server + island shape.
 
-**Hybrid font loading** (intentional — see gotcha `google-fonts-hybrid-loading`):
+**Hybrid font loading** (intentional — see gotcha `google-fonts-hybrid-loading`,
+but note the split changed 2026-08-02):
 
-- `@import` at the top of `app/globals.css` ships Fraunces, Inter, EB Garamond,
-  Instrument Serif, IBM Plex Mono for CSS-level `font-family` references.
-- `next/font/google` in `app/[locale]/layout.tsx` **also** loads Inter as
-  `--font-inter`, applied via `<html className={inter.variable}>`, to benefit
-  from Next's font subsetting and preload for body copy.
+- `next/font/google` in `app/[locale]/layout.tsx` loads **Inter** as
+  `--font-inter` **and Fraunces** as `--font-fraunces` (axes `SOFT` + `opsz`,
+  normal + italic), both applied via `<html className={...}>`.
+- `@import` at the top of `app/globals.css` ships only **Inter, EB Garamond,
+  Instrument Serif, IBM Plex Mono** for CSS-level `font-family` references.
+
+**Do not move Fraunces back into the `@import`.** It sets every display heading,
+so it is the LCP element, and the `@import` reaches it through three dependent
+hops — HTML → `layout.css` → `fonts.googleapis.com` → `fonts.gstatic.com` — with
+no `preconnect` on either cross-origin host. Measured on a 150 ms-RTT link the
+woff2 was not even *requested* until 1410 ms. It was also the site's CLS: the
+swap from the fallback re-wrapped the headings. `next/font` self-hosts it under
+`/_next/static/media` (same origin as the document, so all three hops go away)
+and emits a metric-matched `"Fraunces Fallback"` face, which is what removes the
+reflow. `--ab-serif` therefore reads `var(--font-fraunces)`, **not** a literal
+`"Fraunces"` — a literal would silently fall through to Cormorant/Georgia.
+Verified in dev: 0 cross-origin Fraunces requests, 0 `googleapis` CSS requests.
+**Amplify-smoke this region before merging** (same rule as the i18n provider).
 
 **Deploy**: AWS Amplify. No `amplify.yml` in the repo — build config is in the
 Amplify console. No `.github/workflows/` — there is no CI beyond Amplify.
