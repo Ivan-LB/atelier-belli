@@ -4,25 +4,79 @@
 > + recapturas de media). Lee `CLAUDE.md` para el contexto estable; este archivo
 > es el estado vivo.
 
-## Estado: audit 40/41 cerrado. Queda UNA cosa: el clip de Vitapath (#6 + #30)
+## Estado: audit 41/41 cerrado
 
-Todo lo demás está en `develop` o esperando merge en
-[PR #47](https://github.com/Ivan-LB/atelier-belli/pull/47)
-(rama `fix/demo-clip-recaptures`).
+`vitapath-system.mp4` re-grabado — #6 y #30 cerrados. Todo lo demás ya está en
+`develop` (PRs #45, #46 y #47 mergeados).
 
 ---
 
-## Lo único pendiente: re-grabar `vitapath-system.mp4`
+## El clip de Vitapath: cerrado, y lo que costó tomas
 
-**El defecto (#6, P1, medido):** el pane del paramédico se queda en negro
-**4.71 s a media reproducción** — 27% de cada loop — bajo un caption que afirma
-"las tres superficies al mismo tiempo". El pane abre bien (solo 0.17 s de negro
-inicial) y el póster está limpio; el hueco está a media reproducción. Causa: la
-captura del paramédico en la toma original se cortó a media sesión.
+**El defecto era (#6, P1):** el pane del paramédico se quedaba en negro 4.71 s a
+media reproducción — 27% de cada loop — bajo un caption que afirma "las tres
+superficies al mismo tiempo". **#30:** exponía la cuenta semilla
+`admin1.fase10@example.com` en el topbar y un chip de debug "Simulate movement".
 
-**#30 se arregla dentro de la misma toma:** el clip expone la cuenta semilla
-`admin1.fase10@example.com` en el topbar de la consola y un chip de debug
-"Simulate movement" en la tarjeta de arribo.
+Ambos cerrados en una sola toma nueva: SOS presionado de verdad en la app del
+paciente, la oferta aterrizando en la paramédica, el accept, y la ambulancia
+recorriendo la ruta vial real de OSRM mientras los dos mapas y la consola bajan
+el ETA de 6 a 3 minutos. Scan de uniformidad **por pane** (el detector de negro
+por frame completo no ve este defecto: los otros dos panes mantienen el frame
+claro):
+
+| pane | VOID(s) | antes |
+|---|---|---|
+| console | 0.00 | 0.00 |
+| paramedic | 0.00 | **3.90** |
+| patient | 0.00 | 0.00 |
+
+De paso: `page.tsx` declaraba `w: 1600` para un archivo que mide **1740** desde
+que se subió, así que el navegador reservaba la caja equivocada. Corregido.
+
+### Gotchas nuevos — no repetirlos
+
+**El primer clic sólo enfoca la ventana.** Si la ventana del simulador no está
+al frente, el primer press la activa y **no llega a la app**. Enfoca primero
+(clic en la barra de título, que no toca contenido) y después actúa. Esto casi
+con seguridad fue lo que arruinó una toma anterior.
+
+**`--speed` de `simctl location` es METROS/SEGUNDO, no km/h.** 24 m/s ≈ 86 km/h.
+
+**zsh no hace word-splitting** de `$VAR` sin comillas: la ruta de 70 waypoints
+llegó como un solo argumento (`Invalid latitude,longitude pair`). Usa un array
+de bash (`read -r -a`).
+
+**`simctl recordVideo` graba a frame rate VARIABLE** — sólo emite frame cuando
+la pantalla cambia. Un `-ss` de entrada hacia un tramo estático cae en un hueco
+sin frames y `overlay` pinta el fondo: **el defecto #6 otra vez, recién creado**.
+Densifica con `fps=30` **antes** de recortar con `trim`; nada de `-ss` de entrada.
+
+**Una emergencia disparada por API NO navega la app del paciente** — se queda en
+la pantalla del SOS (verificado). Por eso la toma vieja relanzó la app a media
+grabación, y por eso su pane del paciente mostraba el splash. Hay que presionar
+el botón.
+
+**No dejes que la paramédica llegue.** Al entrar al geofence de arribo la
+pantalla revela el perfil clínico del paciente. La ruta va truncada a 2.03 km
+(termina a ~886 m) para que no pase.
+
+**Paciente y paramédica no pueden compartir coordenada**, o el arribo se dispara
+al instante: paciente al final de la ruta, paramédica al inicio.
+
+**La consola se graba a 1432×898 y se baja a 995×624.** A tamaño de slot el panel
+de detalle se angosta, `ASIGNACIÓN` se apila y **`RUTEO HOSPITALARIO` se va abajo
+del fold** — y la resolución de hospital por seguro y red es justo lo que promete
+el caption. Ese ancho además deja fuera de cuadro el control `Simular traslado`
+de la propia consola (que **no** está gateado por DEV — ver "Decisiones abiertas").
+
+**Sincroniza por evento, no por reloj.** Los tres grabadores arrancan hasta 0.6 s
+desfasados; el ancla es el frame en que la emergencia aterriza en cada superficie.
+El primer scene-change del paciente **no** es el ancla: es la animación del hold
+del botón, ~0.9 s antes.
+
+Los scripts (`take.sh`, `record-console.mjs`, `compose.sh`, `void-scan.py`)
+quedaron en el scratchpad de la sesión, no en el repo.
 
 ### El entorno (hay que rearmarlo)
 
@@ -81,25 +135,33 @@ xcodebuild -project ios-paramedic/VitapathParamedic.xcodeproj \
   SWIFT_ACTIVE_COMPILATION_CONDITIONS="DEBUG CAPTURE_BUILD" build
 ```
 
-Eso depende de un cambio **sin commitear** en
-`ios-paramedic/.../Views/Home/EmergencyView.swift`: el chip quedó como
-`#if DEBUG && !CAPTURE_BUILD`. Los builds normales lo siguen mostrando, así que
-es inocuo — pero sigue sin commitear en el repo de Vitapath.
+Eso depende del gate en
+`ios-paramedic/VitapathParamedic/Views/Home/EmergencyView.swift`, donde el chip
+quedó como `#if DEBUG && !CAPTURE_BUILD`. Los builds normales lo siguen mostrando
+(la bandera no está definida), así que es inocuo.
+
+> **Ojo con los repos:** los cuatro (`backend-spring` → `Vitapath_Backend`,
+> `web-hospital` → `Vitapath_Web`, `ios-patient` → `Vitapath`, `ios-paramedic` →
+> `Vitapath_Paramedic`) son **repositorios git independientes**. Correr
+> `git status` en uno no dice nada de los otros. La rama
+> `chore/hide-debug-chip-in-captures` del paramédico ya cumplió su función y
+> **se borró** tras verificar el clip (decisión de Iván); `v2.1` quedó limpio.
+> Si hay que re-grabar, se re-aplica el gate: son 3 líneas.
 
 **El movimiento NO necesita el chip de debug.** Usa el GPS simulado, que además
-ejercita el flujo real de ubicación:
+ejercita el flujo real de ubicación. Ojo con las dos trampas de arriba:
+`--speed` va en **m/s**, y en zsh hay que meter los waypoints en un array de
+bash o llegan como un solo argumento.
 
 ```bash
-xcrun simctl location <clone-udid> start --speed=45 --interval=1.0 \
-  32.514868,-117.038169 32.516031,-117.036700 32.517910,-117.034016 \
-  32.521360,-117.032553 32.523741,-117.032444 32.525950,-117.030920 \
-  32.526362,-117.026384 32.527396,-117.024281 32.528510,-117.022833 \
-  32.529368,-117.022421 32.529429,-117.019890 32.528764,-117.019132 \
-  32.528519,-117.018727 32.528418,-117.018497
+ROUTE=(32.514868,-117.038169 32.516031,-117.036700 ... 32.528418,-117.018497)
+xcrun simctl location <clone-udid> start --speed=24 --interval=1.0 "${ROUTE[@]}"
 ```
 
-Esa ruta (3.2 km, 340 s) sale de:
-`localhost:5001/route/v1/driving/-117.0382,32.5149;-117.0186,32.5283?overview=full&geometries=geojson`
+La ruta completa (3.2 km, 340 s) sale de OSRM:
+`localhost:5001/route/v1/driving/-117.038169,32.514868;-117.018497,32.528418?overview=full&geometries=geojson`
+→ 149 puntos. Para grabar se **trunca a 2.03 km** (los primeros 70) para no
+disparar el arribo y su PHI.
 
 ### Coordenadas calibradas (con ambas ventanas lado a lado)
 
@@ -112,19 +174,30 @@ lo que mandó al paramédico a la pestaña History a media toma.
 | Pestaña Emergencies (paramédico) | (518, 780) |
 | Botón Accept | (688, 713) |
 
-El SOS es `mouse_move` → `left_mouse_down` → esperar 3–4 s → `left_mouse_up`.
+El SOS es `mouse_move` → `left_mouse_down` → esperar 3–4 s → `left_mouse_up`,
+**con la ventana ya enfocada** (si no, ese press sólo la activa).
 
 ### La secuencia
 
-1. Reiniciar API + ambas apps · ubicaciones frescas · paramédica `AVAILABLE`
-2. Arrancar 3 grabaciones: `simctl io <udid> recordVideo` ×2 + Playwright
-   `recordVideo` de la consola. **La consola se autentica inyectando el token**
-   de `localStorage["vitapath.console.token"]` con `addInitScript` — nunca
-   tecleando la contraseña en el formulario.
-3. Hold del SOS → esperar la oferta → Accept
-4. `simctl location start` por la ruta
-5. Parar todo, componer con ffmpeg `overlay` + `drawbox`, y verificar con el
-   scan de uniformidad por pane que **VOID total = 0.00 s**
+1. Reiniciar API + ambas apps · ubicaciones frescas (paciente al final de la
+   ruta, paramédica al inicio) · paramédica `AVAILABLE`
+2. Enfocar la ventana del paciente (clic en su barra de título)
+3. Arrancar 3 grabaciones: `simctl io <udid> recordVideo` ×2 + Playwright
+   `recordVideo` de la consola a 1432×898. **La consola se autentica inyectando
+   el token** de `localStorage["vitapath.console.token"]` con `addInitScript` —
+   nunca tecleando la contraseña en el formulario.
+4. Hold del SOS → esperar la oferta → enfocar la ventana del paramédico → Accept
+5. El drive arranca **por evento** (cuando la emergencia llega a `ONGOING`),
+   no por reloj: un delay fijo se desincroniza de lo que tarden los taps
+6. Parar todo, componer con ffmpeg `overlay` + `drawbox` (con `fps` antes de
+   `trim`), y verificar con el scan de uniformidad **por pane** que
+   **VOID total = 0.00 s**
+
+> Sanidad antes de grabar: sólo debe haber **una** paramédica elegible. El
+> dispatch ignora a quien tenga la ubicación más vieja que `location-stale-seconds`
+> (300 s), y en la BD hay varias `AVAILABLE` con fixes de hace semanas — por eso
+> la oferta cae siempre en Daniela. Verifícalo, no lo asumas:
+> `SELECT id, availability, now()-last_seen_at FROM paramedic WHERE availability='AVAILABLE';`
 
 ---
 
@@ -168,18 +241,41 @@ contra un ancho y reportaba otro, así que los chips de alergias se dibujaban
 encima del encabezado "Medical Surgeries". Arreglado en
 [Vitapath PR #14](https://github.com/Ivan-LB/Vitapath/pull/14).
 
+**El clip de Vitapath re-grabado** cerró el hallazgo 41/41 — ver arriba.
+
+> **Nota de entorno:** el MCP del simulador de iOS **no funciona con Xcode 27
+> beta**. Busca `SimulatorKit.framework` en
+> `Contents/Developer/Library/PrivateFrameworks/`, y en Xcode 27 se movió a
+> `Contents/SharedFrameworks/`. No hay panel en vivo ni taps por device points;
+> hay que manejar las ventanas de Device Hub con computer-use (de ahí la
+> trampa del clic que sólo enfoca).
+
 ---
 
 ## Decisiones abiertas
 
-- **#30, la mitad del correo:** el `sub` del JWT **es el email**, así que
-  renombrar `admin1.fase10@example.com` en la BD rompe las sesiones. Para
-  quitarlo del frame habría que hacer que la consola muestre un nombre en vez
-  del email (`AppShell.tsx:105` imprime `user?.email`). A tamaño de render mide
-  ~6 px.
-- **El cambio `CAPTURE_BUILD`** en el repo de Vitapath sigue sin commitear.
+- **`Simular traslado` en la consola no está gateado por DEV.**
+  `canSimulate = !terminal && patient != null && detail.paramedicId != null`
+  (`EmergencyDetailPanel.tsx:108`), así que el botón que mueve la ambulancia por
+  la ruta aparece **también en producción**, para cualquier despachador con una
+  emergencia asignada. El clip lo esquiva por encuadre, no porque no exista.
+  Es la misma familia que el chip del paramédico (#30) pero en el otro lado, y
+  es decisión de producto: gatearlo por DEV o dejarlo como herramienta de demo.
 - **CV:** 4 decisiones pendientes en `~/Projects/CV/HANDOFF.md`, más la
   actualización de "dos apps en la App Store" ahora que Alisio salió.
+
+## Resuelto esta sesión
+
+- **#30, la mitad del correo** → la consola ya muestra el **nombre** del staff.
+  `MeController` ya resolvía el `HospitalStaff` para sacar `hospitalId`, y esa
+  fila trae `full_name` desde V19, así que el nombre no costó query extra:
+  `/me` devuelve `staffName` y `AppShell` hace `staffName ?? email` (el email se
+  queda en el `title`, y `.mono` sólo aplica al email — un nombre en monoespaciada
+  parece un campo de base de datos). **El `sub` del JWT sigue siendo el email**:
+  es dato de display, no rompe sesiones. Dos PRs: `Vitapath_Backend` y
+  `Vitapath_Web`.
+- **La rama `chore/hide-debug-chip-in-captures`** (repo del paramédico) se borró
+  tras verificar el clip. `v2.1` limpio.
 
 ## Reglas de la casa que se aplicaron aquí
 

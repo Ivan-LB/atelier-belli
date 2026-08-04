@@ -345,7 +345,7 @@ export default function PortfolioPage() {
           kind: "video",
           src: "/cases/video/vitapath-system.mp4",
           poster: "/cases/video/vitapath-system-poster.webp",
-          w: 1600,
+          w: 1740,
           h: 760,
           frame: "bare",
           caption: t("cases.vitapath.mediaCaption"),
