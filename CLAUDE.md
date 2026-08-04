@@ -33,6 +33,31 @@ Fully bilingual EN/ES. Static site (no database, no auth, no server actions).
 
 ### Case studies (Selected Work)
 
+**Which repo backs which case.** Derived from the action URLs in `page.tsx` and
+each repo's `origin`, not from folder names — several do not match (`pass` →
+`loyalty-cards`, `mezcal` → `destileria-lorenzana`). Useful whenever a case
+needs a re-capture, since that means booting the real product.
+
+| case | repo(s) under `~/Projects` | remote |
+|---|---|---|
+| `alisio` | `Swift/Alisio` | `Ivan-LB/alisio` |
+| `pass` | `Backend/pass` | `Ivan-LB/loyalty-cards` (private) |
+| `fingo` | `Swift/Fingo` | `Ivan-LB/Fingo` |
+| `vitapath` | `vitapath/{backend-spring, web-hospital, ios-patient, ios-paramedic}` | `Vitapath_Backend`, `Vitapath_Web`, `Vitapath`, `Vitapath_Paramedic` — **four independent repos**, default branch `v2.1` |
+| `arrhythmia` | `Python/Arrhythmia-Detector` + `Python/arrhythmia-detector-web` | `arrhythmia-detector-backend` (public), `arrhythmia-detector-web` |
+| `mezcal` | `React/destileria-lorenzana` | `Ivan-LB/destileria-lorenzana` |
+| `briefmark` | `Swift/Briefmark` + `Backend/briefmark-backend` | `Briefmark`, `Briefmark-backend` |
+| `savely` | `Swift/Savely` | `Ivan-LB/Savely` |
+| `blip` | `_archive/blip` | **none — not a git repo at all** |
+
+Two traps in that table. **`blip` is not under version control**: it is the only
+case whose code exists solely as a folder on disk. And **`destileria-lorenzana`
+has divergent history on purpose-ish** — `develop` is 7 commits ahead of `main`
+and `main` 1 ahead of `develop`, because the redesign's individual PRs were
+squashed into a single `Redesing (#13)` on main. The *content* of the two
+branches is byte-identical (verified 2026-08-03); do not "fix" the divergence
+by force-pushing either side.
+
 Nine cases as of 2026-07-24, in this display order: `alisio`, `pass`, `fingo`,
 `vitapath`, `arrhythmia`, `mezcal`, `briefmark`, `savely`, `blip`. **Order is
 defined once by the `CASE_KEYS` array** (top of `page.tsx`) — the Selected Work
