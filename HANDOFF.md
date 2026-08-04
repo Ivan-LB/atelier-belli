@@ -252,6 +252,41 @@ encima del encabezado "Medical Surgeries". Arreglado en
 
 ---
 
+## Conocido y aceptado — NO es un bug nuevo
+
+**En producción el sitio es monolingüe en inglés. CloudFront cachea el HTML y la
+cookie no está en la clave de caché.** Medido en `atelierbelli.com` el
+2026-08-03, después del deploy de #50:
+
+| | |
+|---|---|
+| `cache-control` | `s-maxage=31536000` — el HTML se cachea **un año** |
+| `vary` | `Accept-Encoding` — **sin `Cookie`** |
+| etag / hash del body | idénticos con y sin `NEXT_LOCALE=es` |
+| `set-cookie` en la respuesta cacheada | `NEXT_LOCALE=en` |
+
+**El middleware NO está roto.** Con un query param que esquiva el caché,
+`NEXT_LOCALE=es` devuelve `lang="es"` correctamente. Es puramente CDN.
+
+Dos consecuencias: el toggle de idioma es un control muerto (escribe la cookie,
+`router.refresh()`, y CloudFront devuelve el inglés cacheado), y la respuesta
+cacheada trae un `Set-Cookie` que **reescribe a `en`** la cookie de quien ya
+tuviera español. Además el caché es por POP, así que el idioma del primer
+visitante de cada región queda fijado ahí.
+
+> **Iván lo revisó y decidió dejarlo así** (2026-08-03): no rompe nada visible y
+> el inglés es el default correcto. **No lo "arregles" sin preguntar.** Si algún
+> día se retoma, las salidas son: `localePrefix: "as-needed"` (cada idioma
+> recupera su URL, el CDN cachea por URL, y de paso vuelve la indexabilidad que
+> #45 sacrificó — la más limpia), hacer el documento no cacheable, o meter
+> `NEXT_LOCALE` en la clave de caché de CloudFront (eso es consola de Amplify,
+> no repo). En cualquier caso el `Set-Cookie` no debería viajar en una respuesta
+> cacheable.
+
+**Por qué no lo atrapó nada antes de mergear:** ni el CI ni un `next start` local
+tienen CloudFront enfrente. Los dos pasaron en verde. Esta clase de fallo sólo
+aparece midiendo contra el dominio real, después del deploy.
+
 ## Decisiones abiertas
 
 - **`Simular traslado` en la consola no está gateado por DEV.**

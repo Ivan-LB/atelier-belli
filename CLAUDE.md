@@ -355,7 +355,15 @@ Verified in dev: 0 cross-origin Fraunces requests, 0 `googleapis` CSS requests.
 **Amplify-smoke this region before merging** (same rule as the i18n provider).
 
 **Deploy**: AWS Amplify. No `amplify.yml` in the repo — build config is in the
-Amplify console. No `.github/workflows/` — there is no CI beyond Amplify.
+Amplify console. **CI does exist**: `.github/workflows/build-check.yml` runs
+`pnpm install --frozen-lockfile` + `pnpm verify` + `pnpm build` on every push and
+PR to `main`/`develop`. It is a deliberate mirror of the Amplify build — pnpm is
+installed as `latest` and the store is **not** cached, both so a pnpm/format
+change or an unapproved dependency build script fails the PR instead of failing
+silently on Amplify. It is stricter than Amplify, because the production build
+has `ignoreBuildErrors`/`ignoreDuringBuilds` on and `pnpm verify` does not.
+(This file previously claimed there was no CI; that was false — do not act on
+that assumption.)
 `next.config.mjs` sets `images.unoptimized: true` (load-bearing for Amplify
 image delivery, see gotcha `amplify-images-unoptimized`) and wraps the export
 with `createNextIntlPlugin('./i18n.ts')` so next-intl's RSC integration
