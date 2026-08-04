@@ -5,17 +5,26 @@ non-negotiable; individual agent docs may add more, but cannot relax these.
 
 ## Definition of Done (all 5 must hold)
 
-1. **Typecheck clean.** `pnpm exec tsc --noEmit` exits 0. There is no
-   `pnpm typecheck` script in this repo; invoke tsc directly.
+1. **Verify clean.** `pnpm verify` exits 0 — it chains typecheck, lint and
+   i18n parity. (An older version of this file said there was no `pnpm
+   typecheck` script; plan 003 added it, along with `lint`, `verify:i18n`,
+   `verify` and `test:e2e`.)
 2. **Build clean.** `pnpm build` exits 0. Warnings are acceptable iff
-   pre-existing; new warnings block merge.
-3. **Visual smoke (UI changes only).** Load `/en/` AND `/es/` in `pnpm dev`;
-   sanity-check the affected route. For homepage changes also toggle light /
-   dark via the nav theme button.
-4. **Gotcha honored.** If any trigger in `.claude/knowledge/gotchas.yaml`
+   pre-existing; new warnings block merge. **Never run it while a dev server
+   holds :3000** — see gotcha `next-build-clobbers-dev-cache`. Note CI already
+   runs install + verify + build on every PR
+   (`.github/workflows/build-check.yml`), so a local build is a fast local
+   signal, not the gate.
+3. **E2E green.** `pnpm test:e2e` — the Playwright smoke suite. It boots its
+   own server on :3100, so it is safe to run alongside a dev server on :3000.
+4. **Visual smoke (UI changes only).** Load `/` in `pnpm dev`, once plain and
+   once with the `NEXT_LOCALE=es` cookie — there are no `/en/` or `/es/` URLs
+   since PR #45 set `localePrefix: "never"`. Sanity-check the affected route.
+   For homepage changes also toggle light / dark via the nav theme button.
+5. **Gotcha honored.** If any trigger in `.claude/knowledge/gotchas.yaml`
    matches the diff, the PR description names the gotcha ID and explains how
    the change respects it (or justifies the exception).
-5. **i18n canonical.** New code uses `useTranslations()` from `next-intl`. Do
+6. **i18n canonical.** New code uses `useTranslations()` from `next-intl`. Do
    not introduce new `const isSpanish = locale === 'es'` flags. See gotcha
    `i18n-pattern-canonical`.
 

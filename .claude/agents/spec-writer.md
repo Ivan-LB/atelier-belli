@@ -70,7 +70,13 @@ Rules of thumb for the DAG:
 
 Large surfaces worth knowing before planning:
 
-- Homepage `app/[locale]/page.tsx` is ~930 lines.
-- Support pages share `components/support-shell.tsx` (~290 lines).
-- `components/ui/` has 50 shadcn components, mostly unused.
-- No existing tests, no typecheck script.
+- Homepage `app/[locale]/page.tsx` is ~1540 lines — all nine case studies live
+  here; there are no per-case route files.
+- `app/globals.css` is ~3100 lines and holds ALL styling for both scoped roots.
+- Support pages share `components/support-shell.tsx` (~290 lines) — the only
+  file in `components/`.
+- There is no component library. `components/ui/`, `hooks/` and `lib/` were
+  deleted in PR #7; this file used to claim `components/ui/` held 50 shadcn
+  components, which would have you plan against code that does not exist.
+- Tests and scripts exist: `pnpm verify` (typecheck + lint + i18n parity) and
+  `pnpm test:e2e` (Playwright smoke, 12 tests), plus CI on every PR.

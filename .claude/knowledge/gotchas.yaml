@@ -127,8 +127,11 @@
     that worked in dev but broke on Amplify; PR #18 split it into the
     current Server + island shape and added the catch-all. PR #18 was
     Amplify-verified on the user's deploy. If you change anything in this
-    region, smoke on /en/this-route-does-not-exist and /es/this-route-does-not-exist
-    in pnpm dev AND on an Amplify preview before merging to main.
+    region, smoke on /this-route-does-not-exist in pnpm dev AND on an Amplify
+    preview before merging to main. (Prefixed URLs like
+    /en/this-route-does-not-exist no longer exist — PR #45 set
+    localePrefix: "never", so they 308 to the unprefixed route and would smoke
+    the redirect rather than the 404.)
   source: "CLAUDE.md#3-architecture"
 
 - id: amplify-images-unoptimized
@@ -219,8 +222,9 @@
     source tree for every import of the package
     ('grep -rE "from ['\"]<pkg>" app components' — note that lib/, hooks/,
     and components/ui/ no longer exist), (2) run pnpm build to confirm
-    compile, (3) load /en/ and /es/ in pnpm dev as visual smoke, (4) commit
-    with a message naming what was removed and why.
+    compile, (3) load / in pnpm dev as visual smoke, once plain and once with
+    the NEXT_LOCALE=es cookie — there are no /en/ or /es/ URLs since PR #45,
+    (4) commit with a message naming what was removed and why.
   source: "CLAUDE.md#7-dead-dependencies"
 
 - id: google-fonts-hybrid-loading
@@ -238,15 +242,24 @@
       - "Instrument Serif"
       - "IBM Plex Mono"
   rule: >-
-    Fonts load two ways on purpose. @import in globals.css (line 1) ships
-    Fraunces, Inter, EB Garamond, Instrument Serif, and IBM Plex Mono for
-    CSS-level font-family references. next/font/google in
-    app/[locale]/layout.tsx ALSO loads Inter as --font-inter (exposed via
-    <html className={inter.variable}>) to benefit from Next's font
-    subsetting and preload for body copy. Coexistence is intentional — do
-    not collapse one into the other without measuring. When adding a new
-    family, prefer next/font for any weight you actually use, and leave
-    @import for display-only CSS references.
+    Fonts load two ways on purpose, and the split MOVED on 2026-08-02 — this
+    entry used to say the @import ships Fraunces, which is now exactly
+    backwards. @import in globals.css ships ONLY Inter, EB Garamond,
+    Instrument Serif and IBM Plex Mono. next/font/google in
+    app/[locale]/layout.tsx loads Inter as --font-inter AND Fraunces as
+    --font-fraunces. Fraunces is deliberately NOT in the @import: it sets
+    every display heading, so it is the LCP element, and the @import reached
+    it through three dependent hops (HTML -> layout.css -> fonts.googleapis
+    -> fonts.gstatic) with no preconnect on either cross-origin host — the
+    woff2 was not even requested until 1410ms on a 150ms-RTT link. It was
+    also 100% of the site's CLS, because the swap from the fallback re-wrapped
+    the headings. next/font self-hosts it same-origin and emits a
+    metric-matched "Fraunces Fallback", which is what removes the reflow.
+    DO NOT move Fraunces back into the @import. --ab-serif must read
+    var(--font-fraunces), never a literal "Fraunces" — a literal silently
+    falls through to Cormorant/Georgia. app/globals.css carries a comment at
+    line 1 saying the same thing; if it and this entry ever disagree, the
+    code wins. Amplify-smoke this region before merging.
   source: "CLAUDE.md#3-architecture"
 
 - id: pnpm-is-package-manager
