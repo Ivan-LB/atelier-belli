@@ -41,6 +41,7 @@ needs a re-capture, since that means booting the real product.
 | case | repo(s) under `~/Projects` | remote |
 |---|---|---|
 | `alisio` | `Swift/Alisio` | `Ivan-LB/alisio` |
+| `fave` | `Swift/Fave` | `Ivan-LB/fave` (private) |
 | `pass` | `Backend/pass` | `Ivan-LB/loyalty-cards` (private) |
 | `fingo` | `Swift/Fingo` | `Ivan-LB/Fingo` |
 | `vitapath` | `vitapath/{backend-spring, web-hospital, ios-patient, ios-paramedic}` | `Vitapath_Backend`, `Vitapath_Web`, `Vitapath`, `Vitapath_Paramedic` — **four independent repos**, default branch `v2.1` |
@@ -58,11 +59,11 @@ squashed into a single `Redesing (#13)` on main. The *content* of the two
 branches is byte-identical (verified 2026-08-03); do not "fix" the divergence
 by force-pushing either side.
 
-Nine cases as of 2026-07-24, in this display order: `alisio`, `pass`, `fingo`,
-`vitapath`, `arrhythmia`, `mezcal`, `briefmark`, `savely`, `blip`. **Order is
+Ten cases as of 2026-08-10, in this display order: `alisio`, `fave`, `pass`,
+`fingo`, `vitapath`, `arrhythmia`, `mezcal`, `briefmark`, `savely`, `blip`. **Order is
 defined once by the `CASE_KEYS` array** (top of `page.tsx`) — the Selected Work
 list maps over it, and each `CASES` entry's `num` must match its position
-(01–09). All case data lives in `app/[locale]/page.tsx` — there are NO per-case
+(01–10). All case data lives in `app/[locale]/page.tsx` — there are NO per-case
 route files. To add (or reorder) a case:
 
 1. Extend the `CaseKey` union.
@@ -75,7 +76,7 @@ route files. To add (or reorder) a case:
    metaPlatform when not iOS).
 6. Insert the key into `CASE_KEYS` at the desired display position (it is BOTH
    the render order AND the deep-link allowlist), then fix every `num` so it
-   matches its position. Bump the nine-case count assertion **and** the
+   matches its position. Bump the ten-case count assertion **and** the
    first-case (`alisio`) deep-link check in `tests/e2e/smoke.spec.ts`
    (Tests 5 and 7).
 

@@ -23,12 +23,14 @@ type CaseKey =
   | "briefmark"
   | "pass"
   | "alisio"
+  | "fave"
   | "vitapath"
   | "arrhythmia"
 // Display order of Selected Work (also the deep-link allowlist). This array is
 // the single source of order — CASES render maps over it and `num` follows it.
 const CASE_KEYS: readonly CaseKey[] = [
   "alisio",
+  "fave",
   "pass",
   "fingo",
   "vitapath",
@@ -259,8 +261,32 @@ export default function PortfolioPage() {
         },
       ],
     },
-    pass: {
+    fave: {
       num: "02",
+      kicker: "iOS · SwiftData · 2026",
+      title: {
+        pre: "Fave — ",
+        it: t("cases.fave.titleIt"),
+      },
+      desc: t.rich("cases.fave.descRich", { it: (chunks) => <em>{chunks}</em> }),
+      meta: [
+        [t("cases.meta.platform"), "iOS 17+"],
+        [t("cases.meta.stack"), "SwiftUI · SwiftData · CloudKit · TMDB · Open Library"],
+        [t("cases.meta.status"), t("cases.fave.metaStatus")],
+        [t("cases.meta.year"), "2026"],
+      ],
+      actions: [
+        {
+          label: t("cases.fave.actionPrimary"),
+          href: "#",
+          kind: "primary disabled",
+          icon: "clock",
+        },
+      ],
+      preview: "fave",
+    },
+    pass: {
+      num: "03",
       kicker: "Backend · Serverless · 2026",
       title: {
         pre: "Pass — ",
@@ -286,7 +312,7 @@ export default function PortfolioPage() {
       highlights: t.raw("cases.pass.highlights") as string[],
     },
     fingo: {
-      num: "03",
+      num: "04",
       kicker: "iOS · 2025",
       title: {
         pre: "Fingo — ",
@@ -317,7 +343,7 @@ export default function PortfolioPage() {
       preview: "fingo",
     },
     vitapath: {
-      num: "04",
+      num: "05",
       kicker: t("cases.vitapath.kicker"),
       title: {
         pre: "Vitapath — ",
@@ -362,7 +388,7 @@ export default function PortfolioPage() {
       ],
     },
     arrhythmia: {
-      num: "05",
+      num: "06",
       kicker: "Web · ML · 2026",
       title: {
         pre: "Arrhythmia Detector — ",
@@ -410,7 +436,7 @@ export default function PortfolioPage() {
       ],
     },
     mezcal: {
-      num: "06",
+      num: "07",
       kicker: "Web · E-commerce · 2025",
       title: {
         pre: "Mi Mezcal — ",
@@ -435,7 +461,7 @@ export default function PortfolioPage() {
       preview: "mezcal",
     },
     briefmark: {
-      num: "07",
+      num: "08",
       kicker: "iOS · AI · 2026",
       title: {
         pre: "Briefmark — ",
@@ -459,7 +485,7 @@ export default function PortfolioPage() {
       preview: "briefmark",
     },
     savely: {
-      num: "08",
+      num: "09",
       kicker: "iOS · Fintech · 2026",
       title: {
         pre: "Savely — ",
@@ -489,7 +515,7 @@ export default function PortfolioPage() {
       preview: "savely",
     },
     blip: {
-      num: "09",
+      num: "10",
       kicker: "Web · PWA · 2026",
       title: {
         pre: "BLIP — ",
@@ -856,6 +882,12 @@ export default function PortfolioPage() {
                   CaseKey,
                   { name: { pre: string; it: string }; tag: string; stack: string[]; mshow: string }
                 > = {
+                  fave: {
+                    name: { pre: "Fave", it: ` — ${t("cases.fave.titleIt")}` },
+                    tag: t("cases.fave.tag"),
+                    stack: ["iOS", "SwiftData", "CloudKit"],
+                    mshow: `iOS · SwiftData · ${t("cases.fave.mshowStatus")} →`,
+                  },
                   fingo: {
                     name: { pre: "Fingo", it: ` — ${t("cases.fingo.titleIt")}` },
                     tag: t("cases.fingo.tag"),
@@ -1435,6 +1467,14 @@ function CasePreview({ which }: { which: CaseKey }) {
       <div className="ab-phone-img briefmark" aria-hidden="true" style={{ ["--w" as any]: "252px" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/cases/briefmark-hero.webp" alt="" width={600} height={1304} loading="lazy" />
+      </div>
+    )
+  }
+  if (which === "fave") {
+    return (
+      <div className="ab-phone-img fave" aria-hidden="true" style={{ ["--w" as any]: "252px" }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/cases/fave-hero.webp" alt="" width={600} height={1304} loading="lazy" />
       </div>
     )
   }

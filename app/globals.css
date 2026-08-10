@@ -652,6 +652,11 @@
 .ab-phone-img.briefmark {
   background: #0b0d0c;
 }
+/* Matches the paper cream of Fave's own canvas, so the lazy image does not
+   flash the generic surface colour behind the frame before it paints. */
+.ab-phone-img.fave {
+  background: #f7f1ea;
+}
 .ab-phone-img.savely {
   --w: 272px;
   background: transparent;
