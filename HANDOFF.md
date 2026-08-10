@@ -252,6 +252,75 @@ encima del encabezado "Medical Surgeries". Arreglado en
 
 ---
 
+## Conocido y aceptado — NO es un bug nuevo
+
+**En producción el sitio es monolingüe en inglés. CloudFront cachea el HTML y la
+cookie no está en la clave de caché.** Medido en `atelierbelli.com` el
+2026-08-03, después del deploy de #50:
+
+| | |
+|---|---|
+| `cache-control` | `s-maxage=31536000` — el HTML se cachea **un año** |
+| `vary` | `Accept-Encoding` — **sin `Cookie`** |
+| etag / hash del body | idénticos con y sin `NEXT_LOCALE=es` |
+| `set-cookie` en la respuesta cacheada | `NEXT_LOCALE=en` |
+
+**El middleware NO está roto.** Con un query param que esquiva el caché,
+`NEXT_LOCALE=es` devuelve `lang="es"` correctamente. Es puramente CDN.
+
+Dos consecuencias: el toggle de idioma es un control muerto (escribe la cookie,
+`router.refresh()`, y CloudFront devuelve el inglés cacheado), y la respuesta
+cacheada trae un `Set-Cookie` que **reescribe a `en`** la cookie de quien ya
+tuviera español. Además el caché es por POP, así que el idioma del primer
+visitante de cada región queda fijado ahí.
+
+> **Iván lo revisó y decidió dejarlo así** (2026-08-03): no rompe nada visible y
+> el inglés es el default correcto. **No lo "arregles" sin preguntar.** Si algún
+> día se retoma, las salidas son: `localePrefix: "as-needed"` (cada idioma
+> recupera su URL, el CDN cachea por URL, y de paso vuelve la indexabilidad que
+> #45 sacrificó — la más limpia), hacer el documento no cacheable, o meter
+> `NEXT_LOCALE` en la clave de caché de CloudFront (eso es consola de Amplify,
+> no repo). En cualquier caso el `Set-Cookie` no debería viajar en una respuesta
+> cacheable.
+
+**Por qué no lo atrapó nada antes de mergear:** ni el CI ni un `next start` local
+tienen CloudFront enfrente. Los dos pasaron en verde. Esta clase de fallo sólo
+aparece midiendo contra el dominio real, después del deploy.
+
+## Censo de los repos de los 9 casos — foto del 2026-08-03
+
+> **Esto es una foto, no estado permanente.** Los conteos de "sucio" y la rama
+> en la que está parado cada repo cambian solos. Lo que **no** caduca está en
+> `CLAUDE.md` (el mapeo caso → repo, que `blip` no tiene git, y la divergencia
+> sana de destilería). Si estás leyendo esto meses después, vuelve a medir.
+
+Los 13 repos detrás de los 9 casos estaban **todos en `+0/-0` con su remoto**:
+ningún código de producto sin pushear. Un solo commit local sin subir, en
+destilería (`da0214d`, config de un agente de social — no es producto).
+
+Lo que había sin commitear era casi todo andamiaje de agentes, no código:
+`handoff.md` en pass, `.codex/` + `CLAUDE.md` en los dos Briefmark, cinco
+archivos de `.claude/*` en Savely. La única excepción que vale revisar:
+**`Swift/Fingo` tiene `Fingo.xcodeproj/project.pbxproj` modificado y en el
+índice (staged)** — conviene confirmar si eso es intencional o quedó de una
+sesión vieja.
+
+Ocho de los trece estaban parados fuera de su rama principal. Tres eran de esta
+sesión y ya están mergeadas (`feat/me-staff-name`, `feat/topbar-staff-name`,
+`fix/flowlayout-measured-width`); el resto parece convención propia de cada
+proyecto (`pass` y `Savely` viven en `dev`, `Arrhythmia-Detector` en `v2.1`).
+
+### Riesgo real fuera del portafolio
+
+Al escanear los 31 repos de `~/Projects` salieron cuatro **sin remoto**, o sea
+sin respaldo alguno: `claude-setup` (el hub del que cuelgan 10 skills globales
+symlinkeadas), y `Swift/Vertix` (42 archivos sin commitear sobre un único
+"Initial Commit" de 2025-11-30), `Swift/TrailFlow` (25) y `Swift/CodeHistory`
+(9). Aparte, `ECC` está **188 commits atrás** de `origin/main` y otras 8 skills
+globales cuelgan de él, así que corren una versión de hace más de un mes.
+Nada de eso es de este proyecto — queda anotado porque afecta a todas las
+sesiones, incluida ésta.
+
 ## Decisiones abiertas
 
 - **`Simular traslado` en la consola no está gateado por DEV.**

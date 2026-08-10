@@ -136,9 +136,9 @@ test("theme toggle flips data-theme and persists to localStorage", async ({
   expect(stored).toBe(flippedTheme);
 });
 
-// ── Test 5: Spanish shows all nine cases ─────────────────────────────────────
-// Bump this count when a 10th case ships (also update CASE_KEYS in page.tsx).
-test("Spanish shows all nine cases", async ({ browser }) => {
+// ── Test 5: Spanish shows all ten cases ──────────────────────────────────────
+// Bump this count when an 11th case ships (also update CASE_KEYS in page.tsx).
+test("Spanish shows all ten cases", async ({ browser }) => {
   const context = await browser.newContext();
   await context.addCookies([
     { name: "NEXT_LOCALE", value: "es", url: "http://localhost:3100" },
@@ -146,7 +146,7 @@ test("Spanish shows all nine cases", async ({ browser }) => {
   const page = await context.newPage();
   await page.goto("/");
   await expect(page.locator("html")).toHaveAttribute("lang", "es");
-  await expect(page.locator("button.ab-index-row")).toHaveCount(9);
+  await expect(page.locator("button.ab-index-row")).toHaveCount(10);
   await context.close();
 });
 

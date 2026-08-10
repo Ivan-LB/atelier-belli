@@ -33,11 +33,37 @@ Fully bilingual EN/ES. Static site (no database, no auth, no server actions).
 
 ### Case studies (Selected Work)
 
-Nine cases as of 2026-07-24, in this display order: `alisio`, `pass`, `fingo`,
-`vitapath`, `arrhythmia`, `mezcal`, `briefmark`, `savely`, `blip`. **Order is
+**Which repo backs which case.** Derived from the action URLs in `page.tsx` and
+each repo's `origin`, not from folder names — several do not match (`pass` →
+`loyalty-cards`, `mezcal` → `destileria-lorenzana`). Useful whenever a case
+needs a re-capture, since that means booting the real product.
+
+| case | repo(s) under `~/Projects` | remote |
+|---|---|---|
+| `alisio` | `Swift/Alisio` | `Ivan-LB/alisio` |
+| `fave` | `Swift/Fave` | `Ivan-LB/fave` (private) |
+| `pass` | `Backend/pass` | `Ivan-LB/loyalty-cards` (private) |
+| `fingo` | `Swift/Fingo` | `Ivan-LB/Fingo` |
+| `vitapath` | `vitapath/{backend-spring, web-hospital, ios-patient, ios-paramedic}` | `Vitapath_Backend`, `Vitapath_Web`, `Vitapath`, `Vitapath_Paramedic` — **four independent repos**, default branch `v2.1` |
+| `arrhythmia` | `Python/Arrhythmia-Detector` + `Python/arrhythmia-detector-web` | `arrhythmia-detector-backend` (public), `arrhythmia-detector-web` |
+| `mezcal` | `React/destileria-lorenzana` | `Ivan-LB/destileria-lorenzana` |
+| `briefmark` | `Swift/Briefmark` + `Backend/briefmark-backend` | `Briefmark`, `Briefmark-backend` |
+| `savely` | `Swift/Savely` | `Ivan-LB/Savely` |
+| `blip` | `_archive/blip` | **none — not a git repo at all** |
+
+Two traps in that table. **`blip` is not under version control**: it is the only
+case whose code exists solely as a folder on disk. And **`destileria-lorenzana`
+has divergent history on purpose-ish** — `develop` is 7 commits ahead of `main`
+and `main` 1 ahead of `develop`, because the redesign's individual PRs were
+squashed into a single `Redesing (#13)` on main. The *content* of the two
+branches is byte-identical (verified 2026-08-03); do not "fix" the divergence
+by force-pushing either side.
+
+Ten cases as of 2026-08-10, in this display order: `alisio`, `fave`, `pass`,
+`fingo`, `vitapath`, `arrhythmia`, `mezcal`, `briefmark`, `savely`, `blip`. **Order is
 defined once by the `CASE_KEYS` array** (top of `page.tsx`) — the Selected Work
 list maps over it, and each `CASES` entry's `num` must match its position
-(01–09). All case data lives in `app/[locale]/page.tsx` — there are NO per-case
+(01–10). All case data lives in `app/[locale]/page.tsx` — there are NO per-case
 route files. To add (or reorder) a case:
 
 1. Extend the `CaseKey` union.
@@ -50,7 +76,7 @@ route files. To add (or reorder) a case:
    metaPlatform when not iOS).
 6. Insert the key into `CASE_KEYS` at the desired display position (it is BOTH
    the render order AND the deep-link allowlist), then fix every `num` so it
-   matches its position. Bump the nine-case count assertion **and** the
+   matches its position. Bump the ten-case count assertion **and** the
    first-case (`alisio`) deep-link check in `tests/e2e/smoke.spec.ts`
    (Tests 5 and 7).
 
@@ -355,7 +381,15 @@ Verified in dev: 0 cross-origin Fraunces requests, 0 `googleapis` CSS requests.
 **Amplify-smoke this region before merging** (same rule as the i18n provider).
 
 **Deploy**: AWS Amplify. No `amplify.yml` in the repo — build config is in the
-Amplify console. No `.github/workflows/` — there is no CI beyond Amplify.
+Amplify console. **CI does exist**: `.github/workflows/build-check.yml` runs
+`pnpm install --frozen-lockfile` + `pnpm verify` + `pnpm build` on every push and
+PR to `main`/`develop`. It is a deliberate mirror of the Amplify build — pnpm is
+installed as `latest` and the store is **not** cached, both so a pnpm/format
+change or an unapproved dependency build script fails the PR instead of failing
+silently on Amplify. It is stricter than Amplify, because the production build
+has `ignoreBuildErrors`/`ignoreDuringBuilds` on and `pnpm verify` does not.
+(This file previously claimed there was no CI; that was false — do not act on
+that assumption.)
 `next.config.mjs` sets `images.unoptimized: true` (load-bearing for Amplify
 image delivery, see gotcha `amplify-images-unoptimized`) and wraps the export
 with `createNextIntlPlugin('./i18n.ts')` so next-intl's RSC integration
