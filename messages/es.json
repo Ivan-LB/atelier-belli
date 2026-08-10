@@ -102,6 +102,38 @@
         }
       }
     },
+    "favePrivacy": {
+      "title": "Política de Privacidad de Fave",
+      "lastUpdated": "Última actualización: 9 de agosto de 2026",
+      "intro": "Fave guarda tus rankings en tu dispositivo y en tu cuenta personal de iCloud. Esa es toda la historia, pero aquí va con detalle:",
+      "sections": {
+        "collect": {
+          "heading": "Qué recolectamos: nada",
+          "body": "Fave no tiene cuentas, ni analítica, ni anuncios, ni rastreo, ni servidores propios. Nunca vemos tus datos."
+        },
+        "dataLocation": {
+          "heading": "Dónde viven tus datos",
+          "body": "Todo lo que escribes en Fave (tus listas, entradas, calificaciones, notas y fotos) se guarda en tu dispositivo y se sincroniza por tu base de datos privada de iCloud, a la que solo tu Apple ID puede acceder. El manejo de iCloud está descrito en la política de privacidad de Apple. Si borras la app y sus datos de iCloud, todo desaparece; no guardamos copias, porque nunca las tuvimos."
+        },
+        "artwork": {
+          "heading": "Pósters de películas, series y libros",
+          "tmdb": "Cuando buscas una película o serie, Fave consulta The Movie Database (TMDB) y carga los pósters desde los servidores de TMDB. Esas solicitudes van directo de tu dispositivo a TMDB y se rigen por la política de privacidad de TMDB. Fave envía solo tu texto de búsqueda e información estándar de red; nunca envía tus rankings, notas o fotos a TMDB ni a nadie.",
+          "openLibrary": "Cuando buscas un libro, Fave consulta Open Library y carga las portadas desde los servidores de Open Library. Esas solicitudes van directo de tu dispositivo a Open Library y se rigen por la política de privacidad de Open Library. Aquí también Fave envía solo tu texto de búsqueda e información estándar de red; tus rankings, notas y fotos nunca salen de tu dispositivo ni de tu cuenta de iCloud."
+        },
+        "children": {
+          "heading": "Menores",
+          "body": "Fave no recolecta datos de nadie, incluidos menores."
+        },
+        "changes": {
+          "heading": "Cambios",
+          "body": "Si esta política cambia, la fecha de arriba cambia con ella y la versión vigente vivirá siempre en esta URL."
+        },
+        "contact": {
+          "heading": "Contacto",
+          "email": "ivan@atelierbelli.com"
+        }
+      }
+    },
     "privacyChoices": {
       "title": "Opciones de Privacidad del Usuario",
       "intro": "En Atelier Belli, respetamos tu privacidad y te ofrecemos control sobre tu información personal. A continuación, se describen las opciones que tienes con respecto a tus datos:",

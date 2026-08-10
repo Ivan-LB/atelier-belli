@@ -102,6 +102,38 @@
         }
       }
     },
+    "favePrivacy": {
+      "title": "Fave Privacy Policy",
+      "lastUpdated": "Last updated: August 9, 2026",
+      "intro": "Fave keeps your rankings on your device and in your personal iCloud account. That is the whole story, but here it is in detail:",
+      "sections": {
+        "collect": {
+          "heading": "What we collect: nothing",
+          "body": "Fave has no accounts, no analytics, no ads, no tracking, and no servers of our own. We never see your data."
+        },
+        "dataLocation": {
+          "heading": "Where your data lives",
+          "body": "Everything you write in Fave (your lists, entries, ratings, notes, and photos) is stored on your device and synced through your private iCloud database, which only your Apple ID can access. Apple's handling of iCloud data is described in Apple's own privacy policy. Deleting the app and its iCloud data removes everything; we keep no copies, because we never had any."
+        },
+        "artwork": {
+          "heading": "Movie, show, and book artwork",
+          "tmdb": "When you search for a movie or show, Fave queries The Movie Database (TMDB) and loads poster images from TMDB's servers. Those requests go directly from your device to TMDB and are subject to TMDB's privacy policy. Fave sends only your search text and standard network information; it never sends your rankings, notes, or photos to TMDB or anyone else.",
+          "openLibrary": "When you search for a book, Fave queries Open Library and loads cover images from Open Library's servers. Those requests go directly from your device to Open Library and are subject to Open Library's privacy policy. Here too, Fave sends only your search text and standard network information; your rankings, notes, and photos never leave your device and your iCloud account."
+        },
+        "children": {
+          "heading": "Children",
+          "body": "Fave collects no data from anyone, including children."
+        },
+        "changes": {
+          "heading": "Changes",
+          "body": "If this policy ever changes, the date above changes with it and the current version will always live at this URL."
+        },
+        "contact": {
+          "heading": "Contact",
+          "email": "ivan@atelierbelli.com"
+        }
+      }
+    },
     "privacyChoices": {
       "title": "User Privacy Choices",
       "intro": "At Atelier Belli, we respect your privacy and give you control over your personal information. Below are the choices you have regarding your data:",
