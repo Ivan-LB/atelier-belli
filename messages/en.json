@@ -596,6 +596,14 @@
         "mediaCaption": "One live session across both devices: started on the iPhone, measured on the Watch, mirrored back to the phone. See the badge flip as the heart rate drifts out of Zone 2 and returns.",
         "watchCaption": "On the wrist alone: pick a zone with the crown, then the live session — the badge slipping out of zone and back in — through to the goal completed."
       },
+      "fave": {
+        "titleIt": "everything you try, ranked.",
+        "descRich": "An iOS app for the person who already keeps mental lists of every drink, café and movie she has tried. You make a list for anything, tick things off as you go, and give them stars <it>only when you feel like it</it> — rating is never homework. A café keeps its own orders and scores itself from their average. Movies, shows and books fill in their own artwork from TMDB and Open Library. Everything lives in your private iCloud and nowhere else: no accounts, no analytics, no servers of mine.",
+        "metaStatus": "Coming to the App Store",
+        "actionPrimary": "Coming to the App Store",
+        "tag": "Rank the drinks, cafés and movies you try.",
+        "mshowStatus": "Coming soon"
+      },
       "vitapath": {
         "titleIt": "emergency response, end to end.",
         "descRich": "An emergency medical-response platform. A patient with a serious condition fires an SOS; the nearest paramedic from a <it>private network</it> is dispatched and tracked live; the patient is routed to the right hospital by insurance, proximity and capability; a hospital console runs dispatch, arrival and reception. Two SwiftUI apps, a React console, and a <it>Spring Boot + PostGIS</it> backend with a real-time emergency state machine.",

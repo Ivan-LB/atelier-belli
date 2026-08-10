@@ -596,6 +596,14 @@
         "mediaCaption": "Una sesión en vivo en los dos dispositivos: arranca en el iPhone, se mide en el reloj y se refleja de vuelta en el teléfono. Mira el distintivo cambiar cuando el pulso se sale de la Zona 2 y regresa.",
         "watchCaption": "Solo con el reloj: elegir zona con la corona y la sesión en vivo — el distintivo saliéndose de zona y regresando — hasta cumplir la meta."
       },
+      "fave": {
+        "titleIt": "todo lo que pruebas, rankeado.",
+        "descRich": "Una app de iOS para quien ya lleva listas mentales de cada bebida, cafetería y película que ha probado. Haces una lista de lo que sea, vas palomeando lo que pruebas, y les pones estrellas <it>solo cuando se te antoja</it> — calificar nunca es tarea. Una cafetería guarda sus propias órdenes y se califica sola con el promedio. Películas, series y libros traen su propia portada desde TMDB y Open Library. Todo vive en tu iCloud privado y en ningún otro lado: sin cuentas, sin analytics, sin servidores míos.",
+        "metaStatus": "Próximamente en App Store",
+        "actionPrimary": "Próximamente en App Store",
+        "tag": "Rankea las bebidas, cafés y películas que pruebas.",
+        "mshowStatus": "Próximamente"
+      },
       "vitapath": {
         "titleIt": "respuesta a emergencias, de punta a punta.",
         "descRich": "Una plataforma de respuesta médica de emergencia. Un paciente con una condición seria dispara un SOS; el paramédico más cercano de una <it>red privada</it> es despachado y rastreado en vivo; el paciente se rutea al hospital correcto por seguro, proximidad y capacidad; una consola hospitalaria maneja despacho, llegada y recepción. Dos apps SwiftUI, una consola React y un backend <it>Spring Boot + PostGIS</it> con una máquina de estados en tiempo real.",
