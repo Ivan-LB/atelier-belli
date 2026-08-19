@@ -526,13 +526,14 @@
         "tag": "Wheels, coins, haptics — decisions in a tap."
       },
       "savely": {
-        "titleIt": "personal finance, quietly.",
-        "descRich": "A calm financial assistant. Track spending, save with goals, get smart alerts before things slip. Bank-grade security, <it>quiet</it> interface. Built with SwiftUI and secure banking APIs.",
+        "titleIt": "personal savings, quietly.",
+        "descRich": "A local-first savings app. Goals with a real pace, everyday income and expense logging, a receipt scanner that reads on the phone, and a payday auto-move that turns income into savings in one tap. No accounts, no cloud, no bank connections — money data lives on the phone and <it>never leaves it</it>. SwiftUI and SwiftData, submitted to the App Store.",
         "metaStatus": "In review · App Store soon",
         "actionPrimary": "Coming soon",
         "actionGhost": "Support",
-        "tag": "Balance, budgets, alerts — a calm financial assistant.",
-        "mshowStatus": "In review"
+        "tag": "Goals, receipts, payday auto-move — money that never leaves the phone.",
+        "mshowStatus": "In review",
+        "galleryCaption": "Three real screens, seeded through the app's own DEBUG tour: a goal with its pace, a receipt read on-device — the photo never leaves the phone — and payday's one-tap auto-move into that goal."
       },
       "mezcal": {
         "descRich": "Storefront and story for an artisanal mezcal brand out of Oaxaca. A quiet, editorial site built to sell — varieties, origin, direct orders. <it>Hand-built</it> from brand to checkout.",
