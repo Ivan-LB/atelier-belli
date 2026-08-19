@@ -59,8 +59,10 @@ squashed into a single `Redesing (#13)` on main. The *content* of the two
 branches is byte-identical (verified 2026-08-03); do not "fix" the divergence
 by force-pushing either side.
 
-Ten cases as of 2026-08-10, in this display order: `alisio`, `fave`, `pass`,
-`fingo`, `vitapath`, `arrhythmia`, `mezcal`, `briefmark`, `savely`, `blip`. **Order is
+Ten cases as of 2026-08-18, in this display order: `alisio`, `savely`, `fave`,
+`pass`, `fingo`, `vitapath`, `arrhythmia`, `mezcal`, `briefmark`, `blip`. Savely
+moved from 09 to 02 the day it went into App Store review; it sits ahead of Fave
+by Iván's call (maturity over recency — it is the larger, older project). **Order is
 defined once by the `CASE_KEYS` array** (top of `page.tsx`) — the Selected Work
 list maps over it, and each `CASES` entry's `num` must match its position
 (01–10). All case data lives in `app/[locale]/page.tsx` — there are NO per-case
@@ -81,7 +83,11 @@ route files. To add (or reorder) a case:
    (Tests 5 and 7).
 
 **Previews:** project screenshots live in `public/cases/` (fingo/savely
-predate the folder and keep their root-level `public/*-hero.*` files).
+predate the folder and keep their root-level `public/*-hero.*` files —
+`savely-hero.webp` is a raw simulator capture as of 2026-08-18; it used to be a
+design-tool mockup with tool chrome baked in, and the negative-margin CSS that
+cropped that chrome is gone with it. Savely also has a three-frame gallery under
+`public/cases/gallery/savely-p1..p3.webp`, seeded via the app's DEBUG tour).
 fingo/savely use the `ab-phone-img` phone frame; blip and mezcal render real
 captures inside `ab-browser-frame` via the `.ab-browser-shot` img class
 (16:10, explicit width/height). **briefmark** now uses a real capture of its

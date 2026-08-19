@@ -671,11 +671,13 @@
   box-shadow: 0 36px 60px -24px #00000028, 0 20px 40px -20px #00000020,
     0 0 0 1px #00000010;
 }
+/* The old asset was a design-tool mockup with tool chrome baked in, and these
+   negative margins existed to crop that chrome off. The hero is now a raw
+   simulator capture (1320×2868 → 660×1434), so it fills the crop as-is. */
 .ab-phone-img.savely img {
-  margin-top: -6%;
-  margin-bottom: -3%;
-  width: 102%;
-  margin-left: -1%;
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .ab-phone-img.tilt-l {
@@ -1502,8 +1504,11 @@
 .ab-case-preview.web-preview {
   padding: 32px;
 }
-/* The phone+watch combo is the tallest preview: give the cell room rather than
-   letting the centred overflow crop the phone's status bar and the watch. */
+/* Every full-height phone preview needs this, not just the phone+watch combo.
+   The cell is a centred flex box with overflow visible; a phone at --w 252-280px
+   and a real device aspect (2.17) is ~550-610px tall, taller than the 460px
+   floor, so the centred overflow pushed the status bar up under the modal's
+   header and the tab bar down into the title. Give the cell room instead. */
 .ab-case-preview.tall-preview {
   min-height: 640px;
 }
