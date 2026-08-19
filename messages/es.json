@@ -526,13 +526,14 @@
         "tag": "Ruletas, monedas, háptics — decisiones de un toque."
       },
       "savely": {
-        "titleIt": "finanzas personales, en calma.",
-        "descRich": "Un asistente financiero tranquilo. Rastrea gastos, ahorra con metas, recibe alertas inteligentes antes de que las cosas se salgan. Seguridad bancaria, interfaz <it>silenciosa</it>. Construida con SwiftUI y APIs bancarias seguras.",
-        "metaStatus": "En revisión · Próximamente",
+        "titleIt": "ahorro personal, en calma.",
+        "descRich": "Una app de ahorro local-first. Metas con un ritmo real, registro diario de ingresos y gastos, un escáner de recibos que lee en el teléfono, y un auto-move de día de pago que convierte ingreso en ahorro con un toque. Sin cuentas, sin nube, sin conexiones bancarias — el dinero vive en el teléfono y <it>nunca sale de ahí</it>. SwiftUI y SwiftData, enviada a la App Store.",
+        "metaStatus": "En revisión · Próximamente en la App Store",
         "actionPrimary": "Próximamente",
         "actionGhost": "Soporte",
-        "tag": "Balance, presupuesto, alertas — un asistente financiero tranquilo.",
-        "mshowStatus": "En revisión"
+        "tag": "Metas, recibos, auto-move de quincena — dinero que nunca sale del teléfono.",
+        "mshowStatus": "En revisión",
+        "galleryCaption": "Tres pantallas reales, sembradas con el tour DEBUG de la propia app: una meta con su ritmo, un recibo leído en el dispositivo — la foto nunca sale del teléfono — y el auto-move de un toque del día de pago hacia esa meta."
       },
       "mezcal": {
         "descRich": "Tienda e historia para una marca de mezcal artesanal de Oaxaca. Un sitio editorial y tranquilo construido para vender — variedades, origen, pedidos directos. <it>Hecho a mano</it> de la marca al checkout.",

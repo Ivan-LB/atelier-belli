@@ -30,6 +30,7 @@ type CaseKey =
 // the single source of order — CASES render maps over it and `num` follows it.
 const CASE_KEYS: readonly CaseKey[] = [
   "alisio",
+  "savely",
   "fave",
   "pass",
   "fingo",
@@ -37,7 +38,6 @@ const CASE_KEYS: readonly CaseKey[] = [
   "arrhythmia",
   "mezcal",
   "briefmark",
-  "savely",
   "blip",
 ]
 
@@ -262,7 +262,7 @@ export default function PortfolioPage() {
       ],
     },
     fave: {
-      num: "02",
+      num: "03",
       kicker: "iOS · SwiftData · 2026",
       title: {
         pre: "Fave — ",
@@ -286,7 +286,7 @@ export default function PortfolioPage() {
       preview: "fave",
     },
     pass: {
-      num: "03",
+      num: "04",
       kicker: "Backend · Serverless · 2026",
       title: {
         pre: "Pass — ",
@@ -312,7 +312,7 @@ export default function PortfolioPage() {
       highlights: t.raw("cases.pass.highlights") as string[],
     },
     fingo: {
-      num: "04",
+      num: "05",
       kicker: "iOS · 2025",
       title: {
         pre: "Fingo — ",
@@ -343,7 +343,7 @@ export default function PortfolioPage() {
       preview: "fingo",
     },
     vitapath: {
-      num: "05",
+      num: "06",
       kicker: t("cases.vitapath.kicker"),
       title: {
         pre: "Vitapath — ",
@@ -388,7 +388,7 @@ export default function PortfolioPage() {
       ],
     },
     arrhythmia: {
-      num: "06",
+      num: "07",
       kicker: "Web · ML · 2026",
       title: {
         pre: "Arrhythmia Detector — ",
@@ -436,7 +436,7 @@ export default function PortfolioPage() {
       ],
     },
     mezcal: {
-      num: "07",
+      num: "08",
       kicker: "Web · E-commerce · 2025",
       title: {
         pre: "Mi Mezcal — ",
@@ -461,7 +461,7 @@ export default function PortfolioPage() {
       preview: "mezcal",
     },
     briefmark: {
-      num: "08",
+      num: "09",
       kicker: "iOS · AI · 2026",
       title: {
         pre: "Briefmark — ",
@@ -485,7 +485,7 @@ export default function PortfolioPage() {
       preview: "briefmark",
     },
     savely: {
-      num: "09",
+      num: "02",
       kicker: "iOS · Fintech · 2026",
       title: {
         pre: "Savely — ",
@@ -493,8 +493,8 @@ export default function PortfolioPage() {
       },
       desc: t.rich("cases.savely.descRich", { it: (chunks) => <em>{chunks}</em> }),
       meta: [
-        [t("cases.meta.platform"), "iOS 16+"],
-        [t("cases.meta.stack"), "SwiftUI · Swift · Banking APIs"],
+        [t("cases.meta.platform"), "iOS 26"],
+        [t("cases.meta.stack"), "SwiftUI · SwiftData · Vision"],
         [t("cases.meta.status"), t("cases.savely.metaStatus")],
         [t("cases.meta.year"), "2026"],
       ],
@@ -513,6 +513,17 @@ export default function PortfolioPage() {
         },
       ],
       preview: "savely",
+      media: [
+        {
+          kind: "gallery",
+          items: [
+            { src: "/cases/gallery/savely-p1.webp", w: 420, h: 913 },
+            { src: "/cases/gallery/savely-p2.webp", w: 420, h: 913 },
+            { src: "/cases/gallery/savely-p3.webp", w: 420, h: 913 },
+          ],
+          caption: t("cases.savely.galleryCaption"),
+        },
+      ],
     },
     blip: {
       num: "10",
@@ -897,7 +908,7 @@ export default function PortfolioPage() {
                   savely: {
                     name: { pre: "Savely", it: ` — ${t("cases.savely.titleIt")}` },
                     tag: t("cases.savely.tag"),
-                    stack: ["iOS", "Fintech", "Banking APIs"],
+                    stack: ["iOS", "SwiftData", "On-device OCR"],
                     mshow: `iOS · Fintech · ${t("cases.savely.mshowStatus")} →`,
                   },
                   mezcal: {
@@ -1443,7 +1454,7 @@ function CasePreview({ which }: { which: CaseKey }) {
       <div className="ab-phone-img savely" aria-hidden="true" style={{ ["--w" as any]: "280px" }}>
         <div className="crop">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/savely-hero.webp" alt="" width={660} height={1374} />
+          <img src="/savely-hero.webp" alt="" width={660} height={1434} />
         </div>
       </div>
     )
