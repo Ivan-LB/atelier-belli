@@ -1504,8 +1504,11 @@
 .ab-case-preview.web-preview {
   padding: 32px;
 }
-/* The phone+watch combo is the tallest preview: give the cell room rather than
-   letting the centred overflow crop the phone's status bar and the watch. */
+/* Every full-height phone preview needs this, not just the phone+watch combo.
+   The cell is a centred flex box with overflow visible; a phone at --w 252-280px
+   and a real device aspect (2.17) is ~550-610px tall, taller than the 460px
+   floor, so the centred overflow pushed the status bar up under the modal's
+   header and the tab bar down into the title. Give the cell room instead. */
 .ab-case-preview.tall-preview {
   min-height: 640px;
 }

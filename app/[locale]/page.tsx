@@ -1163,7 +1163,7 @@ export default function PortfolioPage() {
         {activeCase && (
           <div className="ab-case-body">
             <div
-              className={`ab-case-preview${["mezcal", "blip", "pass", "vitapath", "arrhythmia"].includes(activeCase.preview) ? " web-preview" : ""}${activeCase.preview === "alisio" ? " tall-preview" : ""}`}
+              className={`ab-case-preview${["mezcal", "blip", "pass", "vitapath", "arrhythmia"].includes(activeCase.preview) ? " web-preview" : ""}${["alisio", "savely", "fave", "fingo", "briefmark"].includes(activeCase.preview) ? " tall-preview" : ""}`}
             >
               <CasePreview which={activeCase.preview} />
             </div>
