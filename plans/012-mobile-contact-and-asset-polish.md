@@ -442,3 +442,68 @@ threshold: **EN is two rows at <= 412px and one row from 413px; ES is two rows
 at <= 422px and one from 423px** (both confirmed at the boundary pixel, header
 105px -> 63px across it). An earlier arithmetic estimate of ~428/438px was
 written into the docs and corrected once measured.
+
+### Follow-up in the same PR: the language toggle (owner request, 2026-08-20)
+
+Not in this plan's scope; requested by the owner after seeing the finished chip
+next to it, and run through `/impeccable`. Four defects, all confirmed against
+the live DOM before any edit:
+
+1. **The control rearranged itself.** It rendered the active language first, so
+   `EN | ES` became `ES | EN` and the half you had just clicked moved.
+2. **The affordance lied.** It looked segmented but was a single `<button>`, so
+   pressing the language you were already in switched you away from it.
+3. **`aria-label` carried no `lang`.** `html[lang=es]` announced *"Switch to
+   English"* in a Spanish voice, and vice versa. Worse, the accessible name
+   ("Cambiar a Español") did not contain the visible name ("ES"), which is a
+   WCAG 2.5.3 Label-in-Name failure.
+4. **No state was exposed.** No `aria-pressed`, no `aria-current`.
+
+Rebuilt as a real segmented control: fixed `en`-then-`es` order, both segments
+`<button>` (a `<span>` for the active one is tidier but the element vanishes
+under the user on switch and takes keyboard focus with it), `aria-current` on
+the active one, `role="group"` naming the control, `lang` per segment, and
+`goToLocale(target)` taking an explicit target so the current one is a no-op.
+`locale.switchAria` became `locale.groupAria` ("Language" / "Idioma"), so parity
+stays at **452**.
+
+**A fifth defect surfaced while measuring**: the inactive segment, which is the
+one you are meant to click, used `--muted-2` at **2.40:1 (light) / 2.52:1
+(dark)** against the page, under the 4.5:1 PRODUCT.md commits to. It is
+`--ab-muted` now, 5.41:1 / 5.42:1, still far enough under the active segment's
+~15:1 to read as "not where you are".
+
+**Two owner decisions**, both asked with measurements and previews: the
+segmented shape over a target-only chip, and unifying the pill across
+breakpoints. The second turned out not to need the global specificity change
+that had been flagged as unclaimed: the pill wrapper is a `<div>` now, and
+`.ab-root button` does not touch it.
+
+#### The motion, and why the router waits for it
+
+Asked for separately ("right now is very very plain"). The thesis: a segmented
+control exists to say where you are, so the authored moment is the ground
+**travelling** to the language you picked. Everything else stays still.
+
+Two measurements shaped the implementation:
+
+- **`router.refresh()` replaces this entire subtree.** A `MutationObserver`
+  confirmed the pill node identity changes. The transition was therefore racing
+  the payload: 9 sampled positions, truncated at 105ms of a 280ms travel, with
+  the last 81% of the distance jumped. The click now sets an optimistic
+  `pendingLocale` so the indicator moves on the click rather than the response,
+  and the refresh is deferred by `LOCALE_SLIDE_MS` (300ms). Re-measured: **34
+  positions settling at 289ms**.
+- **`--bg-2` was invisible** as the moving ground: 1.09:1 (light) / 1.06:1
+  (dark) against the page. A ground you cannot see gives the slide nothing to
+  be watched. It is `color-mix(in oklab, var(--ab-fg) 10%, transparent)` now,
+  one value that reads in both themes because it derives from each theme's own
+  foreground. `color-mix` was already in this stylesheet (`.ab-nav`).
+
+`prefers-reduced-motion` gets both halves: the transition is `none` and the
+refresh delay is 0. Both branches verified by stubbing `matchMedia` and
+recording the `setTimeout` delay: **300ms with motion, 0ms reduced.**
+
+Suite went 86 -> **90**: fixed order in both locales, the active segment being a
+no-op, the switch carrying the indicator, and the pill keeping its chrome at
+375px and 1280px with both segments the same width.

@@ -613,19 +613,47 @@ breaks where it actually breaks. Measured to the pixel: EN is two rows at
   ~860px, and it wraps to two lines inside a sticky header. Dropping "Est. 2023"
   is the design's own first concession; the breakpoint just follows the geometry.
 - **`.ab-chip` does not reach a `<button>`.** `.ab-root button` (specificity
-  0,1,1) outranks `.ab-chip` (0,1,0) and resets `font` and `border`, so the
-  language toggle has never rendered as a pill anywhere: it is plain 16px text
-  with no border. The contact `<a>` does get `.ab-chip`, so the two would read
-  as different systems sitting side by side. `.ab-nav-end button.ab-chip`
-  restores the component **inside the media query only**; above 820px the button
-  stands alone and is deliberately left as it is. **Fixing that globally is
-  unclaimed** and would change the desktop nav.
+  0,1,1) outranks `.ab-chip` (0,1,0) and resets `font` and `border`. This is
+  still true and still a trap for any future chip, but it no longer affects the
+  language control: that pill is a `<div>` wrapper now (see below), so the
+  chrome lands on an element the reset does not touch. **Put `.ab-chip` on a
+  `<button>` and it will silently lose its border and its 11px type.**
 
 `.ab-chip-contact` is the only action in that cluster, so it takes
 `.ab-btn-mail`'s full-strength `--ab-fg` border rather than a fill or an accent,
 which is how the rest of the site marks a primary action. Its label is
 `t("nav.contact")`, the same key the desktop link uses, so the two cannot drift.
 There is deliberately **no hamburger menu** (owner's call).
+
+**The language control is a segmented pill, and four things about it are
+deliberate.** It was one `<button>` rendering the active language first, so
+switching moved the half you had just clicked, and pressing the language you
+were already in switched you away from it.
+
+- **Fixed `en`-then-`es` order**, never by which is active. The active segment
+  carries `aria-current="true"`; `goToLocale(target)` takes an explicit target,
+  so pressing the current one is a real no-op.
+- **Both segments stay `<button>`s** through the switch. Making the active one a
+  `<span>` is tidier in the a11y tree but the element then disappears under the
+  user on switch, and keyboard focus goes with it.
+- **`role="group"` + `locale.groupAria` names the control; the buttons are named
+  by their visible "EN"/"ES"** and carry `lang` so each is announced in its own
+  voice. The old `aria-label="Cambiar a Español"` over a button reading "ES" put
+  the accessible name out of step with the visible one (WCAG 2.5.3).
+- **The pill is `inline-grid` with `1fr auto 1fr`.** "EN" and "ES" differ by
+  1.1px and flex has no free space to even them out, which is what lets
+  `.ab-lang-ind` be a plain 50% translate instead of a measured offset.
+
+**The one authored moment in the nav is that indicator travelling**, and it is
+sequenced against the router on purpose. `switchLocale` writes the cookie and
+calls `router.refresh()`, which **replaces this whole subtree** (measured: the
+pill node identity changes). A refresh landing mid-slide leaves the ground
+teleporting the rest of the way, so the click sets an optimistic `pendingLocale`
+(the indicator moves on the click, not on the response) and the refresh is
+deferred by `LOCALE_SLIDE_MS` (300ms, just over the 280ms transition). Under
+`prefers-reduced-motion` the delay is 0 and the transition is `none`: the state
+still changes, it just does not travel. Verified 34 sampled positions settling
+at 289ms, versus 9 positions truncated at 105ms before the deferral.
 
 **No component library today**: the shadcn scaffold (`components/ui/`,
 50 files), `hooks/`, and `lib/utils.ts` (with `cn()`) were all removed in

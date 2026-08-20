@@ -39,15 +39,34 @@ están arreglados y escritos en `CLAUDE.md` §4, pero vale la pena saberlos:
   `.ab-nav-inner` pisaba el padding inline de `.ab-wrap`, así que el brand se
   pegaba a x=0 mientras el contenido de la página empezaba en 20px (teléfono) o
   51.2px (desktop). Ahora es longhand. **No lo regreses a shorthand.**
-- **`.ab-chip` nunca le ha llegado al `<button>` del idioma.** `.ab-root button`
+- **`.ab-chip` nunca le llegó al `<button>` del idioma.** `.ab-root button`
   (0,1,1) le gana a `.ab-chip` (0,1,0) y resetea `font` y `border`, así que ese
-  control es texto plano de 16px sin borde, y lo ha sido siempre. 012 restauró
-  el componente **sólo dentro del media query de 820px**, por decisión tuya, de
-  modo que el cluster móvil se lee coherente y **el nav de desktop quedó
-  byte-idéntico**. Arreglarlo global es una línea y un restyle visible de
-  desktop: es tu llamada, está en la lista de unclaimed.
+  control fue texto plano de 16px sin borde desde siempre. **Ya no**: el toggle
+  se rehízo como control segmentado y su envoltura es un `<div>`, que el reset
+  no toca, así que la píldora se ve igual en móvil y en desktop sin pelear
+  especificidad. La trampa sigue viva para cualquier chip futuro: **`.ab-chip`
+  sobre un `<button>` pierde borde y tipo en silencio.**
 
 Sin hamburger menu, por decisión explícita.
+
+### El toggle de idioma, rehecho (mismo PR)
+
+Era un solo `<button>` que ponía el idioma activo primero, así que al cambiar
+**se movía la mitad que acababas de tocar**, y tocar el idioma en el que ya
+estabas te sacaba de él. Ahora son dos botones en orden fijo `en`-luego-`es`,
+con `aria-current` en el activo y `goToLocale(target)` explícito, de modo que
+tocar el actual es un no-op de verdad.
+
+Dos cosas que **no** hay que deshacer:
+
+- **Los dos segmentos siguen siendo `<button>`.** Hacer `<span>` el activo se ve
+  más limpio en el árbol de accesibilidad, pero el elemento desaparece debajo
+  del usuario al cambiar y el foco de teclado se va con él.
+- **El `refresh` se difiere 300ms a propósito.** `router.refresh()` reemplaza el
+  subárbol completo (medido: cambia la identidad del nodo), así que si aterriza
+  a media animación el fondo se teletransporta el resto del camino. Medido: 9
+  posiciones cortadas a los 105ms antes, 34 posiciones asentando en 289ms
+  después. Con `prefers-reduced-motion` el retraso es 0 y no hay traslado.
 
 ---
 
