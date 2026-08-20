@@ -171,3 +171,54 @@ before merge to main at release time.
 - The support namespace lost `hero.eye`, `sectionLabels`, `status.titleHtml`
   and `status.sub`, and `status.rows` became `facts`. If any metadata key you
   add reuses a `support.*` title, re-read the namespace first.
+
+---
+
+## Landed from 009 that changes this plan (2026-08-20)
+
+**Your hard dependency is satisfied.** `app/[locale]/alisio/privacy`,
+`fingo/privacy` and `savely/privacy` all exist, so the drift-check `ls` passes
+and the route list below is final. 010 is now unblocked.
+
+**The 11-URL list in this plan is exactly the `paths` array in
+`app/sitemap.ts`.** 009 added the three privacy paths in place, so the file now
+holds all 11 entries at `:4-16` and the only thing left for you to delete is the
+locale loop and the alternates block at `:18-32`. The rewrite is therefore
+smaller than planned: keep the array, drop `locales`, emit `${BASE}${path}/`.
+Today the file emits **22** `<loc>` values (11 × 2 locales), all redirects; your
+Step 1 verification target of 11 and zero `/en/`,`/es/` is unchanged.
+
+**All ten sub-route segments now exist, and every page is still `"use client"`**,
+including the three new ones, so the thin-server-layout approach holds without
+exception. The full segment list for Step 3:
+
+`privacy/`, `privacy/choices/`, `terms/`, `alisio/privacy/`, `fave/privacy/`,
+`fave/support/`, `fingo/privacy/`, `fingo/support/`, `savely/privacy/`,
+`savely/support/`
+
+**Titles you can reuse instead of writing new keys.** Each legal namespace
+carries a real, bilingual title: `legal.privacy.title`,
+`legal.privacyChoices.title`, `legal.terms.title`, and one per app —
+`legal.alisioPrivacy.title` ("Alisio Privacy Policy" / "Política de Privacidad
+de Alisio"), `legal.favePrivacy.title`, `legal.fingoPrivacy.title`,
+`legal.savelyPrivacy.title`. They are already distinct per route, which is what
+your Step 3 verification wants. **Descriptions do not exist** and are yours to
+write; each app page's `intro` is a good source sentence to compress.
+
+**Two conventions 009 established, worth not breaking:**
+
+- Every `legal.*.lastUpdated` value now carries its own "Last updated: " /
+  "Última actualización: " prefix (the four pages used to disagree). If a
+  metadata description ever interpolates that key, it already reads as a phrase.
+- The shared `/privacy` is **website-only** and its "Privacy for our apps"
+  section is load-bearing until App Store Connect is updated (README human
+  checklist #1). A metadata description for `/privacy` should describe the
+  website's own practices, not "our apps".
+
+**`tests/e2e/legal.spec.ts` is new (26 tests).** It covers routes, locales,
+`main#main-content`, `mailto` links and body copy, but asserts **nothing about
+`<head>`**, so your `seo.spec.ts` has no overlap and no conflict. Total suite is
+61 today; if a per-segment layout accidentally flips a route off SSG, the legal
+spec will not catch it and your build-table diff is still the only guard.
+
+**Parity is 406 leaf keys** (was 358). Anything you add lands on top of that.

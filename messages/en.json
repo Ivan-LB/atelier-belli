@@ -26,79 +26,100 @@
     "termsShortLabel": "Terms",
     "privacy": {
       "title": "Privacy Policy",
-      "lastUpdated": "July 20, 2026",
+      "lastUpdated": "Last updated: August 20, 2026",
       "sections": {
         "intro": {
-          "heading": "Introduction",
-          "body": "Welcome to Atelier Belli. We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our mobile applications (such as Fingo, Savely, and Alisio). Please read this policy carefully. If you disagree with its terms, please do not access the site or our applications."
+          "heading": "What this page covers",
+          "body": "Atelier Belli is the portfolio of Ivan Lorenzana, a developer based in Tijuana, Mexico. This site is a handful of static pages: there is no account to create, no form to fill in, no comment box and no newsletter. This policy is about the website itself. Each app we publish has its own policy, and those are linked right below, because a policy that covers a website and four apps at once ends up describing none of them accurately."
         },
-        "dataCollected": {
-          "heading": "Information We Collect",
-          "intro": "We may collect information about you in a variety of ways. The information we may collect on the site or through our applications includes:",
-          "personalData": {
-            "label": "Personal Data:",
-            "body": "Personally identifiable information — such as your name, shipping address, email address, and phone number — as well as demographic information such as your age, gender, hometown, and interests, that you voluntarily provide when you register on the site or our applications, or when you choose to participate in various activities related to the site and our applications, such as online chat and message boards."
-          },
-          "derivedData": {
-            "label": "Derived Data:",
-            "body": "Information our servers collect automatically when you access the site or our applications, such as your IP address, browser type, operating system, access times, and the pages you viewed directly before and after accessing the site."
-          },
-          "financialData": {
-            "label": "Financial Data:",
-            "body": "Financial information — such as data related to your payment method (for example, a valid credit card number, card brand, expiration date) — that we may collect when you purchase, order, return, exchange, or request information about our services from the site or our applications."
-          },
-          "mobileAppData": {
-            "label": "Mobile Application Data:",
-            "intro": "If you connect using our mobile application(s):",
-            "deviceInfo": {
-              "label": "Mobile Device Information.",
-              "body": "We may collect device information (such as your mobile device ID, model, and manufacturer), operating system, version information, and IP address."
-            },
-            "geolocation": {
-              "label": "Geolocation Data.",
-              "body": "We may request access or permission to track location-based information from your mobile device, either continuously or while you are using our mobile application, in order to provide location-based services."
-            },
-            "healthData": {
-              "label": "Health & Fitness Data (Alisio):",
-              "body": "Our Alisio app reads heart rate, active energy, and workout data from Apple HealthKit, with your explicit permission, solely to calculate your heart-rate training zones and show your live training metrics on your Apple Watch and iPhone. This data, along with your training history, is stored only on your own devices. We do not transmit it to our servers, share it with third parties, or use it for advertising. Alisio requires no account and no personal data beyond what you choose to enter (age and resting heart rate) to calculate your zones."
-            }
-          }
+        "apps": {
+          "heading": "Privacy for our apps",
+          "intro": "If you came here from an App Store listing looking for a specific app, one of these four is the page you want:",
+          "alisio": "Alisio privacy policy",
+          "fave": "Fave privacy policy",
+          "fingo": "Fingo privacy policy",
+          "savely": "Savely privacy policy",
+          "note": "Each one describes what that app stores, where it stores it, and what (if anything) ever leaves your device."
         },
-        "dataUse": {
-          "heading": "How We Use Your Information",
-          "intro": "Having accurate information about you allows us to provide you with a smooth, efficient, and personalized experience. Specifically, we may use information collected about you through the site or our applications to:",
-          "items": [
-            "Create and manage your account.",
-            "Email you regarding your account or orders.",
-            "Enable user-to-user communication.",
-            "Fulfill and manage purchases, orders, payments, and other transactions related to the site and our applications.",
-            "Improve the efficiency and operation of the site and our applications.",
-            "Calculate your personal heart-rate training zones and display live training data within the Alisio app, processed entirely on your device."
-          ]
+        "noCollection": {
+          "heading": "What this site collects: nothing",
+          "body": "No analytics, no advertising, no tracking pixels, no session recording, no A/B testing. There is no sign-up, so there is no list you can end up on, and no server of ours that keeps a record of your visit."
         },
-        "dataSecurity": {
-          "heading": "Security of Your Data",
-          "body": "We use administrative, technical, and physical security measures to help protect your personal information. While we have taken reasonable steps to secure the personal information you provide to us, please be aware that no security measures are perfect or impenetrable, despite our best efforts."
+        "cookie": {
+          "heading": "The one cookie",
+          "body": "The site sets a single cookie, named NEXT_LOCALE. It holds one of two values, en or es, and its entire job is to remember whether you are reading the site in English or in Spanish. It is set the first time you arrive, from the language your browser asks for, and again whenever you use the language toggle. It lasts one year, it is limited to this site (SameSite=Lax), and it carries no identifier of any kind. Clearing it simply means the site guesses your language again on your next visit."
+        },
+        "theme": {
+          "heading": "Light or dark, remembered in your browser",
+          "body": "When you switch the site between light and dark, that choice is saved in your browser's local storage under the name ab_theme. It is not a cookie: it stays in your browser and is never attached to a request. Clearing your browser data resets it."
+        },
+        "hosting": {
+          "heading": "Hosting and fonts",
+          "body": "The site is hosted on AWS Amplify. Like any web host, its servers process the requests needed to deliver a page to you, and that includes your IP address; we do not build reports from it and there is no analytics layer on top of it. Most of the type is served by Google Fonts, so your browser fetches those font files directly from Google's servers, and that request is covered by Google's own privacy policy. The display serif is self-hosted from this site."
         },
         "privacyRights": {
-          "heading": "Your Privacy Rights",
-          "body": "Depending on your location, you may have certain rights with respect to your personal information. For more information on how to exercise these rights, please visit our",
+          "heading": "Your rights",
+          "body": "There is very little here to exercise data rights over, because we hold very little. If you want to ask anyway, the routes are on our",
           "linkLabel": "User Privacy Choices"
         },
         "children": {
-          "heading": "Children's Policy",
-          "body": "We do not knowingly solicit information from or market to children under the age of 13. If you become aware of any data we have collected from children under 13, please contact us using the contact information provided below."
+          "heading": "Children",
+          "body": "This site is not directed at children and collects nothing from anyone, of any age. Each app policy says the same for that app."
         },
         "changes": {
-          "heading": "Changes to This Privacy Policy",
-          "body": "We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page."
+          "heading": "Changes to this policy",
+          "body": "If this policy changes, the date above changes with it, and the current version always lives at this URL."
         },
         "contact": {
           "heading": "Contact",
-          "body": "If you have questions or comments about this Privacy Policy, please contact us at:",
+          "body": "If you have a question about this policy, or about anything the site or an app does with your data, write to us:",
           "name": "Atelier Belli",
           "email": "ivanlorenzana@outlook.com",
           "address": "Tijuana, Baja California, Mexico"
+        }
+      }
+    },
+    "alisioPrivacy": {
+      "title": "Alisio Privacy Policy",
+      "lastUpdated": "Last updated: August 20, 2026",
+      "intro": "Alisio reads your heart rate on your Apple Watch while you train and keeps everything it learns on your own devices. There is no account, no analytics, and no networking code anywhere in the app. Here it is in detail:",
+      "sections": {
+        "collect": {
+          "heading": "What we collect: nothing",
+          "body": "Alisio has no accounts, no analytics, no ads, no trackers, and no servers of ours. The app contains no networking code at all, so there is no path for anything to leave your devices, and there is no third-party SDK riding along inside it."
+        },
+        "health": {
+          "heading": "Health data",
+          "body": "On your Apple Watch, Alisio asks Apple Health for permission to read your heart rate and your active energy while a session is running, and to save the finished workout back into Health. Those readings drive the live zone on your wrist and the summary you get at the end. We never use health data for advertising, never share it with third parties, and never sell it. The iPhone app asks for no permissions at all.",
+          "prompts": "The permission sheets show the app's own words, in Spanish: \"Necesitamos tu ritmo cardiaco para calcular tus zonas de entrenamiento.\" (we need your heart rate to calculate your training zones) and \"Guardamos tu entrenamiento en Salud.\" (we save your workout in Health)."
+        },
+        "storage": {
+          "heading": "Where your data lives",
+          "body": "The profile you enter (your age, your resting heart rate, and the formula you pick) is saved in the app's own preferences on your iPhone. Your session history is a plain file inside the app's private folder on that same iPhone. Nothing is copied to iCloud and nothing is copied to us."
+        },
+        "devices": {
+          "heading": "Between your Watch and your iPhone",
+          "body": "Alisio sends your profile to the Watch and the finished session back to the iPhone over Apple's Watch Connectivity, a direct link between two devices you already own. The watch face complication reads a small snapshot that the Watch app leaves in a shared container on the Watch itself. None of that passes through a server of ours, because there is no server of ours."
+        },
+        "account": {
+          "heading": "No account, no purchases, no ads",
+          "body": "Alisio has no sign-in, no subscription, no in-app purchases, and no advertising. Every part of it works in airplane mode, indefinitely."
+        },
+        "deletion": {
+          "heading": "Deleting your data",
+          "body": "Deleting the app removes your profile and your session history from your iPhone. Workouts that Alisio already saved into Apple Health belong to Health and stay there; you can delete those from the Health app, in the section that lists the apps that wrote data."
+        },
+        "children": {
+          "heading": "Children",
+          "body": "Alisio collects no data from anyone, including children."
+        },
+        "changes": {
+          "heading": "Changes",
+          "body": "If this policy ever changes, the date above changes with it, and the current version will always live at this URL."
+        },
+        "contact": {
+          "heading": "Contact",
+          "email": "ivanlorenzana@outlook.com"
         }
       }
     },
@@ -134,47 +155,113 @@
         }
       }
     },
-    "privacyChoices": {
-      "title": "User Privacy Choices",
-      "intro": "At Atelier Belli, we respect your privacy and give you control over your personal information. Below are the choices you have regarding your data:",
+    "fingoPrivacy": {
+      "title": "Fingo Privacy Policy",
+      "lastUpdated": "Last updated: August 20, 2026",
+      "intro": "Fingo picks for you: a finger, a wheel, a number, a coin. It asks for no permissions, has no account, and never connects to anything. Here it is in detail:",
       "sections": {
-        "access": {
-          "heading": "Access to Your Information",
-          "body": "You have the right to request a copy of the personal information we hold about you. You may do so by contacting us at ivanlorenzana@outlook.com."
+        "collect": {
+          "heading": "What we collect: nothing",
+          "body": "Fingo has no accounts, no analytics, no ads, no trackers, and no servers of ours. There is nothing to opt out of, because nothing is being collected in the first place."
         },
-        "correction": {
-          "heading": "Correction of Your Information",
-          "body": "If you believe that any information we hold about you is inaccurate or incomplete, please contact us as soon as possible. We will correct any information found to be inaccurate."
+        "storage": {
+          "heading": "Where your data lives",
+          "body": "Whatever you set up in the app (the wheels you build and the options you type into them, plus your settings for Chooser, Random and Coin Flip) is saved in the app's own preferences on your iPhone. It stays there, and deleting the app takes it with it."
+        },
+        "permissions": {
+          "heading": "Permissions: none",
+          "body": "Fingo asks for nothing. No camera, no photos, no contacts, no location, no notifications. If iOS ever shows you a permission sheet with Fingo's name on it, something is wrong and we would like to hear about it."
+        },
+        "network": {
+          "heading": "Nothing to send, nowhere to send it",
+          "body": "The app contains no networking code and no third-party SDKs. It behaves exactly the same in airplane mode as it does online, because it never had a reason to go online."
+        },
+        "children": {
+          "heading": "Children",
+          "body": "Fingo collects no data from anyone, including children."
+        },
+        "changes": {
+          "heading": "Changes",
+          "body": "If this policy ever changes, the date above changes with it, and the current version will always live at this URL."
+        },
+        "contact": {
+          "heading": "Contact",
+          "email": "ivanlorenzana@outlook.com"
+        }
+      }
+    },
+    "savelyPrivacy": {
+      "title": "Savely Privacy Policy",
+      "lastUpdated": "Last updated: August 20, 2026",
+      "intro": "Savely tracks your money on your phone and nowhere else. The app says so in its own settings: \"Your data never leaves this iPhone.\" Here is what that means in detail:",
+      "sections": {
+        "collect": {
+          "heading": "What we collect: nothing",
+          "body": "Savely has no account, no sign-in, no analytics, no ads, no trackers, and no servers of ours. It does not sync to iCloud either. We never see a single number you enter."
+        },
+        "storage": {
+          "heading": "Where your data lives",
+          "body": "Your income, your expenses, your goals, and the deposits you make toward those goals are stored in a database inside the app on your iPhone. Your display name and your reminder settings live in the app's own preferences. All of it stays on that phone."
+        },
+        "receipts": {
+          "heading": "Scanning a receipt",
+          "body": "Savely asks for the camera the first time you scan a receipt, with these words: \"Savely uses the camera to scan receipts for recording and managing your expenses.\" The photo is read on your device by Apple's own text recognition, and the app keeps only the amount, date and description you confirm on the review screen. The image itself is never saved by the app and never uploaded. You can also pick a photo you already have through Apple's photo picker, which hands Savely the single image you chose, so the app never gets access to your photo library."
+        },
+        "reminders": {
+          "heading": "Reminders",
+          "body": "The reminders are local notifications: your iPhone schedules them and your iPhone shows them. Savely asks for notification permission the first time you open it, and you can turn the reminders off in the app or in iOS Settings. Nothing is pushed from a server, because there is no server."
+        },
+        "network": {
+          "heading": "What leaves your phone",
+          "body": "Nothing, unless you send it yourself. The app makes no network requests. The one thing that can travel is the weekly PDF report: it is built on your phone from the current week and handed to the iOS share sheet, and where it goes from there is entirely your decision."
         },
         "deletion": {
-          "heading": "Deletion of Your Information (Right to Erasure)",
-          "body": "You may request the deletion of your personal information from our systems under certain circumstances — for example, if the data is no longer necessary for the purpose for which it was collected, or if you withdraw your consent (where processing is based on consent)."
+          "heading": "Deleting your data",
+          "body": "\"Delete all data\", in the Data and privacy section of your profile, removes your income, expenses and goals from the phone. Your name and your reminder settings stay, because they are preferences rather than data. Deleting the app removes everything, those included."
         },
-        "objection": {
-          "heading": "Objection to Processing",
-          "body": "You have the right to object to the processing of your personal information in certain situations, such as direct marketing. If you object, we will stop processing your personal information for those purposes unless we have compelling legitimate grounds for the processing that override your interests, rights, and freedoms, or for the establishment, exercise, or defense of legal claims."
+        "children": {
+          "heading": "Children",
+          "body": "Savely collects no data from anyone, including children."
         },
-        "restriction": {
-          "heading": "Restriction of Processing",
-          "body": "You may request that we restrict the processing of your personal information if: (a) you contest the accuracy of the data; (b) the processing is unlawful but you oppose deletion; (c) we no longer need the data but you require it for legal claims; or (d) you have objected to processing and we are verifying whether our legitimate grounds override yours."
+        "changes": {
+          "heading": "Changes",
+          "body": "If this policy ever changes, the date above changes with it, and the current version will always live at this URL. If a future version of Savely ever sends anything off your phone, this page will say so before that version ships."
         },
-        "portability": {
-          "heading": "Data Portability",
-          "body": "Where processing is based on your consent or on a contract and is carried out by automated means, you have the right to receive the personal information you provided to us in a structured, commonly used, and machine-readable format, and you have the right to transmit that data to another controller without hindrance from us."
+        "contact": {
+          "heading": "Contact",
+          "email": "ivanlorenzana@outlook.com"
+        }
+      }
+    },
+    "privacyChoices": {
+      "title": "User Privacy Choices",
+      "intro": "Privacy policies usually promise machinery for exercising your data rights. Here is the honest version: we hold almost nothing about you, so for most requests the answer is that there is nothing to hand over, correct, or delete. This page says where the data actually is and how to reach a person about it.",
+      "sections": {
+        "whatWeHold": {
+          "heading": "What we hold about you",
+          "body": "Nothing that identifies you. This website has no accounts, no forms and no analytics; it stores a language cookie and a theme preference, both of which live on your own device and neither of which carries an identifier. If you have written to us, we have your email in an inbox, the same way anyone has the email they were sent."
+        },
+        "appData": {
+          "heading": "Data inside our apps",
+          "body": "What our apps hold stays on your device, and in Fave's case in your own iCloud account. We keep no copy and have no way to reach it, so asking us to delete it would not accomplish anything, but you can delete it yourself: each app policy explains exactly what it stores and how to remove it."
+        },
+        "requests": {
+          "heading": "Making a request",
+          "body": "You can still ask us for a copy of anything we hold, ask us to correct it, or ask us to delete it. Given everything above, the answer is usually short and quick."
         },
         "howToExercise": {
-          "heading": "How to Exercise Your Rights",
-          "contactIntro": "To exercise any of these rights, please contact us at:",
-          "name": "Atelier Belli — Privacy Department",
+          "heading": "How to reach us",
+          "contactIntro": "Write to us at:",
+          "name": "Atelier Belli",
           "email": "ivanlorenzana@outlook.com",
-          "responseNote": "We will respond to your request within the legally required timeframe. We may need to verify your identity before processing your request.",
-          "disclaimer": "Please note that these rights are not absolute and may be subject to certain exemptions under applicable law."
+          "responseNote": "A person reads that inbox and answers, usually within a few days. We will not ask you for extra personal information to verify a request unless answering it genuinely requires it.",
+          "disclaimer": "This page describes how we handle requests in practice. It is not a summary of any particular country's data-protection law, and where such a law gives you more than this page does, that law wins."
         }
       }
     },
     "terms": {
       "title": "Terms & Conditions",
-      "lastUpdated": "June 15, 2025",
+      "lastUpdated": "Last updated: August 20, 2026",
       "sections": {
         "acceptance": {
           "heading": "1. Acceptance of Terms",
@@ -188,9 +275,7 @@
           "heading": "3. User Representations",
           "intro": "By using the Services, you represent and warrant that:",
           "items": [
-            "All registration information you submit will be true, accurate, current, and complete.",
-            "You will maintain the accuracy of such information and promptly update it as necessary.",
-            "You have the legal capacity and agree to comply with these Terms.",
+            "You have the legal capacity to accept these Terms and you agree to comply with them.",
             "You will not use the Services for any illegal or unauthorized purpose.",
             "Your use of the Services will not violate any applicable law or regulation."
           ]
@@ -199,9 +284,9 @@
           "heading": "4. Prohibited Activities",
           "body": "You may not access or use the Site for any purpose other than that for which we make the Site available. The Site may not be used in connection with any commercial endeavor except those that are specifically endorsed or approved by us."
         },
-        "termination": {
-          "heading": "5. Termination",
-          "body": "We reserve the right, in our sole discretion, to deny access to and use of the Services (including blocking certain IP addresses) to any person for any reason or for no reason, including without limitation for breach of any representation, warranty, or covenant contained in these Terms or of any applicable law or regulation."
+        "availability": {
+          "heading": "5. Availability of the Services",
+          "body": "We may change, suspend, or discontinue the Site, any app, or any part of either at any time, with or without notice. The Services are provided as they are, and we do not promise uninterrupted or error-free availability."
         },
         "governingLaw": {
           "heading": "6. Governing Law",

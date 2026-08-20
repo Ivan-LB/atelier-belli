@@ -6,9 +6,12 @@ const paths = [
   "/privacy",
   "/privacy/choices",
   "/terms",
+  "/alisio/privacy",
   "/fave/privacy",
   "/fave/support",
+  "/fingo/privacy",
   "/fingo/support",
+  "/savely/privacy",
   "/savely/support",
 ]
 

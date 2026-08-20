@@ -56,8 +56,8 @@ export default function TermsAndConditionsPage() {
             </section>
 
             <section>
-              <h2>{t("terms.sections.termination.heading")}</h2>
-              <p>{t("terms.sections.termination.body")}</p>
+              <h2>{t("terms.sections.availability.heading")}</h2>
+              <p>{t("terms.sections.availability.body")}</p>
             </section>
 
             <section>

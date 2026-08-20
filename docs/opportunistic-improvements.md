@@ -33,13 +33,17 @@ substance is unverified.
   Mexico" in `legal.terms.sections.governingLaw`. Confirm this is the
   jurisdiction the user actually wants to invoke and that it's
   enforceable for a portfolio site with a worldwide audience.
-- **Privacy contact email** `ivanlorenzanabelli@outlook.com` appears
-  in `legal.privacy.sections.contact.email` and elsewhere. Verify
-  deliverability and that this is the user's preferred channel for
-  privacy / data-subject requests. Note the terms page lists a
-  separate address, `contacto@atelierbelli.com`, which currently is
-  not used anywhere else — confirm it exists and that the split
-  contact is intentional.
+- **Privacy contact email — RESOLVED 2026-08-20 (PR #58, plan 008).**
+  This used to flag a split contact: `ivanlorenzanabelli@outlook.com` on
+  the privacy pages and a separate `contacto@atelierbelli.com` on terms.
+  Both are gone, and the split turned out to be worse than untidy —
+  `dig MX atelierbelli.com` is empty on both the system resolver and
+  8.8.8.8, so every `@atelierbelli.com` address bounced, and the outlook
+  one carried an extra "belli". All five legal contact keys now read
+  `ivanlorenzana@outlook.com`, the address the homepage and the support
+  pages already used. Nothing is left here for counsel beyond confirming
+  that is the channel they want named for data-subject requests. If MX is
+  ever configured for the domain, swapping back is a single grep.
 - **App-collection language** mentions things the site does NOT
   actually do today: financial data collection, geolocation tracking,
   user-to-user communication, fulfilment of orders / payments. Either
