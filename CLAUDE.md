@@ -403,7 +403,7 @@ is not optional. The homepage additionally relies on that exact selector: the
 case modal sets `inert` on `main#main-content` while open, and
 `tests/e2e/smoke.spec.ts` asserts it.
 
-**Per-route metadata (plan 010, PR #TBD).** Every page under `app/[locale]` is
+**Per-route metadata (plan 010, PR #60).** Every page under `app/[locale]` is
 `"use client"` on line 1, and a client component cannot export
 `generateMetadata` — so for a long time all eleven routes shared the root
 layout's title and description, including the pages App Review opens. Each

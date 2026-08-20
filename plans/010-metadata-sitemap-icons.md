@@ -227,7 +227,7 @@ spec will not catch it and your build-table diff is still the only guard.
 
 ## Execution tail (2026-08-20)
 
-Branched from `develop@b8812a2` (PR #59 merged 20:22 UTC, so the hard
+Shipped as PR #60. Branched from `develop@b8812a2` (PR #59 merged 20:22 UTC, so the hard
 dependency was real, not assumed). Two commits.
 
 ### What shipped
