@@ -46,7 +46,7 @@ type CaseAction = {
   href: string
   kind: "primary" | "ghost" | "primary disabled"
   ext?: boolean
-  icon?: "external" | "help" | "clock"
+  icon?: "external" | "help" | "clock" | "shield"
 }
 
 /** Demo media for a case: a captured clip, or a strip of real screenshots. */
@@ -120,6 +120,12 @@ const ICONS = {
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="12" cy="12" r="9" />
       <path d="M12 7v5l3 2" />
+    </svg>
+  ),
+  shield: (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 3l7 2.6v5.2c0 4.4-3 7.5-7 8.2-4-.7-7-3.8-7-8.2V5.6z" />
+      <path d="M9.5 12l1.8 1.8L15 10" />
     </svg>
   ),
 } as const
@@ -281,6 +287,18 @@ export default function PortfolioPage() {
           href: "#",
           kind: "primary disabled",
           icon: "clock",
+        },
+        {
+          label: t("cases.fave.actionGhost"),
+          href: "/fave/support",
+          kind: "ghost",
+          icon: "help",
+        },
+        {
+          label: t("cases.fave.actionPrivacy"),
+          href: "/fave/privacy",
+          kind: "ghost",
+          icon: "shield",
         },
       ],
       preview: "fave",

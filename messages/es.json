@@ -228,103 +228,92 @@
   "support": {
     "savely": {
       "name": "Savely",
-      "crest": "S",
       "navLabel": "Savely · Soporte",
-      "footMeta": "Savely — Mesa de soporte · 2025",
+      "footMeta": "Savely · Mesa de soporte",
       "hero": {
-        "eye": "Soporte · v1.8",
         "titleHtml": "Una respuesta <em>serena</em> a cada pregunta.",
-        "lede": "Savely es un lugar tranquilo para tu dinero. Si algo no cuadra — una transacción faltante, una gráfica que no carga, un banco que se desconectó — dinos. Lo resolvemos, con paciencia."
+        "lede": "Savely guarda tu dinero en tu teléfono y en ningún otro lado. Si un total no cuadra, una meta no avanza o un recordatorio nunca llega, escríbenos. Cada mensaje lo lee la persona que hizo la app."
       },
       "contact": {
         "titleHtml": "Háblanos.",
-        "sub": "Preguntas sobre tu cuenta, una conexión bancaria, o algo más simple. Todos los caminos llegan al mismo escritorio.",
+        "sub": "No hay cuenta que revisar ni servidor que checar, así que lo más rápido es contarnos qué viste.",
         "cards": {
           "email": {
             "label": "Correo",
             "valueHtml": "ivanlorenzana@outlook.com",
-            "hint": "Lun–Vie · Respondemos en 24h.",
+            "hint": "La mesa principal. Escribe cuando quieras.",
             "href": "mailto:ivanlorenzana@outlook.com"
           },
-          "bank": {
-            "label": "Conexión bancaria",
-            "valueHtml": "¿No puedes <em>vincular</em> un banco?",
-            "hint": "La mayoría se resuelve en menos de una hora.",
-            "href": "mailto:ivanlorenzana@outlook.com?subject=Bank%20connection%20help"
+          "bug": {
+            "label": "Reportar un error",
+            "valueHtml": "¿<em>Algo</em> raro?",
+            "hint": "Qué tocaste, qué pasó y una captura si la tienes.",
+            "href": "mailto:ivanlorenzana@outlook.com?subject=Savely%20bug%20report"
+          },
+          "feature": {
+            "label": "Sugerir función",
+            "valueHtml": "Imagina <em>mejor.</em>",
+            "hint": "Savely va en la versión 1.0. Falta mucho por definir.",
+            "href": "mailto:ivanlorenzana@outlook.com?subject=Savely%20wishlist"
           },
           "security": {
             "label": "Asunto de seguridad",
-            "valueHtml": "¿Viste algo <em>extraño?</em>",
-            "hint": "Reportado en menos de 2 horas. 24/7.",
-            "href": "mailto:ivanlorenzana@outlook.com"
-          },
-          "docs": {
-            "label": "Centro de ayuda",
-            "valueHtml": "Guías y artículos",
-            "hint": "Configuración, presupuestos, categorías, exportaciones.",
-            "href": "#"
+            "valueHtml": "¿Encontraste una <em>falla?</em>",
+            "hint": "Cuéntanos en privado primero, para arreglarla antes de que se sepa.",
+            "href": "mailto:ivanlorenzana@outlook.com?subject=Savely%20security"
           }
         }
       },
       "faq": {
         "titleHtml": "Preguntas <em>comunes.</em>",
-        "sub": "Si la tuya no está, escríbenos. Respondemos cada una a mano.",
+        "sub": "Las que más nos llegan. Si la tuya no está, escríbenos.",
         "items": [
           {
-            "q": "¿Están seguros mis datos bancarios con Savely?",
-            "aHtml": "Sí. Savely usa conexiones de solo lectura vía agregadores regulados. Nunca vemos ni almacenamos tus credenciales bancarias. Todos los datos en reposo están cifrados, y nunca vendemos ni compartimos información con terceros."
+            "q": "¿Dónde viven mis datos de dinero?",
+            "aHtml": "En este iPhone, en un almacén privado que solo Savely abre. No hay cuenta, no hay copia en la nube y no hay conexión con nada fuera del teléfono. La app misma lo dice en <em>Me → Datos y privacidad</em>: tus datos nunca salen de este iPhone. El único permiso que pide es la cámara, y es para leer recibos."
           },
           {
-            "q": "¿Por qué no puedo conectar mi banco?",
-            "aHtml": "La mayoría de las veces es una caída temporal del agregador. Intenta de nuevo en ~30 minutos. Si persiste, <a href='mailto:ivanlorenzana@outlook.com'>escríbenos</a> con el nombre de tu banco y país — lo perseguimos."
+            "q": "Si pierdo mi teléfono, ¿puedo recuperar mis datos?",
+            "aHtml": "De nuestro lado no, y preferimos decirlo sin rodeos. Nada se sube nunca, así que no hay copia nuestra que restaurar ni cuenta que recuperar. Lo que sí te protege es el respaldo de tu propio iPhone: Savely guarda todo en el almacenamiento normal de la app, así que viaja con un respaldo de iCloud o de tu computadora y vuelve cuando restauras un teléfono. Ese es el trato honesto por mantener tus finanzas fuera de internet."
           },
           {
-            "q": "¿Puedo exportar mis datos?",
-            "aHtml": "Sí. <em>Ajustes → Datos → Exportar</em>. Obtendrás un CSV con todas tus transacciones, categorías y presupuestos. Nada queda de rehén."
+            "q": "¿Cómo funciona el escáner de recibos?",
+            "aHtml": "Apuntas la cámara al recibo e iOS lo lee en el dispositivo, en español o en inglés. Nada se sube, y la foto tampoco se guarda. Lo que recibes es un borrador: el monto, el comercio, la fecha y la categoría se pueden editar, y nada queda registrado hasta que tocas Save. También puedes elegir una foto que ya tengas en tu galería."
           },
           {
-            "q": "¿Cómo funcionan los presupuestos al fin de mes?",
-            "aHtml": "Los montos sin usar pueden trasladarse al siguiente mes o resetearse — tú decides. Configúralo por presupuesto en <em>Presupuesto → Opciones → Rollover</em>. El default es resetear."
+            "q": "¿Qué hace realmente Auto-move on payday?",
+            "aHtml": "Menos de lo que promete el nombre, y vale la pena saberlo antes de confiarte. Nada se mueve por calendario ni corre en segundo plano. Lo activas en una meta y después, cuando registras un ingreso, Savely puede ofrecerte pasar un monto a esa meta. Solo ocurre si dices que sí, y el depósito se guarda junto con ese ingreso."
           },
           {
-            "q": "¿Funciona Savely fuera de Europa?",
-            "aHtml": "Parcialmente. Bancos de la UE, Reino Unido y EE.UU. funcionan bien. Canadá y Australia están en beta. Otras regiones — escríbenos y te decimos honestamente si podemos conectar."
+            "q": "¿Puedo exportar mis datos, o borrarlos?",
+            "aHtml": "Hay una sola exportación, la fila <em>Weekly PDF report</em> dentro de <em>Me → Datos y privacidad</em>. Cubre la semana en curso de ingresos y gastos y te entrega un PDF por la hoja de compartir, así que tómalo como algo para leer y no como un respaldo del cual restaurar. Para borrar, usa <em>Borrar todos los datos</em> en ese mismo lugar: se eliminarán todos los ingresos, gastos y metas de este iPhone, tu nombre y tus recordatorios se conservan, y esto no se puede deshacer."
           }
         ]
       },
-      "status": {
-        "titleHtml": "Estado <em>actual.</em>",
-        "sub": "Versión, plataforma, tiempos de respuesta y estado de sistemas.",
-        "rows": [
-          {
-            "k": "Versión",
-            "v": "1.8.0"
-          },
-          {
-            "k": "Plataforma",
-            "v": "iOS 16+"
-          },
-          {
-            "k": "Respuesta",
-            "v": "~ 14 horas"
-          },
-          {
-            "k": "Sistemas",
-            "v": "Todo bien",
-            "ok": true
-          }
-        ]
-      },
+      "facts": [
+        {
+          "k": "Datos",
+          "v": "Se quedan en tu iPhone"
+        },
+        {
+          "k": "Cuenta",
+          "v": "No hace falta"
+        },
+        {
+          "k": "Respuesta",
+          "v": "Un día o dos"
+        },
+        {
+          "k": "Sistemas",
+          "v": "Todo bien",
+          "ok": true
+        }
+      ],
       "cta": {
         "titleHtml": "¿Sigues <em>atorado?</em>",
-        "sub": "Escríbenos directo. Un equipo pequeño, respuestas reales, con paciencia.",
+        "sub": "Escríbenos directo. Respuestas reales, con paciencia.",
         "label": "ivanlorenzana@outlook.com",
         "href": "mailto:ivanlorenzana@outlook.com"
-      },
-      "sectionLabels": {
-        "contact": "01 — Contacto",
-        "faq": "02 — Preguntas frecuentes",
-        "status": "03 — Estado"
       },
       "privacyLabel": "Privacidad",
       "termsLabel": "Términos",
@@ -332,28 +321,26 @@
     },
     "fingo": {
       "name": "Fingo",
-      "crest": "F",
       "navLabel": "Fingo · Soporte",
-      "footMeta": "Fingo — Mesa de soporte · 2025",
+      "footMeta": "Fingo · Mesa de soporte",
       "hero": {
-        "eye": "Soporte · v2.1.0",
         "titleHtml": "¿Cómo podemos <em>ayudar?</em>",
-        "lede": "Fingo es una pequeña app para decidir quién paga, quién empieza, quién escoge la música. Si algo no funciona como debería — escríbenos. Una persona real lee cada mensaje."
+        "lede": "Fingo es una app pequeña para resolver quién paga, quién empieza, quién escoge la música. Funciona por completo en tu teléfono, sin cuenta y sin internet. Si algo se porta mal, escríbenos. Una persona real lee cada mensaje."
       },
       "contact": {
         "titleHtml": "Estamos <em>aquí.</em>",
-        "sub": "Elige el canal que mejor te funcione. Todo llega al mismo escritorio.",
+        "sub": "Tres caminos de entrada, todos llegan al mismo escritorio.",
         "cards": {
           "email": {
             "label": "Correo",
             "valueHtml": "ivanlorenzana@outlook.com",
-            "hint": "Respondemos en 24h, normalmente antes.",
+            "hint": "La mesa principal. Escribe cuando quieras.",
             "href": "mailto:ivanlorenzana@outlook.com"
           },
           "bug": {
             "label": "Reportar un error",
-            "valueHtml": "¿<em>Algo</em> se rompió?",
-            "hint": "Una nota breve y una captura ayudan mucho.",
+            "valueHtml": "¿Se <em>rompió</em> algo?",
+            "hint": "Una nota breve y una captura ayudan muchísimo.",
             "href": "mailto:ivanlorenzana@outlook.com?subject=Fingo%20bug%20report"
           },
           "feature": {
@@ -361,74 +348,152 @@
             "valueHtml": "Imagina <em>mejor.</em>",
             "hint": "Las leemos todas. Algunas se publican.",
             "href": "mailto:ivanlorenzana@outlook.com?subject=Fingo%20wishlist"
-          },
-          "docs": {
-            "label": "Centro de ayuda",
-            "valueHtml": "Guías y consejos",
-            "hint": "Guías rápidas para los flujos más comunes.",
-            "href": "#"
           }
         }
       },
       "faq": {
         "titleHtml": "Preguntas <em>frecuentes.</em>",
-        "sub": "Las que más nos llegan. Si la tuya no está, solo escribe.",
+        "sub": "Las que más nos llegan. Si la tuya no está, escríbenos.",
         "items": [
           {
-            "q": "¿Fingo comparte mis contactos o datos?",
-            "aHtml": "No. Fingo no envía tus contactos, elecciones, ni resultados a ningún lado. Todo vive en tu dispositivo; no hay cuenta ni servidor que filtre nada. Si borras la app, no queda rastro."
+            "q": "¿Fingo necesita cuenta o internet?",
+            "aHtml": "Ninguna de las dos. No hay inicio de sesión ni código de red en la app, así que se comporta igualito en modo avión. No pide permisos, no recolecta nada y tus ruletas se guardan solo en el teléfono. Borra la app y no queda rastro."
           },
           {
-            "q": "¿Por qué necesito activar los háptics?",
-            "aHtml": "Porque la mitad de la gracia de Fingo es el click. Puedes apagarlos en <em>Ajustes → Feedback</em>, pero te sugerimos probar al menos un giro con ellos."
+            "q": "¿Qué puede decidir Fingo?",
+            "aHtml": "Cuatro cosas, una por pestaña. <em>Chooser</em> elige un dedo: todos ponen la mano en la pantalla y, con dos dedos o más, corre una cuenta regresiva antes de escoger uno, hasta cinco a la vez. <em>Roulette</em> gira una ruleta que armaste tú. <em>Random</em> te da un número dentro del rango que definas. <em>Coin Flip</em> es águila o sol."
           },
           {
-            "q": "¿Puedo usar Fingo sin conexión a internet?",
-            "aHtml": "Sí — completamente. Fingo es totalmente offline. Lo único que toca internet es cuando compartes un resultado como tarjeta por Mensajes o Mail."
+            "q": "Borré una ruleta y volvió a aparecer. ¿Por qué?",
+            "aHtml": "Para que la pestaña nunca quede vacía. Si borras todas las ruletas, Fingo repone la de ejemplo la próxima vez que abras la app: <em>My First Roulette</em>, con las opciones Yes, No y Maybe. Edítala a lo que de verdad quieras y así se queda."
           },
           {
-            "q": "¿Dónde restauro una compra?",
-            "aHtml": "Ajustes → Acerca de → Restaurar compras. Necesitas estar con el mismo Apple ID con el que compraste. Si aún así no funciona, <a href='mailto:ivanlorenzana@outlook.com'>escríbenos</a>."
+            "q": "¿Puedo apagar la vibración?",
+            "aHtml": "Dentro de Fingo todavía no. La app no tiene pantalla de ajustes, así que los háptics quedan encendidos donde aparecen. Si quieres un interruptor para eso, escríbenos y dilo."
           },
           {
-            "q": "¿Hay versión para Android?",
-            "aHtml": "Aún no. Fingo es nativo en SwiftUI y queremos mantener la calidad de animación y háptics al nivel que está. Un puerto a Android está sobre la mesa, pero no prometido."
+            "q": "¿Puedo guardar o compartir un resultado?",
+            "aHtml": "No, y tampoco se guarda nada. El ganador de la ruleta sale en una tarjeta que cierras tocando el fondo alrededor, el Chooser borra su resultado a los pocos segundos y ningún modo lleva historial. Fingo está hecho para resolver el momento y luego quitarse del camino."
           }
         ]
       },
-      "status": {
-        "titleHtml": "Todo <em>funcionando.</em>",
-        "sub": "Versión actual, plataforma, y cuán rápido respondemos.",
-        "rows": [
-          {
-            "k": "Versión",
-            "v": "2.1.0"
-          },
-          {
-            "k": "Plataforma",
-            "v": "iOS 26+"
-          },
-          {
-            "k": "Respuesta",
-            "v": "~ 18 horas"
-          },
-          {
-            "k": "Sistemas",
-            "v": "Todo bien",
-            "ok": true
-          }
-        ]
-      },
+      "facts": [
+        {
+          "k": "Datos",
+          "v": "Se quedan en tu iPhone"
+        },
+        {
+          "k": "Internet",
+          "v": "Nunca hace falta"
+        },
+        {
+          "k": "Respuesta",
+          "v": "Un día o dos"
+        },
+        {
+          "k": "Sistemas",
+          "v": "Todo bien",
+          "ok": true
+        }
+      ],
       "cta": {
         "titleHtml": "¿Sigues <em>atorado?</em>",
         "sub": "Escríbenos directo.",
         "label": "ivanlorenzana@outlook.com",
         "href": "mailto:ivanlorenzana@outlook.com"
       },
-      "sectionLabels": {
-        "contact": "01 — Contacto",
-        "faq": "02 — Preguntas frecuentes",
-        "status": "03 — Estado"
+      "privacyLabel": "Privacidad",
+      "termsLabel": "Términos",
+      "backLabel": "Atelier Belli"
+    },
+    "fave": {
+      "name": "Fave",
+      "navLabel": "Fave · Soporte",
+      "footMeta": "Fave · Mesa de soporte",
+      "hero": {
+        "titleHtml": "Ayuda con tus <em>listas.</em>",
+        "lede": "Fave es la libreta de todo lo que pruebas, y guarda tus listas en tu propio iCloud en vez de en nuestros servidores. Si un póster carga mal, una lista no se sincroniza o algo simplemente no te cuadra, escríbenos."
+      },
+      "contact": {
+        "titleHtml": "Háblanos.",
+        "sub": "No hay cuenta que podamos consultar, así que cuéntanos qué viste y dónde lo viste.",
+        "cards": {
+          "email": {
+            "label": "Correo",
+            "valueHtml": "ivanlorenzana@outlook.com",
+            "hint": "La mesa principal. Escribe cuando quieras.",
+            "href": "mailto:ivanlorenzana@outlook.com"
+          },
+          "sync": {
+            "label": "iCloud y sincronización",
+            "valueHtml": "¿No <em>llegan</em> tus listas?",
+            "hint": "Cuéntanos qué dice Perfil → Tus datos.",
+            "href": "mailto:ivanlorenzana@outlook.com?subject=Fave%20sync"
+          },
+          "artwork": {
+            "label": "Portadas y títulos",
+            "valueHtml": "¿Póster <em>equivocado?</em>",
+            "hint": "Películas y series vienen de TMDB, los libros de Open Library.",
+            "href": "mailto:ivanlorenzana@outlook.com?subject=Fave%20artwork"
+          },
+          "bug": {
+            "label": "Reportar un error",
+            "valueHtml": "¿Se <em>rompió</em> algo?",
+            "hint": "Qué tocaste, qué pasó y una captura si la tienes.",
+            "href": "mailto:ivanlorenzana@outlook.com?subject=Fave%20bug%20report"
+          }
+        }
+      },
+      "faq": {
+        "titleHtml": "Preguntas <em>comunes.</em>",
+        "sub": "Las que más nos llegan. Si la tuya no está, escríbenos.",
+        "items": [
+          {
+            "q": "¿Necesito una cuenta?",
+            "aHtml": "Con nosotros no. Fave no tiene registro, ni contraseña, ni perfil que llenar. Tus listas se guardan en tu iPhone y se replican en tu propio iCloud privado, así que te siguen a un teléfono nuevo sin que nosotros tengamos jamás una copia. No podemos leerlas, y de nuestro lado no hay nada a lo cual entrar."
+          },
+          {
+            "q": "¿Y si no tengo sesión de iCloud?",
+            "aHtml": "Fave funciona igual, nada más que no puede llevar nada de un lado a otro. <em>Perfil → Tus datos</em> te dice en cuál de las dos situaciones estás: cuando no hay sesión de iCloud en el iPhone, avisa que tus listas viven solo ahí y que si inicias sesión desde Ajustes se guardan solas. Mientras tanto no se pierde nada."
+          },
+          {
+            "q": "¿Qué manda Fave a internet?",
+            "aHtml": "Solo lo necesario para ponerle nombre y portada a algo. Buscar una película o una serie manda ese texto a TMDB junto con el idioma de tu teléfono; buscar un libro manda el título o el ISBN a Open Library. Los pósters y las portadas se descargan de esos mismos dos servicios, y Fave repone en silencio alguna que falte cuando abres la app. Tus estrellas, tus reacciones, tus notas y tus fotos nunca se mandan a ninguno de los dos."
+          },
+          {
+            "q": "¿Cómo borro todo?",
+            "aHtml": "En dos pasos, porque hay dos copias. Borrar la app la quita de ese iPhone, pero la copia sincronizada se queda en tu iCloud y regresaría si la reinstalas. Para eliminarla de verdad, borra la app y luego borra los datos de Fave en iCloud desde los Ajustes de tu iPhone. Dentro de la app también puedes borrar una lista o una entrada dejándola presionada, y eso la quita de todos tus dispositivos."
+          },
+          {
+            "q": "¿Puedo rankear cualquier cosa, o solo películas y libros?",
+            "aHtml": "Las dos. Películas, Series y Libros vienen integrados, con una búsqueda que llena el título, el año y la portada. Todo lo demás va en listas que armas tú, y son de dos tipos: Cosas para cualquier cosa que pruebes, y Lugares para cafés y restaurantes, donde el lugar se califica con los pedidos que rankeas adentro. Cada entrada acepta de una a cinco estrellas, un emoji, una nota y una foto, y las cuatro son opcionales."
+          }
+        ]
+      },
+      "facts": [
+        {
+          "k": "Tus listas",
+          "v": "En tu propio iCloud"
+        },
+        {
+          "k": "Cuenta Fave",
+          "v": "Ninguna"
+        },
+        {
+          "k": "Respuesta",
+          "v": "Un día o dos"
+        },
+        {
+          "k": "Sistemas",
+          "v": "Todo bien",
+          "ok": true
+        }
+      ],
+      "cta": {
+        "titleHtml": "¿Sigues <em>atorado?</em>",
+        "sub": "Escríbenos directo. Respuestas reales, con paciencia.",
+        "label": "ivanlorenzana@outlook.com",
+        "href": "mailto:ivanlorenzana@outlook.com"
       },
       "privacyLabel": "Privacidad",
       "termsLabel": "Términos",
@@ -602,6 +667,8 @@
         "descRich": "Una app de iOS para quien ya lleva listas mentales de cada bebida, cafetería y película que ha probado. Haces una lista de lo que sea, vas palomeando lo que pruebas, y les pones estrellas <it>solo cuando se te antoja</it> — calificar nunca es tarea. Una cafetería guarda sus propias órdenes y se califica sola con el promedio. Películas, series y libros traen su propia portada desde TMDB y Open Library. Todo vive en tu iCloud privado y en ningún otro lado: sin cuentas, sin analytics, sin servidores míos.",
         "metaStatus": "Próximamente en App Store",
         "actionPrimary": "Próximamente en App Store",
+        "actionGhost": "Soporte",
+        "actionPrivacy": "Privacidad",
         "tag": "Rankea las bebidas, cafés y películas que pruebas.",
         "mshowStatus": "Próximamente"
       },

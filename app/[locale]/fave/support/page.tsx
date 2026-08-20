@@ -4,10 +4,10 @@ import { useMemo } from "react"
 import { useTranslations } from "next-intl"
 import SupportShell, { type SupportContent } from "@/components/support-shell"
 
-const CONTACT_KINDS = ["email", "bug", "feature", "security"] as const
+const CONTACT_KINDS = ["email", "sync", "artwork", "bug"] as const
 
-export default function SavelySupportPage() {
-  const t = useTranslations("support.savely")
+export default function FaveSupportPage() {
+  const t = useTranslations("support.fave")
 
   const content = useMemo<SupportContent>(
     () => ({
@@ -48,5 +48,5 @@ export default function SavelySupportPage() {
     [t],
   )
 
-  return <SupportShell appKey="savely" content={content} />
+  return <SupportShell appKey="fave" content={content} />
 }

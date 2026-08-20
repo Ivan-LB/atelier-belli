@@ -95,3 +95,133 @@ Status values: TODO | IN PROGRESS | DONE | BLOCKED (one-line reason) | REJECTED 
 - **Analytics** — zero measurement exists today. Privacy-friendly options
   (Plausible/Umami) are one script tag; equally valid to decide it's not
   wanted. Operator's call; no plan written.
+
+---
+
+# Wave 2 — 2026-08-19 audit execution (plans 007-012)
+
+Generated from the 2026-08-19 portfolio audit (62 verified findings; report:
+https://claude.ai/code/artifact/fa1072d0-fe19-4932-bbac-54eed8ccd5c4 — background
+only, every plan embeds its own evidence). Planned against `develop@07a1f02`.
+Executors: one session per plan, read the plan fully first, honor its STOP
+conditions, update your row here when done.
+
+Owner mandates baked into every plan of this wave:
+- Copy-heavy plans (007, 009, 011) invoke `/marketing-ideas` +
+  `/marketing-psychology` before writing; visual plans (007 skin, 011 pass,
+  012 chip) invoke `/impeccable`.
+- **No em-dashes in new or rewritten strings** (JSX-structural dashes and
+  untouched strings stay).
+- On privacy/terms pages accuracy beats persuasion: every factual claim traces
+  to the plan's Ground truth section or the app repos, else STOP.
+- Contact email everywhere: `ivanlorenzana@outlook.com` (owner decision;
+  atelierbelli.com has no MX).
+- Privacy architecture: per-app pages on the /fave/privacy pattern (owner
+  decision).
+
+## Execution order & status (wave 2)
+
+| Plan | Title | Priority | Effort | Depends on | Status |
+|------|-------|----------|--------|------------|--------|
+| 007 | Support pages tell the truth + /fave/support | P1 | L | — (parallel-safe with 008) | DONE — PR #57, 2026-08-19/20. Savely + Fingo namespaces rewritten from source-verified facts, `/fave/support` shipped, 4 shell links unprefixed, dead "Help centre" cards gone. `pnpm verify` green, 32/32 e2e, CI green. **Grew past its scope by owner request mid-run**: the support surface was redesigned (not re-skinned), real iOS app icons replaced the letter crests, all three skins gained dark mode, and the fave case gained a Privacy action. Files outside the plan's scope: the four legal pages + `components/theme-init.tsx` + `public/apps/*`. Consequences are written into plans 009, 010, 011 and 012 under "Landed from 007"; the plan's own tail records the rest. **Read the ground-truth corrections below before executing 009 or 011.** |
+| 008 | One contact email + legal-surface link hygiene | P1 | S | — (parallel-safe with 007) | TODO |
+| 009 | Per-app privacy pages + honest /privacy and /terms | P1 | L | 007 soft (sitemap), 008 soft (email) | TODO |
+| 010 | Per-route metadata, sitemap rewrite, icons | P1 | M | 007 + 009 **hard** (final route list) | TODO |
+| 011 | Case modal cohesion + Savely narrative | P2 | L | 007, 009 soft (serialize page.tsx/dicts) | TODO |
+| 012 | Mobile contact affordance + asset/docs polish | P2 | M | 011 soft (page.tsx) | TODO |
+
+## Dependency notes (wave 2)
+
+- **007 ∥ 008**: disjoint files by design; may run as the same day's two PRs.
+- **Three plans touch `app/sitemap.ts`** (007 +1 line, 009 +3, 010 rewrite):
+  serial, 010 last — its rewrite emits the final 11-route list.
+- **010 hard-depends on 007+009**: it must see /fave/support and the three
+  privacy routes on disk (its drift check verifies).
+- **009 → ASC window**: the moment 009 deploys, Alisio/Fingo listings point at
+  a website-only /privacy until the owner updates ASC (human checklist below);
+  the slimmed page keeps a "Privacy for our apps" pointer section as the
+  bridge — executors must not remove it.
+- **010's release requires an Amplify deploy-preview smoke** (layout head is
+  the Amplify-sensitive region; precedent plan 005 / CLAUDE.md §6).
+
+## Ground-truth corrections found while executing 007 (2026-08-19)
+
+Plan 007's own "Ground truth" section was re-verified against the three app
+repos before any copy was written, and several of its claims did not survive.
+**Plans 009 (per-app privacy) and 011 (Savely narrative) inherit those same
+claims, so correct them there rather than repeating them.**
+
+- **Savely's "payday auto-move" moves nothing automatically.** There is no
+  schedule, no background task and no payday detection. Enabling it on a goal
+  only makes that goal eligible; when you log income a banner may offer one
+  move, and the deposit is written with that income only if you tap YES
+  (`AutoMoveSuggestion.swift:32-35`).
+- **Savely has an export**, missing from the plan: a `Weekly PDF report` row
+  that covers the current week only and opens the share sheet. It is a report,
+  not a restorable backup, and there is no CSV/JSON export at all.
+- **Savely's "Delete all data" leaves `DepositModel` rows behind**
+  (`ProfileViewModel.swift:112-115` deletes four models, not five). The in-app
+  confirm wording is correctly scoped; do not write "deletes everything".
+- **Savely is only partially localized, and to es-419, not es.** The tab bar,
+  the quick-add rows, the `Settings` header and `Weekly PDF report` are
+  hardcoded English and render in English on a Spanish device. Never invent
+  Spanish for those. `Datos y privacidad`, `Borrar todos los datos`,
+  `Recordatorios de Gastos`, `Alertas de Metas` and `Modo Oscuro` are real.
+- **Fingo is not localized at all** (English only, `developmentRegion = en`,
+  no catalog). A Spanish page may translate its own prose but must quote
+  in-app labels in English.
+- **Fingo has four modes, not just roulettes**: Chooser, Roulette, Random,
+  Coin Flip. It has no settings screen, no haptics toggle and no sharing.
+  Deleting every roulette re-seeds the example one on next launch.
+- **Fave's "nothing else is transmitted" is wrong.** Notes and photos are
+  mirrored to the user's private CloudKit, and there are four outbound hosts,
+  not two. Artwork is not permanently local either: TMDB posters carry a
+  6-month expiry and are re-fetched, and the app refreshes missing artwork on
+  every launch/foreground with no user action. Use the app's own privacy-policy
+  wording ("no servers of our own"), never "nothing leaves your device".
+- **Fave needs an iCloud sign-in for sync**, so "no account" is only true as
+  "no account of ours". Deleting the Fave app does NOT erase the data: the
+  iCloud copy survives and re-imports on reinstall, so deletion is two steps.
+
+Separately, and outside this wave's scope: **`GoogleService-Info.plist` with a
+live Firebase API key is still reachable in the public `Ivan-LB/Savely` git
+history** (added in `80cf033`; `.gitignore` only stopped future tracking).
+Worth rotating that key and scrubbing the blob.
+
+## Human checklist (owner actions, out of repo)
+
+1. **Same day 009 deploys**: App Store Connect privacy URLs — Alisio →
+   `/alisio/privacy/` (today: legacy `/en/privacy/`), Fingo →
+   `/fingo/privacy/`, Savely → `/savely/privacy/`. Fave Support URL at
+   submission → `/fave/support/`.
+2. **DSA trader declaration** in ASC before Savely release / Fave submission.
+3. **Amplify console**: long cache headers for `/cases/*` and static media
+   (today max-age=5 → repeat visitors re-validate everything).
+4. LinkedIn slug check (bot-blocked from CLI); Search Console verify +
+   resubmit sitemap after 010; decide the orphaned CV PDF
+   (`public/docs/CV_Ivan_Lorenzana_Belli.pdf`, 14 months stale).
+5. App-side (done/noted 2026-08-19): OpenAI key revoked by owner (Savely);
+   remaining code chore lives in the Savely repo (drop bundled Config.plist
+   from Resources). Fave `aps-environment` → `production` before submission
+   (noted by owner; recorded in Fave/HANDOFF.md).
+
+## Findings considered and rejected (wave 2)
+
+(So nobody re-audits these.)
+
+- **Gallery per-frame alt=""** — deliberate figcaption-dedup tradeoff,
+  documented at `page.tsx:1428-1430`. Not a defect.
+- **Retina softness of case videos** — documented bandwidth cap
+  (`page.tsx:1345-1348`); motion masks it. Keep.
+- **404 `<html lang>` gap** — real but pre-hydration-only; fixing means adding
+  a root layout and reshaping the Amplify-verified catch-all/404 (PR #18).
+  DEFERRED to a dedicated session with an Amplify preview.
+- **Fraunces axis subsetting (~100KB+ win)** — italic face is load-bearing on
+  the hero; DEFERRED pending an owner-eyeballed before/after.
+- **Language toggle appears inert in prod** — CloudFront cache-key issue,
+  measured, accepted by owner (HANDOFF). Not a wave-2 item.
+- **hreflang / per-route canonicals** — removed BY DESIGN with
+  `localePrefix: "never"` (PR #45). Do not resurrect (layout.tsx:44-51).
+- **Alisio support page** — deferred like Briefmark's: content task when
+  wanted; until then ghost Support actions appear only where a page exists.
+- **Analytics / personal photo / llms.txt** — owner's call; no plan.
