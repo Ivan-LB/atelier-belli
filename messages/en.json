@@ -14,7 +14,7 @@
   "layout": {
     "skipToContent": "Skip to main content",
     "metaTitle": "Atelier Belli",
-    "metaDescription": "Atelier Belli is the digital atelier of Ivan Lorenzana — full-stack developer crafting clean iOS apps and the web around them. Fingo, Savely, Mi Mezcal and more.",
+    "metaDescription": "Atelier Belli is the portfolio of Ivan Lorenzana, a developer in Tijuana. iOS apps and the systems behind them: Alisio, Vitapath, an ECG arrhythmia detector.",
     "ogAlt": "Atelier Belli — portfolio of Ivan Lorenzana"
   },
   "legal": {
@@ -26,6 +26,7 @@
     "termsShortLabel": "Terms",
     "privacy": {
       "title": "Privacy Policy",
+      "metaDescription": "What this site does with your data: one cookie that remembers your language, a theme saved in your browser, and no analytics at all. Each app has its own policy.",
       "lastUpdated": "Last updated: August 20, 2026",
       "sections": {
         "intro": {
@@ -81,6 +82,7 @@
     },
     "alisioPrivacy": {
       "title": "Alisio Privacy Policy",
+      "metaDescription": "Alisio reads your heart rate on Apple Watch and keeps it on your own devices. No account, no analytics, and no networking code anywhere in the app.",
       "lastUpdated": "Last updated: August 20, 2026",
       "intro": "Alisio reads your heart rate on your Apple Watch while you train and keeps everything it learns on your own devices. There is no account, no analytics, and no networking code anywhere in the app. Here it is in detail:",
       "sections": {
@@ -125,6 +127,7 @@
     },
     "favePrivacy": {
       "title": "Fave Privacy Policy",
+      "metaDescription": "Fave keeps your rankings on your device and in your own iCloud, with no servers of ours in between. What that means for artwork, notes, and deleting the app.",
       "lastUpdated": "Last updated: August 9, 2026",
       "intro": "Fave keeps your rankings on your device and in your personal iCloud account. That is the whole story, but here it is in detail:",
       "sections": {
@@ -157,6 +160,7 @@
     },
     "fingoPrivacy": {
       "title": "Fingo Privacy Policy",
+      "metaDescription": "Fingo picks for you: a finger, a wheel, a number, a coin. It asks for no permissions, has no account, and never connects to anything. Here is the full policy.",
       "lastUpdated": "Last updated: August 20, 2026",
       "intro": "Fingo picks for you: a finger, a wheel, a number, a coin. It asks for no permissions, has no account, and never connects to anything. Here it is in detail:",
       "sections": {
@@ -192,6 +196,7 @@
     },
     "savelyPrivacy": {
       "title": "Savely Privacy Policy",
+      "metaDescription": "Savely tracks your money on your phone and nowhere else. What it stores, the two permissions it asks for, and why receipts never open your photo library.",
       "lastUpdated": "Last updated: August 20, 2026",
       "intro": "Savely tracks your money on your phone and nowhere else. The app says so in its own settings: \"Your data never leaves this iPhone.\" Here is what that means in detail:",
       "sections": {
@@ -235,6 +240,7 @@
     },
     "privacyChoices": {
       "title": "User Privacy Choices",
+      "metaDescription": "How to exercise your data rights with Atelier Belli, and the honest reason answers are short: there is almost nothing here to hand over, correct, or delete.",
       "intro": "Privacy policies usually promise machinery for exercising your data rights. Here is the honest version: we hold almost nothing about you, so for most requests the answer is that there is nothing to hand over, correct, or delete. This page says where the data actually is and how to reach a person about it.",
       "sections": {
         "whatWeHold": {
@@ -261,6 +267,7 @@
     },
     "terms": {
       "title": "Terms & Conditions",
+      "metaDescription": "The terms for using atelierbelli.com and the apps published here: what you may do with the work, what is not permitted, and the limits of our liability.",
       "lastUpdated": "Last updated: August 20, 2026",
       "sections": {
         "acceptance": {
@@ -313,6 +320,8 @@
   "support": {
     "savely": {
       "name": "Savely",
+      "metaTitle": "Savely Support",
+      "metaDescription": "Help with Savely: totals that read wrong, goals that will not budge, reminders that never arrive. Answers from the person who built the app.",
       "navLabel": "Savely · Support",
       "footMeta": "Savely · Support desk",
       "hero": {
@@ -406,6 +415,8 @@
     },
     "fingo": {
       "name": "Fingo",
+      "metaTitle": "Fingo Support",
+      "metaDescription": "Help with Fingo, the app for settling who pays and who goes first. Answers about its four modes, and a real person who reads every message you send.",
       "navLabel": "Fingo · Support",
       "footMeta": "Fingo · Support desk",
       "hero": {
@@ -493,6 +504,8 @@
     },
     "fave": {
       "name": "Fave",
+      "metaTitle": "Fave Support",
+      "metaDescription": "Help with Fave: lists that will not sync, artwork that loads wrong, and how to reach a person. Every message is read by the developer who built the app.",
       "navLabel": "Fave · Support",
       "footMeta": "Fave · Support desk",
       "hero": {

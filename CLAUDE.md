@@ -42,12 +42,15 @@ one Next.js app:
   listings to the policy that describes them (`plans/README.md` human
   checklist #1 closes the window).
 
-  A new legal page is 4 touches: `page.tsx` (clone `fave/privacy`
-  structurally), one path in `app/sitemap.ts`, and a `legal.<app>Privacy`
-  namespace in BOTH dictionaries. `<ThemeInit />` must be the first child of
+  A new legal page is 5 touches: `page.tsx` (clone `fave/privacy`
+  structurally), a thin server `layout.tsx` beside it (clone any sibling; see
+  the per-route metadata rule in §3), one path in `app/sitemap.ts`, and a
+  `legal.<app>Privacy` namespace with BOTH a `title` and a `metaDescription`
+  in BOTH dictionaries. `<ThemeInit />` must be the first child of
   `.ab-root` and `<main>` must carry `id="main-content"` (see the skip-link
   invariant in §3); `tests/e2e/legal.spec.ts` asserts both on every legal
-  route, so a new page belongs in its lists.
+  route, and `tests/e2e/seo.spec.ts` asserts the title and description, so a
+  new page belongs in both specs' route lists.
 - **404 page** at `/[locale]/not-found` — Server Component using
   `getTranslations("notFound")`, with a tiny client island
   (`_not-found-controls.tsx`) for theme + locale toggles. Backed by a
@@ -400,6 +403,59 @@ is not optional. The homepage additionally relies on that exact selector: the
 case modal sets `inert` on `main#main-content` while open, and
 `tests/e2e/smoke.spec.ts` asserts it.
 
+**Per-route metadata (plan 010, PR #60).** Every page under `app/[locale]` is
+`"use client"` on line 1, and a client component cannot export
+`generateMetadata` — so for a long time all eleven routes shared the root
+layout's title and description, including the pages App Review opens. Each
+sub-route segment now has a **thin server `layout.tsx`** whose only job is to
+call `routeMetadata()` from `app/[locale]/_route-metadata.ts` and return
+`children`. Ten of them exist; a new route without one silently inherits the
+homepage's title.
+
+Two things in that helper are load-bearing:
+
+- **The locale is passed to `getTranslations({ locale, … })` explicitly**
+  rather than read from next-intl's request store. That is what keeps the
+  segments prerenderable — the build table must stay ● SSG everywhere except
+  the catch-all, and a per-segment layout that flips a route to `ƒ` is a
+  regression, not a detail.
+- **Titles are emitted as `title.absolute`, not as bare strings.** Next
+  resolves a bare-string title against the nearest ancestor template and then
+  stops passing that template down, so the moment `/privacy` gained a title of
+  its own, `/privacy/choices` silently rendered without the site name. Building
+  the full title from `TITLE_TEMPLATE` in the helper makes every route correct
+  on its own and immune to the next nested route.
+
+`openGraph` is restated in full in the helper because Next **replaces** a
+parent's `openGraph` wholesale as soon as a child defines one; trimming it to
+just title/description would drop `og:image` from every sub-route. Still no
+`alternates` anywhere: see the note in `layout.tsx`.
+
+**Icons — all four now carry the SAME, CURRENT mark.** They did not before:
+`public/AtelierBelli.png` held the **previous** logo (a blue/purple gradient
+anvil) while `public/AtelierBelli.svg` held the current hexagonal monogram, so
+the `shortcut` icon shipped a retired brand. The monogram is the live mark —
+its path data is byte-identical to the inline `BRAND_LOGO` the header renders
+(`page.tsx:86`).
+
+| file | role | form |
+|---|---|---|
+| `public/AtelierBelli.svg` | `icons.icon`, the primary favicon | transparent, **theme-aware** |
+| `app/favicon.ico` | `/favicon.ico`, legacy + agents | real 3-entry .ico (16/32/48), cream ground |
+| `public/AtelierBelli.png` | `icons.shortcut` | 192×192, cream ground |
+| `public/apple-touch-icon.png` | iOS home screen | 180×180, **opaque** (iOS composites black behind alpha) |
+
+The SVG carries an embedded `<style>` using the same `.ab-dark` / `.ab-accent`
+role names as `BRAND_LOGO`, with a `prefers-color-scheme: dark` rule that flips
+the ink to `#EDE6D8`. Without it the near-black paths all but vanished in a
+dark browser tab strip and only the turquoise facet read. The raster three take
+a cream ground instead, since a file cannot re-colour itself.
+
+To regenerate: `rsvg-convert -w 1024 public/AtelierBelli.svg` for the master,
+then `magick` to resize, centre on `#faf8f3` and `-alpha remove`; build the .ico
+from 16/32/48 PNGs. **`sips` cannot produce a real .ico** — do not ship a
+renamed PNG. `out/` holds stale 2025 exports of the OLD logo; ignore it.
+
 **Hybrid font loading** (intentional — see gotcha `google-fonts-hybrid-loading`,
 but note the split changed 2026-08-02):
 
@@ -632,6 +688,9 @@ app/
     [...rest]/page.tsx            # Catch-all. Calls notFound() for unmatched
                                   #   URLs so the editorial 404 fires.
                                   #   The only ƒ (Dynamic) route in the build.
+    _route-metadata.ts            # routeMetadata() helper: builds each
+                                  #   sub-route's generateMetadata (title,
+                                  #   description, openGraph). See §3.
     privacy/ · terms/ · privacy/choices/
                                   # Inline .ab-root shells, useTranslations('legal').
                                   # Bilingual EN/ES. /privacy is website-only
@@ -639,6 +698,9 @@ app/
     alisio/privacy/ · fave/privacy/ · fingo/privacy/ · savely/privacy/
                                   # One privacy page per shipped app, same
                                   # shell. legal.<app>Privacy namespaces.
+    <every sub-route>/layout.tsx  # Thin SERVER layout per segment (10 of
+                                  #   them). generateMetadata only; returns
+                                  #   children. NO "use client". See §3.
     fingo/support/                # SupportShell, data-app="fingo".
                                   # useTranslations('support.fingo') + useMemo
                                   # adapter producing SupportContent.
@@ -656,7 +718,10 @@ messages/
   en.json · es.json               # next-intl dictionaries.
                                   # Top-level: notFound, layout, legal, home,
                                   #   support (with support.fingo + support.savely).
+app/favicon.ico                   # Real 3-entry .ico (16/32/48). Next
+                                  #   serves it at /favicon.ico.
 public/                           # All static assets, logos, hero images
+  apple-touch-icon.png            # 180×180, opaque, from the SVG mark
   cases/                          # Project preview screenshots (blip-hero,
                                   #   mezcal-hero, mezcal-mobile .webp);
                                   #   briefmark/pass images land here too
