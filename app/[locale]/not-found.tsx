@@ -46,7 +46,7 @@ export default async function NotFound() {
         />
       </nav>
 
-      <main className="ab-nf-main">
+      <main id="main-content" className="ab-nf-main">
         <div className="ab-nf-stage">
           <div className="ab-nf-eye">
             <span className="ab-nf-eye-dot" aria-hidden="true" />

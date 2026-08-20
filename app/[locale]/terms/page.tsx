@@ -24,7 +24,7 @@ export default function TermsAndConditionsPage() {
         </div>
       </header>
 
-      <main className="ab-legal-main">
+      <main id="main-content" className="ab-legal-main">
         <div className="ab-wrap ab-legal-content">
           <h1 className="ab-legal-title ab-serif">{t("terms.title")}</h1>
           <p className="ab-legal-meta">{t("terms.lastUpdated")}</p>

@@ -24,7 +24,7 @@ export default function PrivacyPolicyPage() {
         </div>
       </header>
 
-      <main className="ab-legal-main">
+      <main id="main-content" className="ab-legal-main">
         <div className="ab-wrap ab-legal-content">
           <h1 className="ab-legal-title ab-serif">{t("privacy.title")}</h1>
           <p className="ab-legal-meta">{t("privacy.lastUpdated")}</p>
@@ -112,7 +112,9 @@ export default function PrivacyPolicyPage() {
               <p>
                 {t("privacy.sections.contact.name")}
                 <br />
-                {t("privacy.sections.contact.email")}
+                <a href={`mailto:${t("privacy.sections.contact.email")}`} className="ab-legal-link">
+                  {t("privacy.sections.contact.email")}
+                </a>
                 <br />
                 {t("privacy.sections.contact.address")}
               </p>
