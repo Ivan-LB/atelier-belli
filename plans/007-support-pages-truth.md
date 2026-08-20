@@ -207,3 +207,73 @@ Stop and report back (do not improvise) if:
   Support action intentionally appears only where a support page exists.
 - Plan 010 rewrites `sitemap.ts` wholesale; your one-line addition is expected
   to be absorbed by it.
+
+---
+
+## Executed 2026-08-19/20 — what shipped, and what exceeded this plan
+
+Branch `feat/support-pages-truth`, PR #57 to `develop`. `pnpm verify` green,
+32/32 e2e (12 smoke + 20 in the new `tests/e2e/support.spec.ts`), CI green.
+
+### Done criteria
+
+- [x] Zero fictional claims on any support page — all three greps at 0
+- [x] `/fave/support` live in both locales with its own skin
+- [x] Four shell links unprefixed (verify with `grep -Fn`, see below)
+- [x] `pnpm verify` and `pnpm test:e2e` green
+- [x] `plans/README.md` row updated
+- [~] `git status` shows only in-scope files — **it does not.** See below.
+
+### Corrections to this plan's own instructions
+
+- **The Step 5 verification command does not work on macOS.**
+  `grep -n '${locale}' components/support-shell.tsx` returns 0 hits on BSD
+  grep, which parses `{...}` as an invalid interval, not because the links are
+  absent. Use `grep -Fn`. The four links were exactly at :135/:282/:286/:288.
+- **The Ground truth section was wrong in several places.** It was re-verified
+  against the three app repos before any copy was written; the corrections are
+  recorded in `plans/README.md` under "Ground-truth corrections found while
+  executing 007". Plans 009 and 011 inherit the same claims.
+- **`grep -in "bank\|...\|encrypt"` = 0 forced two awkward rewrites.** The
+  honest copy wanted "no bank connection of any kind" and "your iPhone's own
+  encrypted backup", both true and both caught by the literal grep. They were
+  rephrased to satisfy the letter of the check. Dropping "encrypted" turned out
+  to be more accurate anyway: a local computer backup is only encrypted if the
+  user ticks the box.
+
+### Work beyond this plan's scope (owner-directed, mid-execution)
+
+Each of these was requested by the owner while the plan was running, so they
+are authorized, but they are NOT what this plan scoped:
+
+1. **The support surface was redesigned, not just re-skinned.** This plan
+   scoped `globals.css` to "new `data-app="fave"` skin block only" and
+   `support-shell.tsx` to "union + link de-prefixing only". Owner's call
+   ("se ven muy ai slop") replaced the page grammar via `/impeccable`: the
+   eyebrows, the 01/02/03 section numbers, the four-identical-cards grid and
+   the four-cell metric strip are gone. Contact is now one primary address plus
+   a list of routes; the facts became a colophon. 591 lines out, 443 in.
+2. **Real app icons.** `public/apps/{savely,fingo,fave}-icon.webp` NEW,
+   extracted from each app's iOS asset catalog. The `crest` dictionary key
+   (a single letter) is gone.
+3. **Dark mode for all three support skins**, plus `components/theme-init.tsx`
+   NEW and edits to the four legal pages. Documented in plan 009.
+4. **A Privacy ghost action on the fave case** plus `home.cases.fave.actionPrivacy`
+   and an `ICONS.shield` glyph. This plan explicitly put `home.cases.*` beyond
+   the ghost action in plan 011's territory. Documented in plan 011.
+
+Files touched outside the "In scope" list: `components/theme-init.tsx` (new),
+`app/[locale]/privacy/page.tsx`, `app/[locale]/privacy/choices/page.tsx`,
+`app/[locale]/terms/page.tsx`, `app/[locale]/fave/privacy/page.tsx`,
+`public/apps/*` (new).
+
+### Left undone deliberately
+
+- **`SupportShell` no longer uses its `locale` prop** — de-prefixing the links
+  removed the last use. Removing the prop ripples into all three pages, so it
+  was left in place. Lint and typecheck are clean either way.
+- **No theme toggle on the support or legal pages.** They inherit the
+  homepage's choice and fall back to `prefers-color-scheme`. Adding a control
+  is an owner call, not a bug.
+- **Voice stayed "we".** The literal false claim ("A small team") is gone, but
+  switching the pages to first person singular is a brand decision.
