@@ -77,3 +77,30 @@ test("support shell links to unprefixed routes", async ({ page }) => {
   await expect(page.locator('footer.sup-foot a[href^="/terms"]')).toHaveCount(1);
   await expect(page.locator('a[href^="/en/"], a[href^="/es/"]')).toHaveCount(0);
 });
+
+// ── The crest is the app's real icon, not a letter in a box ─────────────────
+// Extracted from each app's own iOS asset catalog, so a broken path would
+// silently regress the page to an invisible <img>.
+for (const [path, app] of [
+  ["/fingo/support/", "fingo"],
+  ["/savely/support/", "savely"],
+  ["/fave/support/", "fave"],
+] as const) {
+  test(`${path} renders the real ${app} app icon`, async ({ page }) => {
+    await page.goto(path);
+    const icon = page.locator(".sup-mast-icon");
+    await expect(icon).toHaveAttribute("src", `/apps/${app}-icon.webp`);
+    // naturalWidth is 0 when the asset failed to load.
+    await expect
+      .poll(() => icon.evaluate((el: HTMLImageElement) => el.naturalWidth))
+      .toBeGreaterThan(0);
+  });
+}
+
+// ── No tracked-caps eyebrows or 01/02/03 section numbers ───────────────────
+test("support pages carry no eyebrow or section-number chrome", async ({ page }) => {
+  await page.goto("/savely/support/");
+  await expect(page.locator(".sup-eyebrow, .sup-section-eye, .sup-faq-n")).toHaveCount(0);
+  const body = await page.locator("main").innerText();
+  expect(body).not.toMatch(/\b0[123]\s+[—–-]\s+/);
+});

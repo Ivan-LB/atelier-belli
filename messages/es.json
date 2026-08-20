@@ -228,11 +228,9 @@
   "support": {
     "savely": {
       "name": "Savely",
-      "crest": "S",
       "navLabel": "Savely · Soporte",
       "footMeta": "Savely · Mesa de soporte",
       "hero": {
-        "eye": "Soporte",
         "titleHtml": "Una respuesta <em>serena</em> a cada pregunta.",
         "lede": "Savely guarda tu dinero en tu teléfono y en ningún otro lado. Si un total no cuadra, una meta no avanza o un recordatorio nunca llega, escríbenos. Cada mensaje lo lee la persona que hizo la app."
       },
@@ -292,39 +290,30 @@
           }
         ]
       },
-      "status": {
-        "titleHtml": "Estado <em>actual.</em>",
-        "sub": "Lo que es cierto sobre Savely hoy.",
-        "rows": [
-          {
-            "k": "Datos",
-            "v": "Se quedan en tu iPhone"
-          },
-          {
-            "k": "Cuenta",
-            "v": "No hace falta"
-          },
-          {
-            "k": "Respuesta",
-            "v": "Un día o dos"
-          },
-          {
-            "k": "Sistemas",
-            "v": "Todo bien",
-            "ok": true
-          }
-        ]
-      },
+      "facts": [
+        {
+          "k": "Datos",
+          "v": "Se quedan en tu iPhone"
+        },
+        {
+          "k": "Cuenta",
+          "v": "No hace falta"
+        },
+        {
+          "k": "Respuesta",
+          "v": "Un día o dos"
+        },
+        {
+          "k": "Sistemas",
+          "v": "Todo bien",
+          "ok": true
+        }
+      ],
       "cta": {
         "titleHtml": "¿Sigues <em>atorado?</em>",
         "sub": "Escríbenos directo. Respuestas reales, con paciencia.",
         "label": "ivanlorenzana@outlook.com",
         "href": "mailto:ivanlorenzana@outlook.com"
-      },
-      "sectionLabels": {
-        "contact": "01 — Contacto",
-        "faq": "02 — Preguntas frecuentes",
-        "status": "03 — Estado"
       },
       "privacyLabel": "Privacidad",
       "termsLabel": "Términos",
@@ -332,11 +321,9 @@
     },
     "fingo": {
       "name": "Fingo",
-      "crest": "F",
       "navLabel": "Fingo · Soporte",
       "footMeta": "Fingo · Mesa de soporte",
       "hero": {
-        "eye": "Soporte",
         "titleHtml": "¿Cómo podemos <em>ayudar?</em>",
         "lede": "Fingo es una app pequeña para resolver quién paga, quién empieza, quién escoge la música. Funciona por completo en tu teléfono, sin cuenta y sin internet. Si algo se porta mal, escríbenos. Una persona real lee cada mensaje."
       },
@@ -390,39 +377,30 @@
           }
         ]
       },
-      "status": {
-        "titleHtml": "Todo <em>funcionando.</em>",
-        "sub": "Lo que es cierto sobre Fingo hoy.",
-        "rows": [
-          {
-            "k": "Datos",
-            "v": "Se quedan en tu iPhone"
-          },
-          {
-            "k": "Internet",
-            "v": "Nunca hace falta"
-          },
-          {
-            "k": "Respuesta",
-            "v": "Un día o dos"
-          },
-          {
-            "k": "Sistemas",
-            "v": "Todo bien",
-            "ok": true
-          }
-        ]
-      },
+      "facts": [
+        {
+          "k": "Datos",
+          "v": "Se quedan en tu iPhone"
+        },
+        {
+          "k": "Internet",
+          "v": "Nunca hace falta"
+        },
+        {
+          "k": "Respuesta",
+          "v": "Un día o dos"
+        },
+        {
+          "k": "Sistemas",
+          "v": "Todo bien",
+          "ok": true
+        }
+      ],
       "cta": {
         "titleHtml": "¿Sigues <em>atorado?</em>",
         "sub": "Escríbenos directo.",
         "label": "ivanlorenzana@outlook.com",
         "href": "mailto:ivanlorenzana@outlook.com"
-      },
-      "sectionLabels": {
-        "contact": "01 — Contacto",
-        "faq": "02 — Preguntas frecuentes",
-        "status": "03 — Estado"
       },
       "privacyLabel": "Privacidad",
       "termsLabel": "Términos",
@@ -430,11 +408,9 @@
     },
     "fave": {
       "name": "Fave",
-      "crest": "F",
       "navLabel": "Fave · Soporte",
       "footMeta": "Fave · Mesa de soporte",
       "hero": {
-        "eye": "Soporte",
         "titleHtml": "Ayuda con tus <em>listas.</em>",
         "lede": "Fave es la libreta de todo lo que pruebas, y guarda tus listas en tu propio iCloud en vez de en nuestros servidores. Si un póster carga mal, una lista no se sincroniza o algo simplemente no te cuadra, escríbenos."
       },
@@ -494,39 +470,30 @@
           }
         ]
       },
-      "status": {
-        "titleHtml": "Estado <em>actual.</em>",
-        "sub": "Lo que es cierto sobre Fave hoy.",
-        "rows": [
-          {
-            "k": "Tus listas",
-            "v": "En tu propio iCloud"
-          },
-          {
-            "k": "Cuenta Fave",
-            "v": "Ninguna"
-          },
-          {
-            "k": "Respuesta",
-            "v": "Un día o dos"
-          },
-          {
-            "k": "Sistemas",
-            "v": "Todo bien",
-            "ok": true
-          }
-        ]
-      },
+      "facts": [
+        {
+          "k": "Tus listas",
+          "v": "En tu propio iCloud"
+        },
+        {
+          "k": "Cuenta Fave",
+          "v": "Ninguna"
+        },
+        {
+          "k": "Respuesta",
+          "v": "Un día o dos"
+        },
+        {
+          "k": "Sistemas",
+          "v": "Todo bien",
+          "ok": true
+        }
+      ],
       "cta": {
         "titleHtml": "¿Sigues <em>atorado?</em>",
         "sub": "Escríbenos directo. Respuestas reales, con paciencia.",
         "label": "ivanlorenzana@outlook.com",
         "href": "mailto:ivanlorenzana@outlook.com"
-      },
-      "sectionLabels": {
-        "contact": "01 — Contacto",
-        "faq": "02 — Preguntas frecuentes",
-        "status": "03 — Estado"
       },
       "privacyLabel": "Privacidad",
       "termsLabel": "Términos",

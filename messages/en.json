@@ -228,11 +228,9 @@
   "support": {
     "savely": {
       "name": "Savely",
-      "crest": "S",
       "navLabel": "Savely · Support",
       "footMeta": "Savely · Support desk",
       "hero": {
-        "eye": "Support",
         "titleHtml": "A calm <em>answer</em> to every question.",
         "lede": "Savely keeps your money on your phone and nowhere else. If a total reads wrong, a goal will not budge, or a reminder never arrives, write in. Every message is read by the person who built the app."
       },
@@ -272,7 +270,7 @@
         "items": [
           {
             "q": "Where does my money data live?",
-            "aHtml": "On this iPhone, in a private store only Savely can open. There is no account, no cloud copy, and no connection to anything outside the phone. The app says so itself under <em>Me → Datos y privacidad</em>: your data never leaves this iPhone. The camera is the only permission it ever asks for, and that is for reading receipts."
+            "aHtml": "On this iPhone, in a private store only Savely can open. There is no account, no cloud copy, and no connection to anything outside the phone. The app says so itself under <em>Me → Data &amp; privacy</em>: your data never leaves this iPhone. The camera is the only permission it ever asks for, and that is for reading receipts."
           },
           {
             "q": "If I lose my phone, can I get my data back?",
@@ -288,43 +286,34 @@
           },
           {
             "q": "Can I export my data, or erase it?",
-            "aHtml": "There is one export, the <em>Weekly PDF report</em> row under <em>Me → Datos y privacidad</em>. It covers the current week of income and expenses and hands you a PDF through the share sheet, so treat it as something to read rather than a backup to restore from. To erase, use <em>Borrar todos los datos</em> in the same place: every income, expense and goal is removed from this iPhone, your name and reminder settings stay, and it cannot be undone."
+            "aHtml": "There is one export, the <em>Weekly PDF report</em> row under <em>Me → Data &amp; privacy</em>. It covers the current week of income and expenses and hands you a PDF through the share sheet, so treat it as something to read rather than a backup to restore from. To erase, use <em>Delete all data</em> in the same place: every income, expense and goal is removed from this iPhone, your name and reminder settings stay, and it cannot be undone."
           }
         ]
       },
-      "status": {
-        "titleHtml": "Current <em>state.</em>",
-        "sub": "What is true about Savely today.",
-        "rows": [
-          {
-            "k": "Data",
-            "v": "Stays on your iPhone"
-          },
-          {
-            "k": "Account",
-            "v": "Not needed"
-          },
-          {
-            "k": "Reply time",
-            "v": "A day or two"
-          },
-          {
-            "k": "Systems",
-            "v": "All good",
-            "ok": true
-          }
-        ]
-      },
+      "facts": [
+        {
+          "k": "Data",
+          "v": "Stays on your iPhone"
+        },
+        {
+          "k": "Account",
+          "v": "Not needed"
+        },
+        {
+          "k": "Reply time",
+          "v": "A day or two"
+        },
+        {
+          "k": "Systems",
+          "v": "All good",
+          "ok": true
+        }
+      ],
       "cta": {
         "titleHtml": "Still <em>stuck?</em>",
         "sub": "Write to us directly. Real replies, patient answers.",
         "label": "ivanlorenzana@outlook.com",
         "href": "mailto:ivanlorenzana@outlook.com"
-      },
-      "sectionLabels": {
-        "contact": "01 — Contact",
-        "faq": "02 — Frequent questions",
-        "status": "03 — Status"
       },
       "privacyLabel": "Privacy",
       "termsLabel": "Terms",
@@ -332,11 +321,9 @@
     },
     "fingo": {
       "name": "Fingo",
-      "crest": "F",
       "navLabel": "Fingo · Support",
       "footMeta": "Fingo · Support desk",
       "hero": {
-        "eye": "Support",
         "titleHtml": "How can we <em>help?</em>",
         "lede": "Fingo is a small app for settling who pays, who goes first, who picks the music. It runs entirely on your phone, with no account and no internet. If something misbehaves, write to us. A real person reads every message."
       },
@@ -390,39 +377,30 @@
           }
         ]
       },
-      "status": {
-        "titleHtml": "Everything <em>running.</em>",
-        "sub": "What is true about Fingo today.",
-        "rows": [
-          {
-            "k": "Data",
-            "v": "Stays on your iPhone"
-          },
-          {
-            "k": "Internet",
-            "v": "Never needed"
-          },
-          {
-            "k": "Reply time",
-            "v": "A day or two"
-          },
-          {
-            "k": "Systems",
-            "v": "All good",
-            "ok": true
-          }
-        ]
-      },
+      "facts": [
+        {
+          "k": "Data",
+          "v": "Stays on your iPhone"
+        },
+        {
+          "k": "Internet",
+          "v": "Never needed"
+        },
+        {
+          "k": "Reply time",
+          "v": "A day or two"
+        },
+        {
+          "k": "Systems",
+          "v": "All good",
+          "ok": true
+        }
+      ],
       "cta": {
         "titleHtml": "Still <em>stuck?</em>",
         "sub": "Write to us directly.",
         "label": "ivanlorenzana@outlook.com",
         "href": "mailto:ivanlorenzana@outlook.com"
-      },
-      "sectionLabels": {
-        "contact": "01 — Contact",
-        "faq": "02 — Frequent questions",
-        "status": "03 — Status"
       },
       "privacyLabel": "Privacy",
       "termsLabel": "Terms",
@@ -430,11 +408,9 @@
     },
     "fave": {
       "name": "Fave",
-      "crest": "F",
       "navLabel": "Fave · Support",
       "footMeta": "Fave · Support desk",
       "hero": {
-        "eye": "Support",
         "titleHtml": "Help with your <em>lists.</em>",
         "lede": "Fave is the notebook for everything you try, and it keeps your lists in your own iCloud rather than on our servers. If a poster loads wrong, a list will not sync, or something simply confuses you, write to us."
       },
@@ -494,39 +470,30 @@
           }
         ]
       },
-      "status": {
-        "titleHtml": "Current <em>state.</em>",
-        "sub": "What is true about Fave today.",
-        "rows": [
-          {
-            "k": "Your lists",
-            "v": "In your own iCloud"
-          },
-          {
-            "k": "Fave account",
-            "v": "None"
-          },
-          {
-            "k": "Reply time",
-            "v": "A day or two"
-          },
-          {
-            "k": "Systems",
-            "v": "All good",
-            "ok": true
-          }
-        ]
-      },
+      "facts": [
+        {
+          "k": "Your lists",
+          "v": "In your own iCloud"
+        },
+        {
+          "k": "Fave account",
+          "v": "None"
+        },
+        {
+          "k": "Reply time",
+          "v": "A day or two"
+        },
+        {
+          "k": "Systems",
+          "v": "All good",
+          "ok": true
+        }
+      ],
       "cta": {
         "titleHtml": "Still <em>stuck?</em>",
         "sub": "Write to us directly. Real replies, patient answers.",
         "label": "ivanlorenzana@outlook.com",
         "href": "mailto:ivanlorenzana@outlook.com"
-      },
-      "sectionLabels": {
-        "contact": "01 — Contact",
-        "faq": "02 — Frequent questions",
-        "status": "03 — Status"
       },
       "privacyLabel": "Privacy",
       "termsLabel": "Terms",
