@@ -14,7 +14,7 @@
   "layout": {
     "skipToContent": "Ir al contenido principal",
     "metaTitle": "Atelier Belli",
-    "metaDescription": "Atelier Belli es el atelier digital de Ivan Lorenzana — desarrollador full-stack que crea aplicaciones iOS limpias y la web que las rodea. Fingo, Savely, Mi Mezcal y más.",
+    "metaDescription": "Atelier Belli es el portafolio de Ivan Lorenzana, desarrollador en Tijuana. Apps de iOS y los sistemas detrás de ellas: Alisio, Vitapath y un detector de arritmias.",
     "ogAlt": "Atelier Belli — portafolio de Ivan Lorenzana"
   },
   "legal": {
@@ -26,6 +26,7 @@
     "termsShortLabel": "Términos",
     "privacy": {
       "title": "Política de Privacidad",
+      "metaDescription": "Lo que este sitio hace con tus datos: una cookie que recuerda tu idioma, un tema guardado en tu navegador y nada de analítica. Cada app tiene su propia política.",
       "lastUpdated": "Última actualización: 20 de agosto de 2026",
       "sections": {
         "intro": {
@@ -81,6 +82,7 @@
     },
     "alisioPrivacy": {
       "title": "Política de Privacidad de Alisio",
+      "metaDescription": "Alisio lee tu ritmo cardiaco en el Apple Watch y lo guarda en tus propios dispositivos. Sin cuenta, sin analítica y sin código de red en toda la app.",
       "lastUpdated": "Última actualización: 20 de agosto de 2026",
       "intro": "Alisio lee tu ritmo cardiaco en el Apple Watch mientras entrenas y todo lo que aprende se queda en tus propios dispositivos. No hay cuenta, no hay analítica y no hay una sola línea de red en la app. Aquí va con detalle:",
       "sections": {
@@ -125,6 +127,7 @@
     },
     "favePrivacy": {
       "title": "Política de Privacidad de Fave",
+      "metaDescription": "Fave guarda tus rankings en tu dispositivo y en tu propio iCloud, sin servidores nuestros de por medio. Qué implica eso para carátulas, notas y borrar la app.",
       "lastUpdated": "Última actualización: 9 de agosto de 2026",
       "intro": "Fave guarda tus rankings en tu dispositivo y en tu cuenta personal de iCloud. Esa es toda la historia, pero aquí va con detalle:",
       "sections": {
@@ -157,6 +160,7 @@
     },
     "fingoPrivacy": {
       "title": "Política de Privacidad de Fingo",
+      "metaDescription": "Fingo elige por ti: un dedo, una ruleta, un número, una moneda. No pide permisos, no tiene cuenta y nunca se conecta a nada. Aquí está la política completa.",
       "lastUpdated": "Última actualización: 20 de agosto de 2026",
       "intro": "Fingo decide por ti: un dedo, una ruleta, un número, un volado. No pide permisos, no tiene cuenta y nunca se conecta a nada. Aquí va con detalle:",
       "sections": {
@@ -192,6 +196,7 @@
     },
     "savelyPrivacy": {
       "title": "Política de Privacidad de Savely",
+      "metaDescription": "Savely registra tu dinero en tu teléfono y en ningún otro lugar. Qué guarda, los dos permisos que pide y por qué los recibos nunca abren tu fototeca.",
       "lastUpdated": "Última actualización: 20 de agosto de 2026",
       "intro": "Savely lleva tus finanzas en tu teléfono y en ningún otro lado. La app lo dice en sus propios ajustes: \"Tus datos nunca salen de este iPhone.\" Esto es lo que eso significa a detalle:",
       "sections": {
@@ -235,6 +240,7 @@
     },
     "privacyChoices": {
       "title": "Opciones de Privacidad del Usuario",
+      "metaDescription": "Cómo ejercer tus derechos de datos con Atelier Belli, y por qué la respuesta es breve: aquí no hay casi nada que entregar, corregir o borrar.",
       "intro": "Las políticas de privacidad suelen prometer toda una maquinaria para ejercer tus derechos de datos. Aquí va la versión honesta: no guardamos casi nada tuyo, así que para casi cualquier solicitud la respuesta es que no hay nada que entregar, corregir ni borrar. Esta página dice dónde están de verdad los datos y cómo llegar a una persona que responda.",
       "sections": {
         "whatWeHold": {
@@ -261,6 +267,7 @@
     },
     "terms": {
       "title": "Términos y Condiciones",
+      "metaDescription": "Los términos de uso de atelierbelli.com y de las apps publicadas aquí: qué puedes hacer con el trabajo, qué no está permitido y los límites de responsabilidad.",
       "lastUpdated": "Última actualización: 20 de agosto de 2026",
       "sections": {
         "acceptance": {
@@ -313,6 +320,8 @@
   "support": {
     "savely": {
       "name": "Savely",
+      "metaTitle": "Soporte de Savely",
+      "metaDescription": "Ayuda con Savely: totales que no cuadran, metas que no avanzan, recordatorios que no llegan. Respuestas de quien construyó la app.",
       "navLabel": "Savely · Soporte",
       "footMeta": "Savely · Mesa de soporte",
       "hero": {
@@ -406,6 +415,8 @@
     },
     "fingo": {
       "name": "Fingo",
+      "metaTitle": "Soporte de Fingo",
+      "metaDescription": "Ayuda con Fingo, la app para decidir quién paga y quién va primero. Respuestas sobre sus cuatro modos y una persona real que lee cada mensaje.",
       "navLabel": "Fingo · Soporte",
       "footMeta": "Fingo · Mesa de soporte",
       "hero": {
@@ -493,6 +504,8 @@
     },
     "fave": {
       "name": "Fave",
+      "metaTitle": "Soporte de Fave",
+      "metaDescription": "Ayuda con Fave: listas que no sincronizan, carátulas que cargan mal y cómo hablar con una persona. Cada mensaje lo lee quien construyó la app.",
       "navLabel": "Fave · Soporte",
       "footMeta": "Fave · Mesa de soporte",
       "hero": {

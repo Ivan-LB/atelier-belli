@@ -1,6 +1,15 @@
 import type { MetadataRoute } from "next"
 
 const BASE = "https://atelierbelli.com"
+
+/* One entry per route, with no locale prefix.
+ *
+ * `localePrefix: "never"` (PR #45) means /privacy serves English or Spanish
+ * off the NEXT_LOCALE cookie, so /en/privacy and /es/privacy are redirects —
+ * this file used to emit both of them for all 11 routes and not one real URL.
+ * The hreflang alternates it also carried went the same way: Spanish has no
+ * address of its own to point a crawler at. Do not reintroduce either; see the
+ * comment in app/[locale]/layout.tsx for why that removal was deliberate. */
 const paths = [
   "",
   "/privacy",
@@ -15,18 +24,6 @@ const paths = [
   "/savely/support",
 ]
 
-const locales = ["en", "es"] as const
-
 export default function sitemap(): MetadataRoute.Sitemap {
-  return paths.flatMap((path) =>
-    locales.map((locale) => ({
-      url: `${BASE}/${locale}${path}/`,
-      alternates: {
-        languages: {
-          en: `${BASE}/en${path}/`,
-          es: `${BASE}/es${path}/`,
-        },
-      },
-    }))
-  )
+  return paths.map((path) => ({ url: `${BASE}${path}/` }))
 }
