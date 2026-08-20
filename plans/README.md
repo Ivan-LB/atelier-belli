@@ -118,6 +118,18 @@ Owner mandates baked into every plan of this wave:
   atelierbelli.com has no MX).
 - Privacy architecture: per-app pages on the /fave/privacy pattern (owner
   decision).
+- **Handoff mandate (added 2026-08-20, after 007 and 009 both spilled into
+  later plans).** Before closing a session, the executor does three things in
+  this order: (1) writes a **"Landed from NNN"** section into every later plan
+  whose files, line anchors, dictionary keys, tests or assumptions its work
+  moved, saying what changed and what the next executor should do instead of
+  what the plan says; (2) appends an **execution tail** to its own plan
+  recording what shipped, where the copy departed from the plan's Ground truth,
+  and what was left undone deliberately; (3) hands the owner a **ready-to-paste
+  prompt for the next plan in the order**, carrying that plan's preconditions,
+  its STOP conditions, the corrections it inherits, and this same mandate. A
+  plan is not done when its code merges; it is done when the next session can
+  start without rediscovering the drift.
 
 ## Execution order & status (wave 2)
 
