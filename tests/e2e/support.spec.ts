@@ -104,3 +104,34 @@ test("support pages carry no eyebrow or section-number chrome", async ({ page })
   const body = await page.locator("main").innerText();
   expect(body).not.toMatch(/\b0[123]\s+[—–-]\s+/);
 });
+
+// ── The theme choice follows you off the homepage ──────────────────────────
+// Support and legal pages used to be pinned to data-theme="light", so picking
+// dark on the homepage and following a Support link flashed white.
+for (const path of [
+  "/fave/support/",
+  "/savely/support/",
+  "/fingo/support/",
+  "/privacy/",
+  "/terms/",
+  "/fave/privacy/",
+]) {
+  test(`${path} inherits the dark theme chosen on the homepage`, async ({ browser }) => {
+    const context = await browser.newContext();
+    await context.addInitScript(() => localStorage.setItem("ab_theme", "dark"));
+    const page = await context.newPage();
+    await page.goto(path);
+    const root = page.locator(".sup-root, .ab-root").first();
+    await expect(root).toHaveAttribute("data-theme", "dark");
+    await context.close();
+  });
+}
+
+// ── Fave's card links to the privacy page that exists ──────────────────────
+test("the fave case offers both its support and privacy pages", async ({ page }) => {
+  await page.goto("/?case=fave");
+  const modal = page.locator(".ab-case-modal.open");
+  await expect(modal).toBeVisible();
+  await expect(modal.locator('a[href="/fave/support"]')).toHaveCount(1);
+  await expect(modal.locator('a[href="/fave/privacy"]')).toHaveCount(1);
+});

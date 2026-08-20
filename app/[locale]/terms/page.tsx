@@ -4,6 +4,8 @@ import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useTranslations } from "next-intl"
 
+import ThemeInit from "@/components/theme-init"
+
 export default function TermsAndConditionsPage() {
   const params = useParams()
   const locale = (params?.locale as string) === "es" ? "es" : "en"
@@ -12,7 +14,8 @@ export default function TermsAndConditionsPage() {
   const userRepItems = t.raw("terms.sections.userRepresentations.items") as string[]
 
   return (
-    <div className="ab-root" data-theme="light">
+    <div className="ab-root" suppressHydrationWarning>
+      <ThemeInit />
       <header className="ab-legal-nav">
         <div className="ab-legal-nav-inner ab-wrap">
           <Link href="/" className="ab-legal-back">

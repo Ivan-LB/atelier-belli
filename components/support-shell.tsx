@@ -3,6 +3,8 @@
 import Link from "next/link"
 import type { ReactNode } from "react"
 
+import ThemeInit from "@/components/theme-init"
+
 export type SupportApp = "fingo" | "savely" | "fave"
 
 export type ContactKind =
@@ -102,7 +104,8 @@ export default function SupportShell({
   const [primary, ...alternates] = content.contacts
 
   return (
-    <div className="sup-root" data-app={appKey}>
+    <div className="sup-root" data-app={appKey} suppressHydrationWarning>
+      <ThemeInit />
       {/* NAV */}
       <nav className="sup-nav">
         <div className="sup-nav-inner">

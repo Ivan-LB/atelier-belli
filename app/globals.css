@@ -2623,6 +2623,70 @@
   --sup-hero-tex: radial-gradient(circle at 50% 0%, #e0a24a2e, transparent 55%);
 }
 
+/* ── Dark ──────────────────────────────────────────────────────────────────
+   The support pages used to be pinned to light, so choosing dark on the
+   homepage and following a Support link flashed white. `ThemeInit` mirrors the
+   same `ab_theme` choice onto .sup-root before first paint; these blocks give
+   each skin a night version of its own hue rather than one shared grey. */
+.sup-root[data-theme="dark"] {
+  --sup-line: #f0e8da1f;
+  --sup-line-2: #f0e8da12;
+  --sup-shadow-sm: 0 1px 0 #00000040, 0 2px 8px -4px #00000059;
+  --sup-shadow-md: 0 12px 34px -16px #00000073, 0 2px 10px -4px #00000047;
+}
+.sup-root[data-theme="dark"][data-app="fingo"] {
+  --sup-bg: #17130f;
+  --sup-bg-2: #201a14;
+  --sup-fg: #f1e8da;
+  --sup-fg-2: #dccfbc;
+  --sup-muted: #9b8e7e;
+  --sup-muted-2: #6a6154;
+  --sup-accent: #e08356;
+  --sup-accent-2: #f0a077;
+  --sup-card: #201a14;
+  --sup-card-2: #29211a;
+  --sup-hero-tex: radial-gradient(circle at 30% 20%, #e0835622, transparent 55%);
+}
+.sup-root[data-theme="dark"][data-app="savely"] {
+  --sup-bg: #101613;
+  --sup-bg-2: #17201a;
+  --sup-fg: #e7efe8;
+  --sup-fg-2: #cddccf;
+  --sup-muted: #8a9a8d;
+  --sup-muted-2: #5c6b60;
+  --sup-accent: #63b98c;
+  --sup-accent-2: #86cfa6;
+  --sup-card: #17201a;
+  --sup-card-2: #1d2820;
+  --sup-hero-tex: radial-gradient(circle at 70% 15%, #63b98c22, transparent 55%);
+}
+.sup-root[data-theme="dark"][data-app="fave"] {
+  --sup-bg: #16120d;
+  --sup-bg-2: #1e1812;
+  --sup-fg: #f2e9dc;
+  --sup-fg-2: #ded1bf;
+  --sup-muted: #9b8e7c;
+  --sup-muted-2: #6a6053;
+  --sup-accent: #85acd6;
+  --sup-accent-2: #a9c7e6;
+  --sup-card: #1e1812;
+  --sup-card-2: #261f17;
+  /* The lamp stays warm; only the ink it falls on changes. */
+  --sup-hero-tex: radial-gradient(circle at 50% 0%, #e0a24a2b, transparent 55%);
+}
+/* App icons are lit for a light ground: on dark they need a light rim, not a
+   black shadow nobody can see. */
+.sup-root[data-theme="dark"] .sup-mast-icon {
+  box-shadow: 0 10px 24px -12px #000000a6, inset 0 0 0 1px #ffffff1f;
+}
+.sup-root[data-theme="dark"] .sup-crest {
+  box-shadow: 0 1px 4px -1px #00000080, inset 0 0 0 1px #ffffff1f;
+}
+.sup-root ::selection {
+  background: var(--sup-accent);
+  background: color-mix(in oklab, var(--sup-accent) 30%, transparent);
+}
+
 .sup-root em {
   font-style: italic;
   font-family: var(--sup-serif);
