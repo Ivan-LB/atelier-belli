@@ -15,7 +15,7 @@
     "skipToContent": "Skip to main content",
     "metaTitle": "Atelier Belli",
     "metaDescription": "Atelier Belli is the portfolio of Ivan Lorenzana, a developer in Tijuana. iOS apps and the systems behind them: Alisio, Vitapath, an ECG arrhythmia detector.",
-    "ogAlt": "Atelier Belli — portfolio of Ivan Lorenzana"
+    "ogAlt": "Atelier Belli: portfolio of Ivan Lorenzana"
   },
   "legal": {
     "back": "Back to Home",
@@ -276,7 +276,7 @@
         },
         "intellectualProperty": {
           "heading": "2. Intellectual Property Rights",
-          "body": "Unless otherwise indicated, the Site and all original materials — including source code, databases, functionality, software, website designs, audio, video, text, photographs, and graphics (collectively, the \"Content\") — and the trademarks, service marks, and logos contained therein (the \"Marks\") are owned by or licensed to us, and are protected by copyright and trademark law."
+          "body": "Unless otherwise indicated, the Site and all original materials (including source code, databases, functionality, software, website designs, audio, video, text, photographs, and graphics, collectively the \"Content\") and the trademarks, service marks, and logos contained therein (the \"Marks\") are owned by or licensed to us, and are protected by copyright and trademark law."
         },
         "userRepresentations": {
           "heading": "3. User Representations",
@@ -626,24 +626,24 @@
       "signed": "Signed"
     },
     "vitrine": {
-      "eyebrow": "Showcase — 2026",
+      "eyebrow": "Showcase 2026",
       "titlePre": "Three recent ",
       "titleIt": "pieces.",
-      "hint": "— Hover to focus",
-      "hintTouch": "— Swipe to browse"
+      "hint": "Hover to focus",
+      "hintTouch": "Swipe to browse"
     },
     "work": {
       "eyebrow": "The work",
       "titlePre": "Selected ",
       "titleIt": "work.",
-      "indexMeta": "Index — 2023 / 2026",
+      "indexMeta": "Index 2023 / 2026",
       "viewCase": "View case"
     },
     "workbench": {
       "eyebrow": "The workbench",
       "titlePre": "Tools of the ",
       "titleIt": "trade.",
-      "desc": "A small, opinionated set. Swift and SwiftUI for the phone; <it>Next.js</it> and TypeScript for the web; Postgres for things that must last. Figma, Xcode, Claude Code — the bench stays tidy.",
+      "desc": "A small, opinionated set. Swift and SwiftUI for the phone; <it>Next.js</it> and TypeScript for the web; Postgres for things that must last. Figma, Xcode, Claude Code. The bench stays tidy.",
       "groups": {
         "frontend": "Frontend & Mobile",
         "backend": "Backend & Infra",
@@ -682,52 +682,79 @@
       },
       "fingo": {
         "titleIt": "group choice, made easy.",
-        "descRich": "An iOS app for making group decisions instantly — wheels, coins, spinning arrows, tap-to-choose. Fully customizable, with <it>haptics</it> that make each pick feel deliberate. Built with SwiftUI.",
+        "descRich": "An iOS app for making group decisions instantly: wheels, coins, spinning arrows, tap-to-choose. Fully customizable, with <it>haptics</it> that make each pick feel deliberate. Built with SwiftUI.",
         "metaStatus": "Live on the App Store",
         "actionPrimary": "View on App Store",
         "actionGhost": "Support",
-        "tag": "Wheels, coins, haptics — decisions in a tap."
+        "tag": "Wheels, coins, haptics. Decisions in a tap.",
+        "kickerPlatform": "iOS",
+        "kickerDomain": "Utility",
+        "mshowStatus": "App Store",
+        "actionPrivacy": "Privacy"
       },
       "savely": {
         "titleIt": "personal savings, quietly.",
-        "descRich": "A local-first savings app. Goals with a real pace, everyday income and expense logging, a receipt scanner that reads on the phone, and a payday auto-move that turns income into savings in one tap. No accounts, no cloud, no bank connections — money data lives on the phone and <it>never leaves it</it>. SwiftUI and SwiftData, submitted to the App Store.",
+        "descRich": "A local-first savings app. Goals with a real pace, everyday income and expense logging, a receipt scanner that reads on the phone, and a payday auto-move that turns income into savings in one tap. No accounts, no cloud, no bank connections: money data lives on the phone and <it>never leaves it</it>. SwiftUI and SwiftData, submitted to the App Store.",
         "metaStatus": "In review · App Store soon",
         "actionPrimary": "Coming soon",
         "actionGhost": "Support",
-        "tag": "Goals, receipts, payday auto-move — money that never leaves the phone.",
+        "tag": "Goals, receipts, payday auto-move. Money that never leaves the phone.",
         "mshowStatus": "In review",
-        "galleryCaption": "Three real screens, seeded through the app's own DEBUG tour: a goal with its pace, a receipt read on-device — the photo never leaves the phone — and payday's one-tap auto-move into that goal."
+        "galleryCaption": "Three real screens, seeded through the app's own DEBUG tour: a goal with its pace, a receipt read on-device (the photo never leaves the phone), and payday's one-tap auto-move into that goal.",
+        "kickerPlatform": "iOS",
+        "kickerDomain": "Fintech",
+        "actionPrivacy": "Privacy",
+        "story": {
+          "problem": "Most savings apps want a bank connection before they are useful, then answer the only question that matters, whether the goal still lands on time, with a projection the deposits do not support. Handing over your accounts to be told something comfortable is a bad trade.",
+          "approach": "Everything runs on the phone: SwiftData for the money, Apple's on-device text recognition for receipts, and no network calls at all. The pace math refuses to flatter. A goal further out than a year reads 1+ year instead of an invented date, and the payday auto-move only offers what the month can actually afford once this paycheck, its expenses and the deposits already made are counted.",
+          "result": "Submitted to the App Store with the premise intact: no account, no cloud, no bank connection, and nothing that leaves the phone unless you send it yourself. The one thing that can travel is a weekly PDF you hand to the iOS share sheet."
+        },
+        "highlights": [
+          "No account, no cloud, no bank connection, and no network calls at all",
+          "Receipts read on device by Apple's text recognition; the photo is never saved",
+          "The payday auto-move offers one deposit, capped by what the month can afford",
+          "Goal pace and ETA measured from real deposits, with no invented completion date"
+        ]
       },
       "mezcal": {
-        "descRich": "Storefront and story for an artisanal mezcal brand out of Oaxaca. A quiet, editorial site built to sell — varieties, origin, direct orders. <it>Hand-built</it> from brand to checkout.",
+        "descRich": "Storefront and story for an artisanal mezcal brand out of Oaxaca. A quiet, editorial site built to sell: varieties, origin, direct orders. <it>Hand-built</it> from brand to checkout.",
         "metaPlatform": "Web · Responsive",
         "metaStatus": "Live",
         "actionPrimary": "Visit site",
-        "tag": "An artisanal mezcal brand — storefront and story.",
-        "mshowStatus": "Live"
+        "tag": "An artisanal mezcal brand: storefront and story.",
+        "mshowStatus": "Live",
+        "kickerPlatform": "Web",
+        "kickerDomain": "E-commerce",
+        "titleIt": "sold direct from Oaxaca."
       },
       "blip": {
         "titleIt": "the restock radar.",
-        "descRich": "A live monitor for sealed Pokémon TCG product on Amazon México. It watches price, stock and restocks, then fires an instant push with a one-tap deep-link that fills the cart — <it>you</it> finish the purchase. The edge is legitimate speed: know first, tap first.",
+        "descRich": "A live monitor for sealed Pokémon TCG product on Amazon México. It watches price, stock and restocks, then fires an instant push with a one-tap deep-link that fills the cart, and <it>you</it> finish the purchase. The edge is legitimate speed: know first, tap first.",
         "metaPlatform": "Web · PWA",
         "metaStatus": "In development",
-        "actionPrimary": "In development",
-        "tag": "Price, stock, restocks — alerted before the swarm."
+        "actionPrimary": "Coming soon",
+        "tag": "Price, stock, restocks. Alerted before the swarm.",
+        "kickerPlatform": "Web",
+        "kickerDomain": "Retail",
+        "mshowStatus": "In development"
       },
       "briefmark": {
         "titleIt": "bookmarks that think.",
-        "descRich": "An iOS app that turns TikTok videos into smart bookmarks. Share a URL and it extracts every recommendation — recipes, movies, books, places — into structured, actionable cards, powered by <it>Claude</it>. SwiftUI on the front, a TypeScript backend behind.",
+        "descRich": "An iOS app that turns TikTok videos into smart bookmarks. Share a URL and it extracts every recommendation (recipes, movies, books, places) into structured, actionable cards, powered by <it>Claude</it>. SwiftUI on the front, a TypeScript backend behind.",
         "metaStatus": "In development",
-        "actionPrimary": "In development",
-        "tag": "TikToks into structured, searchable cards."
+        "actionPrimary": "Coming soon",
+        "tag": "TikToks into structured, searchable cards.",
+        "kickerPlatform": "iOS",
+        "kickerDomain": "AI",
+        "mshowStatus": "In development"
       },
       "pass": {
         "titleIt": "cards that live in Wallet.",
-        "descRich": "A serverless platform that issues and updates Apple Wallet passes — gym memberships, loyalty stamp cards — with changes pushed in real time straight to the card. AWS Lambda, DynamoDB and the Apple Wallet web service, <it>end to end</it>.",
+        "descRich": "A serverless platform that issues and updates Apple Wallet passes (gym memberships, loyalty stamp cards) with changes pushed in real time straight to the card. AWS Lambda, DynamoDB and the Apple Wallet web service, <it>end to end</it>.",
         "metaPlatform": "AWS · Serverless",
         "metaStatus": "Running in production",
         "actionPrimary": "Code coming soon",
-        "tag": "Apple Wallet passes — issued, updated, alive.",
+        "tag": "Apple Wallet passes: issued, updated, alive.",
         "story": {
           "problem": "A Wallet pass cannot be refreshed from an app. Without Apple's pass web service the card goes stale in the user's Wallet, and a stale card is one they delete.",
           "approach": "A serverless backend that implements the protocol end to end: device registration, pass versioning, PassKit signing and the push that tells the device to come back for a new version.",
@@ -738,14 +765,17 @@
           "APNs push: the pass updates in place on the card",
           "Lambda, API Gateway, DynamoDB and S3, deployed with SAM",
           "Issued over an API: gym memberships and loyalty stamp cards"
-        ]
+        ],
+        "kickerPlatform": "Backend",
+        "kickerDomain": "Loyalty",
+        "mshowStatus": "In production"
       },
       "alisio": {
         "titleIt": "train by heart-rate zones.",
-        "descRich": "An iOS and Apple Watch app for zone training. Pick a zone and your watch <it>taps your wrist</it> the moment you drift out — a workout stays a two-second glance, not a screen you study mid-set. It starts standalone from the watch, mirrors live on iPhone, and keeps every session <it>on-device</it>, no account. Built with SwiftUI and HealthKit.",
+        "descRich": "An iOS and Apple Watch app for zone training. Pick a zone and your watch <it>taps your wrist</it> the moment you drift out, so a workout stays a two-second glance, not a screen you study mid-set. It starts standalone from the watch, mirrors live on iPhone, and keeps every session <it>on-device</it>, no account. Built with SwiftUI and HealthKit.",
         "metaStatus": "Live on the App Store",
         "actionPrimary": "View on App Store",
-        "tag": "Heart-rate zones you feel on your wrist — no screen to study.",
+        "tag": "Heart-rate zones you feel on your wrist, no screen to study.",
         "story": {
           "problem": "Training by zone means checking your wrist mid-set. At that pace the number arrives late, and looking for it breaks the effort you were trying to hold.",
           "approach": "The Watch measures and taps: entering the zone, leaving it, hitting the goal. The iPhone only mirrors what the Watch tracks. Zones come from your own profile (Karvonen over the Tanaka formula), not a generic table.",
@@ -758,24 +788,30 @@
           "Profile and history sync between devices; nothing leaves them"
         ],
         "mediaCaption": "One live session across both devices: started on the iPhone, measured on the Watch, mirrored back to the phone. See the badge flip as the heart rate drifts out of Zone 2 and returns.",
-        "watchCaption": "On the wrist alone: pick a zone with the crown, then the live session — the badge slipping out of zone and back in — through to the goal completed."
+        "watchCaption": "On the wrist alone: pick a zone with the crown, then the live session, with the badge slipping out of zone and back in, through to the goal completed.",
+        "kickerPlatform": "iOS",
+        "kickerDomain": "Fitness",
+        "mshowStatus": "App Store",
+        "actionPrivacy": "Privacy"
       },
       "fave": {
         "titleIt": "everything you try, ranked.",
-        "descRich": "An iOS app for the person who already keeps mental lists of every drink, café and movie she has tried. You make a list for anything, tick things off as you go, and give them stars <it>only when you feel like it</it> — rating is never homework. A café keeps its own orders and scores itself from their average. Movies, shows and books fill in their own artwork from TMDB and Open Library. Everything lives in your private iCloud and nowhere else: no accounts, no analytics, no servers of mine.",
+        "descRich": "An iOS app for the person who already keeps mental lists of every drink, café and movie she has tried. You make a list for anything, tick things off as you go, and give them stars <it>only when you feel like it</it>, because rating is never homework. A café keeps its own orders and scores itself from their average. Movies, shows and books fill in their own artwork from TMDB and Open Library. Everything lives in your private iCloud and nowhere else: no accounts, no analytics, no servers of mine.",
         "metaStatus": "Coming to the App Store",
-        "actionPrimary": "Coming to the App Store",
+        "actionPrimary": "Coming soon",
         "actionGhost": "Support",
         "actionPrivacy": "Privacy",
         "tag": "Rank the drinks, cafés and movies you try.",
-        "mshowStatus": "Coming soon"
+        "mshowStatus": "Coming soon",
+        "kickerPlatform": "iOS",
+        "kickerDomain": "Lifestyle"
       },
       "vitapath": {
         "titleIt": "emergency response, end to end.",
         "descRich": "An emergency medical-response platform. A patient with a serious condition fires an SOS; the nearest paramedic from a <it>private network</it> is dispatched and tracked live; the patient is routed to the right hospital by insurance, proximity and capability; a hospital console runs dispatch, arrival and reception. Two SwiftUI apps, a React console, and a <it>Spring Boot + PostGIS</it> backend with a real-time emergency state machine.",
         "metaStatus": "MVP · e2e-verified",
         "actionPrimary": "Private beta",
-        "tag": "SOS to hospital handoff — dispatched, tracked, routed.",
+        "tag": "SOS to hospital handoff: dispatched, tracked, routed.",
         "story": {
           "problem": "In an emergency the minutes go to deciding who responds and where the patient is taken. Send them to a hospital that does not take their insurance, or cannot handle the case, and the transfer happens twice.",
           "approach": "One emergency state machine in Spring Boot. PostGIS picks the nearest available paramedic with an escalation sweep, STOMP keeps the map and ETA live across all three surfaces, and hospital routing scores insurance, proximity and capability with real driving ETAs from OSRM.",
@@ -789,12 +825,13 @@
         ],
         "mediaCaption": "One real emergency across all three surfaces at the same moment. The offer lands on the paramedic's phone, she accepts, and the console resolves the hospital by insurance and network while the patient watches the same road route close in on her own map.",
         "galleryCaption": "The patient app: the SOS button, live tracking with the paramedic's real road route and ETA, and the emergency card responders read on arrival.",
-        "kicker": "System · Healthtech · 2026",
-        "previewUrl": "vitapath · dispatch console"
+        "kickerPlatform": "System",
+        "kickerDomain": "Healthtech",
+        "mshowStatus": "Private beta"
       },
       "arrhythmia": {
         "titleIt": "read the ECG, beat by beat.",
-        "descRich": "A web front end for a <it>FastAPI</it> ECG arrhythmia classifier. Upload a WFDB record and it renders the whole signal at once, then classifies every beat by AAMI class (N/S/V/F/Q) with model confidence — drill into any flagged beat in a real 60-second context window. Built to prove a genuine ML pipeline, not a notebook: Next.js and TanStack Query on the front, a FastAPI model service behind.",
+        "descRich": "A web front end for a <it>FastAPI</it> ECG arrhythmia classifier. Upload a WFDB record and it renders the whole signal at once, then classifies every beat by AAMI class (N/S/V/F/Q) with model confidence, so you can drill into any flagged beat in a real 60-second context window. Built to prove a genuine ML pipeline, not a notebook: Next.js and TanStack Query on the front, a FastAPI model service behind.",
         "metaPlatform": "Web · Responsive",
         "metaStatus": "Working demo",
         "actionPrimary": "View the ML backend",
@@ -811,7 +848,10 @@
           "FastAPI and Next.js, with an explicitly versioned model"
         ],
         "mediaCaption": "MIT-BIH record 230: 2,464 beats, 123 flagged, classified against the live model.",
-        "galleryCaption": "Uploading the record, and a flagged beat opened in its real 60-second context window."
+        "galleryCaption": "Uploading the record, and a flagged beat opened in its real 60-second context window.",
+        "kickerPlatform": "Web",
+        "kickerDomain": "ML",
+        "mshowStatus": "Working demo"
       }
     }
   }

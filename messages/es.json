@@ -15,7 +15,7 @@
     "skipToContent": "Ir al contenido principal",
     "metaTitle": "Atelier Belli",
     "metaDescription": "Atelier Belli es el portafolio de Ivan Lorenzana, desarrollador en Tijuana. Apps de iOS y los sistemas detrás de ellas: Alisio, Vitapath y un detector de arritmias.",
-    "ogAlt": "Atelier Belli — portafolio de Ivan Lorenzana"
+    "ogAlt": "Atelier Belli: portafolio de Ivan Lorenzana"
   },
   "legal": {
     "back": "Volver al Inicio",
@@ -626,24 +626,24 @@
       "signed": "Firmado"
     },
     "vitrine": {
-      "eyebrow": "Vitrina — 2026",
+      "eyebrow": "Vitrina 2026",
       "titlePre": "Tres piezas ",
       "titleIt": "recientes.",
-      "hint": "— Pasa el cursor para enfocar",
-      "hintTouch": "— Desliza para verlas"
+      "hint": "Pasa el cursor para enfocar",
+      "hintTouch": "Desliza para verlas"
     },
     "work": {
       "eyebrow": "La obra",
       "titlePre": "Obra ",
       "titleIt": "selecta.",
-      "indexMeta": "Índice — 2023 / 2026",
+      "indexMeta": "Índice 2023 / 2026",
       "viewCase": "Ver proyecto"
     },
     "workbench": {
       "eyebrow": "El taller",
       "titlePre": "Herramientas del ",
       "titleIt": "oficio.",
-      "desc": "Un conjunto pequeño y opinado. Swift y SwiftUI para el teléfono; <it>Next.js</it> y TypeScript para la web; Postgres para lo que debe durar. Figma, Xcode, Claude Code — el banco se mantiene limpio.",
+      "desc": "Un conjunto pequeño y opinado. Swift y SwiftUI para el teléfono; <it>Next.js</it> y TypeScript para la web; Postgres para lo que debe durar. Figma, Xcode, Claude Code. El banco se mantiene limpio.",
       "groups": {
         "frontend": "Frontend & Móvil",
         "backend": "Backend & Infra",
@@ -682,52 +682,79 @@
       },
       "fingo": {
         "titleIt": "decisiones en grupo, fácil.",
-        "descRich": "Una app de iOS para decidir en grupo al instante — ruletas, monedas, flechas giratorias, toque-para-elegir. Totalmente personalizable, con <it>háptics</it> que hacen que cada elección se sienta intencional. Construida con SwiftUI.",
+        "descRich": "Una app de iOS para decidir en grupo al instante: ruletas, monedas, flechas giratorias, toque-para-elegir. Totalmente personalizable, con <it>háptics</it> que hacen que cada elección se sienta intencional. Construida con SwiftUI.",
         "metaStatus": "Disponible en App Store",
         "actionPrimary": "Ver en App Store",
         "actionGhost": "Soporte",
-        "tag": "Ruletas, monedas, háptics — decisiones de un toque."
+        "tag": "Ruletas, monedas, háptics. Decisiones de un toque.",
+        "kickerPlatform": "iOS",
+        "kickerDomain": "Utilidades",
+        "mshowStatus": "App Store",
+        "actionPrivacy": "Privacidad"
       },
       "savely": {
         "titleIt": "ahorro personal, en calma.",
-        "descRich": "Una app de ahorro local-first. Metas con un ritmo real, registro diario de ingresos y gastos, un escáner de recibos que lee en el teléfono, y un auto-move de día de pago que convierte ingreso en ahorro con un toque. Sin cuentas, sin nube, sin conexiones bancarias — el dinero vive en el teléfono y <it>nunca sale de ahí</it>. SwiftUI y SwiftData, enviada a la App Store.",
-        "metaStatus": "En revisión · Próximamente en la App Store",
+        "descRich": "Una app de ahorro local-first. Metas con un ritmo real, registro diario de ingresos y gastos, un escáner de recibos que lee en el teléfono, y un auto-move de quincena que convierte ingreso en ahorro con un toque. Sin cuentas, sin nube, sin conexiones bancarias: el dinero vive en el teléfono y <it>nunca sale de ahí</it>. SwiftUI y SwiftData, enviada a App Store.",
+        "metaStatus": "En revisión · Próximamente en App Store",
         "actionPrimary": "Próximamente",
         "actionGhost": "Soporte",
-        "tag": "Metas, recibos, auto-move de quincena — dinero que nunca sale del teléfono.",
+        "tag": "Metas, recibos, auto-move de quincena. Dinero que nunca sale del teléfono.",
         "mshowStatus": "En revisión",
-        "galleryCaption": "Tres pantallas reales, sembradas con el tour DEBUG de la propia app: una meta con su ritmo, un recibo leído en el dispositivo — la foto nunca sale del teléfono — y el auto-move de un toque del día de pago hacia esa meta."
+        "galleryCaption": "Tres pantallas reales, sembradas con el tour DEBUG de la propia app: una meta con su ritmo, un recibo leído en el dispositivo (la foto nunca sale del teléfono), y el auto-move de quincena de un toque hacia esa meta.",
+        "kickerPlatform": "iOS",
+        "kickerDomain": "Fintech",
+        "actionPrivacy": "Privacidad",
+        "story": {
+          "problem": "Casi toda app de ahorro pide conexión bancaria antes de servir de algo, y luego responde la única pregunta que importa, si la meta todavía llega a tiempo, con una proyección que los depósitos no sostienen. Entregar tus cuentas para que te digan algo cómodo es mal negocio.",
+          "approach": "Todo corre en el teléfono: SwiftData para el dinero, el reconocimiento de texto en el dispositivo de Apple para los recibos, y cero llamadas de red. La matemática del ritmo se niega a adular. Una meta a más de un año muestra 1+ year en vez de una fecha inventada, y el auto-move de quincena solo ofrece lo que el mes de verdad alcanza, ya contando esta quincena, sus gastos y lo que ya se movió a metas.",
+          "result": "Enviada a App Store con la premisa intacta: sin cuenta, sin nube, sin conexión bancaria y sin nada que salga del teléfono a menos que tú lo mandes. Lo único que puede viajar es un PDF semanal que tú entregas a la hoja de compartir de iOS."
+        },
+        "highlights": [
+          "Sin cuenta, sin nube, sin conexión bancaria y sin una sola llamada de red",
+          "Los recibos se leen en el dispositivo con el reconocimiento de texto de Apple; la foto nunca se guarda",
+          "El auto-move de quincena ofrece un solo depósito, con tope en lo que el mes alcanza",
+          "El ritmo y el ETA de la meta salen de depósitos reales, sin fechas inventadas"
+        ]
       },
       "mezcal": {
-        "descRich": "Tienda e historia para una marca de mezcal artesanal de Oaxaca. Un sitio editorial y tranquilo construido para vender — variedades, origen, pedidos directos. <it>Hecho a mano</it> de la marca al checkout.",
+        "descRich": "Tienda e historia para una marca de mezcal artesanal de Oaxaca. Un sitio editorial y tranquilo construido para vender: variedades, origen, pedidos directos. <it>Hecho a mano</it> de la marca al checkout.",
         "metaPlatform": "Web · Responsiva",
-        "metaStatus": "En vivo",
+        "metaStatus": "En línea",
         "actionPrimary": "Visitar sitio",
-        "tag": "Una marca de mezcal artesanal — tienda e historia.",
-        "mshowStatus": "En vivo"
+        "tag": "Una marca de mezcal artesanal: tienda e historia.",
+        "mshowStatus": "En línea",
+        "kickerPlatform": "Web",
+        "kickerDomain": "E-commerce",
+        "titleIt": "venta directa desde Oaxaca."
       },
       "blip": {
         "titleIt": "el radar de restocks.",
-        "descRich": "Un monitor en vivo de producto sellado de Pokémon TCG en Amazon México. Vigila precio, stock y restocks, y dispara un push instantáneo con un deep-link de un toque que llena el carrito — <it>tú</it> completas la compra. La ventaja es velocidad legítima: enterarte y tocar primero.",
+        "descRich": "Un monitor en vivo de producto sellado de Pokémon TCG en Amazon México. Vigila precio, stock y restocks, y dispara un push instantáneo con un deep-link de un toque que llena el carrito, y <it>tú</it> completas la compra. La ventaja es velocidad legítima: enterarte y tocar primero.",
         "metaPlatform": "Web · PWA",
         "metaStatus": "En desarrollo",
-        "actionPrimary": "En desarrollo",
-        "tag": "Precio, stock, restocks — alertado antes que el swarm."
+        "actionPrimary": "Próximamente",
+        "tag": "Precio, stock, restocks. Alertado antes que el swarm.",
+        "kickerPlatform": "Web",
+        "kickerDomain": "Retail",
+        "mshowStatus": "En desarrollo"
       },
       "briefmark": {
         "titleIt": "bookmarks que piensan.",
-        "descRich": "Una app de iOS que convierte videos de TikTok en bookmarks inteligentes. Comparte una URL y extrae cada recomendación — recetas, películas, libros, lugares — en tarjetas estructuradas y accionables, con <it>Claude</it> detrás. SwiftUI al frente, backend en TypeScript.",
+        "descRich": "Una app de iOS que convierte videos de TikTok en bookmarks inteligentes. Comparte una URL y extrae cada recomendación (recetas, películas, libros, lugares) en tarjetas estructuradas y accionables, con <it>Claude</it> detrás. SwiftUI al frente, backend en TypeScript.",
         "metaStatus": "En desarrollo",
-        "actionPrimary": "En desarrollo",
-        "tag": "TikToks en tarjetas estructuradas y buscables."
+        "actionPrimary": "Próximamente",
+        "tag": "TikToks en tarjetas estructuradas y buscables.",
+        "kickerPlatform": "iOS",
+        "kickerDomain": "IA",
+        "mshowStatus": "En desarrollo"
       },
       "pass": {
         "titleIt": "tarjetas vivas en Wallet.",
-        "descRich": "Una plataforma serverless que emite y actualiza pases de Apple Wallet — membresías de gym, tarjetas de sellos — con cambios en tiempo real directo a la tarjeta. AWS Lambda, DynamoDB y el web service de Apple Wallet, <it>de punta a punta</it>.",
+        "descRich": "Una plataforma serverless que emite y actualiza pases de Apple Wallet (membresías de gym, tarjetas de sellos) con cambios en tiempo real directo a la tarjeta. AWS Lambda, DynamoDB y el web service de Apple Wallet, <it>de punta a punta</it>.",
         "metaPlatform": "AWS · Serverless",
         "metaStatus": "En producción",
         "actionPrimary": "Código próximamente",
-        "tag": "Pases de Apple Wallet — emitidos, actualizados, vivos.",
+        "tag": "Pases de Apple Wallet: emitidos, actualizados, vivos.",
         "story": {
           "problem": "Un pase de Wallet no se refresca desde la app. Sin el web service de pases de Apple, la tarjeta se queda vieja en el Wallet del usuario, y una tarjeta vieja es una tarjeta que borra.",
           "approach": "Un backend serverless que implementa el protocolo completo: registro de dispositivos, versionado del pase, firma con PassKit y el push que le dice al dispositivo que vuelva por la versión nueva.",
@@ -738,14 +765,17 @@
           "Push por APNs: el pase se actualiza en su lugar, en la tarjeta",
           "Lambda, API Gateway, DynamoDB y S3, desplegados con SAM",
           "Emisión por API: membresías de gym y tarjetas de sellos"
-        ]
+        ],
+        "kickerPlatform": "Backend",
+        "kickerDomain": "Lealtad",
+        "mshowStatus": "En producción"
       },
       "alisio": {
         "titleIt": "entrena por zonas de frecuencia.",
-        "descRich": "Una app de iOS y Apple Watch para entrenar por zonas. Elige una zona y el reloj <it>te avisa en la muñeca</it> en cuanto te sales — el entrenamiento vuelve a ser un vistazo de dos segundos, no una pantalla que estudias a media serie. Arranca solo desde el reloj, se refleja en vivo en el iPhone y guarda cada sesión <it>en el dispositivo</it>, sin cuentas. Hecha con SwiftUI y HealthKit.",
+        "descRich": "Una app de iOS y Apple Watch para entrenar por zonas. Elige una zona y el reloj <it>te avisa en la muñeca</it> en cuanto te sales, y el entrenamiento vuelve a ser un vistazo de dos segundos, no una pantalla que estudias a media serie. Arranca solo desde el reloj, se refleja en vivo en el iPhone y guarda cada sesión <it>en el dispositivo</it>, sin cuentas. Hecha con SwiftUI y HealthKit.",
         "metaStatus": "Disponible en App Store",
         "actionPrimary": "Ver en App Store",
-        "tag": "Zonas de frecuencia que sientes en la muñeca — sin pantallas.",
+        "tag": "Zonas de frecuencia que sientes en la muñeca, sin pantallas.",
         "story": {
           "problem": "Entrenar por zonas implica revisar la muñeca a media serie. A ese ritmo el número llega tarde, y buscarlo rompe justo el esfuerzo que querías sostener.",
           "approach": "El reloj mide y avisa con vibraciones: al entrar a la zona, al salirte y al cumplir la meta. El iPhone solo refleja lo que el reloj mide. Las zonas salen de tu perfil real (Karvonen sobre la fórmula de Tanaka), no de una tabla genérica.",
@@ -758,24 +788,30 @@
           "Perfil e historial se sincronizan entre dispositivos; nada sale de ellos"
         ],
         "mediaCaption": "Una sesión en vivo en los dos dispositivos: arranca en el iPhone, se mide en el reloj y se refleja de vuelta en el teléfono. Mira el distintivo cambiar cuando el pulso se sale de la Zona 2 y regresa.",
-        "watchCaption": "Solo con el reloj: elegir zona con la corona y la sesión en vivo — el distintivo saliéndose de zona y regresando — hasta cumplir la meta."
+        "watchCaption": "Solo con el reloj: elegir zona con la corona y la sesión en vivo, con el distintivo saliéndose de zona y regresando, hasta cumplir la meta.",
+        "kickerPlatform": "iOS",
+        "kickerDomain": "Fitness",
+        "mshowStatus": "App Store",
+        "actionPrivacy": "Privacidad"
       },
       "fave": {
         "titleIt": "todo lo que pruebas, rankeado.",
-        "descRich": "Una app de iOS para quien ya lleva listas mentales de cada bebida, cafetería y película que ha probado. Haces una lista de lo que sea, vas palomeando lo que pruebas, y les pones estrellas <it>solo cuando se te antoja</it> — calificar nunca es tarea. Una cafetería guarda sus propias órdenes y se califica sola con el promedio. Películas, series y libros traen su propia portada desde TMDB y Open Library. Todo vive en tu iCloud privado y en ningún otro lado: sin cuentas, sin analytics, sin servidores míos.",
+        "descRich": "Una app de iOS para quien ya lleva listas mentales de cada bebida, cafetería y película que ha probado. Haces una lista de lo que sea, vas palomeando lo que pruebas, y les pones estrellas <it>solo cuando se te antoja</it>, porque calificar nunca es tarea. Una cafetería guarda sus propias órdenes y se califica sola con el promedio. Películas, series y libros traen su propia portada desde TMDB y Open Library. Todo vive en tu iCloud privado y en ningún otro lado: sin cuentas, sin analytics, sin servidores míos.",
         "metaStatus": "Próximamente en App Store",
-        "actionPrimary": "Próximamente en App Store",
+        "actionPrimary": "Próximamente",
         "actionGhost": "Soporte",
         "actionPrivacy": "Privacidad",
         "tag": "Rankea las bebidas, cafés y películas que pruebas.",
-        "mshowStatus": "Próximamente"
+        "mshowStatus": "Próximamente",
+        "kickerPlatform": "iOS",
+        "kickerDomain": "Lifestyle"
       },
       "vitapath": {
         "titleIt": "respuesta a emergencias, de punta a punta.",
         "descRich": "Una plataforma de respuesta médica de emergencia. Un paciente con una condición seria dispara un SOS; el paramédico más cercano de una <it>red privada</it> es despachado y rastreado en vivo; el paciente se rutea al hospital correcto por seguro, proximidad y capacidad; una consola hospitalaria maneja despacho, llegada y recepción. Dos apps SwiftUI, una consola React y un backend <it>Spring Boot + PostGIS</it> con una máquina de estados en tiempo real.",
         "metaStatus": "MVP · verificado e2e",
         "actionPrimary": "Beta privada",
-        "tag": "Del SOS al hospital — despacho, tracking, ruteo.",
+        "tag": "Del SOS al hospital: despacho, tracking, ruteo.",
         "story": {
           "problem": "En una emergencia los minutos se van decidiendo quién responde y a dónde se lleva al paciente. Si el hospital no cubre su seguro o no puede con el caso, el traslado se hace dos veces.",
           "approach": "Una sola máquina de estados de la emergencia en Spring Boot. PostGIS elige al paramédico disponible más cercano con barrido de escalación, STOMP mantiene el mapa y el ETA vivos en las tres superficies, y el ruteo hospitalario pondera seguro, proximidad y capacidad con ETAs reales de manejo (OSRM).",
@@ -789,12 +825,13 @@
         ],
         "mediaCaption": "Una emergencia real en las tres superficies al mismo tiempo. La oferta llega al teléfono de la paramédica, ella acepta, y la consola resuelve el hospital por seguro y red mientras la paciente ve esa misma ruta acercarse en su propio mapa.",
         "galleryCaption": "La app del paciente: el botón SOS, el tracking en vivo con la ruta vial real del paramédico y su ETA, y la tarjeta de emergencia que leen los rescatistas al llegar.",
-        "kicker": "Sistema · Healthtech · 2026",
-        "previewUrl": "vitapath · consola de despacho"
+        "kickerPlatform": "Sistema",
+        "kickerDomain": "Healthtech",
+        "mshowStatus": "Beta privada"
       },
       "arrhythmia": {
         "titleIt": "lee el ECG, latido a latido.",
-        "descRich": "Un front end web para un clasificador de arritmias en ECG con <it>FastAPI</it>. Subes un registro WFDB y renderiza la señal completa de una vez, luego clasifica cada latido por clase AAMI (N/S/V/F/Q) con la confianza del modelo — entra a cualquier latido marcado en una ventana real de 60 segundos. Hecho para demostrar un pipeline de ML real, no un notebook: Next.js y TanStack Query al frente, un servicio de modelo en FastAPI detrás.",
+        "descRich": "Un front end web para un clasificador de arritmias en ECG con <it>FastAPI</it>. Subes un registro WFDB y renderiza la señal completa de una vez, luego clasifica cada latido por clase AAMI (N/S/V/F/Q) con la confianza del modelo, y entras a cualquier latido marcado en una ventana real de 60 segundos. Hecho para demostrar un pipeline de ML real, no un notebook: Next.js y TanStack Query al frente, un servicio de modelo en FastAPI detrás.",
         "metaPlatform": "Web · Responsiva",
         "metaStatus": "Demo funcional",
         "actionPrimary": "Ver el backend ML",
@@ -811,7 +848,10 @@
           "FastAPI y Next.js, con el modelo versionado de forma explícita"
         ],
         "mediaCaption": "Registro 230 de MIT-BIH: 2,464 latidos, 123 marcados, clasificados contra el modelo en vivo.",
-        "galleryCaption": "La subida del registro, y un latido marcado abierto en su ventana real de 60 segundos."
+        "galleryCaption": "La subida del registro, y un latido marcado abierto en su ventana real de 60 segundos.",
+        "kickerPlatform": "Web",
+        "kickerDomain": "ML",
+        "mshowStatus": "Demo funcional"
       }
     }
   }
