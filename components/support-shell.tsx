@@ -3,7 +3,7 @@
 import Link from "next/link"
 import type { ReactNode } from "react"
 
-export type SupportApp = "fingo" | "savely"
+export type SupportApp = "fingo" | "savely" | "fave"
 
 export type ContactKind =
   | "email"
@@ -12,6 +12,8 @@ export type ContactKind =
   | "docs"
   | "bank"
   | "security"
+  | "sync"
+  | "artwork"
   | "twitter"
   | "order"
   | "wholesale"
@@ -96,6 +98,19 @@ const ICON_PATHS: Record<ContactKind, ReactNode> = {
       <path d="M15 3v4h4M10 13h6M10 17h6M10 9h3" />
     </>
   ),
+  sync: (
+    <>
+      <path d="M7.5 17h9a3.5 3.5 0 0 0 .3-7 5.5 5.5 0 0 0-10.5 1.2A3.4 3.4 0 0 0 7.5 17z" />
+      <path d="M12 11v5m-2-2 2 2 2-2" />
+    </>
+  ),
+  artwork: (
+    <>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <circle cx="8.5" cy="10" r="1.5" />
+      <path d="m3 17 4-4 3 3 4-4 7 7" />
+    </>
+  ),
   order: (
     <>
       <path d="M3 4h3l2 12h12" />
@@ -132,7 +147,7 @@ export default function SupportShell({
       {/* NAV */}
       <nav className="sup-nav">
         <div className="sup-nav-inner">
-          <Link className="sup-back" href={`/${locale}`}>
+          <Link className="sup-back" href="/">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M15 6l-6 6 6 6" />
             </svg>
@@ -279,13 +294,13 @@ export default function SupportShell({
       </main>
 
       <footer className="sup-foot">
-        <Link href={`/${locale}`}>Atelier Belli</Link>
+        <Link href="/">Atelier Belli</Link>
         <span className="sup-sep">·</span>
         <span>{content.footMeta}</span>
         <span className="sup-sep">·</span>
-        <Link href={`/${locale}/privacy`}>{content.privacyLabel}</Link>
+        <Link href="/privacy">{content.privacyLabel}</Link>
         <span className="sup-sep">·</span>
-        <Link href={`/${locale}/terms`}>{content.termsLabel}</Link>
+        <Link href="/terms">{content.termsLabel}</Link>
       </footer>
     </div>
   )

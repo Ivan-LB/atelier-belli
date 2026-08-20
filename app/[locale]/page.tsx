@@ -282,6 +282,12 @@ export default function PortfolioPage() {
           kind: "primary disabled",
           icon: "clock",
         },
+        {
+          label: t("cases.fave.actionGhost"),
+          href: "/fave/support",
+          kind: "ghost",
+          icon: "help",
+        },
       ],
       preview: "fave",
     },

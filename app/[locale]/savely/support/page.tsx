@@ -5,7 +5,7 @@ import { useParams } from "next/navigation"
 import { useTranslations } from "next-intl"
 import SupportShell, { type SupportContent } from "@/components/support-shell"
 
-const CONTACT_KINDS = ["email", "bank", "security", "docs"] as const
+const CONTACT_KINDS = ["email", "bug", "feature", "security"] as const
 
 export default function SavelySupportPage() {
   const t = useTranslations("support.savely")

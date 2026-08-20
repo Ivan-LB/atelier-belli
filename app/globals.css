@@ -2602,6 +2602,27 @@
   --sup-hero-tex: radial-gradient(circle at 70% 15%, #4e9b7222, transparent 55%);
 }
 
+/* Fave: "the notebook by lamplight". Warm paper (#f7f1ea is the app's own
+   canvas colour) written in blue-black ink, with the lamp itself pooling from
+   the top of the hero rather than tinting the accent, so the atmosphere stays
+   warm while every interactive element stays ink. Display face is Fraunces,
+   already self-hosted by next/font for .ab-root, so the third skin costs no
+   extra webfont and still sounds different from its two siblings. */
+.sup-root[data-app="fave"] {
+  --sup-bg: #f7f1ea;
+  --sup-bg-2: #efe6da;
+  --sup-fg: #241d16;
+  --sup-fg-2: #33291f;
+  --sup-muted: #6f6355;
+  --sup-muted-2: #9c8d7c;
+  --sup-accent: #294a70;
+  --sup-accent-2: #4d7ea9;
+  --sup-serif-display: var(--font-fraunces), "EB Garamond", Georgia, serif;
+  --sup-card: #fffdf9;
+  --sup-card-2: #f2ebe0;
+  --sup-hero-tex: radial-gradient(circle at 50% 0%, #e0a24a2e, transparent 55%);
+}
+
 .sup-root em {
   font-style: italic;
   font-family: var(--sup-serif);

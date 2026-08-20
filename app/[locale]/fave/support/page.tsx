@@ -5,10 +5,10 @@ import { useParams } from "next/navigation"
 import { useTranslations } from "next-intl"
 import SupportShell, { type SupportContent } from "@/components/support-shell"
 
-const CONTACT_KINDS = ["email", "bug", "feature"] as const
+const CONTACT_KINDS = ["email", "sync", "artwork", "bug"] as const
 
-export default function FingoSupportPage() {
-  const t = useTranslations("support.fingo")
+export default function FaveSupportPage() {
+  const t = useTranslations("support.fave")
   const params = useParams()
   const locale = (params?.locale as string) === "es" ? "es" : "en"
 
@@ -61,5 +61,5 @@ export default function FingoSupportPage() {
     [t],
   )
 
-  return <SupportShell appKey="fingo" locale={locale} content={content} />
+  return <SupportShell appKey="fave" locale={locale} content={content} />
 }
