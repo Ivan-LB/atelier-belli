@@ -237,3 +237,93 @@ streams meta tags into the body and React hoists them at hydration, so a
 `head meta[...]` locator races the hydration boundary and times out on a
 cold-compiled route. `seo.spec.ts` carries that comment at its `metaContent`
 helper.
+
+---
+
+## Landed from 011 that changes this plan (2026-08-20)
+
+011 rewrote the case taxonomy and Savely's narrative. It touched
+`app/[locale]/page.tsx`, both dictionaries, `CLAUDE.md`, `support-shell.tsx`,
+the three support pages and one e2e spec. **It did not touch
+`app/globals.css` or `public/cases/`**, so your Step 1 CSS region and your
+Step 2 image are exactly as this plan describes them.
+
+### Every line anchor you cite has moved. Re-grep, do not trust these numbers.
+
+| this plan says | measured after 011 |
+|---|---|
+| `page.tsx` at 1608 lines (007's correction) | **1634** |
+| nav region `page.tsx:669-688`, corrected to `:674` by 007 | `<header className="ab-nav">` at **`:704`**, `.ab-nav-end` at **`:736`** |
+| blip `<img>` at `page.tsx:1472` | **`:1516`** (`width={1600} height={1000}`, unchanged) |
+| `CLAUDE.md` at 791 lines | **850** |
+| CLAUDE.md `:108` alisio-watch dimensions | **`:141`**, still says `249×293` while `page.tsx:1520` renders `249×317`, so the fix is still owed |
+| CLAUDE.md `:189` alisio-system | **`:268`** |
+| CLAUDE.md `:194` vitapath-system | **`:273`** |
+| CLAUDE.md `:618` mezcal-mobile.webp | **`:785`** |
+
+`BRAND_LOGO` is still at `:86`. `app/globals.css` is untouched: the `≤820px`
+nav block is still at **`:1318`** and the vitrine carousel rules below it are
+still where the CLAUDE.md vitrine section describes them.
+
+### The suite is 84 tests, not 81
+
+011 added three (`/<app>/support/ links its own privacy policy`) and narrowed
+one existing selector. Your Step 4 adds a mobile test on top of 84. The
+`"Toggle theme"` aria pin you must protect is still at
+**`tests/e2e/smoke.spec.ts:129`**, untouched.
+
+### One new hard rule that binds your Step 1 string
+
+**`messages/*.json` now contains zero em dashes**, in both locales, and
+`CLAUDE.md` §5 records that as a standing rule with a one-line grep check. Your
+contact-chip label obviously must not add one, but more importantly: if you
+edit any neighbouring string, do not reintroduce a dash there either. Replace a
+dash with the punctuation that carries its job, never with a hyphen.
+
+Two structural dashes are **not** copy and must stay: the case title pattern
+`pre: "Alisio — "` in `page.tsx`, and `TITLE_TEMPLATE` in
+`app/[locale]/_route-metadata.ts`, which `tests/e2e/seo.spec.ts:95` pins by
+asserting each route title ends with `— Atelier Belli`. Removing either breaks
+a test or restyles all ten case titles.
+
+Docs are a separate matter: `CLAUDE.md` still holds 85 em dashes and the
+`plans/` files hold many more. The owner scoped the sweep to shipped copy;
+the docs sweep is unclaimed and is **not** yours unless they ask.
+
+### Where the nav label key belongs
+
+This plan guesses it may need a new key. Measured: **it does not.**
+`home.nav` already holds `home` / `work` / `about` / **`contact`**, in both
+locales (EN `"Contact"`, ES `"Contacto"`), because the desktop nav links are
+built from it and only the CSS hides them below 820px. Reuse
+`t("nav.contact")` for the chip and add no dictionary key at all, which also
+keeps the chip's label identical to the desktop link it stands in for.
+
+Parity is now **452 leaf keys**, up from 419; `pnpm verify:i18n` prints the
+live count. Note the parity script counts an array as one leaf, so a string
+array adds 1, not its length.
+
+### A trap 011 paid for, which will bite your `pnpm test:e2e`
+
+`playwright.config.ts` runs `pnpm dev --port 3100` with
+`reuseExistingServer: true`, and that server shares `.next` with the owner's
+dev server on `:3000`. When both compile at once the manifests clobber each
+other and the run dies mid-suite with
+`SyntaxError: Unexpected non-whitespace character after JSON`, which looks like
+a corrupt source file and is not. It is the dev-vs-dev form of the documented
+`next-build-clobbers-dev-cache` gotcha.
+
+Mitigation that worked: run `pnpm exec playwright test --workers=1`, and let
+:3100 warm up on a single spec first. Do not go chasing a JSON parse error in
+your own diff; check `lsof -ti :3000 -sTCP:LISTEN` first. Fixing this properly
+(a separate `distDir` for the test server) touches `next.config.mjs` and is
+unclaimed by any plan.
+
+### The blip image is safe to re-encode
+
+011 changed blip's fake URL bar from `BLIP — Radar` to the slug `blip`, which
+is markup, not the image. `public/cases/blip-hero.webp` is untouched at
+1600×1000 and `page.tsx:1516` still declares `width={1600} height={1000}`, so
+Step 2 stands exactly as written. Keep the explicit `width`/`height`: the
+repo's CLS discipline depends on them and the transparent frame slots collapse
+without them.
