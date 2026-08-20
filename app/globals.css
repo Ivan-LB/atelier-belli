@@ -382,16 +382,87 @@
   height: 10px;
   background: var(--line-2);
 }
-.ab-chip-lang b {
+/* Two segments in one pill, in a fixed en-then-es order. The chrome sits on the
+   wrapper, and the wrapper is a <div>, so it escapes the `.ab-root button` reset
+   that has always stripped `.ab-chip` off this control: it renders as a pill at
+   every width now, with no specificity fight. The padding is split between the
+   pill and the segments so the geometry is unchanged (12px from each outer edge,
+   8px either side of the rule) while each segment becomes a 35x28.5px target
+   rather than the ~19x16.5px of bare text. */
+/* Grid, not the inherited flex: "EN" and "ES" are 1.1px apart, and flex has no
+   free space to even them out when the pill is sized by its own content. Two 1fr
+   columns both resolve to the wider label, which is what lets the indicator be a
+   plain 50% translate instead of a measured offset. */
+.ab-chip-lang {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0;
+  padding: 0 4px;
+}
+.ab-chip-lang > button {
+  position: relative;
+  z-index: 1;
+  padding: 6px 8px;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: center;
+  color: var(--ab-muted);
+  transition: color var(--ab-trans);
+}
+/* The authored moment: the ground travels to the language you picked, so the
+   switch is something you watch happen rather than something you find already
+   done. It is the only motion in this cluster. */
+.ab-lang-ind {
+  position: absolute;
+  z-index: 0;
+  top: 3px;
+  bottom: 3px;
+  left: 4px;
+  width: calc((100% - 9px) / 2);
+  border-radius: 999px;
+  /* A tint of the ink rather than --bg-2, which sits 1.09:1 from the page in
+     light and 1.06:1 in dark: a ground you cannot see gives the slide nothing
+     to be watched. One value reads in both themes because it is derived from
+     each theme's own foreground. */
+  background: color-mix(in oklab, var(--ab-fg) 10%, transparent);
+  transform: translateX(0);
+  transition: transform var(--ab-trans);
+  pointer-events: none;
+}
+.ab-chip-lang[data-active="es"] .ab-lang-ind {
+  transform: translateX(calc(100% + 1px));
+}
+.ab-chip-lang > button[aria-current] {
   font-weight: 600;
   color: var(--ab-fg);
+  cursor: default;
 }
-.ab-chip-lang .off {
-  color: var(--muted-2);
+/* --ab-muted, not --muted-2, on the segment you are meant to click: --muted-2
+   renders it at 2.40:1 (light) / 2.52:1 (dark), under the 4.5:1 this project
+   commits to. --ab-muted is 5.41:1 / 5.42:1 and still sits far enough under the
+   active segment's ~15:1 to read as "not where you are". */
+.ab-chip-lang > button:not([aria-current]):hover {
+  color: var(--ab-fg);
 }
-.ab-chip:hover .ab-chip-lang b,
-.ab-chip:hover .off {
-  color: inherit;
+/* The rule sits above the moving ground, so it has to stay visible over it. */
+.ab-chip-lang .ab-sep {
+  position: relative;
+  z-index: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Keep the state change, drop the travel: the ground still marks the current
+     language and the colours still cross, they just do not slide. */
+  .ab-lang-ind {
+    transition: none;
+  }
+}
+/* The pill holds two targets now, so inverting the whole thing on hover would
+   claim it is one. The segment colours carry the state instead. */
+.ab-chip-lang:hover {
+  background: none;
+  color: var(--fg-2);
+  border-color: var(--line-2);
 }
 /* The one action in the nav-end cluster, not a third setting beside language
    and theme. It takes .ab-btn-mail's full-strength border instead of a fill or
@@ -1365,21 +1436,6 @@
   }
   .ab-chip-contact {
     display: inline-flex;
-  }
-  /* `.ab-root button` (0,1,1) outranks `.ab-chip` (0,1,0), so the language
-     button has never received the pill's border or its 11px type and renders as
-     plain 16px text. That passes unnoticed while it stands alone, but the
-     contact <a> beside it does get .ab-chip, and the two would read as two
-     different systems. Restore the component here, where they sit together;
-     above 820px the button is on its own and is left exactly as it is. */
-  .ab-nav-end button.ab-chip {
-    font-size: 11px;
-    border: 1px solid var(--line-2);
-    color: var(--fg-2);
-  }
-  .ab-nav-end button.ab-chip:hover {
-    border-color: var(--ab-fg);
-    color: var(--ab-bg);
   }
   /* Carousel: the slot must be WIDER than the card it holds, or neighbours bleed
      in and the cards visually overlap. `%` here resolves against the track's

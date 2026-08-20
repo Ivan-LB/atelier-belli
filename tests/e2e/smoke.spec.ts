@@ -237,3 +237,110 @@ test("at 1280px the nav links are visible and the contact chip is not", async ({
   await expect(page.locator(".ab-nav-links")).toBeVisible();
   await expect(page.locator("header.ab-nav a.ab-chip-contact")).toBeHidden();
 });
+
+// ── Test 11: the language control does not rearrange itself ──────────────────
+// It used to render the active language first, so switching moved the half you
+// had just clicked. The order is fixed en-then-es now, in both locales.
+test("the language toggle keeps a fixed EN-then-ES order in both locales", async ({
+  browser,
+}) => {
+  for (const [cookie, active, other] of [
+    ["en", "EN", "ES"],
+    ["es", "ES", "EN"],
+  ] as const) {
+    const context = await browser.newContext();
+    await context.addCookies([
+      { name: "NEXT_LOCALE", value: cookie, url: "http://localhost:3100" },
+    ]);
+    const page = await context.newPage();
+    await page.goto("/");
+
+    const pill = page.locator(".ab-chip-lang");
+    const segments = pill.locator("button");
+
+    // Order is positional, not by which one is active.
+    await expect(segments).toHaveCount(2);
+    await expect(segments.first()).toHaveText("EN");
+    await expect(segments.last()).toHaveText("ES");
+
+    // Exactly one is marked current, and it is the active locale.
+    const current = pill.locator("button[aria-current]");
+    await expect(current).toHaveCount(1);
+    await expect(current).toHaveText(active);
+
+    // Each segment declares its own language so it is announced correctly, and
+    // the group is what names the control (the visible text is the button name,
+    // so an aria-label reading "Cambiar a Español" over "ES" would break
+    // WCAG 2.5.3 Label in Name).
+    await expect(pill).toHaveAttribute("role", "group");
+    await expect(segments.first()).toHaveAttribute("lang", "en");
+    await expect(segments.last()).toHaveAttribute("lang", "es");
+    await expect(pill.locator(`button[lang="${other.toLowerCase()}"]`)).not.toHaveAttribute(
+      "aria-current",
+      "true",
+    );
+
+    await context.close();
+  }
+});
+
+// ── Test 12: pressing the language you are already in does nothing ───────────
+// The old control was a single toggle, so clicking the active half switched you
+// away from it.
+test("clicking the active language segment is a no-op", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+
+  await page.locator(".ab-chip-lang button[aria-current]").click();
+
+  // Give a refresh the chance to happen, then prove it did not.
+  await page.waitForTimeout(600);
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await expect(page.locator(".ab-chip-lang button[aria-current]")).toHaveText("EN");
+});
+
+// ── Test 13: switching moves the indicator and lands on the other language ───
+test("the other language segment switches the page and carries the indicator", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const pill = page.locator(".ab-chip-lang");
+  await expect(pill).toHaveAttribute("data-active", "en");
+
+  await pill.locator('button[lang="es"]').click();
+
+  // data-active flips immediately, before the refresh lands, so the indicator
+  // starts travelling on the click rather than on the response.
+  await expect(pill).toHaveAttribute("data-active", "es");
+  await expect(page.locator("html")).toHaveAttribute("lang", "es");
+  await expect(page.locator(".ab-chip-lang button[aria-current]")).toHaveText("ES");
+});
+
+// ── Test 14: the pill renders as a pill at every width ───────────────────────
+// `.ab-root button` used to outrank `.ab-chip` and strip the border off this
+// control above 820px. The wrapper is a <div> now, so the chrome survives.
+test("the language toggle is a bordered pill on desktop and on mobile", async ({
+  page,
+}) => {
+  for (const width of [375, 1280]) {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto("/");
+    const box = page.locator(".ab-chip-lang");
+    await expect(box).toBeVisible();
+    const style = await box.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return { border: cs.borderTopWidth, radius: cs.borderTopLeftRadius, size: cs.fontSize };
+    });
+    expect(style, `language pill chrome at ${width}px`).toEqual({
+      border: "1px",
+      radius: "999px",
+      size: "11px",
+    });
+    // Both segments are the same width, which is what lets the indicator be a
+    // plain 50% translate.
+    const widths = await box.locator("button").evaluateAll((els) =>
+      els.map((e) => Math.round(e.getBoundingClientRect().width * 100) / 100),
+    );
+    expect(widths[0], `segment widths at ${width}px`).toBe(widths[1]);
+  }
+});

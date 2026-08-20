@@ -130,6 +130,10 @@ const ICONS = {
   ),
 } as const
 
+// Slightly over the .ab-lang-ind transition in globals.css (280ms), so the
+// language indicator lands before router.refresh() replaces the node.
+const LOCALE_SLIDE_MS = 300
+
 export default function PortfolioPage() {
   const params = useParams()
   const router = useRouter()
@@ -190,14 +194,32 @@ export default function PortfolioPage() {
 
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"))
 
-  const switchLocale = () => {
-    const target: Lang = locale === "es" ? "en" : "es"
+  // The indicator follows this, not `locale`. router.refresh() is a round trip,
+  // and a segmented control that does not move until the response lands reads as
+  // if it ignored the click. Cleared once the real locale catches up.
+  const [pendingLocale, setPendingLocale] = useState<Lang | null>(null)
+  const shownLocale = pendingLocale ?? locale
+  useEffect(() => {
+    setPendingLocale(null)
+  }, [locale])
+
+  const goToLocale = (target: Lang) => {
+    // Explicit target rather than a toggle, so pressing the language you are
+    // already in is a genuine no-op instead of switching you away from it.
+    if (target === shownLocale) return
+    setPendingLocale(target)
     // The URL carries no locale any more, so there is nowhere to navigate to:
     // the cookie IS the language, and the middleware re-resolves it on the next
     // request. router.refresh() re-fetches the current route through it, which
     // keeps the user on the page (and the case) they were reading.
     document.cookie = `${LOCALE_COOKIE}=${target}; max-age=${60 * 60 * 24 * 365}; path=/; SameSite=Lax`
-    router.refresh()
+    // ...but it also replaces this subtree, indicator included, so a refresh
+    // that lands mid-slide leaves the ground teleporting the rest of the way.
+    // Measured: the payload arrived ~80ms into a 280ms travel and jumped the
+    // remaining 81%. Let the control finish acknowledging the click, then swap
+    // the page under it. Reduced motion has no travel to wait for.
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    window.setTimeout(() => router.refresh(), reduced ? 0 : LOCALE_SLIDE_MS)
   }
 
   // Reveal-on-scroll
@@ -740,15 +762,40 @@ export default function PortfolioPage() {
             <a className="ab-chip ab-chip-contact" href="#contact">
               {t("nav.contact")}
             </a>
-            <button
+            {/* Two segments in a FIXED en-then-es order. This was one <button>
+                that rendered the active language first, so the half you clicked
+                moved out from under you, and clicking the language you were
+                already in switched you away from it. Both stay buttons through
+                the switch so keyboard focus survives the refresh, and each
+                carries its own lang so "EN" and "ES" are announced by the right
+                voice. The group is what names the control; labelling a button
+                "Cambiar a Español" while it reads "ES" put the accessible name
+                out of step with the visible one. */}
+            <div
               className="ab-chip ab-chip-lang"
-              onClick={switchLocale}
-              aria-label={t("locale.switchAria")}
+              data-active={shownLocale}
+              role="group"
+              aria-label={t("locale.groupAria")}
             >
-              <b>{locale === "es" ? "ES" : "EN"}</b>
-              <span className="ab-sep" />
-              <span className="off">{locale === "es" ? "EN" : "ES"}</span>
-            </button>
+              <span className="ab-lang-ind" aria-hidden="true" />
+              <button
+                type="button"
+                lang="en"
+                aria-current={shownLocale === "en" ? "true" : undefined}
+                onClick={() => goToLocale("en")}
+              >
+                EN
+              </button>
+              <span className="ab-sep" aria-hidden="true" />
+              <button
+                type="button"
+                lang="es"
+                aria-current={shownLocale === "es" ? "true" : undefined}
+                onClick={() => goToLocale("es")}
+              >
+                ES
+              </button>
+            </div>
             <button
               className="ab-theme-toggle"
               onClick={toggleTheme}

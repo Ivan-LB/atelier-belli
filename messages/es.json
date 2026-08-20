@@ -606,7 +606,7 @@
       "contact": "Contacto"
     },
     "locale": {
-      "switchAria": "Switch to English"
+      "groupAria": "Idioma"
     },
     "theme": {
       "toggleAria": "Cambiar tema"
