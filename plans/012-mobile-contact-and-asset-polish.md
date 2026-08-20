@@ -131,3 +131,32 @@ region and the two do not overlap. The support pages have their own
 256×256 app icons extracted from the iOS catalogs). They are already
 `cwebp -q 92`, 2.4–4.6 KB each, and carry explicit `width`/`height` in
 `components/support-shell.tsx`, so they need no re-encode.
+
+---
+
+## Landed from 009 that changes this plan (2026-08-20)
+
+**Good news first: 009 touched neither `app/[locale]/page.tsx` nor
+`app/globals.css`.** The corrected anchors in the 007 section above are still
+exact as of 2026-08-20, re-measured: `<header className="ab-nav">` at `:674`,
+the blip `<img>` at `:1490`, file at 1608 lines.
+
+**Your CLAUDE.md anchors have moved again**, though: 009 added ~43 lines to §1
+and §8, taking the file from 683 to 726 lines. Measured positions for the three
+dimension corrections and the dead-file reference this plan asks you to fix:
+
+| this plan says | measured 2026-08-20 |
+|---|---|
+| `:108` alisio-watch dimensions | `:134` |
+| `:189` alisio-system.mp4 | `:215` |
+| `:194` vitapath-system.mp4 | `:220` |
+| `:618` mezcal-mobile.webp reference | `:661` |
+
+Re-grep for the filenames rather than trusting any of these; the file is likely
+to move again before you run (010 and 011 both edit it).
+
+**One addition to your Step 3 scope, if you want it:** the same §8 tree block
+that carries the stale `mezcal-mobile.webp` line now also lists the four
+per-app privacy routes and `components/theme-init.tsx`. Nothing there is
+wrong, but it is the block you will be editing, so read the whole entry rather
+than patching one line blind.

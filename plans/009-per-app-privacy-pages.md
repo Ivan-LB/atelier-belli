@@ -256,3 +256,75 @@ just a fave habit. 008 added the id to the four `<main>`s that lacked it
 tree carries it and the layout skip-link finally works everywhere. Your three
 new pages must keep the id, and the Step 4 assertion you already planned is
 now a regression net over real code rather than a forward-looking one.
+
+---
+
+## Executed 2026-08-20 (PR #59)
+
+Shipped as planned: three routes on the `/fave/privacy` recipe, `/privacy`
+slimmed to the website with the apps section intact, `/privacy/choices` and
+`/terms` trimmed, `app/sitemap.ts` +3 paths, `tests/e2e/legal.spec.ts` NEW (26
+tests), the three routes added to `support.spec.ts`'s dark-theme loop.
+`pnpm verify` green (406 leaf keys), 61/61 e2e, `pnpm build` green with the six
+new page/locale combinations `● (SSG)` and the catch-all still the only
+`ƒ (Dynamic)` route. CI green.
+
+### Where the copy departed from this plan's Ground truth
+
+Every sentence was re-verified in the app repos first, per the STOP condition.
+Four claims needed correcting, and the pages follow the repos. All four are
+written up in `plans/README.md` under "Ground-truth corrections found while
+executing 009", because **plan 011 inherits the Savely ones**:
+
+1. Savely asks for **notifications as well as the camera**.
+2. Savely's photo import is an out-of-process `PhotosPicker`, so the app never
+   gets photo-library access.
+3. "Delete all data" removes four of five models; `DepositModel` survives.
+4. The OpenAI path is gated twice (`FeatureFlags.tipsEnabled = false` plus a
+   Dashboard `onAppear` that withholds the `ModelContext`), so "no network
+   requests" is true of the shipped build. `Config.plist` **is** still bundled,
+   so that claim is build-specific, and `savelyPrivacy.changes` commits to
+   updating the page before any version that changes it ships.
+
+### Additions beyond the plan's section list
+
+Two facts about the **website** that the plan's Ground truth did not carry, both
+traced to this repo rather than an app, both requests that genuinely leave the
+reader's browser:
+
+- `app/globals.css:4` loads four families cross-origin from **Google Fonts**.
+- The site is served by **AWS Amplify** (CLAUDE.md §6), whose servers see the
+  request, including the IP.
+
+A policy claiming "we collect nothing" while omitting either would be the same
+species of half-truth as the page it replaced. The cookie paragraph was also
+verified empirically rather than from the plan: a cookieless request with
+`Accept-Language: es-MX` returns
+`set-cookie: NEXT_LOCALE=es; Path=/; Max-Age=31536000; SameSite=lax`.
+
+### One structural change the plan did not name
+
+`terms.sections.termination` was **renamed to `availability`** (JSX + both
+dictionaries). Removing only the IP-blocking clause would have left "we may
+deny access to any person for any reason", which a static site on a CDN also
+cannot do. Being able to take the site down is real, so that is what it says.
+
+### Left undone deliberately
+
+- **The case cards did not gain their Privacy actions.** `/alisio/privacy`,
+  `/fingo/privacy` and `/savely/privacy` now exist, so by the ghost-action
+  convention those three cards each owe a Privacy button. `home.cases.*` is
+  plan 011's territory and this plan's scope said so; the work is specified in
+  011's "Landed from 009" section.
+- **`SupportShell`'s footer still links the shared `/privacy`** from all three
+  support pages. The fix is a `privacyHref` prop (about six lines across four
+  files) and it needs an owner call on which plan absorbs it; also written up
+  in 011.
+- **`/fave/privacy` was not touched.** It is the model this plan copies, and
+  the plan explicitly put it out of scope. Note for whoever revisits it: the
+  wave-2 corrections say Fave reaches four outbound hosts and refreshes TMDB
+  artwork on launch, and the current page names two hosts. Worth a look, but it
+  is not a claim this plan made.
+- **The unused `useParams`/`locale` pair in `privacy/choices/page.tsx` and
+  `terms/page.tsx`** stayed (it predates this plan; `privacy/page.tsx` lost its
+  copy only because that file was rewritten wholesale).

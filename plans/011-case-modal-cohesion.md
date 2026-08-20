@@ -170,3 +170,90 @@ still a STOP.
 The ghost-action convention is unchanged: a Support or Privacy action appears
 only where the page actually exists. Alisio still has neither, by the deferral
 recorded in the README.
+
+---
+
+## Landed from 009 that changes this plan (2026-08-20)
+
+009 did not touch `app/[locale]/page.tsx` or `home.cases.*` at all, so every
+anchor correction in the 007 section above still holds exactly (`ab-nav` at
+`:674`, file at 1608 lines). What changed is the world those cards link into:
+**three privacy routes now exist that did not exist when this plan was
+written**, and the ghost-action convention says a card gets the button when
+the page exists.
+
+### The action inventory, measured 2026-08-20
+
+| case | primary | Support ghost | Privacy ghost | page exists? |
+|---|---|---|---|---|
+| `alisio` | App Store (live) | — | **missing** | `/alisio/privacy` ✅ (no support page, deferred) |
+| `savely` | disabled | `/savely/support` | **missing** | `/savely/privacy` ✅ |
+| `fave` | disabled | `/fave/support` | `/fave/privacy` | both ✅ (the model) |
+| `fingo` | App Store (live) | `/fingo/support` | **missing** | `/fingo/privacy` ✅ |
+| everything else | one action | — | — | no pages, correctly nothing |
+
+So the asymmetry the owner noticed (Savely and Fingo show only Support, Alisio
+only App Store, Fave shows both) is now a **gap, not a convention**: three
+cards are missing a button whose destination shipped.
+
+### What to add (Step 2 is the natural home)
+
+Three entries in the `CASES` record, each cloned from fave's third action
+(`page.tsx:297-303`), plus six dictionary keys:
+
+```ts
+{ label: t("cases.<key>.actionPrivacy"), href: "/<app>/privacy", kind: "ghost", icon: "shield" }
+```
+
+- `home.cases.alisio.actionPrivacy` — EN `"Privacy"` / ES `"Privacidad"`
+- `home.cases.fingo.actionPrivacy` — same pair
+- `home.cases.savely.actionPrivacy` — same pair
+
+`ICONS.shield` and the `"shield"` member of `CaseAction["icon"]` already exist
+(007). Alisio ends with two actions, Fingo and Savely with three. **Alisio gets
+no Support action**: that page is still deferred (README, rejected findings), so
+the convention holds unchanged.
+
+`tests/e2e/support.spec.ts` pins only fave's two hrefs, and adding actions to
+other cases does not touch that pin. Consider extending it to the three new
+cards, or leaving it: either is defensible, neither is a STOP.
+
+### One scope decision for the owner, deliberately left open
+
+`components/support-shell.tsx:263` links **the shared `/privacy`** from all
+three support-page footers, using `content.privacyLabel` (`legal.privacyLabel`,
+"Privacy Policy"). Since 009, each of those apps has its own policy, so a Fingo
+user reading Fingo support is sent to a page about the website.
+
+The fix is a `privacyHref` prop on `SupportContent`, defaulted to `/privacy`,
+passed as `/fingo/privacy` etc. by the three pages: roughly six lines across
+four files. It is **outside this plan's declared scope** (`support-shell.tsx`
+is not in the In-scope list, and `support.*` belongs to 007). Either widen this
+plan by that one file with the owner's say-so, or run it as a standalone
+follow-up. Do not silently absorb it.
+
+### Savely narrative: read the corrections before writing
+
+This plan's "Savely story ground truth" section still says the payday auto-move
+"turns income into savings in one tap". Two sets of corrections in
+`plans/README.md` (from executing 007 and 009) qualify that and several
+neighbours; **they override this plan's summary**:
+
+- The auto-move **schedules nothing**. Enabling it on a goal only makes that
+  goal eligible; logging income may offer one move, and the deposit is written
+  only if the user taps YES. "One tap" is fair, "automatic" is not.
+- Savely asks for **notifications as well as the camera**, its photo import
+  never gets library access, "Delete all data" leaves `DepositModel` rows, and
+  its only export is a current-week PDF, not a backup.
+- The app is localized to **es-419 and only partly**: the tab bar, quick-add
+  rows, `Settings` and `Weekly PDF report` render in English on a Spanish
+  device. Never invent Spanish for an in-app label.
+- `/savely/privacy` is now the canonical prose for all of this, in both
+  locales. If a highlight you write contradicts it, one of the two is wrong and
+  that is a STOP.
+
+### Parity count moved
+
+`pnpm verify:i18n` reports **406** leaf keys (was 358). The growth is entirely
+in `legal.*`, which stays out of this plan's scope; your parity check should
+still fail on anything outside `home.cases.*`.
