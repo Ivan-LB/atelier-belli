@@ -16,8 +16,12 @@ one Next.js app:
   reusable `SupportShell` keyed by `data-app`, `.sup-root` scope, per-app skin.
   Each consumes `useTranslations("support.<app>")` and builds a
   `SupportContent` adapter via `useMemo` (PRs #23 + #25). The previous
-  `CONTENT[locale]` dictionary is gone. The shell's footer links the shared
-  `/privacy`, not the per-app policy.
+  `CONTENT[locale]` dictionary is gone. The shell's footer links **that app's
+  own** privacy page, via the optional `privacyHref` on `SupportContent`
+  (plan 011): each of the three pages passes `/<app>/privacy`, and the prop
+  falls back to the shared `/privacy` for any future support page whose app has
+  no policy of its own. It linked the shared `/privacy` until plan 011, which
+  sent a Fingo user reading Fingo support to a page about the website.
 - **Legal surfaces**: `/[locale]/privacy`, `/[locale]/privacy/choices`,
   `/[locale]/terms`, plus one privacy page per shipped app —
   `/[locale]/alisio/privacy`, `/fave/privacy`, `/fingo/privacy`,
@@ -176,13 +180,59 @@ on :8080 + PostGIS/MinIO via `backend-spring` → `docker compose up`; seeded ad
 login+screenshot Playwright script against `/mapa`. Its action is a disabled
 "Private beta". Both vitapath and arrhythmia are in the `web-preview` list.
 
+**Case taxonomy (plan 011, 2026-08-20). One rule per axis, all ten cases.**
+Before this the modals drifted: the kicker's middle slot was a domain on five
+cases and a technology on four, five different labels meant "not out yet", and
+the index chips used a different vocabulary than the Stack row they claim to
+summarize. The rules now are:
+
+| Axis | Rule |
+|---|---|
+| Kicker | `Platform · Domain · Year`, from `cases.<key>.kickerPlatform` + `kickerDomain`, localized in both dictionaries |
+| Mobile index line | `Platform · Domain · Status →`, same two keys plus `cases.<key>.mshowStatus` |
+| Platform meta | `iOS N+`, the real deployment target read from that app's `project.pbxproj`. Backend frameworks belong in Stack, never here |
+| Stack row | 3 to 4 core frameworks. `Node.js` is canonical, never `Node`; never bare `Swift` beside `SwiftUI` |
+| Index chips | a **strict subset** of that case's Stack row |
+| Disabled labels | exactly three families: `Coming soon` (product not released), `Code coming soon` (product live, repo private), `Private beta`. Every disabled action carries `icon: "clock"` |
+| Preview frames | every plain phone is `--w: 280px`; a URL bar is the real domain when the site is live, otherwise a lowercase product slug, and is never localized |
+
+**The kicker and the index line are built from the same `caseFacet(key)` helper**
+so they cannot diverge again: the modal appends the year, the index appends the
+status. Do not re-author either as a literal string. A static check of these
+invariants (clock count, orphan chips, phone widths) lives in plan 011's tail.
+
+**Two depth tiers, and only two.** **Flagship** carries `story` + `highlights`
+(plus `media` where captures exist); **compact** carries none. There is no
+gallery-only or story-without-highlights tier: `story` and `highlights` ship
+together or not at all.
+
+- flagship: `alisio`, `savely`, `pass`, `vitapath`, `arrhythmia`
+- compact: `fave`, `fingo`, `mezcal`, `briefmark`, `blip`
+- `pass` is deliberately flagship **without** `media`: a serverless platform has
+  no screen to capture, so it renders the `.ab-arch` SVG instead.
+- `fave` and `fingo` are the strongest candidates for promotion next; both ship
+  a support page and a privacy page already, so only the copy is missing.
+
+**Savely's narrative is written from the app repo, not from memory.** Its
+`/savely/privacy` page publishes the same facts in a quieter register, so any
+highlight that contradicts that page means one of the two is wrong. In
+particular the payday auto-move **schedules nothing**: enabling it on a goal
+only makes that goal eligible, logging income may offer one move, and the
+deposit is written only when the user taps YES. The app asks for **two**
+permissions (camera and notifications), receipts arrive through an
+out-of-process `PhotosPicker` that never grants photo-library access, and the
+only export is a current-week PDF. The app is localized to es-419 and only
+partly, so never invent Spanish for an in-app label: `Auto-move on payday` has
+an empty localizations entry in `Localizable.xcstrings` and renders in English
+on a Spanish device.
+
 **Case-study depth (`story` / `highlights` / `media`)** — added 2026-07-30. A
 `CaseData` entry may carry three optional fields that render as full-width bands
 **inside the modal's existing scroll area**, below the two-column fold. The fold
 stays the 30-second glance; the bands are the 5-minute read (PRODUCT.md
-principle 2). Only the four flagship cases (`alisio`, `pass`, `vitapath`,
-`arrhythmia`) carry them; the other five degrade gracefully to the compact
-modal, so narrative can be added later without touching code.
+principle 2). The five flagship cases listed above carry them; the other five
+degrade gracefully to the compact modal, so narrative can be added later
+without touching code.
 
 - `story`: exactly three `[label, body]` beats built by the `storyOf(key)` helper
   inside the `CASES` `useMemo`, reading `cases.storyLabels.*` (shared) plus
@@ -567,6 +617,15 @@ concern.
 Adding new copy = pick the right namespace, add the key to BOTH dictionaries
 (EN value matches user-facing English; ES matches Spanish), then consume via
 `useTranslations(namespace)`.
+
+**No em dashes in `messages/*.json`.** Plan 011 swept the last 25 EN and 24 ES
+strings out and both files are now at zero; a `grep -c '—' messages/*.json`
+that returns anything but 0 is a regression. Replace the dash with the
+punctuation that carries its job (a colon for an appositive, parentheses for an
+aside, a period for two sentences), never with a hyphen. Two structural dashes
+are **not** copy and stay: the case title pattern `pre: "Alisio — "` in
+`page.tsx`, and `TITLE_TEMPLATE` in `_route-metadata.ts`, which
+`tests/e2e/seo.spec.ts:95` pins.
 
 **`t(key)` vs `t.raw(key)` — the HTML rule (gotcha
 `next-intl-html-via-t-raw`)**: next-intl's ICU formatter treats `<em>`,

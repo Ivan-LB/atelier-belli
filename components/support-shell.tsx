@@ -52,6 +52,10 @@ export type SupportContent = {
   ctaHref: string
 
   privacyLabel: string
+  /* Each shipped app has had its own policy since plan 009, and a support page
+     is about the app, not about this website. Optional so a future support page
+     without an app policy still falls back to the shared one. */
+  privacyHref?: string
   termsLabel: string
   backLabel: string
 }
@@ -260,7 +264,7 @@ export default function SupportShell({
         <span className="sup-sep">·</span>
         <span>{content.footMeta}</span>
         <span className="sup-sep">·</span>
-        <Link href="/privacy">{content.privacyLabel}</Link>
+        <Link href={content.privacyHref ?? "/privacy"}>{content.privacyLabel}</Link>
         <span className="sup-sep">·</span>
         <Link href="/terms">{content.termsLabel}</Link>
       </footer>

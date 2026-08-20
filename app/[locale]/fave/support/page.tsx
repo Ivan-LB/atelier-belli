@@ -42,6 +42,7 @@ export default function FaveSupportPage() {
       ctaHref: t("cta.href"),
 
       privacyLabel: t("privacyLabel"),
+      privacyHref: "/fave/privacy",
       termsLabel: t("termsLabel"),
       backLabel: t("backLabel"),
     }),

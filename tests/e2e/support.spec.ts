@@ -72,11 +72,26 @@ test("fingo support does not promise a restore-purchases flow", async ({ page })
 // shell links used to ride the legacy /en/... redirect.
 test("support shell links to unprefixed routes", async ({ page }) => {
   await page.goto("/fave/support/");
-  // trailingSlash: true, so Next serves these as /privacy/ and /terms/.
-  await expect(page.locator('footer.sup-foot a[href^="/privacy"]')).toHaveCount(1);
+  // trailingSlash: true, so Next serves these as /fave/privacy/ and /terms/.
+  await expect(page.locator('footer.sup-foot a[href^="/fave/privacy"]')).toHaveCount(1);
   await expect(page.locator('footer.sup-foot a[href^="/terms"]')).toHaveCount(1);
   await expect(page.locator('a[href^="/en/"], a[href^="/es/"]')).toHaveCount(0);
 });
+
+// ── A support footer points at the app's policy, not the website's ──────────
+// Since plan 009 every shipped app has its own privacy page, but all three
+// footers still linked the shared /privacy, which only describes this website.
+for (const [support, privacy] of [
+  ["/fave/support/", "/fave/privacy"],
+  ["/fingo/support/", "/fingo/privacy"],
+  ["/savely/support/", "/savely/privacy"],
+] as const) {
+  test(`${support} links its own privacy policy`, async ({ page }) => {
+    await page.goto(support);
+    await expect(page.locator(`footer.sup-foot a[href^="${privacy}"]`)).toHaveCount(1);
+    await expect(page.locator('footer.sup-foot a[href="/privacy"]')).toHaveCount(0);
+  });
+}
 
 // ── The crest is the app's real icon, not a letter in a box ─────────────────
 // Extracted from each app's own iOS asset catalog, so a broken path would

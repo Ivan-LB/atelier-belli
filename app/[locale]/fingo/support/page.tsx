@@ -42,6 +42,7 @@ export default function FingoSupportPage() {
       ctaHref: t("cta.href"),
 
       privacyLabel: t("privacyLabel"),
+      privacyHref: "/fingo/privacy",
       termsLabel: t("termsLabel"),
       backLabel: t("backLabel"),
     }),

@@ -42,6 +42,7 @@ export default function SavelySupportPage() {
       ctaHref: t("cta.href"),
 
       privacyLabel: t("privacyLabel"),
+      privacyHref: "/savely/privacy",
       termsLabel: t("termsLabel"),
       backLabel: t("backLabel"),
     }),

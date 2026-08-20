@@ -110,8 +110,15 @@ Owner mandates baked into every plan of this wave:
 - Copy-heavy plans (007, 009, 011) invoke `/marketing-ideas` +
   `/marketing-psychology` before writing; visual plans (007 skin, 011 pass,
   012 chip) invoke `/impeccable`.
-- **No em-dashes in new or rewritten strings** (JSX-structural dashes and
-  untouched strings stay).
+- **No em dashes.** Tightened by the owner on 2026-08-20, during 011, from
+  "new or rewritten strings" to **all of `messages/*.json`**, on the grounds
+  that the dashes the earlier plans left behind are technical debt. Both
+  dictionaries are now at zero and `CLAUDE.md` §5 carries the rule plus a grep
+  check. Replace a dash with the punctuation that carries its job, never with a
+  hyphen. Two structural dashes are **not** copy and stay: the case title
+  pattern `pre: "Alisio — "` in `page.tsx`, and `TITLE_TEMPLATE` in
+  `_route-metadata.ts`, which `tests/e2e/seo.spec.ts:95` pins. Docs
+  (`CLAUDE.md`, `plans/`) were **not** swept and still hold theirs.
 - On privacy/terms pages accuracy beats persuasion: every factual claim traces
   to the plan's Ground truth section or the app repos, else STOP.
 - Contact email everywhere: `ivanlorenzana@outlook.com` (owner decision;
@@ -139,7 +146,7 @@ Owner mandates baked into every plan of this wave:
 | 008 | One contact email + legal-surface link hygiene | P1 | S | — (parallel-safe with 007) | DONE — PR #58, 2026-08-20. Four addresses collapsed to `ivanlorenzana@outlook.com` (10 dictionary hits, both locales); the emails on `/privacy` and `/privacy/choices` are now `mailto` links; `id="main-content"` added to the four `<main>`s that lacked it, so **every `<main>` in the tree now carries it** and the layout skip-link works on all of them (verified by keyboard on `/privacy`, `/terms` and the 404). `pnpm verify` + 32/32 e2e + `pnpm build` green; the catch-all is still the only `ƒ (Dynamic)` route. **One deviation from the plan**: `privacyChoices.sections.howToExercise.email` had its label baked into the value (`"Email: …"`, both locales), so wrapping it verbatim would have emitted `mailto:Email:%20…`; the prefix was dropped and the value is now a bare address like the other four. Docs propagated in the same PR: `CLAUDE.md` gained the skip-link invariant, `docs/opportunistic-improvements.md` §5's email bullet is marked resolved, and 009 carries a "Landed from 008" section (its `mailto` anchors, the de-labelled key, and shifted line anchors). |
 | 009 | Per-app privacy pages + honest /privacy and /terms | P1 | L | 007 soft (sitemap), 008 soft (email) | DONE — PR #59, 2026-08-20. `/alisio/privacy`, `/fingo/privacy` and `/savely/privacy` shipped on the `/fave/privacy` recipe; the shared `/privacy` is website-only (NEXT_LOCALE by name, `ab_theme`, hosting + Google Fonts) and carries the **"Privacy for our apps" section linking all four** that bridges the ASC window. `/privacy/choices` lost six sections of rights machinery it had no data for; `/terms` lost the registration representations and the IP-blocking clause (`termination` renamed to `availability`), both dates refreshed. `pnpm verify` green (406 leaf keys), 61/61 e2e (new `tests/e2e/legal.spec.ts`, +26), `pnpm build` green with the catch-all still the only `ƒ (Dynamic)` route and 22 sitemap URLs. **Every claim was re-verified in the app repos rather than taken from the plan; four of the plan's own did not survive** (below). Two disclosures the plan did not list were added from this repo: Google Fonts is cross-origin and Amplify serves the site, so both are requests that genuinely leave the reader's browser. Also carried plan 008's uncommitted doc propagation and updated CLAUDE.md §1/§8 for the new route list (plus two entries 007 never added: `/fave/support` and `components/theme-init.tsx`). **Owner action, same day this deploys: human checklist #1 below.** Consequences written into 010, 011 and 012 under "Landed from 009"; **011 picks up the three missing Privacy actions on the case cards**, which is `home.cases.*` and therefore not this plan's to make. |
 | 010 | Per-route metadata, sitemap rewrite, icons | P1 | M | 007 + 009 **hard** (final route list) | DONE — PR #60, 2026-08-20. The sitemap's 22 redirect URLs became the 11 canonical unprefixed ones (loop + alternates deleted, array kept as 009 predicted). All eleven routes now carry their own title, description and `og:*` in both locales, via ten thin server `layout.tsx` files over a shared `app/[locale]/_route-metadata.ts` — the pages are all `"use client"` and cannot export `generateMetadata` themselves. `app/favicon.ico` (real 3-entry .ico) and `public/apple-touch-icon.png` (180×180, opaque) both shipped; they had 404'd. `theme-color` is now a light/dark pair via a `viewport` export. `pnpm verify` green (419 leaf keys), **81/81 e2e** (new `tests/e2e/seo.spec.ts`, +20), and the build route table is **byte-identical** to a real `origin/develop` build — every route still ● SSG, catch-all still the only ƒ. **One plan instruction did not survive**: bare-string titles silently stripped the site name from `/privacy/choices`, because Next stops passing a template down past a segment that sets a string title; titles are `title.absolute` now. **Scope added by the owner mid-run**: `public/AtelierBelli.png` was still the PREVIOUS logo (gradient anvil) and was declared as `icons.shortcut`, so the site served a retired mark; it was regenerated from the vector source and the SVG favicon gained a `prefers-color-scheme: dark` rule, since the near-black monogram vanished in dark browser chrome. **Owed before merge to `main`: the Amplify deploy-preview smoke** (titles per route, icons 200, sitemap). Consequences written into 011 and 012 under "Landed from 010"; the plan's own tail records the rest. |
-| 011 | Case modal cohesion + Savely narrative | P2 | L | 007, 009 soft (serialize page.tsx/dicts) | TODO |
+| 011 | Case modal cohesion + Savely narrative | P2 | L | 007, 009 soft (serialize page.tsx/dicts) | DONE — PR #61, 2026-08-20. Every axis of the drift table now reads one rule across all ten cases: kicker `Platform · Domain · Year` and the mobile index line `Platform · Domain · Status` are **composed from one `caseFacet(key)` helper**, so `mshow` is gone from `indexInfo` and the two lines are structurally incapable of drifting apart again. Platform meta is `iOS N+` read from each app's `project.pbxproj`; stack rows are 3-4 core frameworks (`Node.js` canonical, bare `Swift` gone); index chips are a strict subset of their Stack row (0 orphans); all **6** disabled actions carry the clock; all four plain phones are 280px; URL bars are a real domain or a lowercase slug. **Savely promoted to flagship** with story + 4 highlights in both locales, written from the app repo and cross-checked against `/savely/privacy`. Depth is now exactly two tiers, documented. `pnpm verify` green (**452** leaf keys), **84/84** e2e. **Three owner decisions widened it mid-run**: blip's ES "swarm" stays (deliberate voice); the `privacyHref` question 009 and 010 both left open was opened HERE, so `support-shell.tsx` + the three support pages ship in the same PR; and the no-em-dash rule was extended from "new or rewritten strings" to **all of `messages/*.json`** as technical debt, leaving both dictionaries at **zero** (49 strings rewritten, incl. `layout.ogAlt` and one `legal.terms` clause). The title pattern `pre: "Alisio — "` and `TITLE_TEMPLATE` stay by owner's call: structure, not copy. **One e2e edit**, justified below. Consequences written into 012 under "Landed from 011"; the plan's own tail records the rest. |
 | 012 | Mobile contact affordance + asset/docs polish | P2 | M | 011 soft (page.tsx) | TODO |
 
 ## Dependency notes (wave 2)
@@ -237,6 +244,49 @@ Separately, and outside this wave's scope: **`GoogleService-Info.plist` with a
 live Firebase API key is still reachable in the public `Ivan-LB/Savely` git
 history** (added in `80cf033`; `.gitignore` only stopped future tracking).
 Worth rotating that key and scrubbing the blob.
+
+## Ground-truth corrections found while executing 011 (2026-08-20)
+
+Plan 011's own "Savely story ground truth" was overridden by the README
+corrections from 007 and 009, exactly as it instructed. Reading the app repo
+turned up three further facts that plan 012 and any future Savely copy inherit.
+
+- **The payday auto-move's amount is capped four ways**, not just by the goal's
+  pace: `min(configured pace, remaining to target, the income being logged, the
+  month's affordable margin)`, where the margin is
+  `month incomes + this income − month expenses − month deposits`. If the month
+  is under water even counting the paycheck, **nothing is suggested at all**
+  (`AutoMoveSuggestion.swift`). Which goal it picks is also deliberate: the
+  favourite wins outright, otherwise the most urgent by required weekly pace.
+- **Savely never fabricates a completion date.** `GoalPace.swift` caps ETAs at
+  52 weeks and returns the literal `1+ year`, commented "Never a made-up date".
+  That string is an **in-app label with no translation**, so Spanish copy
+  quotes it in English on purpose.
+- **`Auto-move on payday` has an empty localizations entry** in
+  `Localizable.xcstrings`, confirming 007's warning at the exact key most likely
+  to tempt an invented Spanish label. It renders in English on a Spanish device.
+
+Separately, a factual correction outside Savely:
+
+- **Fingo's deployment target is iOS 26.0, not 16.** All three configs in
+  `Fingo.xcodeproj/project.pbxproj` read `IPHONEOS_DEPLOYMENT_TARGET = 26.0`
+  (bumped from 17.6 in "Version 2.1.0"; `MARKETING_VERSION` is 2.2). The case
+  card claimed "iOS 16+", which made a shipped app look more compatible than it
+  is, and now reads "iOS 26+". **Owner: if the App Store listing shows a lower
+  minimum, the listing is the truth and the card needs another pass.**
+- **Alisio is iOS 17.0 / watchOS 10.0**, Fave 17.0, Briefmark 26.2, Savely
+  26.0, Vitapath's two apps 17.0. All read from their pbxproj files.
+
+### An infrastructure trap, unclaimed by any plan
+
+`playwright.config.ts` runs `pnpm dev --port 3100` with
+`reuseExistingServer: true`, and that server shares `.next` with a dev server on
+`:3000`. A concurrent compile clobbers the manifests and kills the run mid-suite
+with `SyntaxError: Unexpected non-whitespace character after JSON`, which reads
+like a corrupt source file and is not. This is the dev-vs-dev form of the
+documented `next-build-clobbers-dev-cache` gotcha. Workaround:
+`pnpm exec playwright test --workers=1` with :3100 warmed up first. A real fix
+means a separate `distDir` for the test server in `next.config.mjs`.
 
 ## Human checklist (owner actions, out of repo)
 

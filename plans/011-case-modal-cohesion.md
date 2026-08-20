@@ -326,3 +326,173 @@ still links the shared `/privacy` from all three support footers. 010 added
 `support.<app>.metaTitle` and `support.<app>.metaDescription` to that namespace,
 which does not collide with a `privacyHref` prop in any way. Still the owner's
 call, still not something to absorb silently.
+
+---
+
+## Execution tail (2026-08-20)
+
+Executed on `feat/case-modal-cohesion`, branched from `origin/develop@f8565e0`
+(PR #60 merged, so all three precondition files were present). Three commits:
+the taxonomy plus Savely's narrative, the support-footer fix, and the docs.
+`pnpm verify` green at **452 leaf keys**, `pnpm test:e2e` **84/84**, working
+tree limited to the in-scope files plus the two owner-approved widenings.
+
+### What shipped, axis by axis
+
+Every axis in the drift table now reads one rule across all ten cases, and a
+static assertion script (reproduced below) proves it rather than asserting it.
+
+- **Kicker and index line share one source.** A `caseFacet(key)` `useCallback`
+  composes `Platform · Domain` from `cases.<key>.kickerPlatform` +
+  `kickerDomain`; the modal appends the year, the index line appends
+  `mshowStatus`. `mshow` is gone from `indexInfo` entirely, so the two lines
+  are now structurally incapable of drifting into different vocabularies,
+  which is what the plan was really about. Both segments are localized:
+  Lealtad, Utilidades, IA, Sistema all differ from their English words.
+- **Platform meta** is `iOS N+` everywhere, read from each app's
+  `project.pbxproj`.
+- **Stack rows** are 3 to 4 core frameworks; `Node.js` canonical; bare `Swift`
+  gone; fave's two content APIs dropped.
+- **Index chips** are a strict subset of their case's Stack row (0 orphans).
+- **Disabled labels** collapse to the three allowed families; all **6**
+  disabled actions carry `icon: "clock"` (vitapath was the only one missing).
+- **Preview frames**: all four plain phones at `--w: 280px`; URL bars are
+  `destilerialorenzana.com`, `arrhythmia-detector`, `vitapath`, `blip`.
+- **Depth is two tiers.** flagship = `alisio` `savely` `pass` `vitapath`
+  `arrhythmia`; compact = `fave` `fingo` `mezcal` `briefmark` `blip`.
+- **Savely is flagship**: three story beats and four highlights, both locales.
+
+### Where the copy departed from this plan's Ground truth
+
+**The plan's Savely summary was overridden by the README corrections, as it
+told me to.** Three specifics came from reading the repo rather than the plan,
+and they made the copy better, not just safer:
+
+- `AutoMoveSuggestion.swift` documents that the suggested amount is
+  `min(configured pace, remaining to target, the income being logged, the
+  month's affordable margin)`, and that an underwater month suggests nothing at
+  all. That is the approach beat's spine. The plan's "turns income into savings
+  in one tap" is fair for the tap, wrong for the automation.
+- `GoalPace.swift` caps ETAs at 52 weeks and returns the literal `1+ year`
+  rather than a fabricated date, with the comment "Never a made-up date". That
+  is the result the highlights lead on, and it matches PRODUCT.md principle 1,
+  "Never lie with a number".
+- **`1+ year` is quoted in the Spanish copy in English on purpose.** It is an
+  in-app label and `Localizable.xcstrings` has no translation for it, so
+  inventing Spanish would misdescribe the app. Same reason `Auto-move on
+  payday` was never translated anywhere in the case copy.
+
+Nothing written contradicts `/savely/privacy`: the highlights state two
+permissions' worth of facts without overclaiming, keep "the photo is never
+saved", and never say "deletes everything".
+
+### Deviations from the plan's letter, and why
+
+1. **Two domain words differ from the plan's parenthetical list.** The plan
+   offered `pass Infrastructure` and `blip PWA` but licensed adjusting the
+   wording. Both were category errors against the plan's own rule: the middle
+   slot is a **domain**, and Infrastructure is a layer while PWA is a
+   technology, which is exactly the drift being fixed. Shipped
+   **`pass → Loyalty`** (the repo is literally `Ivan-LB/loyalty-cards`; ES
+   `Lealtad`) and **`blip → Retail`**. Every other domain word is the plan's.
+2. **`fingo` platform meta went from "iOS 16+" to "iOS 26+".** Not a taxonomy
+   change but a factual correction: all three configs in
+   `Fingo.xcodeproj/project.pbxproj` read `IPHONEOS_DEPLOYMENT_TARGET = 26.0`,
+   bumped from 17.6 in "Version 2.1.0", and `MARKETING_VERSION` is 2.2. The old
+   claim made a shipped app look more compatible than it is. **Flagged for the
+   owner**: if the App Store listing still shows a lower minimum, the repo and
+   the listing disagree and the listing wins.
+3. **`alisio` gained "iOS 17+ · watchOS 10+"** from its pbxproj, and renders as
+   two chips because the meta row splits on `·`.
+4. **`mezcal.titleIt` is "sold direct from Oaxaca."** and not a restatement of
+   the tag ("An artisanal mezcal brand: storefront and story"), which sits on
+   the same index row; a descriptor that repeated the tag would read as
+   stuttering. ES `"venta directa desde Oaxaca."`
+5. **The workbench pill said `Node` too.** This plan's Step 1 verify command
+   (`grep -n '"Node"' app/[locale]/page.tsx` = 0) assumed briefmark's Stack chip
+   was the only hit; the second was the backend tools list in the workbench
+   section (`page.tsx:1087`), which is on the same page a visitor reads and is
+   not in `home.cases.*`. Unified to `Node.js` so the verify command passes
+   honestly rather than being declared inapplicable. Nothing pins it.
+6. **Alisio's "one descriptor" rule was applied to structured fields only.**
+   Chips and meta say `watchOS`; the prose in `descRich` still says "Apple
+   Watch", which is the correct marketing name in a sentence and was not in the
+   plan's axis list.
+
+### Two owner decisions taken mid-run
+
+- **blip's ES "swarm" stays.** Asked as the plan required; the owner kept it as
+  deliberate voice. Only its em dash changed, so the tag now reads
+  `"Precio, stock, restocks. Alertado antes que el swarm."`
+- **The `privacyHref` question was opened here, not deferred.** The owner chose
+  to widen this plan by `components/support-shell.tsx` and the three support
+  pages rather than run a follow-up, so the fix ships in commit 2. Each footer
+  now links `/<app>/privacy`; the prop is optional and defaults to `/privacy`.
+
+### A third owner decision that widened the copy scope
+
+Mid-run the owner extended the no-em-dash rule from "new or rewritten strings"
+to **all of `messages/*.json`**, explicitly calling the existing dashes
+technical debt from the completed plans. Both dictionaries are now at **zero**
+(25 EN and 24 ES strings rewritten), including `layout.ogAlt` and one clause of
+`legal.terms.sections.intellectualProperty.body`, which are outside
+`home.cases.*` and therefore a deliberate widening. Each dash was replaced by
+punctuation that carries its job, never by a hyphen.
+
+The owner separately confirmed the **title pattern stays**: `pre: "Alisio — "`
+in `page.tsx` and `TITLE_TEMPLATE` in `_route-metadata.ts` are structure, not
+copy, and `tests/e2e/seo.spec.ts:95` pins the latter. `CLAUDE.md` §5 now
+records both the rule and the two exemptions.
+
+### The one e2e edit, and why it is not the STOP this plan describes
+
+`support.spec.ts` "support shell links to unprefixed routes" asserted the fave
+footer's privacy link was `/privacy`. The `privacyHref` widening changes that
+link by design. The test's own comment states its purpose as "the shell's own
+links are unprefixed", and `/fave/privacy` is equally unprefixed, so the
+selector was narrowed and the intent left alone; its real guard, that no
+`/en/` or `/es/` link exists, still passes untouched. Three tests were added to
+cover the new behaviour directly. **No other pin moved**: CASE_KEYS order, the
+ten-case count, the BLIP literal and the "Toggle theme" aria are all intact,
+and `seo.spec.ts` never looked at `home.cases.*`.
+
+### Left undone deliberately
+
+- **`fave` and `fingo` stay compact.** The plan documents them as promotion
+  candidates, not as this plan's work. Both now have a support page and a
+  privacy page, so only the narrative is missing.
+- **`pass` stays flagship without media**, as the plan directed, and CLAUDE.md
+  now says why (no screen to capture).
+- **Docs still hold em dashes**: `CLAUDE.md` has 85 and `plans/` many more. The
+  owner's sweep was scoped to shipped copy; a docs sweep is unclaimed.
+- **The `.next` collision between the test server and the dev server is not
+  fixed.** `playwright.config.ts` runs `pnpm dev --port 3100`, which shares
+  `.next` with `:3000`; a concurrent compile killed one full run with a JSON
+  parse error that looks like source corruption and is not. Worked around with
+  `--workers=1` and a warm server. A real fix means a separate `distDir` in
+  `next.config.mjs`, which is infra and out of scope here. Written into 012.
+
+### The static check, for whoever touches the taxonomy next
+
+```bash
+python3 - <<'PY'
+import re, json, io
+src = io.open("app/[locale]/page.tsx", encoding="utf-8").read()
+assert src.count('kind: "primary disabled"') == src.count('icon: "clock"')
+stack = set()
+for row in re.findall(r'\[t\("cases\.meta\.stack"\), "([^"]+)"\]', src):
+    stack |= {p.strip() for p in row.split("·")}
+chips = set()
+for row in re.findall(r'stack: \[([^\]]+)\],', src):
+    chips |= {c.strip().strip('"') for c in row.split(",")}
+assert not chips - stack, chips - stack
+assert set(re.findall(r'\["--w" as any\]: "(\d+)px"', src)) == {"280"}
+for f in ("messages/en.json", "messages/es.json"):
+    assert io.open(f, encoding="utf-8").read().count("—") == 0, f
+en = json.load(open("messages/en.json", encoding="utf-8"))["home"]["cases"]
+for k, v in en.items():
+    if k in ("meta", "storyLabels"): continue
+    assert ("story" in v) == ("highlights" in v), k
+print("taxonomy invariants OK")
+PY
+```
