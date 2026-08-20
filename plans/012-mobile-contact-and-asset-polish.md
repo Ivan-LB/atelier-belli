@@ -327,3 +327,111 @@ is markup, not the image. `public/cases/blip-hero.webp` is untouched at
 Step 2 stands exactly as written. Keep the explicit `width`/`height`: the
 repo's CLS discipline depends on them and the transparent frame slots collapse
 without them.
+
+---
+
+## Execution tail (2026-08-20)
+
+Branch `feat/mobile-contact-and-asset-polish` off `origin/develop` at `9015e7f`
+(PR #61 merged, so the precondition held: `caseFacet` 13 hits, `kickerPlatform`
+10 in `messages/es.json`). Every line anchor in the "Landed from 011" section
+above was re-measured and **all of them were exact**: `page.tsx` 1634 lines,
+`.ab-nav` at `:704`, `.ab-nav-end` at `:736`, the blip `<img>` at `:1516`,
+`CLAUDE.md` 850 lines, the `<= 820px` nav block at `globals.css:1318`.
+
+### What shipped
+
+**Step 1: the contact chip, plus three defects it uncovered.** The chip itself
+is four lines of JSX and eight of CSS: an `<a class="ab-chip ab-chip-contact">`
+first in `.ab-nav-end`, labelled `t("nav.contact")` (no new dictionary key, as
+011 predicted), carrying `.ab-btn-mail`'s full-strength `--ab-fg` border so it
+reads as the one action in a cluster that is otherwise two settings.
+
+Putting a correctly-styled chip next to the existing controls exposed three
+things that were already broken. All three are documented in `CLAUDE.md` §4:
+
+1. **The nav wrapped to two rows at every width <= 820px**, tablets included.
+   `.ab-nav-inner` declared `1fr auto` but had *three* grid children, because
+   the `<nav>` wrapper stays a layout item when only its `<ul>` is hidden. Fixed
+   by hiding the element itself and switching the row to `flex-wrap`, which also
+   makes the wrap point content-driven per locale instead of a guessed number.
+   Header height at 375px went **120px -> 105px while gaining a control**.
+2. **The nav had no horizontal padding at all.** `.ab-nav-inner`'s
+   `padding: 14px 0` shorthand reset `.ab-wrap`'s inline padding, so the brand
+   sat at x=0 against content starting at 20px (phone) or 51.2px (desktop), and
+   the theme toggle touched the right edge. Longhand now.
+3. **`.ab-chip` has never reached the language `<button>`**: `.ab-root button`
+   (0,1,1) outranks it (0,1,0), so that control is plain 16px borderless text
+   everywhere.
+
+**Step 2: blip-hero.** 1600x1000 / 161,668 B -> **960x600 / 95,590 B** (-40.9%),
+exactly 16:10, `cwebp -q 88 -m 6 -sharp_yuv` over a Lanczos downscale of the
+losslessly decoded original. Chosen against measurement, not feel: q88 sits on
+the knee of the size/SSIM curve (q80 0.9820, q85 0.9862, **q88 0.9880**, q90
+0.9893, q92 0.9901 against a lossless 960 reference) and scores **SSIM 0.9875 /
+PSNR 36.6 dB at the real 884px display size**. A 1:1 crop of the card-grid text
+against the original path is indistinguishable. `width`/`height` updated to
+match at `page.tsx:1522`. The slot renders 441.8 CSS px, so 960 still covers
+DPR 2 with headroom.
+
+**Step 3: CLAUDE.md.** `alisio-watch.webp` 249x293 -> **249x317**;
+`alisio-system.mp4` 1400x760 -> **740x740**; `vitapath-system.mp4` 1600x760 ->
+**1740x760** (all three read from `sips`/`ffprobe`). A full audit of every
+`NNN x NNN` claim in the file found **exactly these three wrong and no others**.
+
+**Step 4: e2e.** Two tests, 84 -> **86**. The mobile one asserts the chip is
+visible at 375px, points at `#contact`, that `#contact` exists, that
+`.ab-nav-links` is hidden, that its label matches the desktop link, and that
+neither 320px nor 375px overflows horizontally. The desktop one is the inverse
+guard (links visible, chip hidden at 1280px), cheap insurance for a rule that is
+a `display` toggle.
+
+### Where I deviated
+
+- **The plan named one `mezcal-mobile.webp` reference; there were two.** The
+  second, at `:356`, described the vitrine's `.ab-vit-web-combo` with the
+  filenames it used when **Mezcal** held that slot. Mezcal was replaced by
+  Vitapath in the vitrine; the live pair is `vitapath-{hero,mini}.webp`. Both
+  now point at the real files. Note that the sentence at `:355` is still
+  grammatically orphaned (it begins mid-clause, a leftover from that swap) —
+  **not fixed, out of scope, flagged forward.**
+- **Two owner decisions widened Step 1 mid-run**, both asked with measurements
+  and screenshots rather than assumed:
+  - the `.ab-chip`-on-`<button>` restore is scoped to `<= 820px` only, so the
+    mobile cluster is coherent and the **desktop nav is byte-identical**;
+  - the padding fix was taken at **all** widths, not just mobile. That in turn
+    made the brand wrap between 821 and ~860px, which is why `.ab-brand-tag`
+    now hides at 900px instead of 820px. That third media query is a
+    consequence of the owner's choice, not an independent change.
+- **Two e2e tests instead of the plan's one.** The desktop half is the natural
+  regression net for a `display: none` toggle.
+
+### Deliberately not done
+
+- **No hamburger menu.** Explicitly rejected by the plan and by the owner.
+- **The vitrine `<= 820px` carousel region was not touched** — verified
+  byte-identical in the diff, and `capSpread` measured **0** at 320/375/430/640/820
+  in both locales, matching the invariant CLAUDE.md records.
+- **`.ab-chip` is still dead on `<button>` above 820px.** Fixing it globally
+  would restyle the desktop language toggle. Unclaimed; see `plans/README.md`.
+- **`scroll-margin-top` on `#contact`.** Tapping the chip lands the page at max
+  scroll, so the sticky header clips the top ~34px of the mail button's eyebrow.
+  A scroll margin cannot help at max scroll; the email address itself is fully
+  visible and tappable. Noted, not fixed.
+- **`public/og.png`** (the off-message share card 010 flagged forward to this
+  plan) was left alone: it is a copy decision, not an asset one, and the owner
+  did not claim it. Still unclaimed.
+- **The docs em-dash sweep.** `CLAUDE.md` still holds 85 lines with one; this
+  run added none. `messages/*.json` verified still at **0** in both locales.
+
+### Verification
+
+`pnpm verify` green (**452** leaf keys, unchanged — no dictionary key added).
+`pnpm exec playwright test --workers=1` -> **86/86**, using the documented
+`.next`-clobber workaround, with `:3000` live throughout and `pnpm build` never
+run locally (CI owns it). The theme-toggle aria pin at `smoke.spec.ts:129` was
+not touched and still passes. Responsive sweep measured at
+320/375/430/640/820/821/901/1280/1440 in both themes and both locales: no
+horizontal overflow anywhere, chip and language chip the same 30.5px height with
+their centres and the theme toggle's on one line, and >= 47px of slack in the
+worst case (Spanish at 320px).

@@ -123,7 +123,10 @@ cropped that chrome is gone with it. Savely also has a three-frame gallery under
 `public/cases/gallery/savely-p1..p3.webp`, seeded via the app's DEBUG tour).
 fingo/savely use the `ab-phone-img` phone frame; blip and mezcal render real
 captures inside `ab-browser-frame` via the `.ab-browser-shot` img class
-(16:10, explicit width/height). **briefmark** now uses a real capture of its
+(16:10, explicit width/height). `blip-hero.webp` is **960×600** since plan 012;
+it shipped at 1600×1000 for a ~442 CSS px slot, which is 3.6x its rendered size
+and made it the heaviest image on the site at 158KB (now 96KB, `cwebp -q 88
+-m 6 -sharp_yuv`, SSIM 0.987 at display size). **briefmark** now uses a real capture of its
 onboarding screen (`public/cases/briefmark-hero.webp`, 600×1304) in the
 `.ab-phone-img.briefmark` phone frame — it replaced the fake `ab-mez-site`
 HTML mock, which read as a broken image; that mock's CSS was deleted with it.
@@ -138,7 +141,7 @@ transparent-frame slots collapse to zero height until the lazy image paints
 `.ab-alisio-combo` preview: an `.ab-phone-img.alisio` phone (Live-session
 screen) with an `.ab-alisio-watch` rounded-square watch (Goal-reached screen)
 overlapping the bottom-left corner. Both `public/cases/alisio-hero.webp`
-(953×2109) and `public/cases/alisio-watch.webp` (249×293) were cropped from
+(953×2109) and `public/cases/alisio-watch.webp` (249×317) were cropped from
 the App Store **marketing** frames in
 `~/Projects/Swift/Alisio/marketing/appstore-screenshots/` (headline + device
 bezel stripped so the raw screen sits in the CSS frame). Shipped 2026-07-23:
@@ -265,12 +268,12 @@ sideways on mobile with text clipped. `.ab-case-media img/video` also cap at
   small waits: rapid consecutive taps coalesce, and `type` triggers the iOS
   accent popup. `xcrun simctl privacy <udid> grant <service> <bundle>` skips the
   permission dialogs.
-- `alisio-system.mp4` (1400×760) is two **simultaneous** simctl recordings
+- `alisio-system.mp4` (740×740) is two **simultaneous** simctl recordings
   (iPhone + paired Watch, started together so they stay in sync) composited
   side by side with ffmpeg `overlay` + `drawbox` borders. It shows one live
   session: started on the phone, measured on the Watch, mirrored back, with the
   in-zone/out-of-zone badge flipping. That is the case's whole thesis.
-- `vitapath-system.mp4` (1600×760) is the same trick across a **browser and a
+- `vitapath-system.mp4` (1740×760) is the same trick across a **browser and a
   phone**: a Playwright `recordVideo` of the console started alongside a simctl
   recording of the paramedic app, then the SOS fired by API ~10s in so both
   surfaces capture the same emergency. Cut to the synchronised window and
@@ -353,7 +356,7 @@ Sized to 272px through
 `.ab-vitrine .ab-phone-img.alisio` so the modal's 244px is untouched.
 (`.ab-vit-web-combo`): a 400×260 browser window with the desktop capture and
 a mini phone overlapping its corner with the mobile capture
-(`public/cases/mezcal-{hero,mobile}.webp`). Tilt/hover transforms live on
+(`public/cases/vitapath-{hero,mini}.webp`). Tilt/hover transforms live on
 the combo wrapper, not the browser. The old hand-drawn mock's CSS
 (`.ab-vit-browser .scr`, `.ab-vit-bottle`, …) is orphaned — cleanup PR
 pending.
@@ -587,6 +590,42 @@ See gotcha `root-token-scoping`.
 | `.sup-root`| EB Garamond / Instrument Serif for display; IBM Plex Mono for meta; Inter for body |
 | Global     | `--font-inter` from `next/font` on `<html>`, default sans fallback |
 
+**The nav below 820px (plan 012).** `.ab-nav-inner` is `display: flex;
+flex-wrap: wrap` there, not grid, so the control cluster drops to its own line
+at the width where it genuinely stops fitting beside the brand rather than at a
+number someone guessed: `Contacto` is 10px wider than `Contact`, and each locale
+breaks where it actually breaks (~428px EN, ~438px ES). Four things in that
+region are load-bearing:
+
+- **The hidden element is `<nav>`, not `.ab-nav-links`.** The wrapper stays a
+  layout item with its `<ul>` hidden, so it used to consume the second of the
+  two grid columns and strand `.ab-nav-end` on an implicit second row at *every*
+  width <= 820px, tablets included. That was never intentional: the block has
+  declared `1fr auto` since `fe3a590`.
+- **`.ab-nav-inner` must keep its padding in LONGHAND.** The element is also
+  `.ab-wrap`, and a `padding: 14px 0` shorthand resets `.ab-wrap`'s inline
+  padding to zero. It did, for a long time: the brand sat at x=0 while every
+  section below it started at `--ab-pad` (20px on a phone, 51px at 1280px) and
+  the theme toggle touched the right edge.
+- **`.ab-brand-tag` hides at 900px, not 820px.** Once the nav carries that inline
+  padding the brand's 203px no longer fits its `1fr` column between 821 and
+  ~860px, and it wraps to two lines inside a sticky header. Dropping "Est. 2023"
+  is the design's own first concession; the breakpoint just follows the geometry.
+- **`.ab-chip` does not reach a `<button>`.** `.ab-root button` (specificity
+  0,1,1) outranks `.ab-chip` (0,1,0) and resets `font` and `border`, so the
+  language toggle has never rendered as a pill anywhere: it is plain 16px text
+  with no border. The contact `<a>` does get `.ab-chip`, so the two would read
+  as different systems sitting side by side. `.ab-nav-end button.ab-chip`
+  restores the component **inside the media query only**; above 820px the button
+  stands alone and is deliberately left as it is. **Fixing that globally is
+  unclaimed** and would change the desktop nav.
+
+`.ab-chip-contact` is the only action in that cluster, so it takes
+`.ab-btn-mail`'s full-strength `--ab-fg` border rather than a fill or an accent,
+which is how the rest of the site marks a primary action. Its label is
+`t("nav.contact")`, the same key the desktop link uses, so the two cannot drift.
+There is deliberately **no hamburger menu** (owner's call).
+
 **No component library today**: the shadcn scaffold (`components/ui/`,
 50 files), `hooks/`, and `lib/utils.ts` (with `cn()`) were all removed in
 PR #7 — none were imported by runtime code. If you genuinely need a
@@ -782,8 +821,8 @@ app/favicon.ico                   # Real 3-entry .ico (16/32/48). Next
 public/                           # All static assets, logos, hero images
   apple-touch-icon.png            # 180×180, opaque, from the SVG mark
   cases/                          # Project preview screenshots (blip-hero,
-                                  #   mezcal-hero, mezcal-mobile .webp);
-                                  #   briefmark/pass images land here too
+                                  #   mezcal-hero .webp); briefmark/pass
+                                  #   images land here too
 i18n.ts                           # next-intl config (createNextIntlPlugin)
 middleware.ts                     # next-intl middleware (locale routing)
 .eslintrc.json                    # extends next/core-web-vitals (PR #22)
