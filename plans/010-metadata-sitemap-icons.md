@@ -222,3 +222,115 @@ write; each app page's `intro` is a good source sentence to compress.
 spec will not catch it and your build-table diff is still the only guard.
 
 **Parity is 406 leaf keys** (was 358). Anything you add lands on top of that.
+
+---
+
+## Execution tail (2026-08-20)
+
+Branched from `develop@b8812a2` (PR #59 merged 20:22 UTC, so the hard
+dependency was real, not assumed). Two commits.
+
+### What shipped
+
+- **`app/sitemap.ts` rewritten.** 22 `<loc>` values, all redirects, became 11
+  canonical unprefixed URLs. As 009 predicted, the `paths` array already held
+  all eleven, so the change was deleting the locale loop and the alternates
+  block. Verified 11 locs / 0 prefixed / 0 alternates in both dev and the
+  production build output.
+- **Ten thin server `layout.tsx` files** over one shared helper,
+  `app/[locale]/_route-metadata.ts`. Every route now has its own title,
+  description, `og:title`, `og:description` and `og:url`, in both locales.
+- **`app/[locale]/layout.tsx`**: title template, `icons.apple`, `openGraph.url`,
+  and a `viewport.themeColor` light/dark pair replacing the hardcoded
+  `#FAF8F3` meta and its manual `<head>` block.
+- **Icons**: `app/favicon.ico` (real 3-entry .ico, 16/32/48) and
+  `public/apple-touch-icon.png` (180×180, opaque). Both had 404'd.
+- **13 new dictionary keys per locale**; parity 406 → 419.
+- **`tests/e2e/seo.spec.ts`**, +20 tests. Suite 61 → 81, all green.
+- **CLAUDE.md** gained the per-route-metadata rule, the icon table, and the
+  corrected "a new legal page is 5 touches" recipe.
+
+### Where this departed from the plan
+
+1. **Titles are `title.absolute`, not bare strings.** The plan's Step 3 said to
+   emit a bare title and let the root template append the site name. That works
+   for nine routes and **silently fails for `/privacy/choices`**: Next resolves
+   a bare-string title against the nearest ancestor template and then stops
+   passing that template down, so once `/privacy` had a title of its own the
+   child rendered "User Privacy Choices" with no site name. Caught by curling
+   all eleven routes, not by any test that existed. The helper now builds the
+   full title from a shared `TITLE_TEMPLATE`, which is correct by construction
+   for any future nested route.
+2. **`openGraph` is restated in full in the helper.** Next replaces a parent's
+   `openGraph` wholesale when a child defines one, so declaring only
+   title/description would have dropped `og:image` from all ten sub-routes.
+3. **theme-color moved to a `viewport` export** rather than staying two manual
+   `<head>` metas. Framework-blessed, and it removed the explicit `<head>`.
+4. **Icons were rendered from `public/AtelierBelli.svg`, not the PNG the plan
+   suggested** — see the scope addition below.
+5. **e2e selectors are not scoped to `head`.** First run had 10 failures for
+   exactly that reason: the dev server streams metadata into the body and React
+   hoists it at hydration, so `head meta[...]` races the boundary. Unscoped
+   selectors are correct in dev and in prod (where Next emits the tags in
+   `<head>` server-side, verified in the prerendered HTML).
+6. **Two descriptions were trimmed after a first pass** measured 166–172 chars;
+   everything now lands 130–164 with the payload front-loaded.
+
+### Scope added mid-run, at the owner's request
+
+**The favicon was still the previous brand mark.** While generating icons it
+turned out `public/AtelierBelli.png` and `public/AtelierBelli.svg` are two
+*different* logos: the PNG is a blue/purple gradient anvil, the SVG the current
+hexagonal monogram. The layout declared the PNG as `icons.shortcut`, so the
+site shipped a retired logo. The monogram is provably current — its path data
+is byte-identical to the inline `BRAND_LOGO` the header renders. The owner
+confirmed and asked for it in the same run.
+
+Fixed by regenerating the PNG from the vector source (16.1 KB → 7.3 KB) so all
+four icon files carry one mark, and by giving the SVG an embedded
+`prefers-color-scheme: dark` rule using the same `.ab-dark` / `.ab-accent` role
+names as `BRAND_LOGO`. As flat `#151415` on a transparent ground the monogram
+all but vanished in a dark browser tab strip. Both schemes verified in-browser;
+the light rendering is pixel-identical to before (`magick compare` AE = 0), so
+the regeneration pipeline is unchanged.
+
+### Verification
+
+`pnpm verify` green (419 leaf keys). `pnpm test:e2e` **81/81**. Route table
+diffed against a real `origin/develop` build: **byte-identical** — every route
+still `●` SSG, the catch-all still the only `ƒ`. Static pages 27 → 28, which is
+the new `/favicon.ico` route from the file convention, not a route-mode change.
+All eleven titles confirmed correct in EN and ES on dev and in the prerendered
+production HTML.
+
+One process note: `git checkout develop` gives a **stale** local branch, 7
+commits behind `origin/develop` at the time of writing. The first baseline
+build was against the wrong tree and was missing the three 009 privacy routes
+entirely. Build from `origin/develop` detached instead. The local `develop`
+branch was deliberately left untouched.
+
+### Deliberately not done
+
+- **`public/llms.txt`** — listed as optional. Skipped: the site is eleven
+  static pages already in the sitemap, and there is no owner decision on file
+  about wanting one. Trivial to add later.
+- **hreflang / per-route canonicals** — the STOP condition held; nothing wanted
+  them back. `seo.spec.ts` now asserts their absence on all eleven routes.
+- **The in-page theme toggle does not update `theme-color`.** Documented gap,
+  as the plan instructed; no client sync was built.
+- **`public/og.png` is off-message.** It is typographic, carries no mark, and
+  its baked-in copy is the old positioning ("Full-stack development by Ivan
+  Lorenzana") while the homepage description now leads with Alisio, Vitapath
+  and the arrhythmia detector. Out of scope here and its wording depends on
+  what 011 settles; written into 012's "Landed from 010".
+- **`out/`** — a stale, gitignored 2025 export directory holding ~1.2 MB of the
+  OLD logo. Nothing references it; mentioned to 012 as a sweep candidate.
+
+### Still owed
+
+**The Amplify deploy-preview smoke before merge to `main`** (layout head is the
+Amplify-sensitive region; precedent plan 005 / CLAUDE.md §6). Check on the
+preview: a distinct `<title>` per route, `/favicon.ico` and
+`/apple-touch-icon.png` both 200, and `/sitemap.xml` serving the 11 unprefixed
+URLs. Human checklist #4 also becomes actionable: resubmit this sitemap in
+Search Console once verified.

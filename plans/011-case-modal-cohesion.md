@@ -257,3 +257,72 @@ neighbours; **they override this plan's summary**:
 `pnpm verify:i18n` reports **406** leaf keys (was 358). The growth is entirely
 in `legal.*`, which stays out of this plan's scope; your parity check should
 still fail on anything outside `home.cases.*`.
+
+---
+
+## Landed from 010 that changes this plan (2026-08-20)
+
+**The good news: 010 touched neither `app/[locale]/page.tsx` nor
+`home.cases.*` nor `app/globals.css`.** Every anchor correction in the two
+sections above is still exact, re-measured today: `<header className="ab-nav">`
+at `:674`, `page.tsx` at 1608 lines, `BRAND_LOGO` at `:86`. Your taxonomy pass
+starts from the same file 009 left you.
+
+**What did move, and where it can bite you:**
+
+- **`messages/*.json` grew by 13 leaf keys per locale**, all in `layout`,
+  `legal.*` and `support.*`. `home.cases.*` is byte-identical, but it sits
+  after those namespaces, so **line numbers inside the dictionaries shifted**.
+  Grep for the key, never trust an offset.
+- **Parity is now 419 leaf keys** (was 406). Your rule stands: a parity failure
+  outside `home.cases.*` is not yours.
+- **The e2e suite is 81 tests across four spec files** (was 61 across three).
+  `tests/e2e/seo.spec.ts` is new and asserts only `<head>` and the sitemap, so
+  it pins nothing in `home.cases.*` and adds no STOP risk to your work. The
+  pins listed at the top of this plan are unchanged.
+- **`CLAUDE.md` went 726 → 791 lines.** You edit its case-studies section in
+  Step 5; re-grep rather than trusting any line number in this plan.
+
+### One new hard rule, if your work ever adds a route
+
+Every page under `app/[locale]` is `"use client"` and cannot export
+`generateMetadata`, so each sub-route segment now carries a thin **server**
+`layout.tsx` that calls `routeMetadata()` from
+`app/[locale]/_route-metadata.ts`. Ten of them exist. **A new route without one
+silently inherits the homepage's title and description** — there is no error,
+just a wrong `<title>`. This plan adds no routes, so it is only relevant if the
+owner asks for the deferred Alisio support page mid-run.
+
+Related trap, already paid for once: titles are emitted as `title.absolute`,
+not bare strings, because Next resolves a bare-string title against the nearest
+ancestor template and then **stops passing that template down**. `/privacy`
+gaining a title of its own silently stripped the site name from
+`/privacy/choices`. Do not "simplify" the helper back to a plain string.
+
+### Savely: the copy you write now has a published sibling
+
+`/savely/privacy` shipped in 009, and 010 gave it a meta description that
+states the specifics in public: *"What it stores, the two permissions it asks
+for, and why receipts never open your photo library."* Both locales.
+
+Your Step 4 highlights are the same app described in a louder register. The
+corrections in `plans/README.md` (007 and 009) still govern, and the two new
+pieces of published copy are now part of what a highlight must not contradict:
+**two** permissions, and receipts arriving through an out-of-process
+`PhotosPicker` rather than photo-library access. Contradicting either is the
+STOP this plan already describes.
+
+The homepage's own `layout.metaDescription` was also rewritten and now names
+**Alisio, Vitapath and the arrhythmia detector** as the flagship lineup (it
+used to sell Fingo, Savely and Mi Mezcal). If your taxonomy pass changes how a
+case is described, the homepage description is the one-line version of the same
+pitch. It is in `layout`, not `home.cases.*`, so changing it is a deliberate
+widening, not a silent one.
+
+### The support-shell `privacyHref` question is still open
+
+009 left it open and 010 did not close it: `components/support-shell.tsx:263`
+still links the shared `/privacy` from all three support footers. 010 added
+`support.<app>.metaTitle` and `support.<app>.metaDescription` to that namespace,
+which does not collide with a `privacyHref` prop in any way. Still the owner's
+call, still not something to absorb silently.
