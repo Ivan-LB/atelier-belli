@@ -364,6 +364,16 @@ that reads `getTranslations("notFound")`, then renders the `.ab-nf-*` editorial
 single Client Component and broke on production; PR #18 split it into the
 current Server + island shape.
 
+**Skip-link invariant (PR #58).** `app/[locale]/layout.tsx` renders
+`<a href="#main-content">` as the first Tab stop of **every** page, so every
+`<main>` in the tree must carry `id="main-content"`. Four pages shipped without
+it (`/privacy`, `/terms`, `/privacy/choices` and the 404) and the site's first
+keyboard affordance silently did nothing on all four until plan 008 fixed it.
+A new route inherits the skip-link whether or not it wants to, so adding the id
+is not optional. The homepage additionally relies on that exact selector: the
+case modal sets `inert` on `main#main-content` while open, and
+`tests/e2e/smoke.spec.ts` asserts it.
+
 **Hybrid font loading** (intentional — see gotcha `google-fonts-hybrid-loading`,
 but note the split changed 2026-08-02):
 

@@ -217,3 +217,42 @@ and the `<ThemeInit />` line). Re-grep rather than trusting them.
 Still true and untouched: every `legal.*` dictionary key. 007 did not read or
 write that namespace, so the audit findings quoted in "Why this matters" all
 still stand.
+
+---
+
+## Landed from 008 that changes this plan (2026-08-20)
+
+008 (PR #58) touched two of your files and three of your keys. Small next to
+007's spill, but read it before Step 3.
+
+**The email question is closed.** All five legal contact keys now read
+`ivanlorenzana@outlook.com` in both locales, so this plan's "Out of scope:
+email values (landed in 008 - reuse them)" line is accurate as written. The
+three namespaces you create should carry that same address and no other.
+
+**`privacyChoices.sections.howToExercise.email` lost a baked-in label.** It
+used to read `"Email: ivanlorenzanabelli@outlook.com"`: the word `Email: ` was
+part of the value, which is precisely why that address had never been a link.
+The value is now the bare address. When you trim `privacyChoices` to reality,
+**keep it a bare address** - a value with a label inside it cannot be
+linkified, and the JSX now interpolates it into ``href={`mailto:${...}`}``.
+
+**Two of your files gained a `mailto` anchor.** `privacy/page.tsx` (contact
+block) and `privacy/choices/page.tsx` (`howToExercise` block) now wrap their
+address in `<a className="ab-legal-link" href={`mailto:...`}>`, matching what
+`terms/page.tsx` and `fave/privacy/page.tsx` already did. If you restructure
+those sections, do not regress them to plain text: all five privacy surfaces
+are consistent now, and an assertion in your new `legal.spec.ts` is cheap
+insurance.
+
+**Line anchors moved again.** On top of 007's +2 from `<ThemeInit />`,
+`privacy/page.tsx` gained +2 more and `privacy/choices/page.tsx` +5 from the
+anchor wrappers. Re-grep; do not trust any line number this plan cites inside
+those two files.
+
+**Your `main id="main-content"` recipe line is now the site-wide rule**, not
+just a fave habit. 008 added the id to the four `<main>`s that lacked it
+(`/privacy`, `/terms`, `/privacy/choices`, the 404), so every `<main>` in the
+tree carries it and the layout skip-link finally works everywhere. Your three
+new pages must keep the id, and the Step 4 assertion you already planned is
+now a regression net over real code rather than a forward-looking one.
