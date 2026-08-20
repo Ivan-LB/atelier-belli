@@ -11,17 +11,43 @@ one Next.js app:
 
 - **Homepage** at `/[locale]` — editorial redesign, `.ab-root` scope, light/dark
   theme toggle, custom vitrine/selected-work/workbench sections, case modal.
-- **Support pages** at `/[locale]/fingo/support` and `/[locale]/savely/support` —
-  reusable `SupportShell` keyed by `data-app`, `.sup-root` scope, per-app skin
-  (terracotta / green). Both consume `useTranslations("support.fingo")` /
-  `useTranslations("support.savely")` and build a `SupportContent` adapter via
-  `useMemo` (PRs #23 + #25). The previous `CONTENT[locale]` dictionary is gone.
-- **Utility sub-pages**: `/[locale]/privacy`, `/[locale]/privacy/choices`,
-  `/[locale]/terms` — small inline `.ab-root` shells with the same editorial
-  aesthetic as the homepage. Bilingual EN/ES bodies via
+- **Support pages** at `/[locale]/fingo/support`, `/[locale]/savely/support`
+  and `/[locale]/fave/support` (the last added by plan 007, PR #57) —
+  reusable `SupportShell` keyed by `data-app`, `.sup-root` scope, per-app skin.
+  Each consumes `useTranslations("support.<app>")` and builds a
+  `SupportContent` adapter via `useMemo` (PRs #23 + #25). The previous
+  `CONTENT[locale]` dictionary is gone. The shell's footer links the shared
+  `/privacy`, not the per-app policy.
+- **Legal surfaces**: `/[locale]/privacy`, `/[locale]/privacy/choices`,
+  `/[locale]/terms`, plus one privacy page per shipped app —
+  `/[locale]/alisio/privacy`, `/fave/privacy`, `/fingo/privacy`,
+  `/savely/privacy`. All are small inline `.ab-root` shells with the same
+  editorial aesthetic as the homepage. Bilingual EN/ES bodies via
   `useTranslations('legal')`. The shared chrome + `.ab-prose` ruleset live
   in `app/globals.css`. (Previously used a legacy `SimplePageLayout` with
   gray/gradient aesthetic — removed in PR #12.)
+
+  **Per-app privacy is the architecture** (owner decision, plan 009, PR #59).
+  The shared `/privacy` covers the WEBSITE only: the `NEXT_LOCALE` cookie,
+  the `ab_theme` localStorage entry, and the hosting + Google Fonts requests
+  that genuinely leave the browser. Anything an app does belongs on that
+  app's page, written from that app's repo and never from memory or from a
+  plan's summary of it. Before this, one shared policy declared shipping
+  addresses, credit card numbers and continuous geolocation for apps whose
+  App Store listings say "No se recopilan datos".
+
+  The shared page also carries a **"Privacy for our apps" section linking all
+  four**. Do not remove it: App Store Connect still points the Alisio and
+  Fingo listings at `/privacy`, so that section is the only route from those
+  listings to the policy that describes them (`plans/README.md` human
+  checklist #1 closes the window).
+
+  A new legal page is 4 touches: `page.tsx` (clone `fave/privacy`
+  structurally), one path in `app/sitemap.ts`, and a `legal.<app>Privacy`
+  namespace in BOTH dictionaries. `<ThemeInit />` must be the first child of
+  `.ab-root` and `<main>` must carry `id="main-content"` (see the skip-link
+  invariant in §3); `tests/e2e/legal.spec.ts` asserts both on every legal
+  route, so a new page belongs in its lists.
 - **404 page** at `/[locale]/not-found` — Server Component using
   `getTranslations("notFound")`, with a tiny client island
   (`_not-found-controls.tsx`) for theme + locale toggles. Backed by a
@@ -608,17 +634,24 @@ app/
                                   #   The only ƒ (Dynamic) route in the build.
     privacy/ · terms/ · privacy/choices/
                                   # Inline .ab-root shells, useTranslations('legal').
-                                  # Bilingual EN/ES.
+                                  # Bilingual EN/ES. /privacy is website-only
+                                  # and links the four app policies.
+    alisio/privacy/ · fave/privacy/ · fingo/privacy/ · savely/privacy/
+                                  # One privacy page per shipped app, same
+                                  # shell. legal.<app>Privacy namespaces.
     fingo/support/                # SupportShell, data-app="fingo".
                                   # useTranslations('support.fingo') + useMemo
                                   # adapter producing SupportContent.
-    savely/support/               # SupportShell, data-app="savely".
-                                  # useTranslations('support.savely') + useMemo
-                                  # adapter producing SupportContent.
+    savely/support/ · fave/support/
+                                  # Same shell, data-app="savely" | "fave".
 components/
-  support-shell.tsx               # Reusable support shell. data-app union is
-                                  #   "fingo" | "savely" only. Receives a
-                                  #   SupportContent prop built by each page.
+  support-shell.tsx               # Reusable support shell, keyed by data-app.
+                                  #   Receives a SupportContent prop built by
+                                  #   each page.
+  theme-init.tsx                  # Inline script + effect that mirrors the
+                                  #   homepage's ab_theme choice onto whatever
+                                  #   root it renders inside. FIRST child of
+                                  #   every .ab-root / .sup-root (plan 007).
 messages/
   en.json · es.json               # next-intl dictionaries.
                                   # Top-level: notFound, layout, legal, home,
