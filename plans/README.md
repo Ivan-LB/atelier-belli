@@ -125,7 +125,7 @@ Owner mandates baked into every plan of this wave:
 |------|-------|----------|--------|------------|--------|
 | 007 | Support pages tell the truth + /fave/support | P1 | L | — (parallel-safe with 008) | DONE — PR #57, 2026-08-19/20. Savely + Fingo namespaces rewritten from source-verified facts, `/fave/support` shipped, 4 shell links unprefixed, dead "Help centre" cards gone. `pnpm verify` green, 32/32 e2e, CI green. **Grew past its scope by owner request mid-run**: the support surface was redesigned (not re-skinned), real iOS app icons replaced the letter crests, all three skins gained dark mode, and the fave case gained a Privacy action. Files outside the plan's scope: the four legal pages + `components/theme-init.tsx` + `public/apps/*`. Consequences are written into plans 009, 010, 011 and 012 under "Landed from 007"; the plan's own tail records the rest. **Read the ground-truth corrections below before executing 009 or 011.** |
 | 008 | One contact email + legal-surface link hygiene | P1 | S | — (parallel-safe with 007) | DONE — PR #58, 2026-08-20. Four addresses collapsed to `ivanlorenzana@outlook.com` (10 dictionary hits, both locales); the emails on `/privacy` and `/privacy/choices` are now `mailto` links; `id="main-content"` added to the four `<main>`s that lacked it, so **every `<main>` in the tree now carries it** and the layout skip-link works on all of them (verified by keyboard on `/privacy`, `/terms` and the 404). `pnpm verify` + 32/32 e2e + `pnpm build` green; the catch-all is still the only `ƒ (Dynamic)` route. **One deviation from the plan**: `privacyChoices.sections.howToExercise.email` had its label baked into the value (`"Email: …"`, both locales), so wrapping it verbatim would have emitted `mailto:Email:%20…`; the prefix was dropped and the value is now a bare address like the other four. Docs propagated in the same PR: `CLAUDE.md` gained the skip-link invariant, `docs/opportunistic-improvements.md` §5's email bullet is marked resolved, and 009 carries a "Landed from 008" section (its `mailto` anchors, the de-labelled key, and shifted line anchors). |
-| 009 | Per-app privacy pages + honest /privacy and /terms | P1 | L | 007 soft (sitemap), 008 soft (email) | TODO |
+| 009 | Per-app privacy pages + honest /privacy and /terms | P1 | L | 007 soft (sitemap), 008 soft (email) | DONE — PR #59, 2026-08-20. `/alisio/privacy`, `/fingo/privacy` and `/savely/privacy` shipped on the `/fave/privacy` recipe; the shared `/privacy` is website-only (NEXT_LOCALE by name, `ab_theme`, hosting + Google Fonts) and carries the **"Privacy for our apps" section linking all four** that bridges the ASC window. `/privacy/choices` lost six sections of rights machinery it had no data for; `/terms` lost the registration representations and the IP-blocking clause (`termination` renamed to `availability`), both dates refreshed. `pnpm verify` green (406 leaf keys), 61/61 e2e (new `tests/e2e/legal.spec.ts`, +26), `pnpm build` green with the catch-all still the only `ƒ (Dynamic)` route and 22 sitemap URLs. **Every claim was re-verified in the app repos rather than taken from the plan; four of the plan's own did not survive** (below). Two disclosures the plan did not list were added from this repo: Google Fonts is cross-origin and Amplify serves the site, so both are requests that genuinely leave the reader's browser. Also carried plan 008's uncommitted doc propagation and updated CLAUDE.md §1/§8 for the new route list (plus two entries 007 never added: `/fave/support` and `components/theme-init.tsx`). **Owner action, same day this deploys: human checklist #1 below.** |
 | 010 | Per-route metadata, sitemap rewrite, icons | P1 | M | 007 + 009 **hard** (final route list) | TODO |
 | 011 | Case modal cohesion + Savely narrative | P2 | L | 007, 009 soft (serialize page.tsx/dicts) | TODO |
 | 012 | Mobile contact affordance + asset/docs polish | P2 | M | 011 soft (page.tsx) | TODO |
@@ -182,6 +182,36 @@ claims, so correct them there rather than repeating them.**
 - **Fave needs an iCloud sign-in for sync**, so "no account" is only true as
   "no account of ours". Deleting the Fave app does NOT erase the data: the
   iCloud copy survives and re-imports on reinstall, so deletion is two steps.
+
+## Ground-truth corrections found while executing 009 (2026-08-20)
+
+Plan 009's Ground truth was re-verified the same way, against the three app
+repos. Four claims needed correcting, and **plan 011 inherits all of the Savely
+ones**.
+
+- **Savely asks for two permissions, not one.** The plan said camera only.
+  `NotificationManager.requestAuthorization()` runs on first launch
+  (`SavelyApp.swift:24`), so iOS shows a notification prompt too.
+- **Savely never gets photo-library access.** Receipt import uses SwiftUI's
+  out-of-process `PhotosPicker` (`CameraView.swift:119`), which hands the app
+  the one chosen image, which is why there is no
+  `NSPhotoLibraryUsageDescription` anywhere in the project.
+- **The disabled AI path is real, and the mechanism is stronger than "a flag".**
+  `FeatureFlags.tipsEnabled = false` gates the card, and `DashboardView`'s
+  `onAppear` refuses to hand `TipsAndSuggestionViewModel` a `ModelContext` at
+  all, so `loadTip` → `generateTip` → `OpenAIClient` never runs. Worth knowing
+  precisely: `Config.plist` **is** still bundled in the Resources build phase,
+  so the client would initialize if the flag ever flipped, and the prompt it
+  builds contains monthly income and expense totals plus goal names and
+  progress. "Savely makes no network requests" is true of the shipped build and
+  only of the shipped build.
+- **Fingo is four modes and no settings screen** (Chooser, Roulette, Random,
+  Coin Flip), confirming 007's correction; its labels are English because
+  `Localizable.xcstrings` has no Fingo equivalent at all.
+
+Confirmed unchanged and safe to reuse: Alisio's HealthKit read/write set, its
+Spanish usage strings, zero networking code in Alisio and Fingo, and zero
+third-party SDKs in all three (none of the projects has a single SPM package).
 
 Separately, and outside this wave's scope: **`GoogleService-Info.plist` with a
 live Firebase API key is still reachable in the public `Ivan-LB/Savely` git
