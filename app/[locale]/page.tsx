@@ -1084,7 +1084,7 @@ export default function PortfolioPage() {
                     <span className="gn">ii.</span>
                   </h3>
                   <div className="ab-pills">
-                    {["Node", "PostgreSQL", "Supabase", "Vercel", "Edge Functions"].map((p, i) => (
+                    {["Node.js", "PostgreSQL", "Supabase", "Vercel", "Edge Functions"].map((p, i) => (
                       <span key={p} className="ab-pill">
                         <span className="pi">{toRoman(i + 1)}.</span>
                         {p}

@@ -408,7 +408,13 @@ saved", and never say "deletes everything".
    the tag ("An artisanal mezcal brand: storefront and story"), which sits on
    the same index row; a descriptor that repeated the tag would read as
    stuttering. ES `"venta directa desde Oaxaca."`
-5. **Alisio's "one descriptor" rule was applied to structured fields only.**
+5. **The workbench pill said `Node` too.** This plan's Step 1 verify command
+   (`grep -n '"Node"' app/[locale]/page.tsx` = 0) assumed briefmark's Stack chip
+   was the only hit; the second was the backend tools list in the workbench
+   section (`page.tsx:1087`), which is on the same page a visitor reads and is
+   not in `home.cases.*`. Unified to `Node.js` so the verify command passes
+   honestly rather than being declared inapplicable. Nothing pins it.
+6. **Alisio's "one descriptor" rule was applied to structured fields only.**
    Chips and meta say `watchOS`; the prose in `descRich` still says "Apple
    Watch", which is the correct marketing name in a sentence and was not in the
    plan's axis list.
