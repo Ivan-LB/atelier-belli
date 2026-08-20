@@ -26,79 +26,100 @@
     "termsShortLabel": "Términos",
     "privacy": {
       "title": "Política de Privacidad",
-      "lastUpdated": "20 de julio de 2026",
+      "lastUpdated": "Última actualización: 20 de agosto de 2026",
       "sections": {
         "intro": {
-          "heading": "Introducción",
-          "body": "Bienvenido a Atelier Belli. Nos comprometemos a proteger tu privacidad. Esta Política de Privacidad explica cómo recopilamos, usamos, divulgamos y salvaguardamos tu información cuando visitas nuestro sitio web o utilizas nuestras aplicaciones móviles (por ejemplo, Fingo, Savely y Alisio). Por favor, lee esta política de privacidad cuidadosamente. Si no estás de acuerdo con los términos de esta política de privacidad, por favor no accedas al sitio ni a nuestras aplicaciones."
+          "heading": "De qué trata esta página",
+          "body": "Atelier Belli es el portafolio de Iván Lorenzana, desarrollador en Tijuana, México. Este sitio es un puñado de páginas estáticas: no hay cuenta que crear, ni formulario que llenar, ni caja de comentarios, ni boletín. Esta política habla del sitio web. Cada app que publicamos tiene la suya, y están enlazadas justo abajo, porque una política que intenta cubrir un sitio y cuatro apps al mismo tiempo termina describiendo mal a todos."
         },
-        "dataCollected": {
-          "heading": "Información que Recopilamos",
-          "intro": "Podemos recopilar información sobre ti de varias maneras. La información que podemos recopilar en el Sitio o a través de nuestras Aplicaciones incluye:",
-          "personalData": {
-            "label": "Datos Personales:",
-            "body": "Información de identificación personal, como tu nombre, dirección de envío, dirección de correo electrónico y número de teléfono, e información demográfica, como tu edad, sexo, ciudad natal e intereses, que nos proporcionas voluntariamente cuando te registras en el Sitio o nuestras Aplicaciones, o cuando eliges participar en diversas actividades relacionadas con el Sitio y nuestras Aplicaciones, como chat en línea y tablones de mensajes."
-          },
-          "derivedData": {
-            "label": "Datos Derivados:",
-            "body": "Información que nuestros servidores recopilan automáticamente cuando accedes al Sitio o a nuestras Aplicaciones, como tu dirección IP, tu tipo de navegador, tu sistema operativo, tus tiempos de acceso y las páginas que has visto directamente antes y después de acceder al Sitio."
-          },
-          "financialData": {
-            "label": "Datos Financieros:",
-            "body": "Información financiera, como datos relacionados con tu método de pago (por ejemplo, número de tarjeta de crédito válida, marca de la tarjeta, fecha de caducidad) que podemos recopilar cuando compras, ordenas, devuelves, intercambias o solicitas información sobre nuestros servicios desde el Sitio o nuestras Aplicaciones."
-          },
-          "mobileAppData": {
-            "label": "Datos de Aplicaciones Móviles:",
-            "intro": "Si te conectas usando nuestra(s) aplicación(es) móvil(es):",
-            "deviceInfo": {
-              "label": "Información del Dispositivo Móvil.",
-              "body": "Podemos recopilar información del dispositivo (como el ID de tu dispositivo móvil, modelo y fabricante), sistema operativo, información de la versión e dirección IP."
-            },
-            "geolocation": {
-              "label": "Datos de Geolocalización.",
-              "body": "Podemos solicitar acceso o permiso y rastrear información basada en la ubicación de tu dispositivo móvil, ya sea continuamente o mientras estás usando nuestra aplicación móvil, para proporcionar servicios basados en la ubicación."
-            },
-            "healthData": {
-              "label": "Datos de Salud y Actividad Física (Alisio):",
-              "body": "Nuestra app Alisio lee datos de frecuencia cardiaca, energía activa y entrenamientos desde Apple HealthKit, con tu permiso explícito, únicamente para calcular tus zonas de entrenamiento por frecuencia cardiaca y mostrar tus métricas en vivo en tu Apple Watch y iPhone. Estos datos, junto con tu historial de entrenamientos, se guardan solo en tus propios dispositivos. No los transmitimos a nuestros servidores, no los compartimos con terceros ni los usamos con fines publicitarios. Alisio no requiere cuenta ni más datos personales que los que tú decidas ingresar (edad y frecuencia cardiaca en reposo) para calcular tus zonas."
-            }
-          }
+        "apps": {
+          "heading": "Privacidad de nuestras apps",
+          "intro": "Si llegaste desde una ficha del App Store buscando la política de una app en particular, es una de estas cuatro:",
+          "alisio": "Política de privacidad de Alisio",
+          "fave": "Política de privacidad de Fave",
+          "fingo": "Política de privacidad de Fingo",
+          "savely": "Política de privacidad de Savely",
+          "note": "Cada una describe qué guarda esa app, dónde lo guarda y qué sale (si acaso sale algo) de tu dispositivo."
         },
-        "dataUse": {
-          "heading": "Cómo Usamos Tu Información",
-          "intro": "Tener información precisa sobre ti nos permite proporcionarte una experiencia fluida, eficiente y personalizada. Específicamente, podemos usar la información recopilada sobre ti a través del Sitio o nuestras Aplicaciones para:",
-          "items": [
-            "Crear y gestionar tu cuenta.",
-            "Enviarte por correo electrónico tu cuenta o pedido.",
-            "Permitir la comunicación entre usuarios.",
-            "Cumplir y gestionar compras, pedidos, pagos y otras transacciones relacionadas con el Sitio y nuestras Aplicaciones.",
-            "Mejorar la eficiencia y el funcionamiento del Sitio y nuestras Aplicaciones.",
-            "Calcular tus zonas personales de entrenamiento por frecuencia cardiaca y mostrar datos de entrenamiento en vivo dentro de la app Alisio, procesados por completo en tu dispositivo."
-          ]
+        "noCollection": {
+          "heading": "Qué recolecta este sitio: nada",
+          "body": "Sin analítica, sin publicidad, sin píxeles de rastreo, sin grabación de sesión, sin pruebas A/B. No hay registro, así que no hay lista en la que puedas terminar, ni servidor nuestro que guarde constancia de tu visita."
         },
-        "dataSecurity": {
-          "heading": "Seguridad de Tus Datos",
-          "body": "Utilizamos medidas de seguridad administrativas, técnicas y físicas para ayudar a proteger tu información personal. Si bien hemos tomado medidas razonables para asegurar la información personal que nos proporcionas, ten en cuenta que a pesar de nuestros esfuerzos, ninguna medida de seguridad es perfecta o impenetrable."
+        "cookie": {
+          "heading": "La única cookie",
+          "body": "El sitio guarda una sola cookie, llamada NEXT_LOCALE. Toma uno de dos valores, en o es, y su trabajo completo es recordar si estás leyendo el sitio en inglés o en español. Se escribe la primera vez que llegas, a partir del idioma que pide tu navegador, y otra vez cada que usas el botón de idioma. Dura un año, está limitada a este sitio (SameSite=Lax) y no lleva ningún identificador. Si la borras, el sitio simplemente vuelve a adivinar tu idioma en tu próxima visita."
+        },
+        "theme": {
+          "heading": "Claro u oscuro, recordado en tu navegador",
+          "body": "Cuando cambias el sitio entre claro y oscuro, esa elección se guarda en el almacenamiento local de tu navegador bajo el nombre ab_theme. No es una cookie: se queda en tu navegador y nunca viaja en una petición. Si limpias los datos de tu navegador, se reinicia."
+        },
+        "hosting": {
+          "heading": "Hospedaje y tipografías",
+          "body": "El sitio está hospedado en AWS Amplify. Como cualquier hospedaje web, sus servidores procesan las peticiones necesarias para entregarte una página, y eso incluye tu dirección IP; nosotros no armamos reportes con eso ni tenemos una capa de analítica encima. La mayor parte de la tipografía la sirve Google Fonts, así que tu navegador pide esos archivos directamente a los servidores de Google, y esa petición se rige por la política de privacidad de Google. La serif de despliegue se sirve desde este mismo sitio."
         },
         "privacyRights": {
-          "heading": "Tus Derechos de Privacidad",
-          "body": "Dependiendo de tu ubicación, puedes tener ciertos derechos con respecto a tu información personal. Para más información sobre cómo ejercer estos derechos, por favor visita nuestra página de",
+          "heading": "Tus derechos",
+          "body": "Hay muy poco aquí sobre lo cual ejercer derechos de datos, porque guardamos muy poco. Si de todos modos quieres preguntar, las vías están en nuestra página de",
           "linkLabel": "Opciones de Privacidad del Usuario"
         },
         "children": {
-          "heading": "Política para Niños",
-          "body": "No solicitamos conscientemente información ni comercializamos a niños menores de 13 años. Si te das cuenta de cualquier dato que hayamos recopilado de niños menores de 13 años, por favor contáctanos usando la información de contacto proporcionada a continuación."
+          "heading": "Menores",
+          "body": "Este sitio no está dirigido a menores y no recolecta nada de nadie, de ninguna edad. Cada política de app dice lo mismo para esa app."
         },
         "changes": {
-          "heading": "Cambios a Esta Política de Privacidad",
-          "body": "Podemos actualizar esta Política de Privacidad de vez en cuando. Te notificaremos cualquier cambio publicando la nueva Política de Privacidad en esta página."
+          "heading": "Cambios a esta política",
+          "body": "Si esta política cambia, la fecha de arriba cambia con ella, y la versión vigente siempre vive en esta URL."
         },
         "contact": {
           "heading": "Contacto",
-          "body": "Si tienes preguntas o comentarios sobre esta Política de Privacidad, por favor contáctanos en:",
+          "body": "Si tienes una pregunta sobre esta política, o sobre lo que el sitio o una app hacen con tus datos, escríbenos:",
           "name": "Atelier Belli",
           "email": "ivanlorenzana@outlook.com",
           "address": "Tijuana, Baja California, México"
+        }
+      }
+    },
+    "alisioPrivacy": {
+      "title": "Política de Privacidad de Alisio",
+      "lastUpdated": "Última actualización: 20 de agosto de 2026",
+      "intro": "Alisio lee tu ritmo cardiaco en el Apple Watch mientras entrenas y todo lo que aprende se queda en tus propios dispositivos. No hay cuenta, no hay analítica y no hay una sola línea de red en la app. Aquí va con detalle:",
+      "sections": {
+        "collect": {
+          "heading": "Qué recolectamos: nada",
+          "body": "Alisio no tiene cuentas, ni analítica, ni anuncios, ni rastreadores, ni servidores propios. La app no contiene código de red, así que no existe una ruta por la que algo pueda salir de tus dispositivos, y tampoco viaja dentro de ella ningún SDK de terceros."
+        },
+        "health": {
+          "heading": "Datos de salud",
+          "body": "En tu Apple Watch, Alisio le pide permiso a Apple Salud para leer tu ritmo cardiaco y tu energía activa mientras una sesión está en curso, y para guardar el entrenamiento terminado de vuelta en Salud. Esas lecturas alimentan la zona en vivo de tu muñeca y el resumen del final. Nunca usamos datos de salud para publicidad, nunca los compartimos con terceros y nunca los vendemos. La app del iPhone no pide ningún permiso.",
+          "prompts": "Los avisos de permiso muestran las palabras de la propia app: \"Necesitamos tu ritmo cardiaco para calcular tus zonas de entrenamiento.\" y \"Guardamos tu entrenamiento en Salud.\""
+        },
+        "storage": {
+          "heading": "Dónde viven tus datos",
+          "body": "El perfil que capturas (tu edad, tu ritmo cardiaco en reposo y la fórmula que eliges) se guarda en las preferencias de la app en tu iPhone. Tu historial de sesiones es un archivo dentro de la carpeta privada de la app, en ese mismo iPhone. Nada se copia a iCloud y nada se copia hacia nosotros."
+        },
+        "devices": {
+          "heading": "Entre tu Watch y tu iPhone",
+          "body": "Alisio manda tu perfil al Watch y la sesión terminada de regreso al iPhone por Watch Connectivity de Apple, un enlace directo entre dos dispositivos que ya son tuyos. La complicación de la carátula lee una pequeña instantánea que la app del Watch deja en un contenedor compartido dentro del mismo Watch. Nada de eso pasa por un servidor nuestro, porque no hay servidor nuestro."
+        },
+        "account": {
+          "heading": "Sin cuenta, sin compras, sin anuncios",
+          "body": "Alisio no tiene inicio de sesión, ni suscripción, ni compras dentro de la app, ni publicidad. Todo funciona en modo avión, por tiempo indefinido."
+        },
+        "deletion": {
+          "heading": "Cómo borrar tus datos",
+          "body": "Si borras la app, tu perfil y tu historial de sesiones desaparecen del iPhone. Los entrenamientos que Alisio ya guardó en Apple Salud le pertenecen a Salud y se quedan ahí; los puedes eliminar desde la app Salud, en la sección que lista las apps que escribieron datos."
+        },
+        "children": {
+          "heading": "Menores",
+          "body": "Alisio no recolecta datos de nadie, incluidos menores."
+        },
+        "changes": {
+          "heading": "Cambios",
+          "body": "Si esta política cambia, la fecha de arriba cambia con ella y la versión vigente vivirá siempre en esta URL."
+        },
+        "contact": {
+          "heading": "Contacto",
+          "email": "ivanlorenzana@outlook.com"
         }
       }
     },
@@ -134,47 +155,113 @@
         }
       }
     },
-    "privacyChoices": {
-      "title": "Opciones de Privacidad del Usuario",
-      "intro": "En Atelier Belli, respetamos tu privacidad y te ofrecemos control sobre tu información personal. A continuación, se describen las opciones que tienes con respecto a tus datos:",
+    "fingoPrivacy": {
+      "title": "Política de Privacidad de Fingo",
+      "lastUpdated": "Última actualización: 20 de agosto de 2026",
+      "intro": "Fingo decide por ti: un dedo, una ruleta, un número, un volado. No pide permisos, no tiene cuenta y nunca se conecta a nada. Aquí va con detalle:",
       "sections": {
-        "access": {
-          "heading": "Acceso a Tu Información",
-          "body": "Tienes derecho a solicitar una copia de la información personal que tenemos sobre ti. Puedes hacerlo escribiéndonos a ivanlorenzana@outlook.com."
+        "collect": {
+          "heading": "Qué recolectamos: nada",
+          "body": "Fingo no tiene cuentas, ni analítica, ni anuncios, ni rastreadores, ni servidores propios. No hay de qué darte de baja, porque no hay nada que se esté recolectando."
         },
-        "correction": {
-          "heading": "Corrección de Tu Información",
-          "body": "Si crees que cualquier información que tenemos sobre ti es incorrecta o está incompleta, por favor contáctanos lo antes posible. Corregiremos cualquier información que se encuentre incorrecta."
+        "storage": {
+          "heading": "Dónde viven tus datos",
+          "body": "Lo que configuras en la app (las ruletas que armas y las opciones que escribes en ellas, más tus ajustes de Chooser, Random y Coin Flip) se guarda en las preferencias de la app en tu iPhone. Ahí se queda, y si borras la app se va con ella. Los nombres de los modos aparecen en inglés porque la interfaz de Fingo está en inglés."
+        },
+        "permissions": {
+          "heading": "Permisos: ninguno",
+          "body": "Fingo no pide nada. Ni cámara, ni fotos, ni contactos, ni ubicación, ni notificaciones. Si alguna vez iOS te muestra un aviso de permiso con el nombre de Fingo, algo anda mal y nos gustaría enterarnos."
+        },
+        "network": {
+          "heading": "Nada que enviar, ningún lugar a donde enviarlo",
+          "body": "La app no contiene código de red ni SDK de terceros. Se comporta igual en modo avión que con internet, porque nunca tuvo motivo para conectarse."
+        },
+        "children": {
+          "heading": "Menores",
+          "body": "Fingo no recolecta datos de nadie, incluidos menores."
+        },
+        "changes": {
+          "heading": "Cambios",
+          "body": "Si esta política cambia, la fecha de arriba cambia con ella y la versión vigente vivirá siempre en esta URL."
+        },
+        "contact": {
+          "heading": "Contacto",
+          "email": "ivanlorenzana@outlook.com"
+        }
+      }
+    },
+    "savelyPrivacy": {
+      "title": "Política de Privacidad de Savely",
+      "lastUpdated": "Última actualización: 20 de agosto de 2026",
+      "intro": "Savely lleva tus finanzas en tu teléfono y en ningún otro lado. La app lo dice en sus propios ajustes: \"Tus datos nunca salen de este iPhone.\" Esto es lo que eso significa a detalle:",
+      "sections": {
+        "collect": {
+          "heading": "Qué recolectamos: nada",
+          "body": "Savely no tiene cuenta, ni inicio de sesión, ni analítica, ni anuncios, ni rastreadores, ni servidores propios. Tampoco sincroniza con iCloud. Nunca vemos un solo número de los que capturas."
+        },
+        "storage": {
+          "heading": "Dónde viven tus datos",
+          "body": "Tus ingresos, tus gastos, tus metas y los depósitos que haces a esas metas se guardan en una base de datos dentro de la app, en tu iPhone. Tu nombre y tus recordatorios viven en las preferencias de la app. Todo eso se queda en ese teléfono."
+        },
+        "receipts": {
+          "heading": "Escanear un ticket",
+          "body": "Savely pide la cámara la primera vez que escaneas un ticket, con estas palabras, que iOS muestra en inglés: \"Savely uses the camera to scan receipts for recording and managing your expenses.\" La foto se lee en tu dispositivo con el reconocimiento de texto de Apple, y la app se queda únicamente con el monto, la fecha y la descripción que confirmas en la pantalla de revisión. La imagen nunca se guarda en la app ni se sube a ningún lado. También puedes elegir una foto que ya tengas con el selector de fotos de Apple, que le entrega a Savely solo la imagen que elegiste, así que la app nunca obtiene acceso a tu fototeca."
+        },
+        "reminders": {
+          "heading": "Recordatorios",
+          "body": "Los recordatorios son notificaciones locales: tu iPhone las programa y tu iPhone las muestra. Savely pide permiso de notificaciones la primera vez que la abres, y puedes apagarlas desde la app o desde Ajustes de iOS. Nada se envía desde un servidor, porque no hay servidor."
+        },
+        "network": {
+          "heading": "Qué sale de tu teléfono",
+          "body": "Nada, salvo lo que tú mismo mandes. La app no hace peticiones de red. Lo único que puede viajar es el reporte semanal en PDF: se arma en tu teléfono con la semana en curso y se le entrega a la hoja de compartir de iOS, y a dónde va después lo decides tú."
         },
         "deletion": {
-          "heading": "Eliminación de Tu Información (Derecho al Olvido)",
-          "body": "Puedes solicitar la eliminación de tu información personal de nuestros sistemas en ciertas circunstancias. Por ejemplo, si los datos ya no son necesarios para el propósito para el cual fueron recopilados, o si retiras tu consentimiento (cuando el procesamiento se basa en el consentimiento)."
+          "heading": "Cómo borrar tus datos",
+          "body": "\"Borrar todos los datos\", en la sección Datos y privacidad de tu perfil, elimina del teléfono tus ingresos, tus gastos y tus metas. Tu nombre y tus recordatorios se conservan, porque son preferencias y no datos. Si borras la app, se va todo, esos incluidos."
         },
-        "objection": {
-          "heading": "Objeción al Procesamiento",
-          "body": "Tienes derecho a objetar el procesamiento de tu información personal en ciertas situaciones, como el marketing directo. Si te opones, dejaremos de procesar tu información personal para esos fines a menos que tengamos motivos legítimos convincentes para el procesamiento que prevalezcan sobre tus intereses, derechos y libertades, o para el establecimiento, ejercicio o defensa de reclamaciones legales."
+        "children": {
+          "heading": "Menores",
+          "body": "Savely no recolecta datos de nadie, incluidos menores."
         },
-        "restriction": {
-          "heading": "Restricción del Procesamiento",
-          "body": "Puedes solicitar que restrinjamos el procesamiento de tu información personal si: (a) cuestionas la exactitud de los datos; (b) el procesamiento es ilegal pero te opones a la eliminación; (c) ya no necesitamos los datos pero tú los necesitas para reclamaciones legales; o (d) te has opuesto al procesamiento y estamos verificando si nuestros motivos legítimos prevalecen."
+        "changes": {
+          "heading": "Cambios",
+          "body": "Si esta política cambia, la fecha de arriba cambia con ella y la versión vigente vivirá siempre en esta URL. Si alguna versión futura de Savely llegara a enviar algo fuera de tu teléfono, esta página lo dirá antes de que esa versión salga."
         },
-        "portability": {
-          "heading": "Portabilidad de Datos",
-          "body": "Cuando el procesamiento se basa en tu consentimiento o en un contrato y se realiza por medios automatizados, tienes derecho a recibir la información personal que nos has proporcionado en un formato estructurado, de uso común y legible por máquina, y tienes derecho a transmitir esos datos a otro responsable del tratamiento sin impedimentos por nuestra parte."
+        "contact": {
+          "heading": "Contacto",
+          "email": "ivanlorenzana@outlook.com"
+        }
+      }
+    },
+    "privacyChoices": {
+      "title": "Opciones de Privacidad del Usuario",
+      "intro": "Las políticas de privacidad suelen prometer toda una maquinaria para ejercer tus derechos de datos. Aquí va la versión honesta: no guardamos casi nada tuyo, así que para casi cualquier solicitud la respuesta es que no hay nada que entregar, corregir ni borrar. Esta página dice dónde están de verdad los datos y cómo llegar a una persona que responda.",
+      "sections": {
+        "whatWeHold": {
+          "heading": "Qué guardamos de ti",
+          "body": "Nada que te identifique. Este sitio no tiene cuentas, ni formularios, ni analítica; guarda una cookie de idioma y una preferencia de tema, las dos viven en tu propio dispositivo y ninguna lleva identificador. Si nos has escrito, tenemos tu correo en una bandeja de entrada, igual que cualquiera tiene los correos que le mandan."
+        },
+        "appData": {
+          "heading": "Los datos dentro de nuestras apps",
+          "body": "Lo que guardan nuestras apps se queda en tu dispositivo, y en el caso de Fave también en tu propia cuenta de iCloud. No tenemos copia ni forma de llegar a esos datos, así que pedirnos que los borremos no lograría nada, pero tú sí puedes borrarlos: cada política de app explica exactamente qué guarda y cómo quitarlo."
+        },
+        "requests": {
+          "heading": "Hacer una solicitud",
+          "body": "De todos modos puedes pedirnos una copia de lo que tengamos, pedirnos que lo corrijamos o pedirnos que lo borremos. Con todo lo anterior, la respuesta suele ser corta y rápida."
         },
         "howToExercise": {
-          "heading": "Cómo Ejercer Tus Derechos",
-          "contactIntro": "Para ejercer cualquiera de estos derechos, por favor contáctanos en:",
-          "name": "Atelier Belli - Departamento de Privacidad",
+          "heading": "Cómo contactarnos",
+          "contactIntro": "Escríbenos a:",
+          "name": "Atelier Belli",
           "email": "ivanlorenzana@outlook.com",
-          "responseNote": "Responderemos a tu solicitud dentro del plazo legalmente requerido. Es posible que necesitemos verificar tu identidad antes de procesar tu solicitud.",
-          "disclaimer": "Ten en cuenta que estos derechos no son absolutos y pueden estar sujetos a ciertas exenciones bajo la ley aplicable."
+          "responseNote": "Una persona lee esa bandeja y contesta, normalmente en unos días. No te vamos a pedir información personal extra para verificar una solicitud, salvo que responderla lo requiera de verdad.",
+          "disclaimer": "Esta página describe cómo atendemos las solicitudes en la práctica. No es un resumen de la ley de protección de datos de ningún país en particular, y donde esa ley te dé más de lo que dice esta página, manda la ley."
         }
       }
     },
     "terms": {
       "title": "Términos y Condiciones",
-      "lastUpdated": "15 de junio de 2025",
+      "lastUpdated": "Última actualización: 20 de agosto de 2026",
       "sections": {
         "acceptance": {
           "heading": "1. Aceptación de los Términos",
@@ -188,9 +275,7 @@
           "heading": "3. Representaciones del Usuario",
           "intro": "Al utilizar los Servicios, usted representa y garantiza que:",
           "items": [
-            "Toda la información de registro que envíe será verdadera, precisa, actual y completa.",
-            "Mantendrá la exactitud de dicha información y la actualizará rápidamente según sea necesario.",
-            "Tiene la capacidad legal y acepta cumplir con estos Términos.",
+            "Tiene la capacidad legal para aceptar estos Términos y acepta cumplirlos.",
             "No utilizará los Servicios para ningún propósito ilegal o no autorizado.",
             "Su uso de los Servicios no violará ninguna ley o regulación aplicable."
           ]
@@ -199,9 +284,9 @@
           "heading": "4. Actividades Prohibidas",
           "body": "No puede acceder ni utilizar el Sitio para ningún otro propósito que no sea aquel para el que ponemos el Sitio a disposición. El Sitio no puede ser utilizado en conexión con ningún esfuerzo comercial excepto aquellos que sean específicamente respaldados o aprobados por nosotros."
         },
-        "termination": {
-          "heading": "5. Terminación",
-          "body": "Nos reservamos el derecho, a nuestra entera discreción, de denegar el acceso y uso de los Servicios (incluyendo el bloqueo de ciertas direcciones IP) a cualquier persona por cualquier motivo o sin motivo alguno, incluyendo, sin limitación, el incumplimiento de cualquier representación, garantía o pacto contenido en estos Términos o de cualquier ley o regulación aplicable."
+        "availability": {
+          "heading": "5. Disponibilidad de los Servicios",
+          "body": "Podemos cambiar, suspender o descontinuar el Sitio, cualquier app o cualquier parte de ellos en cualquier momento, con o sin aviso. Los Servicios se ofrecen tal como están y no prometemos que su disponibilidad sea ininterrumpida ni libre de errores."
         },
         "governingLaw": {
           "heading": "6. Ley Aplicable",

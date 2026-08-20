@@ -115,6 +115,9 @@ for (const path of [
   "/privacy/",
   "/terms/",
   "/fave/privacy/",
+  "/alisio/privacy/",
+  "/fingo/privacy/",
+  "/savely/privacy/",
 ]) {
   test(`${path} inherits the dark theme chosen on the homepage`, async ({ browser }) => {
     const context = await browser.newContext();
