@@ -22,7 +22,7 @@ export default function PrivacyChoicesPage() {
         </div>
       </header>
 
-      <main className="ab-legal-main">
+      <main id="main-content" className="ab-legal-main">
         <div className="ab-wrap ab-legal-content">
           <h1 className="ab-legal-title ab-serif">{t("privacyChoices.title")}</h1>
 
@@ -65,7 +65,12 @@ export default function PrivacyChoicesPage() {
               <p>
                 {t("privacyChoices.sections.howToExercise.name")}
                 <br />
-                {t("privacyChoices.sections.howToExercise.email")}
+                <a
+                  href={`mailto:${t("privacyChoices.sections.howToExercise.email")}`}
+                  className="ab-legal-link"
+                >
+                  {t("privacyChoices.sections.howToExercise.email")}
+                </a>
               </p>
               <p>{t("privacyChoices.sections.howToExercise.responseNote")}</p>
               <p>{t("privacyChoices.sections.howToExercise.disclaimer")}</p>
