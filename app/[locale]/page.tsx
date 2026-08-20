@@ -734,6 +734,12 @@ export default function PortfolioPage() {
           </nav>
 
           <div className="ab-nav-end">
+            {/* Stands in for the primary links below 820px, where they are
+                hidden. Same label as the link it replaces, so the two never
+                drift apart. */}
+            <a className="ab-chip ab-chip-contact" href="#contact">
+              {t("nav.contact")}
+            </a>
             <button
               className="ab-chip ab-chip-lang"
               onClick={switchLocale}

@@ -194,3 +194,46 @@ test("?case=notreal does not open any modal", async ({ page }) => {
   // Page still renders correctly
   await expect(page.locator("h1")).toBeVisible();
 });
+
+// ── Test 9: below 820px the nav still offers a way to reach contact ──────────
+// The primary links are hidden on small screens and used to have no stand-in at
+// all, so a phone visitor had to scroll to the footer to find an address.
+test("at 375px the nav offers a contact affordance in place of the links", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/");
+
+  const chip = page.locator("header.ab-nav a.ab-chip-contact");
+  await expect(chip).toBeVisible();
+  await expect(chip).toHaveAttribute("href", "#contact");
+  // Same label as the desktop link it stands in for (home.nav.contact).
+  await expect(chip).toHaveText("Contact");
+
+  // The anchor it points at has to exist, or the affordance is decorative.
+  await expect(page.locator("#contact")).toHaveCount(1);
+
+  // The links it replaces are hidden at this width.
+  await expect(page.locator(".ab-nav-links")).toBeHidden();
+
+  // No horizontal scroll at either narrow width. This was measured clean before
+  // the chip existed; the chip must not be what regresses it.
+  for (const width of [320, 375]) {
+    await page.setViewportSize({ width, height: 812 });
+    const overflows = await page.evaluate(
+      () => document.documentElement.scrollWidth > window.innerWidth,
+    );
+    expect(overflows, `horizontal overflow at ${width}px`).toBe(false);
+  }
+});
+
+// ── Test 10: above the breakpoint the links come back and the chip goes away ──
+test("at 1280px the nav links are visible and the contact chip is not", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto("/");
+
+  await expect(page.locator(".ab-nav-links")).toBeVisible();
+  await expect(page.locator("header.ab-nav a.ab-chip-contact")).toBeHidden();
+});
