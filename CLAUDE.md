@@ -594,8 +594,9 @@ See gotcha `root-token-scoping`.
 flex-wrap: wrap` there, not grid, so the control cluster drops to its own line
 at the width where it genuinely stops fitting beside the brand rather than at a
 number someone guessed: `Contacto` is 10px wider than `Contact`, and each locale
-breaks where it actually breaks (~428px EN, ~438px ES). Four things in that
-region are load-bearing:
+breaks where it actually breaks. Measured to the pixel: EN is two rows at
+<= 412px and one row from **413px**, ES two rows at <= 422px and one from
+**423px**. Four things in that region are load-bearing:
 
 - **The hidden element is `<nav>`, not `.ab-nav-links`.** The wrapper stays a
   layout item with its `<ul>` hidden, so it used to consume the second of the

@@ -435,3 +435,10 @@ not touched and still passes. Responsive sweep measured at
 horizontal overflow anywhere, chip and language chip the same 30.5px height with
 their centres and the theme toggle's on one line, and >= 47px of slack in the
 worst case (Spanish at 320px).
+
+The wrap point was then bisected rather than estimated, because restoring
+`.ab-chip` on the language button narrowed it 94.2px -> 79.6px and moved the
+threshold: **EN is two rows at <= 412px and one row from 413px; ES is two rows
+at <= 422px and one from 423px** (both confirmed at the boundary pixel, header
+105px -> 63px across it). An earlier arithmetic estimate of ~428/438px was
+written into the docs and corrected once measured.
