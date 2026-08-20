@@ -1519,7 +1519,7 @@ function CasePreview({ which }: { which: CaseKey }) {
           <span className="url">blip</span>
         </div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="ab-browser-shot" src="/cases/blip-hero.webp" alt="" width={1600} height={1000} loading="lazy" />
+        <img className="ab-browser-shot" src="/cases/blip-hero.webp" alt="" width={960} height={600} loading="lazy" />
       </div>
     )
   }
