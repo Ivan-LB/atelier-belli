@@ -95,3 +95,291 @@ Status values: TODO | IN PROGRESS | DONE | BLOCKED (one-line reason) | REJECTED 
 - **Analytics** — zero measurement exists today. Privacy-friendly options
   (Plausible/Umami) are one script tag; equally valid to decide it's not
   wanted. Operator's call; no plan written.
+
+---
+
+# Wave 2 — 2026-08-19 audit execution (plans 007-012)
+
+Generated from the 2026-08-19 portfolio audit (62 verified findings; report:
+https://claude.ai/code/artifact/fa1072d0-fe19-4932-bbac-54eed8ccd5c4 — background
+only, every plan embeds its own evidence). Planned against `develop@07a1f02`.
+Executors: one session per plan, read the plan fully first, honor its STOP
+conditions, update your row here when done.
+
+Owner mandates baked into every plan of this wave:
+- Copy-heavy plans (007, 009, 011) invoke `/marketing-ideas` +
+  `/marketing-psychology` before writing; visual plans (007 skin, 011 pass,
+  012 chip) invoke `/impeccable`.
+- **No em dashes.** Tightened by the owner on 2026-08-20, during 011, from
+  "new or rewritten strings" to **all of `messages/*.json`**, on the grounds
+  that the dashes the earlier plans left behind are technical debt. Both
+  dictionaries are now at zero and `CLAUDE.md` §5 carries the rule plus a grep
+  check. Replace a dash with the punctuation that carries its job, never with a
+  hyphen. Two structural dashes are **not** copy and stay: the case title
+  pattern `pre: "Alisio — "` in `page.tsx`, and `TITLE_TEMPLATE` in
+  `_route-metadata.ts`, which `tests/e2e/seo.spec.ts:95` pins. Docs
+  (`CLAUDE.md`, `plans/`) were **not** swept and still hold theirs.
+- On privacy/terms pages accuracy beats persuasion: every factual claim traces
+  to the plan's Ground truth section or the app repos, else STOP.
+- Contact email everywhere: `ivanlorenzana@outlook.com` (owner decision;
+  atelierbelli.com has no MX).
+- Privacy architecture: per-app pages on the /fave/privacy pattern (owner
+  decision).
+- **Handoff mandate (added 2026-08-20, after 007 and 009 both spilled into
+  later plans).** Before closing a session, the executor does three things in
+  this order: (1) writes a **"Landed from NNN"** section into every later plan
+  whose files, line anchors, dictionary keys, tests or assumptions its work
+  moved, saying what changed and what the next executor should do instead of
+  what the plan says; (2) appends an **execution tail** to its own plan
+  recording what shipped, where the copy departed from the plan's Ground truth,
+  and what was left undone deliberately; (3) hands the owner a **ready-to-paste
+  prompt for the next plan in the order**, carrying that plan's preconditions,
+  its STOP conditions, the corrections it inherits, and this same mandate. A
+  plan is not done when its code merges; it is done when the next session can
+  start without rediscovering the drift.
+
+## Execution order & status (wave 2)
+
+| Plan | Title | Priority | Effort | Depends on | Status |
+|------|-------|----------|--------|------------|--------|
+| 007 | Support pages tell the truth + /fave/support | P1 | L | — (parallel-safe with 008) | DONE — PR #57, 2026-08-19/20. Savely + Fingo namespaces rewritten from source-verified facts, `/fave/support` shipped, 4 shell links unprefixed, dead "Help centre" cards gone. `pnpm verify` green, 32/32 e2e, CI green. **Grew past its scope by owner request mid-run**: the support surface was redesigned (not re-skinned), real iOS app icons replaced the letter crests, all three skins gained dark mode, and the fave case gained a Privacy action. Files outside the plan's scope: the four legal pages + `components/theme-init.tsx` + `public/apps/*`. Consequences are written into plans 009, 010, 011 and 012 under "Landed from 007"; the plan's own tail records the rest. **Read the ground-truth corrections below before executing 009 or 011.** |
+| 008 | One contact email + legal-surface link hygiene | P1 | S | — (parallel-safe with 007) | DONE — PR #58, 2026-08-20. Four addresses collapsed to `ivanlorenzana@outlook.com` (10 dictionary hits, both locales); the emails on `/privacy` and `/privacy/choices` are now `mailto` links; `id="main-content"` added to the four `<main>`s that lacked it, so **every `<main>` in the tree now carries it** and the layout skip-link works on all of them (verified by keyboard on `/privacy`, `/terms` and the 404). `pnpm verify` + 32/32 e2e + `pnpm build` green; the catch-all is still the only `ƒ (Dynamic)` route. **One deviation from the plan**: `privacyChoices.sections.howToExercise.email` had its label baked into the value (`"Email: …"`, both locales), so wrapping it verbatim would have emitted `mailto:Email:%20…`; the prefix was dropped and the value is now a bare address like the other four. Docs propagated in the same PR: `CLAUDE.md` gained the skip-link invariant, `docs/opportunistic-improvements.md` §5's email bullet is marked resolved, and 009 carries a "Landed from 008" section (its `mailto` anchors, the de-labelled key, and shifted line anchors). |
+| 009 | Per-app privacy pages + honest /privacy and /terms | P1 | L | 007 soft (sitemap), 008 soft (email) | DONE — PR #59, 2026-08-20. `/alisio/privacy`, `/fingo/privacy` and `/savely/privacy` shipped on the `/fave/privacy` recipe; the shared `/privacy` is website-only (NEXT_LOCALE by name, `ab_theme`, hosting + Google Fonts) and carries the **"Privacy for our apps" section linking all four** that bridges the ASC window. `/privacy/choices` lost six sections of rights machinery it had no data for; `/terms` lost the registration representations and the IP-blocking clause (`termination` renamed to `availability`), both dates refreshed. `pnpm verify` green (406 leaf keys), 61/61 e2e (new `tests/e2e/legal.spec.ts`, +26), `pnpm build` green with the catch-all still the only `ƒ (Dynamic)` route and 22 sitemap URLs. **Every claim was re-verified in the app repos rather than taken from the plan; four of the plan's own did not survive** (below). Two disclosures the plan did not list were added from this repo: Google Fonts is cross-origin and Amplify serves the site, so both are requests that genuinely leave the reader's browser. Also carried plan 008's uncommitted doc propagation and updated CLAUDE.md §1/§8 for the new route list (plus two entries 007 never added: `/fave/support` and `components/theme-init.tsx`). **Owner action, same day this deploys: human checklist #1 below.** Consequences written into 010, 011 and 012 under "Landed from 009"; **011 picks up the three missing Privacy actions on the case cards**, which is `home.cases.*` and therefore not this plan's to make. |
+| 010 | Per-route metadata, sitemap rewrite, icons | P1 | M | 007 + 009 **hard** (final route list) | DONE — PR #60, 2026-08-20. The sitemap's 22 redirect URLs became the 11 canonical unprefixed ones (loop + alternates deleted, array kept as 009 predicted). All eleven routes now carry their own title, description and `og:*` in both locales, via ten thin server `layout.tsx` files over a shared `app/[locale]/_route-metadata.ts` — the pages are all `"use client"` and cannot export `generateMetadata` themselves. `app/favicon.ico` (real 3-entry .ico) and `public/apple-touch-icon.png` (180×180, opaque) both shipped; they had 404'd. `theme-color` is now a light/dark pair via a `viewport` export. `pnpm verify` green (419 leaf keys), **81/81 e2e** (new `tests/e2e/seo.spec.ts`, +20), and the build route table is **byte-identical** to a real `origin/develop` build — every route still ● SSG, catch-all still the only ƒ. **One plan instruction did not survive**: bare-string titles silently stripped the site name from `/privacy/choices`, because Next stops passing a template down past a segment that sets a string title; titles are `title.absolute` now. **Scope added by the owner mid-run**: `public/AtelierBelli.png` was still the PREVIOUS logo (gradient anvil) and was declared as `icons.shortcut`, so the site served a retired mark; it was regenerated from the vector source and the SVG favicon gained a `prefers-color-scheme: dark` rule, since the near-black monogram vanished in dark browser chrome. **Owed before merge to `main`: the Amplify deploy-preview smoke** (titles per route, icons 200, sitemap). Consequences written into 011 and 012 under "Landed from 010"; the plan's own tail records the rest. |
+| 011 | Case modal cohesion + Savely narrative | P2 | L | 007, 009 soft (serialize page.tsx/dicts) | DONE — PR #61, 2026-08-20. Every axis of the drift table now reads one rule across all ten cases: kicker `Platform · Domain · Year` and the mobile index line `Platform · Domain · Status` are **composed from one `caseFacet(key)` helper**, so `mshow` is gone from `indexInfo` and the two lines are structurally incapable of drifting apart again. Platform meta is `iOS N+` read from each app's `project.pbxproj`; stack rows are 3-4 core frameworks (`Node.js` canonical, bare `Swift` gone); index chips are a strict subset of their Stack row (0 orphans); all **6** disabled actions carry the clock; all four plain phones are 280px; URL bars are a real domain or a lowercase slug. **Savely promoted to flagship** with story + 4 highlights in both locales, written from the app repo and cross-checked against `/savely/privacy`. Depth is now exactly two tiers, documented. `pnpm verify` green (**452** leaf keys), **84/84** e2e. **Three owner decisions widened it mid-run**: blip's ES "swarm" stays (deliberate voice); the `privacyHref` question 009 and 010 both left open was opened HERE, so `support-shell.tsx` + the three support pages ship in the same PR; and the no-em-dash rule was extended from "new or rewritten strings" to **all of `messages/*.json`** as technical debt, leaving both dictionaries at **zero** (49 strings rewritten, incl. `layout.ogAlt` and one `legal.terms` clause). The title pattern `pre: "Alisio — "` and `TITLE_TEMPLATE` stay by owner's call: structure, not copy. **One e2e edit**, justified below. Consequences written into 012 under "Landed from 011"; the plan's own tail records the rest. |
+| 012 | Mobile contact affordance + asset/docs polish | P2 | M | 011 soft (page.tsx) | DONE — PR #62, 2026-08-20. A `.ab-chip-contact` link now sits first in `.ab-nav-end` below 820px, labelled `t("nav.contact")` (**no new dictionary key**, exactly as 011 predicted) and carrying `.ab-btn-mail`'s full-strength border so it reads as the one action beside two settings. **The chip was the small half.** Styling it correctly exposed three pre-existing defects in the same region, all now fixed and written into `CLAUDE.md` §4: (1) `.ab-nav-inner` declared `1fr auto` but had **three** grid children, because a `<nav>` wrapper stays a layout item when only its `<ul>` is hidden, so `.ab-nav-end` was stranded on an implicit second row at *every* width <= 820px, tablets included; the row is `flex-wrap` now and the wrap point is content-driven per locale, measured to the pixel at **413px EN / 423px ES**, instead of guessed. Header at 375px went **120px -> 105px while gaining a control**. (2) `.ab-nav-inner`'s `padding: 14px 0` shorthand had been resetting `.ab-wrap`'s inline padding to zero, so the brand sat at x=0 against content starting at 20px (phone) or 51.2px (desktop) and the theme toggle touched the right edge; longhand now. (3) **`.ab-chip` has never reached the language `<button>`** — `.ab-root button` (0,1,1) outranks it (0,1,0) — so that control is plain 16px borderless text. **Two owner decisions widened it mid-run**, both asked with measurements and screenshots: the `.ab-chip` restore is scoped to `<= 820px` so the **desktop nav stays byte-identical**, and the padding fix was taken at **all** widths; the latter made the brand wrap between 821 and ~860px, which is why `.ab-brand-tag` now hides at 900px. `blip-hero.webp` 1600x1000/158KB -> **960x600/96KB** (-40.9%, `cwebp -q 88 -m 6 -sharp_yuv`, SSIM 0.9875 at the real 884px display size), JSX dims updated. Three CLAUDE.md media dimensions corrected from `sips`/`ffprobe`; an audit of every dimension claim in the file found exactly those three wrong. **The plan named one `mezcal-mobile.webp` reference; there were two** — the second described the vitrine combo with the filenames Mezcal used before Vitapath replaced it, and now points at `vitapath-{hero,mini}.webp`. `pnpm verify` green (**452** leaf keys, unchanged), **86/86** e2e (+2), no `pnpm build` run locally (`:3000` was live throughout; CI owns the build). Vitrine `<= 820px` region verified byte-identical, `capSpread` 0 at 320/375/430/640/820. **No hamburger, by design.** **Owner added the language toggle mid-run**, via `/impeccable`: it rendered the active language first, so switching moved the half you had just clicked, and it was a single `<button>`, so pressing the language you were already in switched you away from it. Rebuilt as a segmented control with a fixed `en`-then-`es` order, both segments staying `<button>` so keyboard focus survives the refresh, `aria-current` on the active one, `role="group"` naming the control and `lang` per segment (the old `aria-label="Cambiar a Español"` over a button reading "ES" was a WCAG 2.5.3 Label-in-Name failure). A fifth defect surfaced while measuring: the segment you are meant to click sat at **2.40:1 / 2.52:1**, under the 4.5:1 PRODUCT.md commits to; it is `--ab-muted` now at 5.41:1 / 5.42:1. `locale.switchAria` became `locale.groupAria`, so parity stays **452**. **This also resolved the `.ab-chip`-on-`<button>` item** that was going to be left unclaimed, and without the global specificity change: the pill wrapper is a `<div>`, which `.ab-root button` does not touch, so it renders identically at every width. **Motion, asked for separately**: the indicator travels to the language you picked. `router.refresh()` replaces the whole subtree (measured via MutationObserver), so the transition had been racing the payload and was truncated at 105ms of 280ms with the last 81% jumped; the click now sets an optimistic `pendingLocale` and the refresh is deferred by 300ms, giving **34 sampled positions settling at 289ms**. `--bg-2` was invisible as the ground (1.09:1 / 1.06:1) and is a 10% ink tint now. `prefers-reduced-motion` gets no travel and no delay, both branches verified. Suite **90/90**. **Owner then asked for the 404's `aria-pressed` too, "two lines"; it was not.** Its inline copy of the monogram had **two of the four paths with the ink and accent roles swapped**, so that page rendered a broken hexagon; both language buttons called one unconditional switch; both carried the *same* `aria-label`; the group label was hardcoded English; and the theme control was a text button while the header used an icon. All fixed, and at the cause: `components/brand-logo.tsx` and `components/theme-icons.tsx` are now single copies imported by both surfaces, with colour roles keyed to `.ab-logo` rather than to one mount. **The systemic finding:** `.ab-root button` (`globals.css:208`) resets `font`, `color` and `border` at (0,1,1) and beats any bare class (0,1,0). An audit found it had silently defeated **four** components: `.ab-chip`, `.ab-nf-ctrl`, `.ab-theme-toggle` and `.ab-case-close`, all declaring a 1px border and **none drawing one**. The header's sun/moon had never had its ring. All four fixed; the rule is in `CLAUDE.md` §4. **The 404 had zero e2e tests**, which is how a half-missing brand mark survived in it; it has three now. Suite **93/93**, parity **450** (two dead theme-label keys removed). 012 is the last of the wave, so its spillover went to `CLAUDE.md` and `HANDOFF.md`; what it left unclaimed is listed below. |
+
+## Dependency notes (wave 2)
+
+- **007 ∥ 008**: disjoint files by design; may run as the same day's two PRs.
+- **Three plans touch `app/sitemap.ts`** (007 +1 line, 009 +3, 010 rewrite):
+  serial, 010 last — its rewrite emits the final 11-route list.
+- **010 hard-depends on 007+009**: it must see /fave/support and the three
+  privacy routes on disk (its drift check verifies).
+- **009 → ASC window**: the moment 009 deploys, Alisio/Fingo listings point at
+  a website-only /privacy until the owner updates ASC (human checklist below);
+  the slimmed page keeps a "Privacy for our apps" pointer section as the
+  bridge — executors must not remove it.
+- **009 → 011, the case-card actions.** The ghost-action convention is "the
+  button exists where the page exists". 009 shipped `/alisio/privacy`,
+  `/fingo/privacy` and `/savely/privacy`, so those three cards now owe a
+  Privacy action that only Fave has today (the owner spotted the asymmetry the
+  day 009 landed). `home.cases.*` is 011's territory, so 009 left it alone and
+  wrote the exact entries and dictionary keys into 011's "Landed from 009"
+  section. Same section carries the open question of whether `SupportShell`'s
+  footer should link each app's policy instead of the shared one.
+- **010's release requires an Amplify deploy-preview smoke** (layout head is
+  the Amplify-sensitive region; precedent plan 005 / CLAUDE.md §6).
+
+## Ground-truth corrections found while executing 007 (2026-08-19)
+
+Plan 007's own "Ground truth" section was re-verified against the three app
+repos before any copy was written, and several of its claims did not survive.
+**Plans 009 (per-app privacy) and 011 (Savely narrative) inherit those same
+claims, so correct them there rather than repeating them.**
+
+- **Savely's "payday auto-move" moves nothing automatically.** There is no
+  schedule, no background task and no payday detection. Enabling it on a goal
+  only makes that goal eligible; when you log income a banner may offer one
+  move, and the deposit is written with that income only if you tap YES
+  (`AutoMoveSuggestion.swift:32-35`).
+- **Savely has an export**, missing from the plan: a `Weekly PDF report` row
+  that covers the current week only and opens the share sheet. It is a report,
+  not a restorable backup, and there is no CSV/JSON export at all.
+- **Savely's "Delete all data" leaves `DepositModel` rows behind**
+  (`ProfileViewModel.swift:112-115` deletes four models, not five). The in-app
+  confirm wording is correctly scoped; do not write "deletes everything".
+- **Savely is only partially localized, and to es-419, not es.** The tab bar,
+  the quick-add rows, the `Settings` header and `Weekly PDF report` are
+  hardcoded English and render in English on a Spanish device. Never invent
+  Spanish for those. `Datos y privacidad`, `Borrar todos los datos`,
+  `Recordatorios de Gastos`, `Alertas de Metas` and `Modo Oscuro` are real.
+- **Fingo is not localized at all** (English only, `developmentRegion = en`,
+  no catalog). A Spanish page may translate its own prose but must quote
+  in-app labels in English.
+- **Fingo has four modes, not just roulettes**: Chooser, Roulette, Random,
+  Coin Flip. It has no settings screen, no haptics toggle and no sharing.
+  Deleting every roulette re-seeds the example one on next launch.
+- **Fave's "nothing else is transmitted" is wrong.** Notes and photos are
+  mirrored to the user's private CloudKit, and there are four outbound hosts,
+  not two. Artwork is not permanently local either: TMDB posters carry a
+  6-month expiry and are re-fetched, and the app refreshes missing artwork on
+  every launch/foreground with no user action. Use the app's own privacy-policy
+  wording ("no servers of our own"), never "nothing leaves your device".
+- **Fave needs an iCloud sign-in for sync**, so "no account" is only true as
+  "no account of ours". Deleting the Fave app does NOT erase the data: the
+  iCloud copy survives and re-imports on reinstall, so deletion is two steps.
+
+## Ground-truth corrections found while executing 009 (2026-08-20)
+
+Plan 009's Ground truth was re-verified the same way, against the three app
+repos. Four claims needed correcting, and **plan 011 inherits all of the Savely
+ones**.
+
+- **Savely asks for two permissions, not one.** The plan said camera only.
+  `NotificationManager.requestAuthorization()` runs on first launch
+  (`SavelyApp.swift:24`), so iOS shows a notification prompt too.
+- **Savely never gets photo-library access.** Receipt import uses SwiftUI's
+  out-of-process `PhotosPicker` (`CameraView.swift:119`), which hands the app
+  the one chosen image, which is why there is no
+  `NSPhotoLibraryUsageDescription` anywhere in the project.
+- **The disabled AI path is real, and the mechanism is stronger than "a flag".**
+  `FeatureFlags.tipsEnabled = false` gates the card, and `DashboardView`'s
+  `onAppear` refuses to hand `TipsAndSuggestionViewModel` a `ModelContext` at
+  all, so `loadTip` → `generateTip` → `OpenAIClient` never runs. Worth knowing
+  precisely: `Config.plist` **is** still bundled in the Resources build phase,
+  so the client would initialize if the flag ever flipped, and the prompt it
+  builds contains monthly income and expense totals plus goal names and
+  progress. "Savely makes no network requests" is true of the shipped build and
+  only of the shipped build.
+- **Fingo is four modes and no settings screen** (Chooser, Roulette, Random,
+  Coin Flip), confirming 007's correction; its labels are English because
+  `Localizable.xcstrings` has no Fingo equivalent at all.
+
+Confirmed unchanged and safe to reuse: Alisio's HealthKit read/write set, its
+Spanish usage strings, zero networking code in Alisio and Fingo, and zero
+third-party SDKs in all three (none of the projects has a single SPM package).
+
+Separately, and outside this wave's scope: **`GoogleService-Info.plist` with a
+live Firebase API key is still reachable in the public `Ivan-LB/Savely` git
+history** (added in `80cf033`; `.gitignore` only stopped future tracking).
+Worth rotating that key and scrubbing the blob.
+
+## Ground-truth corrections found while executing 011 (2026-08-20)
+
+Plan 011's own "Savely story ground truth" was overridden by the README
+corrections from 007 and 009, exactly as it instructed. Reading the app repo
+turned up three further facts that plan 012 and any future Savely copy inherit.
+
+- **The payday auto-move's amount is capped four ways**, not just by the goal's
+  pace: `min(configured pace, remaining to target, the income being logged, the
+  month's affordable margin)`, where the margin is
+  `month incomes + this income − month expenses − month deposits`. If the month
+  is under water even counting the paycheck, **nothing is suggested at all**
+  (`AutoMoveSuggestion.swift`). Which goal it picks is also deliberate: the
+  favourite wins outright, otherwise the most urgent by required weekly pace.
+- **Savely never fabricates a completion date.** `GoalPace.swift` caps ETAs at
+  52 weeks and returns the literal `1+ year`, commented "Never a made-up date".
+  That string is an **in-app label with no translation**, so Spanish copy
+  quotes it in English on purpose.
+- **`Auto-move on payday` has an empty localizations entry** in
+  `Localizable.xcstrings`, confirming 007's warning at the exact key most likely
+  to tempt an invented Spanish label. It renders in English on a Spanish device.
+
+Separately, a factual correction outside Savely:
+
+- **Fingo's deployment target is iOS 26.0, not 16.** All three configs in
+  `Fingo.xcodeproj/project.pbxproj` read `IPHONEOS_DEPLOYMENT_TARGET = 26.0`
+  (bumped from 17.6 in "Version 2.1.0"; `MARKETING_VERSION` is 2.2). The case
+  card claimed "iOS 16+", which made a shipped app look more compatible than it
+  is, and now reads "iOS 26+". **Owner: if the App Store listing shows a lower
+  minimum, the listing is the truth and the card needs another pass.**
+- **Alisio is iOS 17.0 / watchOS 10.0**, Fave 17.0, Briefmark 26.2, Savely
+  26.0, Vitapath's two apps 17.0. All read from their pbxproj files.
+
+### An infrastructure trap, unclaimed by any plan
+
+`playwright.config.ts` runs `pnpm dev --port 3100` with
+`reuseExistingServer: true`, and that server shares `.next` with a dev server on
+`:3000`. A concurrent compile clobbers the manifests and kills the run mid-suite
+with `SyntaxError: Unexpected non-whitespace character after JSON`, which reads
+like a corrupt source file and is not. This is the dev-vs-dev form of the
+documented `next-build-clobbers-dev-cache` gotcha. Workaround:
+`pnpm exec playwright test --workers=1` with :3100 warmed up first. A real fix
+means a separate `distDir` for the test server in `next.config.mjs`.
+
+## Unclaimed after wave 2 closed (2026-08-20)
+
+012 was the last plan of the wave, so there is no "Landed from 012" section to
+write these into. Nothing here is blocking; all of it is a deliberate choice to
+stop rather than an oversight.
+
+- ~~**`.ab-chip` is dead on `<button>` above 820px.**~~ **Resolved in the same
+  PR.** The language toggle was rebuilt as a segmented control whose wrapper is
+  a `<div>`, which the `.ab-root button` reset does not touch, so the pill
+  renders identically at every width without a specificity change. The reset
+  itself still stands and is still a trap: `.ab-chip` on a `<button>` silently
+  loses its border and its 11px type. Recorded in `CLAUDE.md` §4.
+- ~~**The 404 island uses `aria-pressed`, the nav now uses `aria-current`.**~~
+  **Resolved in the same PR, and it was not the two lines it looked like.**
+  Opening the file turned up four more defects of the same lineage: its inline
+  copy of the monogram had **two of the four paths with the ink and accent roles
+  swapped**, both language buttons called one unconditional switch (so pressing
+  the active language switched you away from it), both carried the *same*
+  `aria-label`, and the group label was hardcoded English. The theme control was
+  a text button while the header used an icon. All fixed; the 404 now has three
+  e2e tests where it had none.
+- **`.ab-root button` had silently defeated four components** and is worth
+  knowing about rather than re-discovering. The reset at `globals.css:208`
+  clears `font`, `color` and `border` at specificity (0,1,1), beating any bare
+  class (0,1,0). `.ab-chip`, `.ab-nf-ctrl`, `.ab-theme-toggle` and
+  `.ab-case-close` all declared a 1px border and **none of them drew one**: the
+  header's sun/moon has never had its ring. All four are fixed. The rule, now in
+  `CLAUDE.md` §4: a class on a `<button>` under `.ab-root` needs the `.ab-root`
+  prefix, or it loses type, colour and border.
+- **The docs em-dash sweep.** 011 took `messages/*.json` to zero in both
+  locales and that is now a standing rule with a grep in `CLAUDE.md` §5.
+  `CLAUDE.md` still holds 85 lines with an em dash and `plans/` holds many more.
+  The owner scoped the sweep to shipped copy on purpose; this is cosmetic.
+- **A separate `distDir` for the Playwright dev server.** `playwright.config.ts`
+  runs `pnpm dev --port 3100` with `reuseExistingServer: true`, sharing `.next`
+  with a dev server on `:3000`; a concurrent compile clobbers the manifests and
+  kills the run with `SyntaxError: Unexpected non-whitespace character after
+  JSON`, which reads like a corrupt source file and is not. The workaround
+  (`pnpm exec playwright test --workers=1`, `:3100` warmed on one spec first)
+  worked in both 011 and 012. The real fix touches `next.config.mjs`.
+- **`public/og.png` is off-message.** 1200x630, 50KB, purely typographic, no
+  logo mark, and its baked-in copy still reads *"iOS apps & web around"* /
+  *"Full-stack development by Ivan Lorenzana"* while 010 rewrote the homepage
+  description to lead with Alisio, Vitapath and the arrhythmia detector. Every
+  route's `og:image` points at this one file. 010 flagged it forward to 012;
+  012 left it because it is a **copy** decision, not an asset one.
+- **An orphaned sentence in `CLAUDE.md`** at `:355`. It begins mid-clause
+  (`` (`.ab-vit-web-combo`): a 400x260 browser window... ``), a leftover from
+  when Alisio's description was written over Mezcal's in the vitrine section.
+  Its filenames were corrected by 012; its grammar was not.
+- **`scroll-margin-top` on `#contact`** would not help: tapping the nav chip
+  lands the page at max scroll, where the sticky header clips the top ~34px of
+  the mail button's eyebrow and no scroll margin can move it. The address itself
+  is fully visible and tappable. Recorded so nobody re-derives it.
+- **`out/`** is a stale, gitignored 2025 export holding ~1.2 MB of the OLD logo
+  (`out/favicon.png` is 954KB alone) plus a duplicate CV PDF. Nothing references
+  it and it is not committed, so it costs the site nothing.
+
+## Human checklist (owner actions, out of repo)
+
+1. **Same day 009 deploys**: App Store Connect privacy URLs — Alisio →
+   `/alisio/privacy/` (today: legacy `/en/privacy/`), Fingo →
+   `/fingo/privacy/`, Savely → `/savely/privacy/`. Fave Support URL at
+   submission → `/fave/support/`.
+2. **DSA trader declaration** in ASC before Savely release / Fave submission.
+3. **Amplify console**: long cache headers for `/cases/*` and static media
+   (today max-age=5 → repeat visitors re-validate everything).
+4. LinkedIn slug check (bot-blocked from CLI); Search Console verify +
+   resubmit sitemap after 010; decide the orphaned CV PDF
+   (`public/docs/CV_Ivan_Lorenzana_Belli.pdf`, 14 months stale).
+5. App-side (done/noted 2026-08-19): OpenAI key revoked by owner (Savely);
+   remaining code chore lives in the Savely repo (drop bundled Config.plist
+   from Resources). Fave `aps-environment` → `production` before submission
+   (noted by owner; recorded in Fave/HANDOFF.md).
+
+## Findings considered and rejected (wave 2)
+
+(So nobody re-audits these.)
+
+- **Gallery per-frame alt=""** — deliberate figcaption-dedup tradeoff,
+  documented at `page.tsx:1428-1430`. Not a defect.
+- **Retina softness of case videos** — documented bandwidth cap
+  (`page.tsx:1345-1348`); motion masks it. Keep.
+- **404 `<html lang>` gap** — real but pre-hydration-only; fixing means adding
+  a root layout and reshaping the Amplify-verified catch-all/404 (PR #18).
+  DEFERRED to a dedicated session with an Amplify preview.
+- **Fraunces axis subsetting (~100KB+ win)** — italic face is load-bearing on
+  the hero; DEFERRED pending an owner-eyeballed before/after.
+- **Language toggle appears inert in prod** — CloudFront cache-key issue,
+  measured, accepted by owner (HANDOFF). Not a wave-2 item.
+- **hreflang / per-route canonicals** — removed BY DESIGN with
+  `localePrefix: "never"` (PR #45). Do not resurrect (layout.tsx:44-51).
+- **Alisio support page** — deferred like Briefmark's: content task when
+  wanted; until then ghost Support actions appear only where a page exists.
+- **Analytics / personal photo / llms.txt** — owner's call; no plan.

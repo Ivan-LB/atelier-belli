@@ -3,11 +3,14 @@
 import Link from "next/link"
 import { useTranslations } from "next-intl"
 
+import ThemeInit from "@/components/theme-init"
+
 export default function FavePrivacyPolicyPage() {
   const t = useTranslations("legal")
 
   return (
-    <div className="ab-root" data-theme="light">
+    <div className="ab-root" suppressHydrationWarning>
+      <ThemeInit />
       <header className="ab-legal-nav">
         <div className="ab-legal-nav-inner ab-wrap">
           <Link href="/" className="ab-legal-back">

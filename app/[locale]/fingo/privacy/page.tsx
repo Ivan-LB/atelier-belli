@@ -1,14 +1,11 @@
 "use client"
 
 import Link from "next/link"
-import { useParams } from "next/navigation"
 import { useTranslations } from "next-intl"
 
 import ThemeInit from "@/components/theme-init"
 
-export default function PrivacyChoicesPage() {
-  const params = useParams()
-  const locale = (params?.locale as string) === "es" ? "es" : "en"
+export default function FingoPrivacyPolicyPage() {
   const t = useTranslations("legal")
 
   return (
@@ -24,41 +21,52 @@ export default function PrivacyChoicesPage() {
 
       <main id="main-content" className="ab-legal-main">
         <div className="ab-wrap ab-legal-content">
-          <h1 className="ab-legal-title ab-serif">{t("privacyChoices.title")}</h1>
+          <h1 className="ab-legal-title ab-serif">{t("fingoPrivacy.title")}</h1>
+          <p className="ab-legal-meta">{t("fingoPrivacy.lastUpdated")}</p>
 
           <article className="ab-prose">
-            <p>{t("privacyChoices.intro")}</p>
+            <p>{t("fingoPrivacy.intro")}</p>
 
             <section>
-              <h2>{t("privacyChoices.sections.whatWeHold.heading")}</h2>
-              <p>{t("privacyChoices.sections.whatWeHold.body")}</p>
+              <h2>{t("fingoPrivacy.sections.collect.heading")}</h2>
+              <p>{t("fingoPrivacy.sections.collect.body")}</p>
             </section>
 
             <section>
-              <h2>{t("privacyChoices.sections.appData.heading")}</h2>
-              <p>{t("privacyChoices.sections.appData.body")}</p>
+              <h2>{t("fingoPrivacy.sections.storage.heading")}</h2>
+              <p>{t("fingoPrivacy.sections.storage.body")}</p>
             </section>
 
             <section>
-              <h2>{t("privacyChoices.sections.requests.heading")}</h2>
-              <p>{t("privacyChoices.sections.requests.body")}</p>
+              <h2>{t("fingoPrivacy.sections.permissions.heading")}</h2>
+              <p>{t("fingoPrivacy.sections.permissions.body")}</p>
             </section>
 
             <section>
-              <h2>{t("privacyChoices.sections.howToExercise.heading")}</h2>
-              <p>{t("privacyChoices.sections.howToExercise.contactIntro")}</p>
+              <h2>{t("fingoPrivacy.sections.network.heading")}</h2>
+              <p>{t("fingoPrivacy.sections.network.body")}</p>
+            </section>
+
+            <section>
+              <h2>{t("fingoPrivacy.sections.children.heading")}</h2>
+              <p>{t("fingoPrivacy.sections.children.body")}</p>
+            </section>
+
+            <section>
+              <h2>{t("fingoPrivacy.sections.changes.heading")}</h2>
+              <p>{t("fingoPrivacy.sections.changes.body")}</p>
+            </section>
+
+            <section>
+              <h2>{t("fingoPrivacy.sections.contact.heading")}</h2>
               <p>
-                {t("privacyChoices.sections.howToExercise.name")}
-                <br />
                 <a
-                  href={`mailto:${t("privacyChoices.sections.howToExercise.email")}`}
+                  href={`mailto:${t("fingoPrivacy.sections.contact.email")}`}
                   className="ab-legal-link"
                 >
-                  {t("privacyChoices.sections.howToExercise.email")}
+                  {t("fingoPrivacy.sections.contact.email")}
                 </a>
               </p>
-              <p>{t("privacyChoices.sections.howToExercise.responseNote")}</p>
-              <p>{t("privacyChoices.sections.howToExercise.disclaimer")}</p>
             </section>
           </article>
         </div>

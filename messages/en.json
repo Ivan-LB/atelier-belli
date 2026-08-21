@@ -5,17 +5,15 @@
     "titleIt": "found.",
     "description": "Sorry, the page you're looking for doesn't exist or has been moved.",
     "backHome": "Back to Home",
-    "themeToggleLight": "Light",
-    "themeToggleDark": "Dark",
     "themeToggleAria": "Toggle theme",
-    "localeSwitchAria": "Cambiar a Español",
+    "controlsAria": "Site controls",
     "footerMeta": "Software · Digital craft"
   },
   "layout": {
     "skipToContent": "Skip to main content",
     "metaTitle": "Atelier Belli",
-    "metaDescription": "Atelier Belli is the digital atelier of Ivan Lorenzana — full-stack developer crafting clean iOS apps and the web around them. Fingo, Savely, Mi Mezcal and more.",
-    "ogAlt": "Atelier Belli — portfolio of Ivan Lorenzana"
+    "metaDescription": "Atelier Belli is the portfolio of Ivan Lorenzana, a developer in Tijuana. iOS apps and the systems behind them: Alisio, Vitapath, an ECG arrhythmia detector.",
+    "ogAlt": "Atelier Belli: portfolio of Ivan Lorenzana"
   },
   "legal": {
     "back": "Back to Home",
@@ -26,84 +24,108 @@
     "termsShortLabel": "Terms",
     "privacy": {
       "title": "Privacy Policy",
-      "lastUpdated": "July 20, 2026",
+      "metaDescription": "What this site does with your data: one cookie that remembers your language, a theme saved in your browser, and no analytics at all. Each app has its own policy.",
+      "lastUpdated": "Last updated: August 20, 2026",
       "sections": {
         "intro": {
-          "heading": "Introduction",
-          "body": "Welcome to Atelier Belli. We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our mobile applications (such as Fingo, Savely, and Alisio). Please read this policy carefully. If you disagree with its terms, please do not access the site or our applications."
+          "heading": "What this page covers",
+          "body": "Atelier Belli is the portfolio of Ivan Lorenzana, a developer based in Tijuana, Mexico. This site is a handful of static pages: there is no account to create, no form to fill in, no comment box and no newsletter. This policy is about the website itself. Each app we publish has its own policy, and those are linked right below, because a policy that covers a website and four apps at once ends up describing none of them accurately."
         },
-        "dataCollected": {
-          "heading": "Information We Collect",
-          "intro": "We may collect information about you in a variety of ways. The information we may collect on the site or through our applications includes:",
-          "personalData": {
-            "label": "Personal Data:",
-            "body": "Personally identifiable information — such as your name, shipping address, email address, and phone number — as well as demographic information such as your age, gender, hometown, and interests, that you voluntarily provide when you register on the site or our applications, or when you choose to participate in various activities related to the site and our applications, such as online chat and message boards."
-          },
-          "derivedData": {
-            "label": "Derived Data:",
-            "body": "Information our servers collect automatically when you access the site or our applications, such as your IP address, browser type, operating system, access times, and the pages you viewed directly before and after accessing the site."
-          },
-          "financialData": {
-            "label": "Financial Data:",
-            "body": "Financial information — such as data related to your payment method (for example, a valid credit card number, card brand, expiration date) — that we may collect when you purchase, order, return, exchange, or request information about our services from the site or our applications."
-          },
-          "mobileAppData": {
-            "label": "Mobile Application Data:",
-            "intro": "If you connect using our mobile application(s):",
-            "deviceInfo": {
-              "label": "Mobile Device Information.",
-              "body": "We may collect device information (such as your mobile device ID, model, and manufacturer), operating system, version information, and IP address."
-            },
-            "geolocation": {
-              "label": "Geolocation Data.",
-              "body": "We may request access or permission to track location-based information from your mobile device, either continuously or while you are using our mobile application, in order to provide location-based services."
-            },
-            "healthData": {
-              "label": "Health & Fitness Data (Alisio):",
-              "body": "Our Alisio app reads heart rate, active energy, and workout data from Apple HealthKit, with your explicit permission, solely to calculate your heart-rate training zones and show your live training metrics on your Apple Watch and iPhone. This data, along with your training history, is stored only on your own devices. We do not transmit it to our servers, share it with third parties, or use it for advertising. Alisio requires no account and no personal data beyond what you choose to enter (age and resting heart rate) to calculate your zones."
-            }
-          }
+        "apps": {
+          "heading": "Privacy for our apps",
+          "intro": "If you came here from an App Store listing looking for a specific app, one of these four is the page you want:",
+          "alisio": "Alisio privacy policy",
+          "fave": "Fave privacy policy",
+          "fingo": "Fingo privacy policy",
+          "savely": "Savely privacy policy",
+          "note": "Each one describes what that app stores, where it stores it, and what (if anything) ever leaves your device."
         },
-        "dataUse": {
-          "heading": "How We Use Your Information",
-          "intro": "Having accurate information about you allows us to provide you with a smooth, efficient, and personalized experience. Specifically, we may use information collected about you through the site or our applications to:",
-          "items": [
-            "Create and manage your account.",
-            "Email you regarding your account or orders.",
-            "Enable user-to-user communication.",
-            "Fulfill and manage purchases, orders, payments, and other transactions related to the site and our applications.",
-            "Improve the efficiency and operation of the site and our applications.",
-            "Calculate your personal heart-rate training zones and display live training data within the Alisio app, processed entirely on your device."
-          ]
+        "noCollection": {
+          "heading": "What this site collects: nothing",
+          "body": "No analytics, no advertising, no tracking pixels, no session recording, no A/B testing. There is no sign-up, so there is no list you can end up on, and no server of ours that keeps a record of your visit."
         },
-        "dataSecurity": {
-          "heading": "Security of Your Data",
-          "body": "We use administrative, technical, and physical security measures to help protect your personal information. While we have taken reasonable steps to secure the personal information you provide to us, please be aware that no security measures are perfect or impenetrable, despite our best efforts."
+        "cookie": {
+          "heading": "The one cookie",
+          "body": "The site sets a single cookie, named NEXT_LOCALE. It holds one of two values, en or es, and its entire job is to remember whether you are reading the site in English or in Spanish. It is set the first time you arrive, from the language your browser asks for, and again whenever you use the language toggle. It lasts one year, it is limited to this site (SameSite=Lax), and it carries no identifier of any kind. Clearing it simply means the site guesses your language again on your next visit."
+        },
+        "theme": {
+          "heading": "Light or dark, remembered in your browser",
+          "body": "When you switch the site between light and dark, that choice is saved in your browser's local storage under the name ab_theme. It is not a cookie: it stays in your browser and is never attached to a request. Clearing your browser data resets it."
+        },
+        "hosting": {
+          "heading": "Hosting and fonts",
+          "body": "The site is hosted on AWS Amplify. Like any web host, its servers process the requests needed to deliver a page to you, and that includes your IP address; we do not build reports from it and there is no analytics layer on top of it. Most of the type is served by Google Fonts, so your browser fetches those font files directly from Google's servers, and that request is covered by Google's own privacy policy. The display serif is self-hosted from this site."
         },
         "privacyRights": {
-          "heading": "Your Privacy Rights",
-          "body": "Depending on your location, you may have certain rights with respect to your personal information. For more information on how to exercise these rights, please visit our",
+          "heading": "Your rights",
+          "body": "There is very little here to exercise data rights over, because we hold very little. If you want to ask anyway, the routes are on our",
           "linkLabel": "User Privacy Choices"
         },
         "children": {
-          "heading": "Children's Policy",
-          "body": "We do not knowingly solicit information from or market to children under the age of 13. If you become aware of any data we have collected from children under 13, please contact us using the contact information provided below."
+          "heading": "Children",
+          "body": "This site is not directed at children and collects nothing from anyone, of any age. Each app policy says the same for that app."
         },
         "changes": {
-          "heading": "Changes to This Privacy Policy",
-          "body": "We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page."
+          "heading": "Changes to this policy",
+          "body": "If this policy changes, the date above changes with it, and the current version always lives at this URL."
         },
         "contact": {
           "heading": "Contact",
-          "body": "If you have questions or comments about this Privacy Policy, please contact us at:",
+          "body": "If you have a question about this policy, or about anything the site or an app does with your data, write to us:",
           "name": "Atelier Belli",
-          "email": "ivanlorenzanabelli@outlook.com",
+          "email": "ivanlorenzana@outlook.com",
           "address": "Tijuana, Baja California, Mexico"
+        }
+      }
+    },
+    "alisioPrivacy": {
+      "title": "Alisio Privacy Policy",
+      "metaDescription": "Alisio reads your heart rate on Apple Watch and keeps it on your own devices. No account, no analytics, and no networking code anywhere in the app.",
+      "lastUpdated": "Last updated: August 20, 2026",
+      "intro": "Alisio reads your heart rate on your Apple Watch while you train and keeps everything it learns on your own devices. There is no account, no analytics, and no networking code anywhere in the app. Here it is in detail:",
+      "sections": {
+        "collect": {
+          "heading": "What we collect: nothing",
+          "body": "Alisio has no accounts, no analytics, no ads, no trackers, and no servers of ours. The app contains no networking code at all, so there is no path for anything to leave your devices, and there is no third-party SDK riding along inside it."
+        },
+        "health": {
+          "heading": "Health data",
+          "body": "On your Apple Watch, Alisio asks Apple Health for permission to read your heart rate and your active energy while a session is running, and to save the finished workout back into Health. Those readings drive the live zone on your wrist and the summary you get at the end. We never use health data for advertising, never share it with third parties, and never sell it. The iPhone app asks for no permissions at all.",
+          "prompts": "The permission sheets show the app's own words, in Spanish: \"Necesitamos tu ritmo cardiaco para calcular tus zonas de entrenamiento.\" (we need your heart rate to calculate your training zones) and \"Guardamos tu entrenamiento en Salud.\" (we save your workout in Health)."
+        },
+        "storage": {
+          "heading": "Where your data lives",
+          "body": "The profile you enter (your age, your resting heart rate, and the formula you pick) is saved in the app's own preferences on your iPhone. Your session history is a plain file inside the app's private folder on that same iPhone. Nothing is copied to iCloud and nothing is copied to us."
+        },
+        "devices": {
+          "heading": "Between your Watch and your iPhone",
+          "body": "Alisio sends your profile to the Watch and the finished session back to the iPhone over Apple's Watch Connectivity, a direct link between two devices you already own. The watch face complication reads a small snapshot that the Watch app leaves in a shared container on the Watch itself. None of that passes through a server of ours, because there is no server of ours."
+        },
+        "account": {
+          "heading": "No account, no purchases, no ads",
+          "body": "Alisio has no sign-in, no subscription, no in-app purchases, and no advertising. Every part of it works in airplane mode, indefinitely."
+        },
+        "deletion": {
+          "heading": "Deleting your data",
+          "body": "Deleting the app removes your profile and your session history from your iPhone. Workouts that Alisio already saved into Apple Health belong to Health and stay there; you can delete those from the Health app, in the section that lists the apps that wrote data."
+        },
+        "children": {
+          "heading": "Children",
+          "body": "Alisio collects no data from anyone, including children."
+        },
+        "changes": {
+          "heading": "Changes",
+          "body": "If this policy ever changes, the date above changes with it, and the current version will always live at this URL."
+        },
+        "contact": {
+          "heading": "Contact",
+          "email": "ivanlorenzana@outlook.com"
         }
       }
     },
     "favePrivacy": {
       "title": "Fave Privacy Policy",
+      "metaDescription": "Fave keeps your rankings on your device and in your own iCloud, with no servers of ours in between. What that means for artwork, notes, and deleting the app.",
       "lastUpdated": "Last updated: August 9, 2026",
       "intro": "Fave keeps your rankings on your device and in your personal iCloud account. That is the whole story, but here it is in detail:",
       "sections": {
@@ -130,51 +152,121 @@
         },
         "contact": {
           "heading": "Contact",
-          "email": "ivan@atelierbelli.com"
+          "email": "ivanlorenzana@outlook.com"
+        }
+      }
+    },
+    "fingoPrivacy": {
+      "title": "Fingo Privacy Policy",
+      "metaDescription": "Fingo picks for you: a finger, a wheel, a number, a coin. It asks for no permissions, has no account, and never connects to anything. Here is the full policy.",
+      "lastUpdated": "Last updated: August 20, 2026",
+      "intro": "Fingo picks for you: a finger, a wheel, a number, a coin. It asks for no permissions, has no account, and never connects to anything. Here it is in detail:",
+      "sections": {
+        "collect": {
+          "heading": "What we collect: nothing",
+          "body": "Fingo has no accounts, no analytics, no ads, no trackers, and no servers of ours. There is nothing to opt out of, because nothing is being collected in the first place."
+        },
+        "storage": {
+          "heading": "Where your data lives",
+          "body": "Whatever you set up in the app (the wheels you build and the options you type into them, plus your settings for Chooser, Random and Coin Flip) is saved in the app's own preferences on your iPhone. It stays there, and deleting the app takes it with it."
+        },
+        "permissions": {
+          "heading": "Permissions: none",
+          "body": "Fingo asks for nothing. No camera, no photos, no contacts, no location, no notifications. If iOS ever shows you a permission sheet with Fingo's name on it, something is wrong and we would like to hear about it."
+        },
+        "network": {
+          "heading": "Nothing to send, nowhere to send it",
+          "body": "The app contains no networking code and no third-party SDKs. It behaves exactly the same in airplane mode as it does online, because it never had a reason to go online."
+        },
+        "children": {
+          "heading": "Children",
+          "body": "Fingo collects no data from anyone, including children."
+        },
+        "changes": {
+          "heading": "Changes",
+          "body": "If this policy ever changes, the date above changes with it, and the current version will always live at this URL."
+        },
+        "contact": {
+          "heading": "Contact",
+          "email": "ivanlorenzana@outlook.com"
+        }
+      }
+    },
+    "savelyPrivacy": {
+      "title": "Savely Privacy Policy",
+      "metaDescription": "Savely tracks your money on your phone and nowhere else. What it stores, the two permissions it asks for, and why receipts never open your photo library.",
+      "lastUpdated": "Last updated: August 20, 2026",
+      "intro": "Savely tracks your money on your phone and nowhere else. The app says so in its own settings: \"Your data never leaves this iPhone.\" Here is what that means in detail:",
+      "sections": {
+        "collect": {
+          "heading": "What we collect: nothing",
+          "body": "Savely has no account, no sign-in, no analytics, no ads, no trackers, and no servers of ours. It does not sync to iCloud either. We never see a single number you enter."
+        },
+        "storage": {
+          "heading": "Where your data lives",
+          "body": "Your income, your expenses, your goals, and the deposits you make toward those goals are stored in a database inside the app on your iPhone. Your display name and your reminder settings live in the app's own preferences. All of it stays on that phone."
+        },
+        "receipts": {
+          "heading": "Scanning a receipt",
+          "body": "Savely asks for the camera the first time you scan a receipt, with these words: \"Savely uses the camera to scan receipts for recording and managing your expenses.\" The photo is read on your device by Apple's own text recognition, and the app keeps only the amount, date and description you confirm on the review screen. The image itself is never saved by the app and never uploaded. You can also pick a photo you already have through Apple's photo picker, which hands Savely the single image you chose, so the app never gets access to your photo library."
+        },
+        "reminders": {
+          "heading": "Reminders",
+          "body": "The reminders are local notifications: your iPhone schedules them and your iPhone shows them. Savely asks for notification permission the first time you open it, and you can turn the reminders off in the app or in iOS Settings. Nothing is pushed from a server, because there is no server."
+        },
+        "network": {
+          "heading": "What leaves your phone",
+          "body": "Nothing, unless you send it yourself. The app makes no network requests. The one thing that can travel is the weekly PDF report: it is built on your phone from the current week and handed to the iOS share sheet, and where it goes from there is entirely your decision."
+        },
+        "deletion": {
+          "heading": "Deleting your data",
+          "body": "\"Delete all data\", in the Data and privacy section of your profile, removes your income, expenses and goals from the phone. Your name and your reminder settings stay, because they are preferences rather than data. Deleting the app removes everything, those included."
+        },
+        "children": {
+          "heading": "Children",
+          "body": "Savely collects no data from anyone, including children."
+        },
+        "changes": {
+          "heading": "Changes",
+          "body": "If this policy ever changes, the date above changes with it, and the current version will always live at this URL. If a future version of Savely ever sends anything off your phone, this page will say so before that version ships."
+        },
+        "contact": {
+          "heading": "Contact",
+          "email": "ivanlorenzana@outlook.com"
         }
       }
     },
     "privacyChoices": {
       "title": "User Privacy Choices",
-      "intro": "At Atelier Belli, we respect your privacy and give you control over your personal information. Below are the choices you have regarding your data:",
+      "metaDescription": "How to exercise your data rights with Atelier Belli, and the honest reason answers are short: there is almost nothing here to hand over, correct, or delete.",
+      "intro": "Privacy policies usually promise machinery for exercising your data rights. Here is the honest version: we hold almost nothing about you, so for most requests the answer is that there is nothing to hand over, correct, or delete. This page says where the data actually is and how to reach a person about it.",
       "sections": {
-        "access": {
-          "heading": "Access to Your Information",
-          "body": "You have the right to request a copy of the personal information we hold about you. You may do so by contacting us at ivanlorenzanabelli@outlook.com."
+        "whatWeHold": {
+          "heading": "What we hold about you",
+          "body": "Nothing that identifies you. This website has no accounts, no forms and no analytics; it stores a language cookie and a theme preference, both of which live on your own device and neither of which carries an identifier. If you have written to us, we have your email in an inbox, the same way anyone has the email they were sent."
         },
-        "correction": {
-          "heading": "Correction of Your Information",
-          "body": "If you believe that any information we hold about you is inaccurate or incomplete, please contact us as soon as possible. We will correct any information found to be inaccurate."
+        "appData": {
+          "heading": "Data inside our apps",
+          "body": "What our apps hold stays on your device, and in Fave's case in your own iCloud account. We keep no copy and have no way to reach it, so asking us to delete it would not accomplish anything, but you can delete it yourself: each app policy explains exactly what it stores and how to remove it."
         },
-        "deletion": {
-          "heading": "Deletion of Your Information (Right to Erasure)",
-          "body": "You may request the deletion of your personal information from our systems under certain circumstances — for example, if the data is no longer necessary for the purpose for which it was collected, or if you withdraw your consent (where processing is based on consent)."
-        },
-        "objection": {
-          "heading": "Objection to Processing",
-          "body": "You have the right to object to the processing of your personal information in certain situations, such as direct marketing. If you object, we will stop processing your personal information for those purposes unless we have compelling legitimate grounds for the processing that override your interests, rights, and freedoms, or for the establishment, exercise, or defense of legal claims."
-        },
-        "restriction": {
-          "heading": "Restriction of Processing",
-          "body": "You may request that we restrict the processing of your personal information if: (a) you contest the accuracy of the data; (b) the processing is unlawful but you oppose deletion; (c) we no longer need the data but you require it for legal claims; or (d) you have objected to processing and we are verifying whether our legitimate grounds override yours."
-        },
-        "portability": {
-          "heading": "Data Portability",
-          "body": "Where processing is based on your consent or on a contract and is carried out by automated means, you have the right to receive the personal information you provided to us in a structured, commonly used, and machine-readable format, and you have the right to transmit that data to another controller without hindrance from us."
+        "requests": {
+          "heading": "Making a request",
+          "body": "You can still ask us for a copy of anything we hold, ask us to correct it, or ask us to delete it. Given everything above, the answer is usually short and quick."
         },
         "howToExercise": {
-          "heading": "How to Exercise Your Rights",
-          "contactIntro": "To exercise any of these rights, please contact us at:",
-          "name": "Atelier Belli — Privacy Department",
-          "email": "Email: ivanlorenzanabelli@outlook.com",
-          "responseNote": "We will respond to your request within the legally required timeframe. We may need to verify your identity before processing your request.",
-          "disclaimer": "Please note that these rights are not absolute and may be subject to certain exemptions under applicable law."
+          "heading": "How to reach us",
+          "contactIntro": "Write to us at:",
+          "name": "Atelier Belli",
+          "email": "ivanlorenzana@outlook.com",
+          "responseNote": "A person reads that inbox and answers, usually within a few days. We will not ask you for extra personal information to verify a request unless answering it genuinely requires it.",
+          "disclaimer": "This page describes how we handle requests in practice. It is not a summary of any particular country's data-protection law, and where such a law gives you more than this page does, that law wins."
         }
       }
     },
     "terms": {
       "title": "Terms & Conditions",
-      "lastUpdated": "June 15, 2025",
+      "metaDescription": "The terms for using atelierbelli.com and the apps published here: what you may do with the work, what is not permitted, and the limits of our liability.",
+      "lastUpdated": "Last updated: August 20, 2026",
       "sections": {
         "acceptance": {
           "heading": "1. Acceptance of Terms",
@@ -182,15 +274,13 @@
         },
         "intellectualProperty": {
           "heading": "2. Intellectual Property Rights",
-          "body": "Unless otherwise indicated, the Site and all original materials — including source code, databases, functionality, software, website designs, audio, video, text, photographs, and graphics (collectively, the \"Content\") — and the trademarks, service marks, and logos contained therein (the \"Marks\") are owned by or licensed to us, and are protected by copyright and trademark law."
+          "body": "Unless otherwise indicated, the Site and all original materials (including source code, databases, functionality, software, website designs, audio, video, text, photographs, and graphics, collectively the \"Content\") and the trademarks, service marks, and logos contained therein (the \"Marks\") are owned by or licensed to us, and are protected by copyright and trademark law."
         },
         "userRepresentations": {
           "heading": "3. User Representations",
           "intro": "By using the Services, you represent and warrant that:",
           "items": [
-            "All registration information you submit will be true, accurate, current, and complete.",
-            "You will maintain the accuracy of such information and promptly update it as necessary.",
-            "You have the legal capacity and agree to comply with these Terms.",
+            "You have the legal capacity to accept these Terms and you agree to comply with them.",
             "You will not use the Services for any illegal or unauthorized purpose.",
             "Your use of the Services will not violate any applicable law or regulation."
           ]
@@ -199,9 +289,9 @@
           "heading": "4. Prohibited Activities",
           "body": "You may not access or use the Site for any purpose other than that for which we make the Site available. The Site may not be used in connection with any commercial endeavor except those that are specifically endorsed or approved by us."
         },
-        "termination": {
-          "heading": "5. Termination",
-          "body": "We reserve the right, in our sole discretion, to deny access to and use of the Services (including blocking certain IP addresses) to any person for any reason or for no reason, including without limitation for breach of any representation, warranty, or covenant contained in these Terms or of any applicable law or regulation."
+        "availability": {
+          "heading": "5. Availability of the Services",
+          "body": "We may change, suspend, or discontinue the Site, any app, or any part of either at any time, with or without notice. The Services are provided as they are, and we do not promise uninterrupted or error-free availability."
         },
         "governingLaw": {
           "heading": "6. Governing Law",
@@ -219,7 +309,7 @@
           "heading": "9. Contact",
           "body": "To resolve a complaint regarding the Services or to receive further information regarding use of the Services, please contact us at:",
           "name": "Atelier Belli",
-          "email": "contacto@atelierbelli.com",
+          "email": "ivanlorenzana@outlook.com",
           "address": "Tijuana, Baja California, Mexico"
         }
       }
@@ -228,103 +318,94 @@
   "support": {
     "savely": {
       "name": "Savely",
-      "crest": "S",
+      "metaTitle": "Savely Support",
+      "metaDescription": "Help with Savely: totals that read wrong, goals that will not budge, reminders that never arrive. Answers from the person who built the app.",
       "navLabel": "Savely · Support",
-      "footMeta": "Savely — Support desk · 2025",
+      "footMeta": "Savely · Support desk",
       "hero": {
-        "eye": "Support · v1.8",
         "titleHtml": "A calm <em>answer</em> to every question.",
-        "lede": "Savely is a quiet place for your money. If something looks off — a missing transaction, a chart that won't load, a bank that dropped — tell us. We'll sort it out, patiently."
+        "lede": "Savely keeps your money on your phone and nowhere else. If a total reads wrong, a goal will not budge, or a reminder never arrives, write in. Every message is read by the person who built the app."
       },
       "contact": {
         "titleHtml": "Reach <em>us.</em>",
-        "sub": "Questions about your account, a bank connection, or something simpler. All roads lead to the same desk.",
+        "sub": "There is no account to look up and no server to check, so the quickest route is simply telling us what you saw.",
         "cards": {
           "email": {
             "label": "Email",
             "valueHtml": "ivanlorenzana@outlook.com",
-            "hint": "Mon–Fri · Replies within 24h.",
+            "hint": "The main desk. Write any time.",
             "href": "mailto:ivanlorenzana@outlook.com"
           },
-          "bank": {
-            "label": "Bank connection",
-            "valueHtml": "Can't <em>link</em> a bank?",
-            "hint": "Most issues are fixed in under an hour.",
-            "href": "mailto:ivanlorenzana@outlook.com?subject=Bank%20connection%20help"
+          "bug": {
+            "label": "Report a bug",
+            "valueHtml": "<em>Something</em> off?",
+            "hint": "What you tapped, what happened, a screenshot if you have one.",
+            "href": "mailto:ivanlorenzana@outlook.com?subject=Savely%20bug%20report"
+          },
+          "feature": {
+            "label": "Request a feature",
+            "valueHtml": "Imagine <em>better.</em>",
+            "hint": "Savely is version 1.0. A lot is still open.",
+            "href": "mailto:ivanlorenzana@outlook.com?subject=Savely%20wishlist"
           },
           "security": {
             "label": "Security concern",
-            "valueHtml": "See something <em>odd?</em>",
-            "hint": "Reported within 2 hours. 24/7.",
-            "href": "mailto:ivanlorenzana@outlook.com"
-          },
-          "docs": {
-            "label": "Help centre",
-            "valueHtml": "Guides &amp; articles",
-            "hint": "Setup, budgets, categories, exports.",
-            "href": "#"
+            "valueHtml": "Found a <em>hole?</em>",
+            "hint": "Tell us privately first, so it is fixed before it is public.",
+            "href": "mailto:ivanlorenzana@outlook.com?subject=Savely%20security"
           }
         }
       },
       "faq": {
         "titleHtml": "Common <em>questions.</em>",
-        "sub": "If yours isn't here, write in. We answer each one by hand.",
+        "sub": "The ones that come up most. If yours is not here, just write.",
         "items": [
           {
-            "q": "Is my bank data safe with Savely?",
-            "aHtml": "Yes. Savely uses read-only bank connections via regulated aggregators. We never see or store your banking credentials. All data at rest is encrypted, and we never sell or share information with third parties."
+            "q": "Where does my money data live?",
+            "aHtml": "On this iPhone, in a private store only Savely can open. There is no account, no cloud copy, and no connection to anything outside the phone. The app says so itself under <em>Me → Data &amp; privacy</em>: your data never leaves this iPhone. The camera is the only permission it ever asks for, and that is for reading receipts."
           },
           {
-            "q": "Why can't I connect my bank?",
-            "aHtml": "Most often it's a temporary outage at the aggregator. Try again in ~30 minutes. If it persists, <a href='mailto:ivanlorenzana@outlook.com'>email us</a> with your bank name and country — we'll chase it down."
+            "q": "If I lose my phone, can I get my data back?",
+            "aHtml": "Not from us, and we would rather be blunt about it. Nothing is ever uploaded, so there is no copy on our side to restore and no account to recover. What does protect you is your iPhone's own backup: Savely stores everything in the app's normal storage, so it travels with an iCloud or computer backup and returns when you restore a phone. That is the honest trade for keeping your finances off the internet."
           },
           {
-            "q": "Can I export my data?",
-            "aHtml": "Yes. <em>Settings → Data → Export</em>. You'll get a CSV of all your transactions, categories, and budgets. Nothing is kept hostage."
+            "q": "How does the receipt scanner work?",
+            "aHtml": "Point the camera at a receipt and iOS reads it on the device, in Spanish or in English. Nothing is uploaded, and the photo itself is never saved. What you get back is a draft: the amount, the merchant, the date and the category are all editable, and nothing is recorded until you tap Save. You can also pick an existing photo from your library instead."
           },
           {
-            "q": "How do budgets roll over at month end?",
-            "aHtml": "Unspent amounts either carry to next month or reset — your call. Set it per budget in <em>Budget → Options → Rollover</em>. The default is reset."
+            "q": "What does Auto-move on payday actually do?",
+            "aHtml": "Less than the name promises, and you should know that before you rely on it. Nothing moves on a schedule and nothing runs in the background. You switch it on for a goal, and then, when you log income, Savely may offer to move one amount into that goal. It happens only if you say yes, and the deposit is written together with that income."
           },
           {
-            "q": "Does Savely work outside Europe?",
-            "aHtml": "Partial. EU, UK, and US banks work well. Canada and Australia are in public beta. Other regions — get in touch and we'll tell you honestly whether we can connect."
+            "q": "Can I export my data, or erase it?",
+            "aHtml": "There is one export, the <em>Weekly PDF report</em> row under <em>Me → Data &amp; privacy</em>. It covers the current week of income and expenses and hands you a PDF through the share sheet, so treat it as something to read rather than a backup to restore from. To erase, use <em>Delete all data</em> in the same place: every income, expense and goal is removed from this iPhone, your name and reminder settings stay, and it cannot be undone."
           }
         ]
       },
-      "status": {
-        "titleHtml": "Current <em>state.</em>",
-        "sub": "Version, platform, response times, and system status.",
-        "rows": [
-          {
-            "k": "Version",
-            "v": "1.8.0"
-          },
-          {
-            "k": "Platform",
-            "v": "iOS 16+"
-          },
-          {
-            "k": "Reply time",
-            "v": "~ 14 hours"
-          },
-          {
-            "k": "Systems",
-            "v": "All good",
-            "ok": true
-          }
-        ]
-      },
+      "facts": [
+        {
+          "k": "Data",
+          "v": "Stays on your iPhone"
+        },
+        {
+          "k": "Account",
+          "v": "Not needed"
+        },
+        {
+          "k": "Reply time",
+          "v": "A day or two"
+        },
+        {
+          "k": "Systems",
+          "v": "All good",
+          "ok": true
+        }
+      ],
       "cta": {
         "titleHtml": "Still <em>stuck?</em>",
-        "sub": "Write to us directly. A small team, real replies, patient answers.",
+        "sub": "Write to us directly. Real replies, patient answers.",
         "label": "ivanlorenzana@outlook.com",
         "href": "mailto:ivanlorenzana@outlook.com"
-      },
-      "sectionLabels": {
-        "contact": "01 — Contact",
-        "faq": "02 — Frequent questions",
-        "status": "03 — Status"
       },
       "privacyLabel": "Privacy",
       "termsLabel": "Terms",
@@ -332,28 +413,28 @@
     },
     "fingo": {
       "name": "Fingo",
-      "crest": "F",
+      "metaTitle": "Fingo Support",
+      "metaDescription": "Help with Fingo, the app for settling who pays and who goes first. Answers about its four modes, and a real person who reads every message you send.",
       "navLabel": "Fingo · Support",
-      "footMeta": "Fingo — Support desk · 2025",
+      "footMeta": "Fingo · Support desk",
       "hero": {
-        "eye": "Support · v2.1.0",
         "titleHtml": "How can we <em>help?</em>",
-        "lede": "Fingo is a tiny app for deciding who pays, who goes first, who picks the music. If something doesn't work the way it should — write to us. A real person reads every message."
+        "lede": "Fingo is a small app for settling who pays, who goes first, who picks the music. It runs entirely on your phone, with no account and no internet. If something misbehaves, write to us. A real person reads every message."
       },
       "contact": {
         "titleHtml": "Get in <em>touch.</em>",
-        "sub": "Choose what suits you best. Everything routes to the same desk.",
+        "sub": "Three ways in, all of them landing on the same desk.",
         "cards": {
           "email": {
             "label": "Email",
             "valueHtml": "ivanlorenzana@outlook.com",
-            "hint": "Replies within 24h, usually sooner.",
+            "hint": "The main desk. Write any time.",
             "href": "mailto:ivanlorenzana@outlook.com"
           },
           "bug": {
             "label": "Report a bug",
             "valueHtml": "<em>Something</em> broken?",
-            "hint": "A short note + screenshot goes a long way.",
+            "hint": "A short note and a screenshot go a long way.",
             "href": "mailto:ivanlorenzana@outlook.com?subject=Fingo%20bug%20report"
           },
           "feature": {
@@ -361,74 +442,154 @@
             "valueHtml": "Imagine <em>better.</em>",
             "hint": "We read all of them. Some ship.",
             "href": "mailto:ivanlorenzana@outlook.com?subject=Fingo%20wishlist"
-          },
-          "docs": {
-            "label": "Help centre",
-            "valueHtml": "Guides &amp; tips",
-            "hint": "Quick guides for the most common flows.",
-            "href": "#"
           }
         }
       },
       "faq": {
         "titleHtml": "Questions <em>we hear.</em>",
-        "sub": "The ones that come up most. If yours isn't here, just write.",
+        "sub": "The ones that come up most. If yours is not here, just write.",
         "items": [
           {
-            "q": "Does Fingo share my contacts or data?",
-            "aHtml": "No. Fingo doesn't ship your contacts, choices, or results anywhere. Everything lives on your device; there's no account and no server to leak. If you delete the app, nothing stays behind."
+            "q": "Does Fingo need an account, or the internet?",
+            "aHtml": "Neither. There is no sign-in and no networking code in the app at all, so it behaves exactly the same in airplane mode. It asks for no permissions, collects nothing, and your wheels are saved only on the phone. Delete the app and nothing is left behind."
           },
           {
-            "q": "Why do I need to enable haptics?",
-            "aHtml": "Because half of Fingo's joy is the click. You can turn them off in <em>Settings → Feedback</em>, but we'd suggest trying a spin with them on at least once."
+            "q": "What can Fingo actually decide?",
+            "aHtml": "Four things, one per tab. <em>Chooser</em> picks a finger: everyone holds the screen, and with two or more fingers down a short countdown runs before one is chosen, up to five at a time. <em>Roulette</em> spins a wheel you built yourself. <em>Random</em> gives you a number inside a range you set. <em>Coin Flip</em> is heads or tails."
           },
           {
-            "q": "Can I use Fingo without an internet connection?",
-            "aHtml": "Yes — completely. Fingo is fully offline. The only time the internet is touched is if you share a result as a card via Messages or Mail."
+            "q": "I deleted a roulette and it came back. Why?",
+            "aHtml": "So the tab is never empty. If you delete every wheel, Fingo puts the starter one back the next time you open the app: <em>My First Roulette</em>, with the options Yes, No and Maybe. Edit it into something you actually want and it will stay that way."
           },
           {
-            "q": "Where do I restore a purchase?",
-            "aHtml": "Settings → About → Restore Purchases. You'll need to be signed into the same Apple ID you used when buying. If it still doesn't work, <a href='mailto:ivanlorenzana@outlook.com'>email us</a>."
+            "q": "Can I turn the vibration off?",
+            "aHtml": "Not inside Fingo today. The app has no settings screen at all, so haptics stay on wherever they fire. If you want a switch for it, write to us and say so."
           },
           {
-            "q": "Is there an Android version?",
-            "aHtml": "Not yet. Fingo is SwiftUI-native and we want to keep the animation and haptic quality at the standard it is. An Android port is on the table but not promised."
+            "q": "Can I save or share a result?",
+            "aHtml": "No, and nothing is kept. A roulette winner appears in a card you dismiss by tapping the background around it, the Chooser clears its result after a moment, and no mode keeps a history. Fingo is built to settle the moment and then get out of the way."
           }
         ]
       },
-      "status": {
-        "titleHtml": "Everything <em>running.</em>",
-        "sub": "Current version, platform, and how quickly we get back.",
-        "rows": [
-          {
-            "k": "Version",
-            "v": "2.1.0"
-          },
-          {
-            "k": "Platform",
-            "v": "iOS 26+"
-          },
-          {
-            "k": "Reply time",
-            "v": "~ 18 hours"
-          },
-          {
-            "k": "Systems",
-            "v": "All good",
-            "ok": true
-          }
-        ]
-      },
+      "facts": [
+        {
+          "k": "Data",
+          "v": "Stays on your iPhone"
+        },
+        {
+          "k": "Internet",
+          "v": "Never needed"
+        },
+        {
+          "k": "Reply time",
+          "v": "A day or two"
+        },
+        {
+          "k": "Systems",
+          "v": "All good",
+          "ok": true
+        }
+      ],
       "cta": {
         "titleHtml": "Still <em>stuck?</em>",
         "sub": "Write to us directly.",
         "label": "ivanlorenzana@outlook.com",
         "href": "mailto:ivanlorenzana@outlook.com"
       },
-      "sectionLabels": {
-        "contact": "01 — Contact",
-        "faq": "02 — Frequent questions",
-        "status": "03 — Status"
+      "privacyLabel": "Privacy",
+      "termsLabel": "Terms",
+      "backLabel": "Atelier Belli"
+    },
+    "fave": {
+      "name": "Fave",
+      "metaTitle": "Fave Support",
+      "metaDescription": "Help with Fave: lists that will not sync, artwork that loads wrong, and how to reach a person. Every message is read by the developer who built the app.",
+      "navLabel": "Fave · Support",
+      "footMeta": "Fave · Support desk",
+      "hero": {
+        "titleHtml": "Help with your <em>lists.</em>",
+        "lede": "Fave is the notebook for everything you try, and it keeps your lists in your own iCloud rather than on our servers. If a poster loads wrong, a list will not sync, or something simply confuses you, write to us."
+      },
+      "contact": {
+        "titleHtml": "Reach <em>us.</em>",
+        "sub": "There is no account for us to look up, so tell us what you saw and where you saw it.",
+        "cards": {
+          "email": {
+            "label": "Email",
+            "valueHtml": "ivanlorenzana@outlook.com",
+            "hint": "The main desk. Write any time.",
+            "href": "mailto:ivanlorenzana@outlook.com"
+          },
+          "sync": {
+            "label": "iCloud and syncing",
+            "valueHtml": "Lists not <em>arriving?</em>",
+            "hint": "Tell us what Profile → Your data shows.",
+            "href": "mailto:ivanlorenzana@outlook.com?subject=Fave%20sync"
+          },
+          "artwork": {
+            "label": "Artwork or titles",
+            "valueHtml": "Wrong <em>poster?</em>",
+            "hint": "Films and shows come from TMDB, books from Open Library.",
+            "href": "mailto:ivanlorenzana@outlook.com?subject=Fave%20artwork"
+          },
+          "bug": {
+            "label": "Report a bug",
+            "valueHtml": "<em>Something</em> broken?",
+            "hint": "What you tapped, what happened, a screenshot if you have one.",
+            "href": "mailto:ivanlorenzana@outlook.com?subject=Fave%20bug%20report"
+          }
+        }
+      },
+      "faq": {
+        "titleHtml": "Common <em>questions.</em>",
+        "sub": "The ones that come up most. If yours is not here, just write.",
+        "items": [
+          {
+            "q": "Do I need an account?",
+            "aHtml": "Not with us. Fave has no sign-up, no password and no profile to fill in. Your lists are kept on your iPhone and mirrored to your own private iCloud, so they follow you to a new phone without us ever holding a copy. We cannot read them, and there is nothing on our side to log into."
+          },
+          {
+            "q": "What if I am not signed into iCloud?",
+            "aHtml": "Fave still works, it simply cannot carry anything across. <em>Profile → Your data</em> tells you which situation you are in: when there is no iCloud account on the phone it says your lists live only there, and that signing in from Settings will let them keep themselves. Nothing is lost in the meantime."
+          },
+          {
+            "q": "What does Fave send to the internet?",
+            "aHtml": "Only what it needs to put a name and a cover on something. Searching a film or a show sends that text to TMDB along with your language setting; searching a book sends the title or the ISBN to Open Library. Posters and covers are downloaded from those same two services, and Fave will quietly fetch a missing one when you open the app. Your stars, your reactions, your notes and your photos are never sent to either of them."
+          },
+          {
+            "q": "How do I delete everything?",
+            "aHtml": "In two steps, because there are two copies. Deleting the app clears it from that iPhone, but the synced copy stays in your iCloud and would return if you reinstalled. To remove it for good, delete the app and then delete Fave's iCloud data from your iPhone's Settings. Inside the app you can also delete a single list or entry by holding it down, which removes it from all of your devices."
+          },
+          {
+            "q": "Can I rank anything, or only films and books?",
+            "aHtml": "Both. Movies, Shows and Books are built in, with a search that fills in the title, the year and the artwork. Everything else goes in lists you make yourself, which come in two kinds: Things for anything you try, and Places for cafés and venues, where a place is scored by the orders you rate inside it. Every entry can take one to five stars, an emoji, a note and one photo, and all four are optional."
+          }
+        ]
+      },
+      "facts": [
+        {
+          "k": "Your lists",
+          "v": "In your own iCloud"
+        },
+        {
+          "k": "Fave account",
+          "v": "None"
+        },
+        {
+          "k": "Reply time",
+          "v": "A day or two"
+        },
+        {
+          "k": "Systems",
+          "v": "All good",
+          "ok": true
+        }
+      ],
+      "cta": {
+        "titleHtml": "Still <em>stuck?</em>",
+        "sub": "Write to us directly. Real replies, patient answers.",
+        "label": "ivanlorenzana@outlook.com",
+        "href": "mailto:ivanlorenzana@outlook.com"
       },
       "privacyLabel": "Privacy",
       "termsLabel": "Terms",
@@ -443,7 +604,7 @@
       "contact": "Contact"
     },
     "locale": {
-      "switchAria": "Cambiar a Español"
+      "groupAria": "Language"
     },
     "theme": {
       "toggleAria": "Toggle theme"
@@ -463,24 +624,24 @@
       "signed": "Signed"
     },
     "vitrine": {
-      "eyebrow": "Showcase — 2026",
+      "eyebrow": "Showcase 2026",
       "titlePre": "Three recent ",
       "titleIt": "pieces.",
-      "hint": "— Hover to focus",
-      "hintTouch": "— Swipe to browse"
+      "hint": "Hover to focus",
+      "hintTouch": "Swipe to browse"
     },
     "work": {
       "eyebrow": "The work",
       "titlePre": "Selected ",
       "titleIt": "work.",
-      "indexMeta": "Index — 2023 / 2026",
+      "indexMeta": "Index 2023 / 2026",
       "viewCase": "View case"
     },
     "workbench": {
       "eyebrow": "The workbench",
       "titlePre": "Tools of the ",
       "titleIt": "trade.",
-      "desc": "A small, opinionated set. Swift and SwiftUI for the phone; <it>Next.js</it> and TypeScript for the web; Postgres for things that must last. Figma, Xcode, Claude Code — the bench stays tidy.",
+      "desc": "A small, opinionated set. Swift and SwiftUI for the phone; <it>Next.js</it> and TypeScript for the web; Postgres for things that must last. Figma, Xcode, Claude Code. The bench stays tidy.",
       "groups": {
         "frontend": "Frontend & Mobile",
         "backend": "Backend & Infra",
@@ -519,52 +680,79 @@
       },
       "fingo": {
         "titleIt": "group choice, made easy.",
-        "descRich": "An iOS app for making group decisions instantly — wheels, coins, spinning arrows, tap-to-choose. Fully customizable, with <it>haptics</it> that make each pick feel deliberate. Built with SwiftUI.",
+        "descRich": "An iOS app for making group decisions instantly: wheels, coins, spinning arrows, tap-to-choose. Fully customizable, with <it>haptics</it> that make each pick feel deliberate. Built with SwiftUI.",
         "metaStatus": "Live on the App Store",
         "actionPrimary": "View on App Store",
         "actionGhost": "Support",
-        "tag": "Wheels, coins, haptics — decisions in a tap."
+        "tag": "Wheels, coins, haptics. Decisions in a tap.",
+        "kickerPlatform": "iOS",
+        "kickerDomain": "Utility",
+        "mshowStatus": "App Store",
+        "actionPrivacy": "Privacy"
       },
       "savely": {
         "titleIt": "personal savings, quietly.",
-        "descRich": "A local-first savings app. Goals with a real pace, everyday income and expense logging, a receipt scanner that reads on the phone, and a payday auto-move that turns income into savings in one tap. No accounts, no cloud, no bank connections — money data lives on the phone and <it>never leaves it</it>. SwiftUI and SwiftData, submitted to the App Store.",
+        "descRich": "A local-first savings app. Goals with a real pace, everyday income and expense logging, a receipt scanner that reads on the phone, and a payday auto-move that turns income into savings in one tap. No accounts, no cloud, no bank connections: money data lives on the phone and <it>never leaves it</it>. SwiftUI and SwiftData, submitted to the App Store.",
         "metaStatus": "In review · App Store soon",
         "actionPrimary": "Coming soon",
         "actionGhost": "Support",
-        "tag": "Goals, receipts, payday auto-move — money that never leaves the phone.",
+        "tag": "Goals, receipts, payday auto-move. Money that never leaves the phone.",
         "mshowStatus": "In review",
-        "galleryCaption": "Three real screens, seeded through the app's own DEBUG tour: a goal with its pace, a receipt read on-device — the photo never leaves the phone — and payday's one-tap auto-move into that goal."
+        "galleryCaption": "Three real screens, seeded through the app's own DEBUG tour: a goal with its pace, a receipt read on-device (the photo never leaves the phone), and payday's one-tap auto-move into that goal.",
+        "kickerPlatform": "iOS",
+        "kickerDomain": "Fintech",
+        "actionPrivacy": "Privacy",
+        "story": {
+          "problem": "Most savings apps want a bank connection before they are useful, then answer the only question that matters, whether the goal still lands on time, with a projection the deposits do not support. Handing over your accounts to be told something comfortable is a bad trade.",
+          "approach": "Everything runs on the phone: SwiftData for the money, Apple's on-device text recognition for receipts, and no network calls at all. The pace math refuses to flatter. A goal further out than a year reads 1+ year instead of an invented date, and the payday auto-move only offers what the month can actually afford once this paycheck, its expenses and the deposits already made are counted.",
+          "result": "Submitted to the App Store with the premise intact: no account, no cloud, no bank connection, and nothing that leaves the phone unless you send it yourself. The one thing that can travel is a weekly PDF you hand to the iOS share sheet."
+        },
+        "highlights": [
+          "No account, no cloud, no bank connection, and no network calls at all",
+          "Receipts read on device by Apple's text recognition; the photo is never saved",
+          "The payday auto-move offers one deposit, capped by what the month can afford",
+          "Goal pace and ETA measured from real deposits, with no invented completion date"
+        ]
       },
       "mezcal": {
-        "descRich": "Storefront and story for an artisanal mezcal brand out of Oaxaca. A quiet, editorial site built to sell — varieties, origin, direct orders. <it>Hand-built</it> from brand to checkout.",
+        "descRich": "Storefront and story for an artisanal mezcal brand out of Oaxaca. A quiet, editorial site built to sell: varieties, origin, direct orders. <it>Hand-built</it> from brand to checkout.",
         "metaPlatform": "Web · Responsive",
         "metaStatus": "Live",
         "actionPrimary": "Visit site",
-        "tag": "An artisanal mezcal brand — storefront and story.",
-        "mshowStatus": "Live"
+        "tag": "An artisanal mezcal brand: storefront and story.",
+        "mshowStatus": "Live",
+        "kickerPlatform": "Web",
+        "kickerDomain": "E-commerce",
+        "titleIt": "sold direct from Oaxaca."
       },
       "blip": {
         "titleIt": "the restock radar.",
-        "descRich": "A live monitor for sealed Pokémon TCG product on Amazon México. It watches price, stock and restocks, then fires an instant push with a one-tap deep-link that fills the cart — <it>you</it> finish the purchase. The edge is legitimate speed: know first, tap first.",
+        "descRich": "A live monitor for sealed Pokémon TCG product on Amazon México. It watches price, stock and restocks, then fires an instant push with a one-tap deep-link that fills the cart, and <it>you</it> finish the purchase. The edge is legitimate speed: know first, tap first.",
         "metaPlatform": "Web · PWA",
         "metaStatus": "In development",
-        "actionPrimary": "In development",
-        "tag": "Price, stock, restocks — alerted before the swarm."
+        "actionPrimary": "Coming soon",
+        "tag": "Price, stock, restocks. Alerted before the swarm.",
+        "kickerPlatform": "Web",
+        "kickerDomain": "Retail",
+        "mshowStatus": "In development"
       },
       "briefmark": {
         "titleIt": "bookmarks that think.",
-        "descRich": "An iOS app that turns TikTok videos into smart bookmarks. Share a URL and it extracts every recommendation — recipes, movies, books, places — into structured, actionable cards, powered by <it>Claude</it>. SwiftUI on the front, a TypeScript backend behind.",
+        "descRich": "An iOS app that turns TikTok videos into smart bookmarks. Share a URL and it extracts every recommendation (recipes, movies, books, places) into structured, actionable cards, powered by <it>Claude</it>. SwiftUI on the front, a TypeScript backend behind.",
         "metaStatus": "In development",
-        "actionPrimary": "In development",
-        "tag": "TikToks into structured, searchable cards."
+        "actionPrimary": "Coming soon",
+        "tag": "TikToks into structured, searchable cards.",
+        "kickerPlatform": "iOS",
+        "kickerDomain": "AI",
+        "mshowStatus": "In development"
       },
       "pass": {
         "titleIt": "cards that live in Wallet.",
-        "descRich": "A serverless platform that issues and updates Apple Wallet passes — gym memberships, loyalty stamp cards — with changes pushed in real time straight to the card. AWS Lambda, DynamoDB and the Apple Wallet web service, <it>end to end</it>.",
+        "descRich": "A serverless platform that issues and updates Apple Wallet passes (gym memberships, loyalty stamp cards) with changes pushed in real time straight to the card. AWS Lambda, DynamoDB and the Apple Wallet web service, <it>end to end</it>.",
         "metaPlatform": "AWS · Serverless",
         "metaStatus": "Running in production",
         "actionPrimary": "Code coming soon",
-        "tag": "Apple Wallet passes — issued, updated, alive.",
+        "tag": "Apple Wallet passes: issued, updated, alive.",
         "story": {
           "problem": "A Wallet pass cannot be refreshed from an app. Without Apple's pass web service the card goes stale in the user's Wallet, and a stale card is one they delete.",
           "approach": "A serverless backend that implements the protocol end to end: device registration, pass versioning, PassKit signing and the push that tells the device to come back for a new version.",
@@ -575,14 +763,17 @@
           "APNs push: the pass updates in place on the card",
           "Lambda, API Gateway, DynamoDB and S3, deployed with SAM",
           "Issued over an API: gym memberships and loyalty stamp cards"
-        ]
+        ],
+        "kickerPlatform": "Backend",
+        "kickerDomain": "Loyalty",
+        "mshowStatus": "In production"
       },
       "alisio": {
         "titleIt": "train by heart-rate zones.",
-        "descRich": "An iOS and Apple Watch app for zone training. Pick a zone and your watch <it>taps your wrist</it> the moment you drift out — a workout stays a two-second glance, not a screen you study mid-set. It starts standalone from the watch, mirrors live on iPhone, and keeps every session <it>on-device</it>, no account. Built with SwiftUI and HealthKit.",
+        "descRich": "An iOS and Apple Watch app for zone training. Pick a zone and your watch <it>taps your wrist</it> the moment you drift out, so a workout stays a two-second glance, not a screen you study mid-set. It starts standalone from the watch, mirrors live on iPhone, and keeps every session <it>on-device</it>, no account. Built with SwiftUI and HealthKit.",
         "metaStatus": "Live on the App Store",
         "actionPrimary": "View on App Store",
-        "tag": "Heart-rate zones you feel on your wrist — no screen to study.",
+        "tag": "Heart-rate zones you feel on your wrist, no screen to study.",
         "story": {
           "problem": "Training by zone means checking your wrist mid-set. At that pace the number arrives late, and looking for it breaks the effort you were trying to hold.",
           "approach": "The Watch measures and taps: entering the zone, leaving it, hitting the goal. The iPhone only mirrors what the Watch tracks. Zones come from your own profile (Karvonen over the Tanaka formula), not a generic table.",
@@ -595,22 +786,30 @@
           "Profile and history sync between devices; nothing leaves them"
         ],
         "mediaCaption": "One live session across both devices: started on the iPhone, measured on the Watch, mirrored back to the phone. See the badge flip as the heart rate drifts out of Zone 2 and returns.",
-        "watchCaption": "On the wrist alone: pick a zone with the crown, then the live session — the badge slipping out of zone and back in — through to the goal completed."
+        "watchCaption": "On the wrist alone: pick a zone with the crown, then the live session, with the badge slipping out of zone and back in, through to the goal completed.",
+        "kickerPlatform": "iOS",
+        "kickerDomain": "Fitness",
+        "mshowStatus": "App Store",
+        "actionPrivacy": "Privacy"
       },
       "fave": {
         "titleIt": "everything you try, ranked.",
-        "descRich": "An iOS app for the person who already keeps mental lists of every drink, café and movie she has tried. You make a list for anything, tick things off as you go, and give them stars <it>only when you feel like it</it> — rating is never homework. A café keeps its own orders and scores itself from their average. Movies, shows and books fill in their own artwork from TMDB and Open Library. Everything lives in your private iCloud and nowhere else: no accounts, no analytics, no servers of mine.",
+        "descRich": "An iOS app for the person who already keeps mental lists of every drink, café and movie she has tried. You make a list for anything, tick things off as you go, and give them stars <it>only when you feel like it</it>, because rating is never homework. A café keeps its own orders and scores itself from their average. Movies, shows and books fill in their own artwork from TMDB and Open Library. Everything lives in your private iCloud and nowhere else: no accounts, no analytics, no servers of mine.",
         "metaStatus": "Coming to the App Store",
-        "actionPrimary": "Coming to the App Store",
+        "actionPrimary": "Coming soon",
+        "actionGhost": "Support",
+        "actionPrivacy": "Privacy",
         "tag": "Rank the drinks, cafés and movies you try.",
-        "mshowStatus": "Coming soon"
+        "mshowStatus": "Coming soon",
+        "kickerPlatform": "iOS",
+        "kickerDomain": "Lifestyle"
       },
       "vitapath": {
         "titleIt": "emergency response, end to end.",
         "descRich": "An emergency medical-response platform. A patient with a serious condition fires an SOS; the nearest paramedic from a <it>private network</it> is dispatched and tracked live; the patient is routed to the right hospital by insurance, proximity and capability; a hospital console runs dispatch, arrival and reception. Two SwiftUI apps, a React console, and a <it>Spring Boot + PostGIS</it> backend with a real-time emergency state machine.",
         "metaStatus": "MVP · e2e-verified",
         "actionPrimary": "Private beta",
-        "tag": "SOS to hospital handoff — dispatched, tracked, routed.",
+        "tag": "SOS to hospital handoff: dispatched, tracked, routed.",
         "story": {
           "problem": "In an emergency the minutes go to deciding who responds and where the patient is taken. Send them to a hospital that does not take their insurance, or cannot handle the case, and the transfer happens twice.",
           "approach": "One emergency state machine in Spring Boot. PostGIS picks the nearest available paramedic with an escalation sweep, STOMP keeps the map and ETA live across all three surfaces, and hospital routing scores insurance, proximity and capability with real driving ETAs from OSRM.",
@@ -624,12 +823,13 @@
         ],
         "mediaCaption": "One real emergency across all three surfaces at the same moment. The offer lands on the paramedic's phone, she accepts, and the console resolves the hospital by insurance and network while the patient watches the same road route close in on her own map.",
         "galleryCaption": "The patient app: the SOS button, live tracking with the paramedic's real road route and ETA, and the emergency card responders read on arrival.",
-        "kicker": "System · Healthtech · 2026",
-        "previewUrl": "vitapath · dispatch console"
+        "kickerPlatform": "System",
+        "kickerDomain": "Healthtech",
+        "mshowStatus": "Private beta"
       },
       "arrhythmia": {
         "titleIt": "read the ECG, beat by beat.",
-        "descRich": "A web front end for a <it>FastAPI</it> ECG arrhythmia classifier. Upload a WFDB record and it renders the whole signal at once, then classifies every beat by AAMI class (N/S/V/F/Q) with model confidence — drill into any flagged beat in a real 60-second context window. Built to prove a genuine ML pipeline, not a notebook: Next.js and TanStack Query on the front, a FastAPI model service behind.",
+        "descRich": "A web front end for a <it>FastAPI</it> ECG arrhythmia classifier. Upload a WFDB record and it renders the whole signal at once, then classifies every beat by AAMI class (N/S/V/F/Q) with model confidence, so you can drill into any flagged beat in a real 60-second context window. Built to prove a genuine ML pipeline, not a notebook: Next.js and TanStack Query on the front, a FastAPI model service behind.",
         "metaPlatform": "Web · Responsive",
         "metaStatus": "Working demo",
         "actionPrimary": "View the ML backend",
@@ -646,7 +846,10 @@
           "FastAPI and Next.js, with an explicitly versioned model"
         ],
         "mediaCaption": "MIT-BIH record 230: 2,464 beats, 123 flagged, classified against the live model.",
-        "galleryCaption": "Uploading the record, and a flagged beat opened in its real 60-second context window."
+        "galleryCaption": "Uploading the record, and a flagged beat opened in its real 60-second context window.",
+        "kickerPlatform": "Web",
+        "kickerDomain": "ML",
+        "mshowStatus": "Working demo"
       }
     }
   }

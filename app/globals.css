@@ -280,7 +280,12 @@
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 24px;
-  padding: 14px 0;
+  /* Longhand on purpose. This element is also .ab-wrap, and the `padding: 14px 0`
+     shorthand that used to live here reset .ab-wrap's inline padding to zero, so
+     the brand sat on the viewport edge while every section below it started at
+     --ab-pad, and the theme toggle touched the right edge. */
+  padding-top: 14px;
+  padding-bottom: 14px;
 }
 .ab-brand {
   display: flex;
@@ -301,13 +306,15 @@
   height: 100%;
   display: block;
 }
-.ab-brand-mark .ab-dark {
+/* Keyed to the shared <BrandLogo>, not to one of its mounts, so the header and
+   the 404 cannot end up with different roles again. */
+.ab-logo .ab-dark {
   fill: currentColor;
 }
-.ab-brand-mark .ab-accent {
+.ab-logo .ab-accent {
   fill: #56b3c2;
 }
-.ab-root[data-theme="dark"] .ab-brand-mark .ab-accent {
+.ab-root[data-theme="dark"] .ab-logo .ab-accent {
   fill: #6bc4d2;
 }
 .ab-brand-name {
@@ -377,19 +384,102 @@
   height: 10px;
   background: var(--line-2);
 }
-.ab-chip-lang b {
+/* Two segments in one pill, in a fixed en-then-es order. The chrome sits on the
+   wrapper, and the wrapper is a <div>, so it escapes the `.ab-root button` reset
+   that has always stripped `.ab-chip` off this control: it renders as a pill at
+   every width now, with no specificity fight. The padding is split between the
+   pill and the segments so the geometry is unchanged (12px from each outer edge,
+   8px either side of the rule) while each segment becomes a 35x28.5px target
+   rather than the ~19x16.5px of bare text. */
+/* Grid, not the inherited flex: "EN" and "ES" are 1.1px apart, and flex has no
+   free space to even them out when the pill is sized by its own content. Two 1fr
+   columns both resolve to the wider label, which is what lets the indicator be a
+   plain 50% translate instead of a measured offset. */
+.ab-chip-lang {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0;
+  padding: 0 4px;
+}
+.ab-chip-lang > button {
+  position: relative;
+  z-index: 1;
+  padding: 6px 8px;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: center;
+  color: var(--ab-muted);
+  transition: color var(--ab-trans);
+}
+/* The authored moment: the ground travels to the language you picked, so the
+   switch is something you watch happen rather than something you find already
+   done. It is the only motion in this cluster. */
+.ab-lang-ind {
+  position: absolute;
+  z-index: 0;
+  top: 3px;
+  bottom: 3px;
+  left: 4px;
+  width: calc((100% - 9px) / 2);
+  border-radius: 999px;
+  /* A tint of the ink rather than --bg-2, which sits 1.09:1 from the page in
+     light and 1.06:1 in dark: a ground you cannot see gives the slide nothing
+     to be watched. One value reads in both themes because it is derived from
+     each theme's own foreground. */
+  background: color-mix(in oklab, var(--ab-fg) 10%, transparent);
+  transform: translateX(0);
+  transition: transform var(--ab-trans);
+  pointer-events: none;
+}
+.ab-chip-lang[data-active="es"] .ab-lang-ind {
+  transform: translateX(calc(100% + 1px));
+}
+.ab-chip-lang > button[aria-current] {
   font-weight: 600;
   color: var(--ab-fg);
+  cursor: default;
 }
-.ab-chip-lang .off {
-  color: var(--muted-2);
+/* --ab-muted, not --muted-2, on the segment you are meant to click: --muted-2
+   renders it at 2.40:1 (light) / 2.52:1 (dark), under the 4.5:1 this project
+   commits to. --ab-muted is 5.41:1 / 5.42:1 and still sits far enough under the
+   active segment's ~15:1 to read as "not where you are". */
+.ab-chip-lang > button:not([aria-current]):hover {
+  color: var(--ab-fg);
 }
-.ab-chip:hover .ab-chip-lang b,
-.ab-chip:hover .off {
-  color: inherit;
+/* The rule sits above the moving ground, so it has to stay visible over it. */
+.ab-chip-lang .ab-sep {
+  position: relative;
+  z-index: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Keep the state change, drop the travel: the ground still marks the current
+     language and the colours still cross, they just do not slide. */
+  .ab-lang-ind {
+    transition: none;
+  }
+}
+/* The pill holds two targets now, so inverting the whole thing on hover would
+   claim it is one. The segment colours carry the state instead. */
+.ab-chip-lang:hover {
+  background: none;
+  color: var(--fg-2);
+  border-color: var(--line-2);
+}
+/* The one action in the nav-end cluster, not a third setting beside language
+   and theme. It takes .ab-btn-mail's full-strength border instead of a fill or
+   an accent, which is how the rest of the site marks a primary action. Shown
+   only below 820px, where the nav links it stands in for are hidden. */
+.ab-chip-contact {
+  display: none;
+  border-color: var(--ab-fg);
+  color: var(--ab-fg);
 }
 
-.ab-theme-toggle {
+/* `.ab-root` prefix required: this is a <button>, and `.ab-root button`
+   (0,1,1) resets `border` and outranks a bare class (0,1,0). It had been doing
+   exactly that, so the sun/moon has never shown its ring on either page. */
+.ab-root .ab-theme-toggle {
   width: 34px;
   height: 34px;
   border-radius: 999px;
@@ -398,7 +488,7 @@
   place-items: center;
   transition: background var(--ab-trans), border-color var(--ab-trans);
 }
-.ab-theme-toggle:hover {
+.ab-root .ab-theme-toggle:hover {
   background: var(--bg-2);
 }
 .ab-theme-toggle svg {
@@ -1315,18 +1405,42 @@
   }
 }
 
-@media (max-width: 820px) {
-  .ab-nav-links {
-    display: none;
-  }
+/* "Est. 2023" is the first thing the brand drops when it runs out of room, and
+   with the nav now carrying .ab-wrap's inline padding that happens at ~900px,
+   not 820px: below it the brand's 203px no longer fits its 1fr column and wraps
+   to two lines inside a sticky header. */
+@media (max-width: 900px) {
   .ab-brand-tag {
     display: none;
   }
+}
+
+@media (max-width: 820px) {
+  /* Hide the <nav> element, not just its <ul>. The wrapper stays a layout item
+     with the list hidden, so it ate the second of the two columns this block
+     used to declare and .ab-nav-end fell to an implicit second row at every
+     width <= 820px, including tablets. */
+  .ab-nav-inner > nav {
+    display: none;
+  }
+  /* Flex, not grid, so the cluster wraps below the brand at the width where it
+     actually stops fitting rather than at a breakpoint we would have to guess
+     and then re-guess per locale ("Contacto" is wider than "Contact"). */
   .ab-nav-inner {
-    grid-template-columns: 1fr auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 16px;
+    row-gap: 10px;
   }
   .ab-nav-end {
     gap: 8px;
+    /* Holds the cluster right whether it shares the brand's line or wraps below
+       it; justify-self does nothing once the parent is flex. */
+    margin-left: auto;
+  }
+  .ab-chip-contact {
+    display: inline-flex;
   }
   /* Carousel: the slot must be WIDER than the card it holds, or neighbours bleed
      in and the cards visually overlap. `%` here resolves against the track's
@@ -1448,7 +1562,8 @@
      token elsewhere, so darken here rather than globally. This is 11px text. */
   color: var(--accent-deep);
 }
-.ab-case-close {
+/* Same reset, same fix: the modal's close button declared a ring it never got. */
+.ab-root .ab-case-close {
   width: 34px;
   height: 34px;
   border-radius: 999px;
@@ -1457,7 +1572,7 @@
   place-items: center;
   transition: background var(--ab-trans), color var(--ab-trans), border-color var(--ab-trans);
 }
-.ab-case-close:hover {
+.ab-root .ab-case-close:hover {
   background: var(--ab-fg);
   color: var(--ab-bg);
   border-color: var(--ab-fg);
@@ -2346,7 +2461,12 @@
   align-items: center;
   gap: 6px;
 }
-.ab-nf-ctrl {
+/* `.ab-root` prefix required: these are <button>s, and `.ab-root button` (0,1,1)
+   otherwise outranks this rule (0,1,0) and resets `font` and `color`. It has
+   been doing exactly that, so the 404 controls rendered at 16px in full
+   foreground with no visible difference between the active language and the
+   other one. Same trap the nav's language pill escaped by sitting on a <div>. */
+.ab-root .ab-nf-ctrl {
   appearance: none;
   background: transparent;
   border: 0;
@@ -2358,10 +2478,12 @@
   cursor: pointer;
   transition: color var(--ab-trans);
 }
-.ab-nf-ctrl:hover {
+.ab-root .ab-nf-ctrl:hover {
   color: var(--ab-fg);
 }
-.ab-nf-ctrl.is-active {
+/* Same attribute the nav's segmented control uses, so the active state has one
+   source of truth instead of a class that has to agree with an aria attribute. */
+.ab-root .ab-nf-ctrl[aria-current] {
   color: var(--ab-fg);
 }
 .ab-nf-ctrl-sep {
@@ -2602,6 +2724,91 @@
   --sup-hero-tex: radial-gradient(circle at 70% 15%, #4e9b7222, transparent 55%);
 }
 
+/* Fave: "the notebook by lamplight". Warm paper (#f7f1ea is the app's own
+   canvas colour) written in blue-black ink, with the lamp itself pooling from
+   the top of the hero rather than tinting the accent, so the atmosphere stays
+   warm while every interactive element stays ink. Display face is Fraunces,
+   already self-hosted by next/font for .ab-root, so the third skin costs no
+   extra webfont and still sounds different from its two siblings. */
+.sup-root[data-app="fave"] {
+  --sup-bg: #f7f1ea;
+  --sup-bg-2: #efe6da;
+  --sup-fg: #241d16;
+  --sup-fg-2: #33291f;
+  --sup-muted: #6f6355;
+  --sup-muted-2: #9c8d7c;
+  --sup-accent: #294a70;
+  --sup-accent-2: #4d7ea9;
+  --sup-serif-display: var(--font-fraunces), "EB Garamond", Georgia, serif;
+  --sup-card: #fffdf9;
+  --sup-card-2: #f2ebe0;
+  --sup-hero-tex: radial-gradient(circle at 50% 0%, #e0a24a2e, transparent 55%);
+}
+
+/* ── Dark ──────────────────────────────────────────────────────────────────
+   The support pages used to be pinned to light, so choosing dark on the
+   homepage and following a Support link flashed white. `ThemeInit` mirrors the
+   same `ab_theme` choice onto .sup-root before first paint; these blocks give
+   each skin a night version of its own hue rather than one shared grey. */
+.sup-root[data-theme="dark"] {
+  --sup-line: #f0e8da1f;
+  --sup-line-2: #f0e8da12;
+  --sup-shadow-sm: 0 1px 0 #00000040, 0 2px 8px -4px #00000059;
+  --sup-shadow-md: 0 12px 34px -16px #00000073, 0 2px 10px -4px #00000047;
+}
+.sup-root[data-theme="dark"][data-app="fingo"] {
+  --sup-bg: #17130f;
+  --sup-bg-2: #201a14;
+  --sup-fg: #f1e8da;
+  --sup-fg-2: #dccfbc;
+  --sup-muted: #9b8e7e;
+  --sup-muted-2: #6a6154;
+  --sup-accent: #e08356;
+  --sup-accent-2: #f0a077;
+  --sup-card: #201a14;
+  --sup-card-2: #29211a;
+  --sup-hero-tex: radial-gradient(circle at 30% 20%, #e0835622, transparent 55%);
+}
+.sup-root[data-theme="dark"][data-app="savely"] {
+  --sup-bg: #101613;
+  --sup-bg-2: #17201a;
+  --sup-fg: #e7efe8;
+  --sup-fg-2: #cddccf;
+  --sup-muted: #8a9a8d;
+  --sup-muted-2: #5c6b60;
+  --sup-accent: #63b98c;
+  --sup-accent-2: #86cfa6;
+  --sup-card: #17201a;
+  --sup-card-2: #1d2820;
+  --sup-hero-tex: radial-gradient(circle at 70% 15%, #63b98c22, transparent 55%);
+}
+.sup-root[data-theme="dark"][data-app="fave"] {
+  --sup-bg: #16120d;
+  --sup-bg-2: #1e1812;
+  --sup-fg: #f2e9dc;
+  --sup-fg-2: #ded1bf;
+  --sup-muted: #9b8e7c;
+  --sup-muted-2: #6a6053;
+  --sup-accent: #85acd6;
+  --sup-accent-2: #a9c7e6;
+  --sup-card: #1e1812;
+  --sup-card-2: #261f17;
+  /* The lamp stays warm; only the ink it falls on changes. */
+  --sup-hero-tex: radial-gradient(circle at 50% 0%, #e0a24a2b, transparent 55%);
+}
+/* App icons are lit for a light ground: on dark they need a light rim, not a
+   black shadow nobody can see. */
+.sup-root[data-theme="dark"] .sup-mast-icon {
+  box-shadow: 0 10px 24px -12px #000000a6, inset 0 0 0 1px #ffffff1f;
+}
+.sup-root[data-theme="dark"] .sup-crest {
+  box-shadow: 0 1px 4px -1px #00000080, inset 0 0 0 1px #ffffff1f;
+}
+.sup-root ::selection {
+  background: var(--sup-accent);
+  background: color-mix(in oklab, var(--sup-accent) 30%, transparent);
+}
+
 .sup-root em {
   font-style: italic;
   font-family: var(--sup-serif);
@@ -2678,24 +2885,19 @@
   text-transform: uppercase;
   color: var(--sup-muted);
 }
+/* The crest is the app's real icon, masked to the iOS squircle radius. */
 .sup-nav-app .sup-crest {
-  width: 22px;
-  height: 22px;
-  border-radius: var(--sup-r-sm);
-  background: var(--sup-accent);
-  position: relative;
-  display: grid;
-  place-items: center;
-  color: var(--sup-card);
-  font-family: var(--sup-serif);
-  font-style: italic;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1;
+  width: 26px;
+  height: 26px;
+  border-radius: 23%;
+  display: block;
+  object-fit: cover;
+  box-shadow: 0 1px 3px -1px #00000026, inset 0 0 0 1px #0000000f;
 }
+
 /* Hero */
 .sup-hero {
-  padding: clamp(72px, 11vw, 140px) 0 clamp(48px, 7vw, 88px);
+  padding: clamp(60px, 9vw, 116px) 0 clamp(44px, 6vw, 80px);
   position: relative;
   overflow: hidden;
 }
@@ -2709,31 +2911,37 @@
 .sup-hero .sup-wrap-narrow {
   position: relative;
 }
-.sup-eyebrow {
-  display: inline-flex;
+
+/* Masthead. The app introduces itself with its own icon and name; a tracked
+   "SUPPORT" eyebrow said nothing the nav and the heading did not already. */
+.sup-mast {
+  display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 11px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--sup-muted);
-  margin-bottom: 28px;
+  gap: 15px;
+  margin-bottom: clamp(26px, 4vw, 40px);
 }
-.sup-eyebrow .sup-eye-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  background: var(--sup-accent);
-  box-shadow: 0 0 0 4px color-mix(in oklab, var(--sup-accent) 22%, transparent);
+.sup-mast-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 23%;
+  display: block;
+  object-fit: cover;
+  box-shadow: 0 8px 20px -10px #00000042, inset 0 0 0 1px #0000000f;
+}
+.sup-mast-name {
+  font-family: var(--sup-serif-display, var(--sup-serif));
+  font-size: clamp(21px, 2.6vw, 27px);
+  line-height: 1;
+  letter-spacing: -0.012em;
+  color: var(--sup-fg-2);
 }
 .sup-hero h1 {
   font-family: var(--sup-serif-display, var(--sup-serif));
   font-weight: 400;
-  font-style: normal;
-  font-size: clamp(46px, 7.5vw, 96px);
-  line-height: 0.98;
+  font-size: clamp(42px, 7vw, 88px);
+  line-height: 0.99;
   letter-spacing: -0.025em;
-  margin: 0 0 clamp(20px, 3vw, 36px);
+  margin: 0 0 clamp(20px, 3vw, 34px);
   text-wrap: balance;
 }
 .sup-hero h1 em {
@@ -2750,24 +2958,10 @@
   margin: 0;
 }
 
-/* Section header */
+/* Sections */
 .sup-section {
-  padding: clamp(56px, 8vw, 100px) 0;
+  padding: clamp(52px, 7.5vw, 92px) 0;
   border-top: 1px solid var(--sup-line);
-}
-.sup-section-head {
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: clamp(24px, 5vw, 64px);
-  align-items: baseline;
-  margin-bottom: clamp(36px, 5vw, 56px);
-}
-.sup-section-eye {
-  font-size: 11px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--sup-muted);
-  font-family: var(--sup-mono);
 }
 .sup-section-title {
   font-family: var(--sup-serif-display, var(--sup-serif));
@@ -2783,106 +2977,114 @@
   color: var(--sup-accent);
 }
 .sup-section-sub {
-  margin-top: 14px;
+  margin: 14px 0 clamp(30px, 4.5vw, 48px);
   font-family: var(--sup-serif);
   font-size: 18px;
   line-height: 1.55;
-  color: var(--sup-fg-2);
+  color: var(--sup-muted);
   max-width: 52ch;
 }
-@media (max-width: 760px) {
-  .sup-section-head {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
+
+/* The desk: one obvious way in, set as type rather than boxed in a card. */
+.sup-desk {
+  display: block;
+  padding: clamp(20px, 2.6vw, 28px) 0;
+  border-top: 1.5px solid var(--sup-fg);
+  border-bottom: 1px solid var(--sup-line);
+}
+.sup-desk-label {
+  display: block;
+  font-family: var(--sup-serif);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--sup-muted);
+  margin-bottom: 10px;
+}
+.sup-desk-value {
+  display: block;
+  font-family: var(--sup-serif-display, var(--sup-serif));
+  font-size: clamp(23px, 4.4vw, 42px);
+  line-height: 1.06;
+  letter-spacing: -0.022em;
+  color: var(--sup-fg);
+  overflow-wrap: anywhere;
+  /* A standing hairline so the address always reads as the link it is; the
+     accent only takes the rule over on hover. */
+  border-bottom: 1px solid color-mix(in oklab, var(--sup-muted-2) 60%, transparent);
+  padding-bottom: 6px;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+.sup-desk:hover .sup-desk-value,
+.sup-desk:focus-visible .sup-desk-value {
+  color: var(--sup-accent);
+  border-bottom-color: var(--sup-accent);
+}
+.sup-desk-hint {
+  display: block;
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--sup-muted);
 }
 
-/* Contact grid */
-.sup-contact-grid {
+/* Everything else you might write about: a list, not four identical cards. */
+.sup-routes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.sup-routes li + li {
+  border-top: 1px solid var(--sup-line-2, var(--sup-line));
+}
+.sup-routes a {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 14px;
+  grid-template-columns: 22px 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 17px 0;
+  color: var(--sup-fg);
+  transition: color 0.2s ease;
 }
-.sup-card {
-  background: var(--sup-card);
-  border: 1px solid var(--sup-line);
-  border-radius: var(--sup-r-lg);
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  position: relative;
-}
-a.sup-card,
-button.sup-card {
-  cursor: pointer;
-  text-align: left;
-  width: 100%;
-}
-a.sup-card:hover,
-button.sup-card:hover {
-  border-color: var(--sup-muted-2);
-  box-shadow: var(--sup-shadow-md);
-  transform: translateY(-2px);
-}
-.sup-card .sup-ico {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--sup-r-md);
-  background: color-mix(in oklab, var(--sup-accent) 14%, transparent);
-  display: grid;
-  place-items: center;
+.sup-routes a:hover {
   color: var(--sup-accent);
-  margin-bottom: 6px;
 }
-.sup-card .sup-ico svg {
-  width: 18px;
-  height: 18px;
+.sup-route-ico {
+  width: 20px;
+  height: 20px;
   stroke: currentColor;
   fill: none;
-  stroke-width: 1.6;
-}
-.sup-card .sup-k {
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--sup-muted);
-  margin: 0;
-}
-.sup-card .sup-v {
-  font-family: var(--sup-serif);
-  font-size: 22px;
-  line-height: 1.15;
-  letter-spacing: -0.005em;
-  color: var(--sup-fg);
-  margin: 0;
-}
-.sup-card .sup-v em {
-  color: var(--sup-accent);
-  font-style: italic;
-}
-.sup-card .sup-hint {
-  font-size: 13px;
-  color: var(--sup-muted);
-  margin: 0;
-  margin-top: auto;
-  padding-top: 6px;
-}
-.sup-card .sup-arr {
-  position: absolute;
-  top: 24px;
-  right: 24px;
+  stroke-width: 1.5;
   color: var(--sup-muted-2);
+  transition: color 0.2s ease;
+}
+.sup-routes a:hover .sup-route-ico {
+  color: var(--sup-accent);
+}
+.sup-route-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.sup-route-label {
+  font-family: var(--sup-serif);
+  font-size: 18px;
+  line-height: 1.25;
+}
+.sup-route-hint {
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--sup-muted);
+}
+.sup-route-arr {
   font-family: var(--sup-serif);
   font-style: italic;
-  font-size: 20px;
-  transition: transform 0.2s ease, color 0.2s ease;
+  font-size: 17px;
+  color: var(--sup-muted-2);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
 }
-a.sup-card:hover .sup-arr,
-button.sup-card:hover .sup-arr {
+.sup-routes a:hover .sup-route-arr {
+  transform: translate(3px, -3px);
   color: var(--sup-accent);
-  transform: translate(4px, -4px);
 }
 
 /* FAQ */
@@ -2891,11 +3093,11 @@ button.sup-card:hover .sup-arr {
 }
 .sup-faq details {
   border-bottom: 1px solid var(--sup-line);
-  padding: 22px 0;
+  padding: 20px 0;
 }
 .sup-faq summary {
   display: grid;
-  grid-template-columns: 28px 1fr auto;
+  grid-template-columns: 1fr auto;
   gap: 18px;
   align-items: baseline;
   cursor: pointer;
@@ -2904,12 +3106,6 @@ button.sup-card:hover .sup-arr {
 .sup-faq summary::-webkit-details-marker {
   display: none;
 }
-.sup-faq summary .sup-faq-n {
-  font-family: var(--sup-mono);
-  font-size: 11px;
-  color: var(--sup-muted);
-  letter-spacing: 0.1em;
-}
 .sup-faq summary .sup-faq-q {
   font-family: var(--sup-serif-display, var(--sup-serif));
   font-size: clamp(20px, 2.4vw, 26px);
@@ -2917,6 +3113,10 @@ button.sup-card:hover .sup-arr {
   letter-spacing: -0.01em;
   color: var(--sup-fg);
   font-weight: 400;
+  transition: color 0.2s ease;
+}
+.sup-faq summary:hover .sup-faq-q {
+  color: var(--sup-accent);
 }
 .sup-faq summary .sup-faq-tog {
   width: 24px;
@@ -2931,62 +3131,86 @@ button.sup-card:hover .sup-arr {
   color: var(--sup-accent);
 }
 .sup-faq .sup-faq-a {
-  padding: 14px 0 6px 46px;
+  padding: 12px 0 4px;
   font-family: var(--sup-serif);
   font-size: 18px;
   line-height: 1.65;
   color: var(--sup-fg-2);
-  max-width: 66ch;
+  max-width: 68ch;
 }
 .sup-faq .sup-faq-a a {
   color: var(--sup-accent);
   border-bottom: 1px solid color-mix(in oklab, var(--sup-accent) 40%, transparent);
 }
-@media (max-width: 620px) {
-  .sup-faq summary {
-    grid-template-columns: 1fr auto;
-    gap: 14px;
-  }
-  .sup-faq summary .sup-faq-n {
-    display: none;
-  }
-  .sup-faq .sup-faq-a {
-    padding-left: 0;
-  }
-}
 
-/* Status row */
-.sup-status-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  border: 1px solid var(--sup-line);
-  border-radius: var(--sup-r-lg);
-  overflow: hidden;
-  background: var(--sup-card-2);
+/* Closing: the ask, then a colophon of what is true. Not a metrics strip. */
+.sup-close {
+  padding: clamp(60px, 8.5vw, 104px) 0 clamp(36px, 5vw, 56px);
+  border-top: 1px solid var(--sup-line);
 }
-.sup-status-cell {
-  padding: 24px 22px;
-  border-right: 1px solid var(--sup-line);
+.sup-close h2 {
+  font-family: var(--sup-serif-display, var(--sup-serif));
+  font-weight: 400;
+  font-size: clamp(30px, 4.6vw, 52px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-wrap: balance;
 }
-.sup-status-cell:last-child {
-  border-right: 0;
+.sup-close h2 em {
+  font-style: italic;
+  color: var(--sup-accent);
 }
-.sup-status-cell .sup-k {
-  font-size: 10.5px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--sup-muted);
-  margin: 0 0 10px;
-  font-family: var(--sup-mono);
-}
-.sup-status-cell .sup-v {
+.sup-close-sub {
+  margin: 14px 0 0;
   font-family: var(--sup-serif);
-  font-size: 20px;
-  line-height: 1.15;
-  color: var(--sup-fg);
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--sup-muted);
+  max-width: 48ch;
 }
-.sup-status-cell .sup-v.sup-ok::before {
+.sup-close-mail {
+  display: inline-block;
+  margin-top: clamp(20px, 3vw, 28px);
+  font-family: var(--sup-serif-display, var(--sup-serif));
+  font-size: clamp(20px, 3vw, 30px);
+  letter-spacing: -0.015em;
+  color: var(--sup-accent);
+  overflow-wrap: anywhere;
+  border-bottom: 1px solid color-mix(in oklab, var(--sup-accent) 35%, transparent);
+  padding-bottom: 3px;
+  transition: border-color 0.25s ease, opacity 0.25s ease;
+}
+.sup-close-mail:hover {
+  border-bottom-color: var(--sup-accent);
+  opacity: 0.82;
+}
+.sup-colophon {
+  margin: clamp(46px, 6.5vw, 76px) 0 0;
+  padding-top: 22px;
+  border-top: 1px solid var(--sup-line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px clamp(22px, 4.5vw, 52px);
+}
+.sup-colophon > div {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+}
+.sup-colophon dt {
+  font-family: var(--sup-serif);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--sup-muted);
+}
+.sup-colophon dd {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--sup-fg-2);
+}
+.sup-colophon dd.sup-ok::before {
   content: "";
   display: inline-block;
   width: 7px;
@@ -3007,71 +3231,25 @@ button.sup-card:hover .sup-arr {
     box-shadow: 0 0 0 8px #3fb56d00;
   }
 }
-@media (max-width: 760px) {
-  .sup-status-row {
-    grid-template-columns: repeat(2, 1fr);
+@media (prefers-reduced-motion: reduce) {
+  .sup-colophon dd.sup-ok::before {
+    animation: none;
   }
-  .sup-status-cell {
-    border-bottom: 1px solid var(--sup-line);
-  }
-  .sup-status-cell:nth-child(3) {
-    border-bottom: 0;
-  }
-  .sup-status-cell:nth-child(2) {
-    border-right: 0;
+  .sup-desk-value,
+  .sup-route-arr,
+  .sup-faq summary .sup-faq-tog {
+    transition-duration: 0.01ms;
   }
 }
-
-/* CTA */
-.sup-cta {
-  padding: clamp(72px, 11vw, 120px) 0;
-  border-top: 1px solid var(--sup-line);
-  text-align: center;
-}
-.sup-cta h2 {
-  font-family: var(--sup-serif-display, var(--sup-serif));
-  font-size: clamp(34px, 5.5vw, 62px);
-  line-height: 1;
-  letter-spacing: -0.02em;
-  margin: 0 0 22px;
-  font-weight: 400;
-  text-wrap: balance;
-}
-.sup-cta h2 em {
-  color: var(--sup-accent);
-  font-style: italic;
-}
-.sup-cta .sup-sub {
-  font-family: var(--sup-serif);
-  font-size: 20px;
-  color: var(--sup-fg-2);
-  margin: 0 0 36px;
-  max-width: 42ch;
-  margin-left: auto;
-  margin-right: auto;
-  text-wrap: pretty;
-}
-.sup-btn-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 28px;
-  border-radius: 999px;
-  background: var(--sup-fg);
-  color: var(--sup-bg);
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  transition: transform 0.2s ease, background 0.2s ease;
-}
-.sup-btn-pill:hover {
-  transform: translateY(-1px);
-}
-.sup-btn-pill .sup-pill-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  background: var(--sup-accent);
+@media (max-width: 560px) {
+  .sup-mast-icon {
+    width: 50px;
+    height: 50px;
+  }
+  .sup-routes a {
+    grid-template-columns: 20px 1fr auto;
+    gap: 13px;
+  }
 }
 
 /* Foot */

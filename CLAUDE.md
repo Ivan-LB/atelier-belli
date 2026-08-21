@@ -11,17 +11,50 @@ one Next.js app:
 
 - **Homepage** at `/[locale]` — editorial redesign, `.ab-root` scope, light/dark
   theme toggle, custom vitrine/selected-work/workbench sections, case modal.
-- **Support pages** at `/[locale]/fingo/support` and `/[locale]/savely/support` —
-  reusable `SupportShell` keyed by `data-app`, `.sup-root` scope, per-app skin
-  (terracotta / green). Both consume `useTranslations("support.fingo")` /
-  `useTranslations("support.savely")` and build a `SupportContent` adapter via
-  `useMemo` (PRs #23 + #25). The previous `CONTENT[locale]` dictionary is gone.
-- **Utility sub-pages**: `/[locale]/privacy`, `/[locale]/privacy/choices`,
-  `/[locale]/terms` — small inline `.ab-root` shells with the same editorial
-  aesthetic as the homepage. Bilingual EN/ES bodies via
+- **Support pages** at `/[locale]/fingo/support`, `/[locale]/savely/support`
+  and `/[locale]/fave/support` (the last added by plan 007, PR #57) —
+  reusable `SupportShell` keyed by `data-app`, `.sup-root` scope, per-app skin.
+  Each consumes `useTranslations("support.<app>")` and builds a
+  `SupportContent` adapter via `useMemo` (PRs #23 + #25). The previous
+  `CONTENT[locale]` dictionary is gone. The shell's footer links **that app's
+  own** privacy page, via the optional `privacyHref` on `SupportContent`
+  (plan 011): each of the three pages passes `/<app>/privacy`, and the prop
+  falls back to the shared `/privacy` for any future support page whose app has
+  no policy of its own. It linked the shared `/privacy` until plan 011, which
+  sent a Fingo user reading Fingo support to a page about the website.
+- **Legal surfaces**: `/[locale]/privacy`, `/[locale]/privacy/choices`,
+  `/[locale]/terms`, plus one privacy page per shipped app —
+  `/[locale]/alisio/privacy`, `/fave/privacy`, `/fingo/privacy`,
+  `/savely/privacy`. All are small inline `.ab-root` shells with the same
+  editorial aesthetic as the homepage. Bilingual EN/ES bodies via
   `useTranslations('legal')`. The shared chrome + `.ab-prose` ruleset live
   in `app/globals.css`. (Previously used a legacy `SimplePageLayout` with
   gray/gradient aesthetic — removed in PR #12.)
+
+  **Per-app privacy is the architecture** (owner decision, plan 009, PR #59).
+  The shared `/privacy` covers the WEBSITE only: the `NEXT_LOCALE` cookie,
+  the `ab_theme` localStorage entry, and the hosting + Google Fonts requests
+  that genuinely leave the browser. Anything an app does belongs on that
+  app's page, written from that app's repo and never from memory or from a
+  plan's summary of it. Before this, one shared policy declared shipping
+  addresses, credit card numbers and continuous geolocation for apps whose
+  App Store listings say "No se recopilan datos".
+
+  The shared page also carries a **"Privacy for our apps" section linking all
+  four**. Do not remove it: App Store Connect still points the Alisio and
+  Fingo listings at `/privacy`, so that section is the only route from those
+  listings to the policy that describes them (`plans/README.md` human
+  checklist #1 closes the window).
+
+  A new legal page is 5 touches: `page.tsx` (clone `fave/privacy`
+  structurally), a thin server `layout.tsx` beside it (clone any sibling; see
+  the per-route metadata rule in §3), one path in `app/sitemap.ts`, and a
+  `legal.<app>Privacy` namespace with BOTH a `title` and a `metaDescription`
+  in BOTH dictionaries. `<ThemeInit />` must be the first child of
+  `.ab-root` and `<main>` must carry `id="main-content"` (see the skip-link
+  invariant in §3); `tests/e2e/legal.spec.ts` asserts both on every legal
+  route, and `tests/e2e/seo.spec.ts` asserts the title and description, so a
+  new page belongs in both specs' route lists.
 - **404 page** at `/[locale]/not-found` — Server Component using
   `getTranslations("notFound")`, with a tiny client island
   (`_not-found-controls.tsx`) for theme + locale toggles. Backed by a
@@ -90,7 +123,10 @@ cropped that chrome is gone with it. Savely also has a three-frame gallery under
 `public/cases/gallery/savely-p1..p3.webp`, seeded via the app's DEBUG tour).
 fingo/savely use the `ab-phone-img` phone frame; blip and mezcal render real
 captures inside `ab-browser-frame` via the `.ab-browser-shot` img class
-(16:10, explicit width/height). **briefmark** now uses a real capture of its
+(16:10, explicit width/height). `blip-hero.webp` is **960×600** since plan 012;
+it shipped at 1600×1000 for a ~442 CSS px slot, which is 3.6x its rendered size
+and made it the heaviest image on the site at 158KB (now 96KB, `cwebp -q 88
+-m 6 -sharp_yuv`, SSIM 0.987 at display size). **briefmark** now uses a real capture of its
 onboarding screen (`public/cases/briefmark-hero.webp`, 600×1304) in the
 `.ab-phone-img.briefmark` phone frame — it replaced the fake `ab-mez-site`
 HTML mock, which read as a broken image; that mock's CSS was deleted with it.
@@ -105,7 +141,7 @@ transparent-frame slots collapse to zero height until the lazy image paints
 `.ab-alisio-combo` preview: an `.ab-phone-img.alisio` phone (Live-session
 screen) with an `.ab-alisio-watch` rounded-square watch (Goal-reached screen)
 overlapping the bottom-left corner. Both `public/cases/alisio-hero.webp`
-(953×2109) and `public/cases/alisio-watch.webp` (249×293) were cropped from
+(953×2109) and `public/cases/alisio-watch.webp` (249×317) were cropped from
 the App Store **marketing** frames in
 `~/Projects/Swift/Alisio/marketing/appstore-screenshots/` (headline + device
 bezel stripped so the raw screen sits in the CSS frame). Shipped 2026-07-23:
@@ -147,13 +183,59 @@ on :8080 + PostGIS/MinIO via `backend-spring` → `docker compose up`; seeded ad
 login+screenshot Playwright script against `/mapa`. Its action is a disabled
 "Private beta". Both vitapath and arrhythmia are in the `web-preview` list.
 
+**Case taxonomy (plan 011, 2026-08-20). One rule per axis, all ten cases.**
+Before this the modals drifted: the kicker's middle slot was a domain on five
+cases and a technology on four, five different labels meant "not out yet", and
+the index chips used a different vocabulary than the Stack row they claim to
+summarize. The rules now are:
+
+| Axis | Rule |
+|---|---|
+| Kicker | `Platform · Domain · Year`, from `cases.<key>.kickerPlatform` + `kickerDomain`, localized in both dictionaries |
+| Mobile index line | `Platform · Domain · Status →`, same two keys plus `cases.<key>.mshowStatus` |
+| Platform meta | `iOS N+`, the real deployment target read from that app's `project.pbxproj`. Backend frameworks belong in Stack, never here |
+| Stack row | 3 to 4 core frameworks. `Node.js` is canonical, never `Node`; never bare `Swift` beside `SwiftUI` |
+| Index chips | a **strict subset** of that case's Stack row |
+| Disabled labels | exactly three families: `Coming soon` (product not released), `Code coming soon` (product live, repo private), `Private beta`. Every disabled action carries `icon: "clock"` |
+| Preview frames | every plain phone is `--w: 280px`; a URL bar is the real domain when the site is live, otherwise a lowercase product slug, and is never localized |
+
+**The kicker and the index line are built from the same `caseFacet(key)` helper**
+so they cannot diverge again: the modal appends the year, the index appends the
+status. Do not re-author either as a literal string. A static check of these
+invariants (clock count, orphan chips, phone widths) lives in plan 011's tail.
+
+**Two depth tiers, and only two.** **Flagship** carries `story` + `highlights`
+(plus `media` where captures exist); **compact** carries none. There is no
+gallery-only or story-without-highlights tier: `story` and `highlights` ship
+together or not at all.
+
+- flagship: `alisio`, `savely`, `pass`, `vitapath`, `arrhythmia`
+- compact: `fave`, `fingo`, `mezcal`, `briefmark`, `blip`
+- `pass` is deliberately flagship **without** `media`: a serverless platform has
+  no screen to capture, so it renders the `.ab-arch` SVG instead.
+- `fave` and `fingo` are the strongest candidates for promotion next; both ship
+  a support page and a privacy page already, so only the copy is missing.
+
+**Savely's narrative is written from the app repo, not from memory.** Its
+`/savely/privacy` page publishes the same facts in a quieter register, so any
+highlight that contradicts that page means one of the two is wrong. In
+particular the payday auto-move **schedules nothing**: enabling it on a goal
+only makes that goal eligible, logging income may offer one move, and the
+deposit is written only when the user taps YES. The app asks for **two**
+permissions (camera and notifications), receipts arrive through an
+out-of-process `PhotosPicker` that never grants photo-library access, and the
+only export is a current-week PDF. The app is localized to es-419 and only
+partly, so never invent Spanish for an in-app label: `Auto-move on payday` has
+an empty localizations entry in `Localizable.xcstrings` and renders in English
+on a Spanish device.
+
 **Case-study depth (`story` / `highlights` / `media`)** — added 2026-07-30. A
 `CaseData` entry may carry three optional fields that render as full-width bands
 **inside the modal's existing scroll area**, below the two-column fold. The fold
 stays the 30-second glance; the bands are the 5-minute read (PRODUCT.md
-principle 2). Only the four flagship cases (`alisio`, `pass`, `vitapath`,
-`arrhythmia`) carry them; the other five degrade gracefully to the compact
-modal, so narrative can be added later without touching code.
+principle 2). The five flagship cases listed above carry them; the other five
+degrade gracefully to the compact modal, so narrative can be added later
+without touching code.
 
 - `story`: exactly three `[label, body]` beats built by the `storyOf(key)` helper
   inside the `CASES` `useMemo`, reading `cases.storyLabels.*` (shared) plus
@@ -186,12 +268,12 @@ sideways on mobile with text clipped. `.ab-case-media img/video` also cap at
   small waits: rapid consecutive taps coalesce, and `type` triggers the iOS
   accent popup. `xcrun simctl privacy <udid> grant <service> <bundle>` skips the
   permission dialogs.
-- `alisio-system.mp4` (1400×760) is two **simultaneous** simctl recordings
+- `alisio-system.mp4` (740×740) is two **simultaneous** simctl recordings
   (iPhone + paired Watch, started together so they stay in sync) composited
   side by side with ffmpeg `overlay` + `drawbox` borders. It shows one live
   session: started on the phone, measured on the Watch, mirrored back, with the
   in-zone/out-of-zone badge flipping. That is the case's whole thesis.
-- `vitapath-system.mp4` (1600×760) is the same trick across a **browser and a
+- `vitapath-system.mp4` (1740×760) is the same trick across a **browser and a
   phone**: a Playwright `recordVideo` of the console started alongside a simctl
   recording of the paramedic app, then the SOS fired by API ~10s in so both
   surfaces capture the same emergency. Cut to the synchronised window and
@@ -274,7 +356,7 @@ Sized to 272px through
 `.ab-vitrine .ab-phone-img.alisio` so the modal's 244px is untouched.
 (`.ab-vit-web-combo`): a 400×260 browser window with the desktop capture and
 a mini phone overlapping its corner with the mobile capture
-(`public/cases/mezcal-{hero,mobile}.webp`). Tilt/hover transforms live on
+(`public/cases/vitapath-{hero,mini}.webp`). Tilt/hover transforms live on
 the combo wrapper, not the browser. The old hand-drawn mock's CSS
 (`.ab-vit-browser .scr`, `.ab-vit-bottle`, …) is orphaned — cleanup PR
 pending.
@@ -364,6 +446,79 @@ that reads `getTranslations("notFound")`, then renders the `.ab-nf-*` editorial
 single Client Component and broke on production; PR #18 split it into the
 current Server + island shape.
 
+**Skip-link invariant (PR #58).** `app/[locale]/layout.tsx` renders
+`<a href="#main-content">` as the first Tab stop of **every** page, so every
+`<main>` in the tree must carry `id="main-content"`. Four pages shipped without
+it (`/privacy`, `/terms`, `/privacy/choices` and the 404) and the site's first
+keyboard affordance silently did nothing on all four until plan 008 fixed it.
+A new route inherits the skip-link whether or not it wants to, so adding the id
+is not optional. The homepage additionally relies on that exact selector: the
+case modal sets `inert` on `main#main-content` while open, and
+`tests/e2e/smoke.spec.ts` asserts it.
+
+**Per-route metadata (plan 010, PR #60).** Every page under `app/[locale]` is
+`"use client"` on line 1, and a client component cannot export
+`generateMetadata` — so for a long time all eleven routes shared the root
+layout's title and description, including the pages App Review opens. Each
+sub-route segment now has a **thin server `layout.tsx`** whose only job is to
+call `routeMetadata()` from `app/[locale]/_route-metadata.ts` and return
+`children`. Ten of them exist; a new route without one silently inherits the
+homepage's title.
+
+Two things in that helper are load-bearing:
+
+- **The locale is passed to `getTranslations({ locale, … })` explicitly**
+  rather than read from next-intl's request store. That is what keeps the
+  segments prerenderable — the build table must stay ● SSG everywhere except
+  the catch-all, and a per-segment layout that flips a route to `ƒ` is a
+  regression, not a detail.
+- **Titles are emitted as `title.absolute`, not as bare strings.** Next
+  resolves a bare-string title against the nearest ancestor template and then
+  stops passing that template down, so the moment `/privacy` gained a title of
+  its own, `/privacy/choices` silently rendered without the site name. Building
+  the full title from `TITLE_TEMPLATE` in the helper makes every route correct
+  on its own and immune to the next nested route.
+
+`openGraph` is restated in full in the helper because Next **replaces** a
+parent's `openGraph` wholesale as soon as a child defines one; trimming it to
+just title/description would drop `og:image` from every sub-route. Still no
+`alternates` anywhere: see the note in `layout.tsx`.
+
+**The monogram lives in `components/brand-logo.tsx`.** It used to be inlined
+twice, in the homepage header and in the 404, and the two drifted: the 404's
+copy had **two of the four paths** and had the ink and accent roles swapped, so
+that page rendered a broken hexagon with the turquoise on the wrong facet. Both
+import `<BrandLogo>` now, and the colour roles are keyed to `.ab-logo` rather
+than to one mount, so they cannot diverge again. `public/AtelierBelli.svg` is a
+third copy by necessity (a favicon cannot import a component): **change the
+geometry in one and change it in the other.** `components/theme-icons.tsx` is
+the same arrangement for the sun/moon pair.
+
+**Icons — all four now carry the SAME, CURRENT mark.** They did not before:
+`public/AtelierBelli.png` held the **previous** logo (a blue/purple gradient
+anvil) while `public/AtelierBelli.svg` held the current hexagonal monogram, so
+the `shortcut` icon shipped a retired brand. The monogram is the live mark —
+its path data is byte-identical to the inline `BRAND_LOGO` the header renders
+(`page.tsx:86`).
+
+| file | role | form |
+|---|---|---|
+| `public/AtelierBelli.svg` | `icons.icon`, the primary favicon | transparent, **theme-aware** |
+| `app/favicon.ico` | `/favicon.ico`, legacy + agents | real 3-entry .ico (16/32/48), cream ground |
+| `public/AtelierBelli.png` | `icons.shortcut` | 192×192, cream ground |
+| `public/apple-touch-icon.png` | iOS home screen | 180×180, **opaque** (iOS composites black behind alpha) |
+
+The SVG carries an embedded `<style>` using the same `.ab-dark` / `.ab-accent`
+role names as `BRAND_LOGO`, with a `prefers-color-scheme: dark` rule that flips
+the ink to `#EDE6D8`. Without it the near-black paths all but vanished in a
+dark browser tab strip and only the turquoise facet read. The raster three take
+a cream ground instead, since a file cannot re-colour itself.
+
+To regenerate: `rsvg-convert -w 1024 public/AtelierBelli.svg` for the master,
+then `magick` to resize, centre on `#faf8f3` and `-alpha remove`; build the .ico
+from 16/32/48 PNGs. **`sips` cannot produce a real .ico** — do not ship a
+renamed PNG. `out/` holds stale 2025 exports of the OLD logo; ignore it.
+
 **Hybrid font loading** (intentional — see gotcha `google-fonts-hybrid-loading`,
 but note the split changed 2026-08-02):
 
@@ -445,6 +600,75 @@ See gotcha `root-token-scoping`.
 | `.sup-root`| EB Garamond / Instrument Serif for display; IBM Plex Mono for meta; Inter for body |
 | Global     | `--font-inter` from `next/font` on `<html>`, default sans fallback |
 
+**The nav below 820px (plan 012).** `.ab-nav-inner` is `display: flex;
+flex-wrap: wrap` there, not grid, so the control cluster drops to its own line
+at the width where it genuinely stops fitting beside the brand rather than at a
+number someone guessed: `Contacto` is 10px wider than `Contact`, and each locale
+breaks where it actually breaks. Measured to the pixel: EN is two rows at
+<= 412px and one row from **413px**, ES two rows at <= 422px and one from
+**423px**. Four things in that region are load-bearing:
+
+- **The hidden element is `<nav>`, not `.ab-nav-links`.** The wrapper stays a
+  layout item with its `<ul>` hidden, so it used to consume the second of the
+  two grid columns and strand `.ab-nav-end` on an implicit second row at *every*
+  width <= 820px, tablets included. That was never intentional: the block has
+  declared `1fr auto` since `fe3a590`.
+- **`.ab-nav-inner` must keep its padding in LONGHAND.** The element is also
+  `.ab-wrap`, and a `padding: 14px 0` shorthand resets `.ab-wrap`'s inline
+  padding to zero. It did, for a long time: the brand sat at x=0 while every
+  section below it started at `--ab-pad` (20px on a phone, 51px at 1280px) and
+  the theme toggle touched the right edge.
+- **`.ab-brand-tag` hides at 900px, not 820px.** Once the nav carries that inline
+  padding the brand's 203px no longer fits its `1fr` column between 821 and
+  ~860px, and it wraps to two lines inside a sticky header. Dropping "Est. 2023"
+  is the design's own first concession; the breakpoint just follows the geometry.
+- **A bare class on a `<button>` under `.ab-root` loses `font`, `color` and
+  `border`.** `.ab-root button` (`globals.css:208`) resets all three at
+  specificity (0,1,1), which outranks any single class (0,1,0). It had silently
+  defeated **four** separate components: `.ab-chip` (the language pill),
+  `.ab-nf-ctrl` (the 404 controls), `.ab-theme-toggle` (the sun/moon, on both
+  pages) and `.ab-case-close` (the modal close). All four declared a 1px border
+  and none of them drew one. **Prefix the selector with `.ab-root`** so it
+  reaches (0,2,0), which is what the last three now do; the language pill
+  escapes it instead by putting the chrome on a `<div>` wrapper. Any new
+  button-borne class needs the same care.
+
+`.ab-chip-contact` is the only action in that cluster, so it takes
+`.ab-btn-mail`'s full-strength `--ab-fg` border rather than a fill or an accent,
+which is how the rest of the site marks a primary action. Its label is
+`t("nav.contact")`, the same key the desktop link uses, so the two cannot drift.
+There is deliberately **no hamburger menu** (owner's call).
+
+**The language control is a segmented pill, and four things about it are
+deliberate.** It was one `<button>` rendering the active language first, so
+switching moved the half you had just clicked, and pressing the language you
+were already in switched you away from it.
+
+- **Fixed `en`-then-`es` order**, never by which is active. The active segment
+  carries `aria-current="true"`; `goToLocale(target)` takes an explicit target,
+  so pressing the current one is a real no-op.
+- **Both segments stay `<button>`s** through the switch. Making the active one a
+  `<span>` is tidier in the a11y tree but the element then disappears under the
+  user on switch, and keyboard focus goes with it.
+- **`role="group"` + `locale.groupAria` names the control; the buttons are named
+  by their visible "EN"/"ES"** and carry `lang` so each is announced in its own
+  voice. The old `aria-label="Cambiar a Español"` over a button reading "ES" put
+  the accessible name out of step with the visible one (WCAG 2.5.3).
+- **The pill is `inline-grid` with `1fr auto 1fr`.** "EN" and "ES" differ by
+  1.1px and flex has no free space to even them out, which is what lets
+  `.ab-lang-ind` be a plain 50% translate instead of a measured offset.
+
+**The one authored moment in the nav is that indicator travelling**, and it is
+sequenced against the router on purpose. `switchLocale` writes the cookie and
+calls `router.refresh()`, which **replaces this whole subtree** (measured: the
+pill node identity changes). A refresh landing mid-slide leaves the ground
+teleporting the rest of the way, so the click sets an optimistic `pendingLocale`
+(the indicator moves on the click, not on the response) and the refresh is
+deferred by `LOCALE_SLIDE_MS` (300ms, just over the 280ms transition). Under
+`prefers-reduced-motion` the delay is 0 and the transition is `none`: the state
+still changes, it just does not travel. Verified 34 sampled positions settling
+at 289ms, versus 9 positions truncated at 105ms before the deferral.
+
 **No component library today**: the shadcn scaffold (`components/ui/`,
 50 files), `hooks/`, and `lib/utils.ts` (with `cn()`) were all removed in
 PR #7 — none were imported by runtime code. If you genuinely need a
@@ -475,6 +699,15 @@ concern.
 Adding new copy = pick the right namespace, add the key to BOTH dictionaries
 (EN value matches user-facing English; ES matches Spanish), then consume via
 `useTranslations(namespace)`.
+
+**No em dashes in `messages/*.json`.** Plan 011 swept the last 25 EN and 24 ES
+strings out and both files are now at zero; a `grep -c '—' messages/*.json`
+that returns anything but 0 is a regression. Replace the dash with the
+punctuation that carries its job (a colon for an appositive, parentheses for an
+aside, a period for two sentences), never with a hyphen. Two structural dashes
+are **not** copy and stay: the case title pattern `pre: "Alisio — "` in
+`page.tsx`, and `TITLE_TEMPLATE` in `_route-metadata.ts`, which
+`tests/e2e/seo.spec.ts:95` pins.
 
 **`t(key)` vs `t.raw(key)` — the HTML rule (gotcha
 `next-intl-html-via-t-raw`)**: next-intl's ICU formatter treats `<em>`,
@@ -596,27 +829,48 @@ app/
     [...rest]/page.tsx            # Catch-all. Calls notFound() for unmatched
                                   #   URLs so the editorial 404 fires.
                                   #   The only ƒ (Dynamic) route in the build.
+    _route-metadata.ts            # routeMetadata() helper: builds each
+                                  #   sub-route's generateMetadata (title,
+                                  #   description, openGraph). See §3.
     privacy/ · terms/ · privacy/choices/
                                   # Inline .ab-root shells, useTranslations('legal').
-                                  # Bilingual EN/ES.
+                                  # Bilingual EN/ES. /privacy is website-only
+                                  # and links the four app policies.
+    alisio/privacy/ · fave/privacy/ · fingo/privacy/ · savely/privacy/
+                                  # One privacy page per shipped app, same
+                                  # shell. legal.<app>Privacy namespaces.
+    <every sub-route>/layout.tsx  # Thin SERVER layout per segment (10 of
+                                  #   them). generateMetadata only; returns
+                                  #   children. NO "use client". See §3.
     fingo/support/                # SupportShell, data-app="fingo".
                                   # useTranslations('support.fingo') + useMemo
                                   # adapter producing SupportContent.
-    savely/support/               # SupportShell, data-app="savely".
-                                  # useTranslations('support.savely') + useMemo
-                                  # adapter producing SupportContent.
+    savely/support/ · fave/support/
+                                  # Same shell, data-app="savely" | "fave".
 components/
-  support-shell.tsx               # Reusable support shell. data-app union is
-                                  #   "fingo" | "savely" only. Receives a
-                                  #   SupportContent prop built by each page.
+  brand-logo.tsx                  # The monogram, shared by the header and the
+                                  #   404. Colour roles via .ab-logo .ab-dark /
+                                  #   .ab-accent. Was inlined twice and drifted.
+  theme-icons.tsx                 # The sun/moon pair, shared by the header's
+                                  #   .ab-theme-toggle and the 404's.
+  support-shell.tsx               # Reusable support shell, keyed by data-app.
+                                  #   Receives a SupportContent prop built by
+                                  #   each page.
+  theme-init.tsx                  # Inline script + effect that mirrors the
+                                  #   homepage's ab_theme choice onto whatever
+                                  #   root it renders inside. FIRST child of
+                                  #   every .ab-root / .sup-root (plan 007).
 messages/
   en.json · es.json               # next-intl dictionaries.
                                   # Top-level: notFound, layout, legal, home,
                                   #   support (with support.fingo + support.savely).
+app/favicon.ico                   # Real 3-entry .ico (16/32/48). Next
+                                  #   serves it at /favicon.ico.
 public/                           # All static assets, logos, hero images
+  apple-touch-icon.png            # 180×180, opaque, from the SVG mark
   cases/                          # Project preview screenshots (blip-hero,
-                                  #   mezcal-hero, mezcal-mobile .webp);
-                                  #   briefmark/pass images land here too
+                                  #   mezcal-hero .webp); briefmark/pass
+                                  #   images land here too
 i18n.ts                           # next-intl config (createNextIntlPlugin)
 middleware.ts                     # next-intl middleware (locale routing)
 .eslintrc.json                    # extends next/core-web-vitals (PR #22)

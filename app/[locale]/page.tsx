@@ -5,6 +5,8 @@ import { useParams, useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { LOCALE_COOKIE } from "@/i18n"
+import { BrandLogo } from "@/components/brand-logo"
+import { ThemeIcons } from "@/components/theme-icons"
 
 
 /* Module scope on purpose: inside the component this would be a new string every
@@ -46,7 +48,7 @@ type CaseAction = {
   href: string
   kind: "primary" | "ghost" | "primary disabled"
   ext?: boolean
-  icon?: "external" | "help" | "clock"
+  icon?: "external" | "help" | "clock" | "shield"
 }
 
 /** Demo media for a case: a captured clip, or a strip of real screenshots. */
@@ -83,26 +85,7 @@ type CaseData = {
   media?: CaseMedia[]
 }
 
-const BRAND_LOGO = (
-  <svg viewBox="0 0 418 439" xmlns="http://www.w3.org/2000/svg" fill="none">
-    <path
-      className="ab-dark"
-      d="M309.858 65.3296L381.867 107.607L403.76 120.585C407.627 122.898 413.235 126.427 417.139 128.423C417.633 131.95 417.253 144.108 417.256 148.423L417.269 193.468L417.309 345.287C405.284 351.722 392.046 360.015 380.182 366.98L300.245 414.214L273.471 430.048C269.198 432.551 263.079 436.346 258.705 438.43C234.967 424.66 211.315 410.75 187.747 396.692L164.716 383.083C161.148 380.995 154.775 377.573 151.669 375.333L151.688 300.681C151.683 287.418 151.375 272.909 151.795 259.81C153.707 259.175 162.97 253.342 165.129 252.092L197.888 233.216C202.33 230.678 209.779 226.133 214.214 224.04L214.159 296.958C219.224 300.265 226.152 304.008 231.494 307.08C240.771 312.399 250.008 317.794 259.202 323.257C261.764 321.971 264.264 320.538 266.754 319.115C285.234 308.548 303.743 297.821 321.529 286.139C306.959 278.65 290.56 268.254 276.203 259.839C255.75 247.856 234.721 236.232 214.461 224.059C213.92 211.665 214.179 197.915 214.181 185.42L214.197 122.791C221.054 118.226 230.434 112.869 237.637 108.572L282.753 81.6101C291.49 76.4108 301.433 70.8473 309.858 65.3296Z"
-    />
-    <path
-      className="ab-accent"
-      d="M309.858 65.3296L381.867 107.607L403.76 120.585C407.627 122.898 413.235 126.427 417.139 128.423C404.352 135.354 391.264 143.371 378.71 150.721L322.099 183.565C322.645 201.011 322.184 220.827 322.177 238.447L322.167 268.865C322.167 273.91 322.184 278.981 322.148 284.029C322.141 285.262 322.171 285.432 321.529 286.139C306.959 278.65 290.56 268.254 276.203 259.839C255.75 247.856 234.721 236.232 214.461 224.059C213.92 211.665 214.179 197.915 214.182 185.42L214.197 122.791C221.054 118.226 230.434 112.869 237.637 108.572L282.754 81.6101C291.49 76.4108 301.433 70.8473 309.858 65.3296Z"
-    />
-    <path
-      className="ab-accent"
-      d="M151.795 259.81C153.707 259.175 162.97 253.342 165.129 252.093L197.888 233.216C202.33 230.678 209.779 226.133 214.214 224.041L214.159 296.958L171.5 271.77C167.521 269.389 155.033 261.24 151.795 259.81Z"
-    />
-    <path
-      className="ab-dark"
-      d="M176.404 0C179.141 0.852222 197.867 12.5246 201.139 14.4668L268.828 54.3989L151.589 124.157L117.037 144.624C110.186 148.708 101.165 154.448 94.1272 157.877L94.1102 308.139L94.0929 351.974C94.0886 359.243 94.3 367.916 94.0124 375.097L93.5173 375.293C77.1485 366.643 57.9991 354.51 41.7095 344.901L17.4601 330.556C12.0696 327.373 5.05491 323.385 0.130637 319.766C-0.126537 311.512 0.0743604 302.176 0.0799227 293.84L0.107072 246.796L0.140772 104.191L176.404 0Z"
-    />
-  </svg>
-)
+const BRAND_LOGO = <BrandLogo />
 
 const ICONS = {
   external: (
@@ -122,13 +105,32 @@ const ICONS = {
       <path d="M12 7v5l3 2" />
     </svg>
   ),
+  shield: (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 3l7 2.6v5.2c0 4.4-3 7.5-7 8.2-4-.7-7-3.8-7-8.2V5.6z" />
+      <path d="M9.5 12l1.8 1.8L15 10" />
+    </svg>
+  ),
 } as const
+
+// Slightly over the .ab-lang-ind transition in globals.css (280ms), so the
+// language indicator lands before router.refresh() replaces the node.
+const LOCALE_SLIDE_MS = 300
 
 export default function PortfolioPage() {
   const params = useParams()
   const router = useRouter()
   const locale = (((params?.locale as string) || "en") === "es" ? "es" : "en") as Lang
   const t = useTranslations("home")
+
+  /* `Platform · Domain`, localized. The modal kicker appends the year and the
+     mobile index line appends the status, so both are built from these two
+     dictionary keys and cannot drift apart into different vocabularies again. */
+  const caseFacet = useCallback(
+    (key: CaseKey) =>
+      `${t(`cases.${key}.kickerPlatform`)} · ${t(`cases.${key}.kickerDomain`)}`,
+    [t],
+  )
 
   const [theme, setTheme] = useState<Theme>("light")
   const [hydrated, setHydrated] = useState(false)
@@ -175,14 +177,32 @@ export default function PortfolioPage() {
 
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"))
 
-  const switchLocale = () => {
-    const target: Lang = locale === "es" ? "en" : "es"
+  // The indicator follows this, not `locale`. router.refresh() is a round trip,
+  // and a segmented control that does not move until the response lands reads as
+  // if it ignored the click. Cleared once the real locale catches up.
+  const [pendingLocale, setPendingLocale] = useState<Lang | null>(null)
+  const shownLocale = pendingLocale ?? locale
+  useEffect(() => {
+    setPendingLocale(null)
+  }, [locale])
+
+  const goToLocale = (target: Lang) => {
+    // Explicit target rather than a toggle, so pressing the language you are
+    // already in is a genuine no-op instead of switching you away from it.
+    if (target === shownLocale) return
+    setPendingLocale(target)
     // The URL carries no locale any more, so there is nowhere to navigate to:
     // the cookie IS the language, and the middleware re-resolves it on the next
     // request. router.refresh() re-fetches the current route through it, which
     // keeps the user on the page (and the case) they were reading.
     document.cookie = `${LOCALE_COOKIE}=${target}; max-age=${60 * 60 * 24 * 365}; path=/; SameSite=Lax`
-    router.refresh()
+    // ...but it also replaces this subtree, indicator included, so a refresh
+    // that lands mid-slide leaves the ground teleporting the rest of the way.
+    // Measured: the payload arrived ~80ms into a 280ms travel and jumped the
+    // remaining 81%. Let the control finish acknowledging the click, then swap
+    // the page under it. Reduced motion has no travel to wait for.
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    window.setTimeout(() => router.refresh(), reduced ? 0 : LOCALE_SLIDE_MS)
   }
 
   // Reveal-on-scroll
@@ -215,14 +235,14 @@ export default function PortfolioPage() {
     return {
     alisio: {
       num: "01",
-      kicker: "iOS · watchOS · 2026",
+      kicker: `${caseFacet("alisio")} · 2026`,
       title: {
         pre: "Alisio — ",
         it: t("cases.alisio.titleIt"),
       },
       desc: t.rich("cases.alisio.descRich", { it: (chunks) => <em>{chunks}</em> }),
       meta: [
-        [t("cases.meta.platform"), "iOS · watchOS"],
+        [t("cases.meta.platform"), "iOS 17+ · watchOS 10+"],
         [t("cases.meta.stack"), "SwiftUI · HealthKit · WatchConnectivity"],
         [t("cases.meta.status"), t("cases.alisio.metaStatus")],
         [t("cases.meta.year"), "2026"],
@@ -234,6 +254,12 @@ export default function PortfolioPage() {
           kind: "primary",
           ext: true,
           icon: "external",
+        },
+        {
+          label: t("cases.alisio.actionPrivacy"),
+          href: "/alisio/privacy",
+          kind: "ghost",
+          icon: "shield",
         },
       ],
       preview: "alisio",
@@ -263,7 +289,7 @@ export default function PortfolioPage() {
     },
     fave: {
       num: "03",
-      kicker: "iOS · SwiftData · 2026",
+      kicker: `${caseFacet("fave")} · 2026`,
       title: {
         pre: "Fave — ",
         it: t("cases.fave.titleIt"),
@@ -271,7 +297,7 @@ export default function PortfolioPage() {
       desc: t.rich("cases.fave.descRich", { it: (chunks) => <em>{chunks}</em> }),
       meta: [
         [t("cases.meta.platform"), "iOS 17+"],
-        [t("cases.meta.stack"), "SwiftUI · SwiftData · CloudKit · TMDB · Open Library"],
+        [t("cases.meta.stack"), "SwiftUI · SwiftData · CloudKit"],
         [t("cases.meta.status"), t("cases.fave.metaStatus")],
         [t("cases.meta.year"), "2026"],
       ],
@@ -282,12 +308,24 @@ export default function PortfolioPage() {
           kind: "primary disabled",
           icon: "clock",
         },
+        {
+          label: t("cases.fave.actionGhost"),
+          href: "/fave/support",
+          kind: "ghost",
+          icon: "help",
+        },
+        {
+          label: t("cases.fave.actionPrivacy"),
+          href: "/fave/privacy",
+          kind: "ghost",
+          icon: "shield",
+        },
       ],
       preview: "fave",
     },
     pass: {
       num: "04",
-      kicker: "Backend · Serverless · 2026",
+      kicker: `${caseFacet("pass")} · 2026`,
       title: {
         pre: "Pass — ",
         it: t("cases.pass.titleIt"),
@@ -313,15 +351,15 @@ export default function PortfolioPage() {
     },
     fingo: {
       num: "05",
-      kicker: "iOS · 2025",
+      kicker: `${caseFacet("fingo")} · 2025`,
       title: {
         pre: "Fingo — ",
         it: t("cases.fingo.titleIt"),
       },
       desc: t.rich("cases.fingo.descRich", { it: (chunks) => <em>{chunks}</em> }),
       meta: [
-        [t("cases.meta.platform"), "iOS 16+"],
-        [t("cases.meta.stack"), "SwiftUI · Swift · Core Haptics"],
+        [t("cases.meta.platform"), "iOS 26+"],
+        [t("cases.meta.stack"), "SwiftUI · Combine · Core Haptics"],
         [t("cases.meta.status"), t("cases.fingo.metaStatus")],
         [t("cases.meta.year"), "2025"],
       ],
@@ -339,19 +377,25 @@ export default function PortfolioPage() {
           kind: "ghost",
           icon: "help",
         },
+        {
+          label: t("cases.fingo.actionPrivacy"),
+          href: "/fingo/privacy",
+          kind: "ghost",
+          icon: "shield",
+        },
       ],
       preview: "fingo",
     },
     vitapath: {
       num: "06",
-      kicker: t("cases.vitapath.kicker"),
+      kicker: `${caseFacet("vitapath")} · 2026`,
       title: {
         pre: "Vitapath — ",
         it: t("cases.vitapath.titleIt"),
       },
       desc: t.rich("cases.vitapath.descRich", { it: (chunks) => <em>{chunks}</em> }),
       meta: [
-        [t("cases.meta.platform"), "iOS · Web · Spring"],
+        [t("cases.meta.platform"), "iOS 17+ · Web"],
         [t("cases.meta.stack"), "SwiftUI · Spring Boot · PostGIS · STOMP"],
         [t("cases.meta.status"), t("cases.vitapath.metaStatus")],
         [t("cases.meta.year"), "2026"],
@@ -361,6 +405,7 @@ export default function PortfolioPage() {
           label: t("cases.vitapath.actionPrimary"),
           href: "#",
           kind: "primary disabled",
+          icon: "clock",
         },
       ],
       preview: "vitapath",
@@ -389,7 +434,7 @@ export default function PortfolioPage() {
     },
     arrhythmia: {
       num: "07",
-      kicker: "Web · ML · 2026",
+      kicker: `${caseFacet("arrhythmia")} · 2026`,
       title: {
         pre: "Arrhythmia Detector — ",
         it: t("cases.arrhythmia.titleIt"),
@@ -437,10 +482,10 @@ export default function PortfolioPage() {
     },
     mezcal: {
       num: "08",
-      kicker: "Web · E-commerce · 2025",
+      kicker: `${caseFacet("mezcal")} · 2025`,
       title: {
         pre: "Mi Mezcal — ",
-        it: "Destilería Lorenzana.",
+        it: t("cases.mezcal.titleIt"),
       },
       desc: t.rich("cases.mezcal.descRich", { it: (chunks) => <em>{chunks}</em> }),
       meta: [
@@ -462,7 +507,7 @@ export default function PortfolioPage() {
     },
     briefmark: {
       num: "09",
-      kicker: "iOS · AI · 2026",
+      kicker: `${caseFacet("briefmark")} · 2026`,
       title: {
         pre: "Briefmark — ",
         it: t("cases.briefmark.titleIt"),
@@ -470,7 +515,7 @@ export default function PortfolioPage() {
       desc: t.rich("cases.briefmark.descRich", { it: (chunks) => <em>{chunks}</em> }),
       meta: [
         [t("cases.meta.platform"), "iOS 26+"],
-        [t("cases.meta.stack"), "SwiftUI · Swift · Node · Claude API"],
+        [t("cases.meta.stack"), "SwiftUI · Node.js · Claude API"],
         [t("cases.meta.status"), t("cases.briefmark.metaStatus")],
         [t("cases.meta.year"), "2026"],
       ],
@@ -486,14 +531,14 @@ export default function PortfolioPage() {
     },
     savely: {
       num: "02",
-      kicker: "iOS · Fintech · 2026",
+      kicker: `${caseFacet("savely")} · 2026`,
       title: {
         pre: "Savely — ",
         it: t("cases.savely.titleIt"),
       },
       desc: t.rich("cases.savely.descRich", { it: (chunks) => <em>{chunks}</em> }),
       meta: [
-        [t("cases.meta.platform"), "iOS 26"],
+        [t("cases.meta.platform"), "iOS 26+"],
         [t("cases.meta.stack"), "SwiftUI · SwiftData · Vision"],
         [t("cases.meta.status"), t("cases.savely.metaStatus")],
         [t("cases.meta.year"), "2026"],
@@ -511,8 +556,16 @@ export default function PortfolioPage() {
           kind: "ghost",
           icon: "help",
         },
+        {
+          label: t("cases.savely.actionPrivacy"),
+          href: "/savely/privacy",
+          kind: "ghost",
+          icon: "shield",
+        },
       ],
       preview: "savely",
+      story: storyOf("savely"),
+      highlights: t.raw("cases.savely.highlights") as string[],
       media: [
         {
           kind: "gallery",
@@ -527,7 +580,7 @@ export default function PortfolioPage() {
     },
     blip: {
       num: "10",
-      kicker: "Web · PWA · 2026",
+      kicker: `${caseFacet("blip")} · 2026`,
       title: {
         pre: "BLIP — ",
         it: t("cases.blip.titleIt"),
@@ -553,7 +606,7 @@ export default function PortfolioPage() {
     /* `locale` is gone from the deps: the support hrefs used to be built as
        `/${locale}/fingo/support`, and with the prefix dropped nothing in here
        reads it any more. */
-  }, [t])
+  }, [t, caseFacet])
 
   const openCase = useCallback((key: CaseKey, trigger?: HTMLElement) => {
     lastFocusRef.current = trigger ?? (document.activeElement as HTMLElement | null)
@@ -686,27 +739,52 @@ export default function PortfolioPage() {
           </nav>
 
           <div className="ab-nav-end">
-            <button
+            {/* Stands in for the primary links below 820px, where they are
+                hidden. Same label as the link it replaces, so the two never
+                drift apart. */}
+            <a className="ab-chip ab-chip-contact" href="#contact">
+              {t("nav.contact")}
+            </a>
+            {/* Two segments in a FIXED en-then-es order. This was one <button>
+                that rendered the active language first, so the half you clicked
+                moved out from under you, and clicking the language you were
+                already in switched you away from it. Both stay buttons through
+                the switch so keyboard focus survives the refresh, and each
+                carries its own lang so "EN" and "ES" are announced by the right
+                voice. The group is what names the control; labelling a button
+                "Cambiar a Español" while it reads "ES" put the accessible name
+                out of step with the visible one. */}
+            <div
               className="ab-chip ab-chip-lang"
-              onClick={switchLocale}
-              aria-label={t("locale.switchAria")}
+              data-active={shownLocale}
+              role="group"
+              aria-label={t("locale.groupAria")}
             >
-              <b>{locale === "es" ? "ES" : "EN"}</b>
-              <span className="ab-sep" />
-              <span className="off">{locale === "es" ? "EN" : "ES"}</span>
-            </button>
+              <span className="ab-lang-ind" aria-hidden="true" />
+              <button
+                type="button"
+                lang="en"
+                aria-current={shownLocale === "en" ? "true" : undefined}
+                onClick={() => goToLocale("en")}
+              >
+                EN
+              </button>
+              <span className="ab-sep" aria-hidden="true" />
+              <button
+                type="button"
+                lang="es"
+                aria-current={shownLocale === "es" ? "true" : undefined}
+                onClick={() => goToLocale("es")}
+              >
+                ES
+              </button>
+            </div>
             <button
               className="ab-theme-toggle"
               onClick={toggleTheme}
               aria-label={t("theme.toggleAria")}
             >
-              <svg className="sun" viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="12" cy="12" r="4" />
-                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-              </svg>
-              <svg className="moon" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
-              </svg>
+              <ThemeIcons />
             </button>
           </div>
         </div>
@@ -891,70 +969,65 @@ export default function PortfolioPage() {
                 const c = CASES[key]
                 const indexInfo: Record<
                   CaseKey,
-                  { name: { pre: string; it: string }; tag: string; stack: string[]; mshow: string }
+                  { name: { pre: string; it: string }; tag: string; stack: string[] }
                 > = {
                   fave: {
                     name: { pre: "Fave", it: ` — ${t("cases.fave.titleIt")}` },
                     tag: t("cases.fave.tag"),
-                    stack: ["iOS", "SwiftData", "CloudKit"],
-                    mshow: `iOS · SwiftData · ${t("cases.fave.mshowStatus")} →`,
+                    stack: ["SwiftUI", "SwiftData", "CloudKit"],
                   },
                   fingo: {
                     name: { pre: "Fingo", it: ` — ${t("cases.fingo.titleIt")}` },
                     tag: t("cases.fingo.tag"),
-                    stack: ["iOS", "SwiftUI", "Haptics"],
-                    mshow: "iOS · SwiftUI · App Store →",
+                    stack: ["SwiftUI", "Combine", "Core Haptics"],
                   },
                   savely: {
                     name: { pre: "Savely", it: ` — ${t("cases.savely.titleIt")}` },
                     tag: t("cases.savely.tag"),
-                    stack: ["iOS", "SwiftData", "On-device OCR"],
-                    mshow: `iOS · Fintech · ${t("cases.savely.mshowStatus")} →`,
+                    stack: ["SwiftUI", "SwiftData", "Vision"],
                   },
                   mezcal: {
-                    name: { pre: "Mi Mezcal", it: " — Destilería Lorenzana." },
+                    name: { pre: "Mi Mezcal", it: ` — ${t("cases.mezcal.titleIt")}` },
                     tag: t("cases.mezcal.tag"),
-                    stack: ["Web", "E-commerce", "Brand"],
-                    mshow: `Web · E-commerce · ${t("cases.mezcal.mshowStatus")} →`,
+                    stack: ["Next.js", "TypeScript", "Stripe"],
                   },
                   blip: {
                     name: { pre: "BLIP", it: ` — ${t("cases.blip.titleIt")}` },
                     tag: t("cases.blip.tag"),
-                    stack: ["React", "PWA", "FastAPI"],
-                    mshow: "Web · PWA · FastAPI →",
+                    stack: ["React", "FastAPI", "Web Push"],
                   },
                   briefmark: {
                     name: { pre: "Briefmark", it: ` — ${t("cases.briefmark.titleIt")}` },
                     tag: t("cases.briefmark.tag"),
-                    stack: ["iOS", "SwiftUI", "Claude API"],
-                    mshow: "iOS · AI · SwiftUI →",
+                    stack: ["SwiftUI", "Node.js", "Claude API"],
                   },
                   pass: {
                     name: { pre: "Pass", it: ` — ${t("cases.pass.titleIt")}` },
                     tag: t("cases.pass.tag"),
-                    stack: ["Serverless", "AWS", "PassKit"],
-                    mshow: "Backend · AWS · PassKit →",
+                    stack: ["AWS Lambda", "DynamoDB", "PassKit"],
                   },
                   alisio: {
                     name: { pre: "Alisio", it: ` — ${t("cases.alisio.titleIt")}` },
                     tag: t("cases.alisio.tag"),
-                    stack: ["iOS", "watchOS", "HealthKit"],
-                    mshow: "iOS · Apple Watch · App Store →",
+                    stack: ["SwiftUI", "HealthKit", "WatchConnectivity"],
                   },
                   vitapath: {
                     name: { pre: "Vitapath", it: ` — ${t("cases.vitapath.titleIt")}` },
                     tag: t("cases.vitapath.tag"),
-                    stack: ["Spring Boot", "PostGIS", "SwiftUI"],
-                    mshow: "iOS · Web · Spring · PostGIS →",
+                    stack: ["SwiftUI", "Spring Boot", "PostGIS"],
                   },
                   arrhythmia: {
                     name: { pre: "Arrhythmia Detector", it: ` — ${t("cases.arrhythmia.titleIt")}` },
                     tag: t("cases.arrhythmia.tag"),
-                    stack: ["Next.js", "FastAPI", "ML"],
-                    mshow: "Web · ML · FastAPI →",
+                    stack: ["Next.js", "FastAPI", "TanStack Query"],
                   },
                 }
-                const { name, tag, stack, mshow } = indexInfo[key]
+                const { name, tag, stack } = indexInfo[key]
+                /* Built from the case's own facet, so the index line and the
+                   modal kicker can differ only in their last segment: the year
+                   there, the status here. They used to be authored separately
+                   and drifted into two different vocabularies. */
+                const mshow = `${caseFacet(key)} · ${t(`cases.${key}.mshowStatus`)} →`
                 return (
                   <button
                     key={key}
@@ -1041,7 +1114,7 @@ export default function PortfolioPage() {
                     <span className="gn">ii.</span>
                   </h3>
                   <div className="ab-pills">
-                    {["Node", "PostgreSQL", "Supabase", "Vercel", "Edge Functions"].map((p, i) => (
+                    {["Node.js", "PostgreSQL", "Supabase", "Vercel", "Edge Functions"].map((p, i) => (
                       <span key={p} className="ab-pill">
                         <span className="pi">{toRoman(i + 1)}.</span>
                         {p}
@@ -1439,8 +1512,9 @@ function CaseGallery({ media }: { media: Extract<CaseMedia, { kind: "gallery" }>
   )
 }
 
+/* No `useTranslations` here on purpose: every URL bar is now a real domain or a
+   lowercase product slug, and a slug is an identifier, not copy to translate. */
 function CasePreview({ which }: { which: CaseKey }) {
-  const t = useTranslations("home")
   if (which === "fingo") {
     return (
       <div className="ab-phone-img fingo" aria-hidden="true" style={{ ["--w" as any]: "280px" }}>
@@ -1466,16 +1540,16 @@ function CasePreview({ which }: { which: CaseKey }) {
           <span className="bdot" />
           <span className="bdot" />
           <span className="bdot" />
-          <span className="url">BLIP — Radar</span>
+          <span className="url">blip</span>
         </div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="ab-browser-shot" src="/cases/blip-hero.webp" alt="" width={1600} height={1000} loading="lazy" />
+        <img className="ab-browser-shot" src="/cases/blip-hero.webp" alt="" width={960} height={600} loading="lazy" />
       </div>
     )
   }
   if (which === "briefmark") {
     return (
-      <div className="ab-phone-img briefmark" aria-hidden="true" style={{ ["--w" as any]: "252px" }}>
+      <div className="ab-phone-img briefmark" aria-hidden="true" style={{ ["--w" as any]: "280px" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/cases/briefmark-hero.webp" alt="" width={600} height={1304} loading="lazy" />
       </div>
@@ -1483,7 +1557,7 @@ function CasePreview({ which }: { which: CaseKey }) {
   }
   if (which === "fave") {
     return (
-      <div className="ab-phone-img fave" aria-hidden="true" style={{ ["--w" as any]: "252px" }}>
+      <div className="ab-phone-img fave" aria-hidden="true" style={{ ["--w" as any]: "280px" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/cases/fave-hero.webp" alt="" width={600} height={1304} loading="lazy" />
       </div>
@@ -1568,7 +1642,7 @@ function CasePreview({ which }: { which: CaseKey }) {
           <span className="bdot" />
           <span className="bdot" />
           <span className="bdot" />
-          <span className="url">{t("cases.vitapath.previewUrl")}</span>
+          <span className="url">vitapath</span>
         </div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="ab-browser-shot" src="/cases/vitapath-hero.webp" alt="" width={1000} height={625} loading="lazy" />
