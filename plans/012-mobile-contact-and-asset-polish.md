@@ -507,3 +507,72 @@ recording the `setTimeout` delay: **300ms with motion, 0ms reduced.**
 Suite went 86 -> **90**: fixed order in both locales, the active segment being a
 no-op, the switch carrying the indicator, and the pill keeping its chrome at
 375px and 1280px with both segments the same width.
+
+### Follow-up 2: the 404, which was not two lines (owner request, 2026-08-20)
+
+The previous section left one item unclaimed: the 404 island marked its language
+buttons with `aria-pressed` while the nav had moved to `aria-current`. The owner
+asked for it on the premise that it was a two-line change. **It was not**, and
+that was said before editing rather than after.
+
+Opening `_not-found-controls.tsx` turned up four more defects of the same
+lineage as the nav's, plus one that was worse:
+
+1. **Both language buttons called one unconditional switch**, so pressing the
+   language you were already in switched you away from it. The nav's defect 2,
+   verbatim.
+2. **Both carried the same `aria-label`** ("Cambiar a Español"), so a screen
+   reader heard two identically named buttons, and neither name contained its
+   visible text (WCAG 2.5.3 again).
+3. **Neither carried `lang`.**
+4. **The group label was `"Site controls"` hardcoded in English** on a bilingual
+   site. It comes from `notFound.controlsAria` now.
+5. **The theme control was a text button** reading "Light"/"Dark" while the
+   header used a 34px sun/moon. Both use `<ThemeIcons />` and
+   `.ab-theme-toggle` now, and the label no longer needs
+   `suppressHydrationWarning` because the icons swap in CSS rather than from
+   client state.
+
+#### The brand mark was broken, and duplication is why
+
+The owner spotted it: the 404's monogram rendered as a broken hexagon. Its
+inline SVG had **two of the four paths**, and the two it kept had their roles
+swapped, painting the accent facet in ink and the ink shape in turquoise. The
+homepage's `BRAND_LOGO` was correct; the two had simply drifted, because they
+were two hand-maintained copies of the same geometry.
+
+Fixed at the cause: `components/brand-logo.tsx` is the single copy, imported by
+both, and the colour roles are keyed to `.ab-logo` rather than to
+`.ab-brand-mark`, so a new mount cannot get them wrong.
+`components/theme-icons.tsx` is the same arrangement for the sun/moon.
+`public/AtelierBelli.svg` remains a third copy by necessity and is noted as such
+in `CLAUDE.md`.
+
+#### The systemic finding
+
+`.ab-root button` (`globals.css:208`) resets `font`, `color` and `border` at
+specificity (0,1,1), which beats any bare class (0,1,0). An audit of every class
+declaring a 1px border found it had silently defeated **four** components:
+`.ab-chip`, `.ab-nf-ctrl`, `.ab-theme-toggle` and `.ab-case-close`. All four
+declared a ring and **none of them drew one**: the header's sun/moon has never
+had its border, on any page, and neither has the case modal's close button.
+
+The language pill escapes the reset by putting its chrome on a `<div>`; the
+other three now carry a `.ab-root` prefix. The rule is recorded in `CLAUDE.md`
+§4 so the next button-borne class does not repeat it.
+
+#### Coverage
+
+**The 404 had no e2e tests at all**, which is how a half-missing brand mark
+survived in it. It has three now: the editorial chrome plus a four-path mark
+with both roles, the language control's fixed order / `aria-current` / no-op /
+switch, and the theme toggle being a 34px ringed icon button on *both* the
+homepage and the 404. Suite went 90 -> **93**.
+
+Parity dropped 452 -> **450**: `notFound.themeToggleLight` and
+`themeToggleDark` are dead now that the control is an icon, and
+`localeSwitchAria` became `controlsAria`.
+
+One flake worth not re-diagnosing: `seo.spec.ts`'s `/fave/support/` case fails
+on a cold-compiled route and passes once warm. It is the metadata streaming race
+that spec already documents at its `metaContent` helper, not a regression.

@@ -484,6 +484,16 @@ parent's `openGraph` wholesale as soon as a child defines one; trimming it to
 just title/description would drop `og:image` from every sub-route. Still no
 `alternates` anywhere: see the note in `layout.tsx`.
 
+**The monogram lives in `components/brand-logo.tsx`.** It used to be inlined
+twice, in the homepage header and in the 404, and the two drifted: the 404's
+copy had **two of the four paths** and had the ink and accent roles swapped, so
+that page rendered a broken hexagon with the turquoise on the wrong facet. Both
+import `<BrandLogo>` now, and the colour roles are keyed to `.ab-logo` rather
+than to one mount, so they cannot diverge again. `public/AtelierBelli.svg` is a
+third copy by necessity (a favicon cannot import a component): **change the
+geometry in one and change it in the other.** `components/theme-icons.tsx` is
+the same arrangement for the sun/moon pair.
+
 **Icons — all four now carry the SAME, CURRENT mark.** They did not before:
 `public/AtelierBelli.png` held the **previous** logo (a blue/purple gradient
 anvil) while `public/AtelierBelli.svg` held the current hexagonal monogram, so
@@ -612,12 +622,16 @@ breaks where it actually breaks. Measured to the pixel: EN is two rows at
   padding the brand's 203px no longer fits its `1fr` column between 821 and
   ~860px, and it wraps to two lines inside a sticky header. Dropping "Est. 2023"
   is the design's own first concession; the breakpoint just follows the geometry.
-- **`.ab-chip` does not reach a `<button>`.** `.ab-root button` (specificity
-  0,1,1) outranks `.ab-chip` (0,1,0) and resets `font` and `border`. This is
-  still true and still a trap for any future chip, but it no longer affects the
-  language control: that pill is a `<div>` wrapper now (see below), so the
-  chrome lands on an element the reset does not touch. **Put `.ab-chip` on a
-  `<button>` and it will silently lose its border and its 11px type.**
+- **A bare class on a `<button>` under `.ab-root` loses `font`, `color` and
+  `border`.** `.ab-root button` (`globals.css:208`) resets all three at
+  specificity (0,1,1), which outranks any single class (0,1,0). It had silently
+  defeated **four** separate components: `.ab-chip` (the language pill),
+  `.ab-nf-ctrl` (the 404 controls), `.ab-theme-toggle` (the sun/moon, on both
+  pages) and `.ab-case-close` (the modal close). All four declared a 1px border
+  and none of them drew one. **Prefix the selector with `.ab-root`** so it
+  reaches (0,2,0), which is what the last three now do; the language pill
+  escapes it instead by putting the chrome on a `<div>` wrapper. Any new
+  button-borne class needs the same care.
 
 `.ab-chip-contact` is the only action in that cluster, so it takes
 `.ab-btn-mail`'s full-strength `--ab-fg` border rather than a fill or an accent,
@@ -834,6 +848,11 @@ app/
     savely/support/ · fave/support/
                                   # Same shell, data-app="savely" | "fave".
 components/
+  brand-logo.tsx                  # The monogram, shared by the header and the
+                                  #   404. Colour roles via .ab-logo .ab-dark /
+                                  #   .ab-accent. Was inlined twice and drifted.
+  theme-icons.tsx                 # The sun/moon pair, shared by the header's
+                                  #   .ab-theme-toggle and the 404's.
   support-shell.tsx               # Reusable support shell, keyed by data-app.
                                   #   Receives a SupportContent prop built by
                                   #   each page.

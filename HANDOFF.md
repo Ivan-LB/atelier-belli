@@ -49,6 +49,38 @@ están arreglados y escritos en `CLAUDE.md` §4, pero vale la pena saberlos:
 
 Sin hamburger menu, por decisión explícita.
 
+### El 404 estaba peor de lo que se veía (mismo PR)
+
+Pedías alinear su `aria-pressed` con el nav, "dos líneas". Al abrir el archivo
+salieron cinco cosas, todas del mismo linaje:
+
+- **Su copia del monograma tenía 2 de los 4 paths, con los roles invertidos**:
+  pintaba la faceta de acento en tinta y la forma de tinta en turquesa, y le
+  faltaba el cuerpo del hexágono. Por eso se veía roto. Ahora hay **un solo**
+  `<BrandLogo>` en `components/brand-logo.tsx` que usan header y 404; los roles
+  de color cuelgan de `.ab-logo`, no de un montaje.
+- **Los dos botones de idioma llamaban un switch incondicional**, así que tocar
+  el idioma activo te sacaba de él. Mismo defecto que el nav.
+- **Los dos cargaban el mismo `aria-label`**, así que se oían dos botones con
+  nombre idéntico, y ninguno contenía su texto visible.
+- **El `role="group"` decía `"Site controls"` hardcodeado en inglés.** Ahora
+  sale del diccionario (`notFound.controlsAria`).
+- **El control de tema era texto** ("Light"/"Dark") mientras el header usa el
+  círculo de 34px. Ahora los dos usan `<ThemeIcons />` y `.ab-theme-toggle`.
+
+**Y el hallazgo grande, que no era del 404:** `.ab-root button` (globals.css:208)
+resetea `font`, `color` y `border` con especificidad (0,1,1), y le gana a
+cualquier clase suelta (0,1,0). Había derrotado en silencio a **cuatro**
+componentes: `.ab-chip`, `.ab-nf-ctrl`, `.ab-theme-toggle` y `.ab-case-close`.
+Los cuatro declaraban borde de 1px y **ninguno lo dibujaba**. El sol/luna del
+header nunca tuvo su anillo. Los tres últimos llevan prefijo `.ab-root` ahora.
+
+**Regla para el futuro: una clase sobre un `<button>` dentro de `.ab-root`
+necesita el prefijo `.ab-root` o pierde tipo, color y borde.**
+
+El 404 **no tenía ni un test**; por eso se pudrió sin que nadie lo viera. Ahora
+tiene tres.
+
 ### El toggle de idioma, rehecho (mismo PR)
 
 Era un solo `<button>` que ponía el idioma activo primero, así que al cambiar
