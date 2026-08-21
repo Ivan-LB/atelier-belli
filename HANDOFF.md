@@ -1,10 +1,108 @@
 # HANDOFF — atelier-belli-portfolio
 
-> Updated **2026-08-03** (sesión larga: audit de UI completo + i18n sin prefijo
-> + recapturas de media). Lee `CLAUDE.md` para el contexto estable; este archivo
-> es el estado vivo.
+> Updated **2026-08-20** (ola 2 de planes: 007 a 012, seis PRs). Lee
+> `CLAUDE.md` para el contexto estable y `plans/README.md` para el registro
+> plan por plan; este archivo es el estado vivo.
+>
+> Todo lo que está debajo de "Estado: audit 41/41 cerrado" es de la sesión del
+> **2026-08-03** y sigue siendo válido como historia. La sección de aquí arriba
+> es lo actual.
 
-## Estado: audit 41/41 cerrado
+## Estado: ola 2 cerrada (007 a 012), con un pendiente humano
+
+Los seis planes están en `develop`. Lo que quedó **abierto** y le toca a una
+persona, no a un agente:
+
+1. **El smoke de Amplify que debe el PR #60** (metadata por ruta, iconos,
+   sitemap), antes de que `develop` se mergee a `main`. Es el único gate técnico
+   pendiente de la ola. Ningún plan posterior lo tocó: 011 y 012 no entran a la
+   región sensible a Amplify.
+2. **La checklist humana** en `plans/README.md` sigue viva tal cual: las URLs de
+   privacidad en App Store Connect (punto 1, con ventana de tiempo real), la
+   declaración DSA, los headers de cache largos para `/cases/*` en la consola de
+   Amplify, y las decisiones sueltas (slug de LinkedIn, Search Console, el PDF
+   del CV huérfano).
+3. **Lo que quedó sin reclamar** tras cerrar la ola está listado en
+   `plans/README.md` bajo "Unclaimed after wave 2 closed". Nada bloquea.
+
+### Lo que 012 encontró en el nav, que no era su tarea
+
+El plan pedía un chip de Contact abajo de 820px. El chip son doce líneas; lo
+caro fue que ponerlo bien destapó tres defectos que ya estaban ahí. Los tres
+están arreglados y escritos en `CLAUDE.md` §4, pero vale la pena saberlos:
+
+- **El nav se partía en dos renglones en TODO ancho <= 820px**, tablets
+  incluidas. `.ab-nav-inner` declaraba `1fr auto` pero tenía **tres** hijos de
+  grid: esconder el `<ul>` no saca al `<nav>` del layout. Nunca fue a propósito;
+  la declaración dice `1fr auto` desde `fe3a590`.
+- **El nav no tenía padding horizontal.** El shorthand `padding: 14px 0` de
+  `.ab-nav-inner` pisaba el padding inline de `.ab-wrap`, así que el brand se
+  pegaba a x=0 mientras el contenido de la página empezaba en 20px (teléfono) o
+  51.2px (desktop). Ahora es longhand. **No lo regreses a shorthand.**
+- **`.ab-chip` nunca le llegó al `<button>` del idioma.** `.ab-root button`
+  (0,1,1) le gana a `.ab-chip` (0,1,0) y resetea `font` y `border`, así que ese
+  control fue texto plano de 16px sin borde desde siempre. **Ya no**: el toggle
+  se rehízo como control segmentado y su envoltura es un `<div>`, que el reset
+  no toca, así que la píldora se ve igual en móvil y en desktop sin pelear
+  especificidad. La trampa sigue viva para cualquier chip futuro: **`.ab-chip`
+  sobre un `<button>` pierde borde y tipo en silencio.**
+
+Sin hamburger menu, por decisión explícita.
+
+### El 404 estaba peor de lo que se veía (mismo PR)
+
+Pedías alinear su `aria-pressed` con el nav, "dos líneas". Al abrir el archivo
+salieron cinco cosas, todas del mismo linaje:
+
+- **Su copia del monograma tenía 2 de los 4 paths, con los roles invertidos**:
+  pintaba la faceta de acento en tinta y la forma de tinta en turquesa, y le
+  faltaba el cuerpo del hexágono. Por eso se veía roto. Ahora hay **un solo**
+  `<BrandLogo>` en `components/brand-logo.tsx` que usan header y 404; los roles
+  de color cuelgan de `.ab-logo`, no de un montaje.
+- **Los dos botones de idioma llamaban un switch incondicional**, así que tocar
+  el idioma activo te sacaba de él. Mismo defecto que el nav.
+- **Los dos cargaban el mismo `aria-label`**, así que se oían dos botones con
+  nombre idéntico, y ninguno contenía su texto visible.
+- **El `role="group"` decía `"Site controls"` hardcodeado en inglés.** Ahora
+  sale del diccionario (`notFound.controlsAria`).
+- **El control de tema era texto** ("Light"/"Dark") mientras el header usa el
+  círculo de 34px. Ahora los dos usan `<ThemeIcons />` y `.ab-theme-toggle`.
+
+**Y el hallazgo grande, que no era del 404:** `.ab-root button` (globals.css:208)
+resetea `font`, `color` y `border` con especificidad (0,1,1), y le gana a
+cualquier clase suelta (0,1,0). Había derrotado en silencio a **cuatro**
+componentes: `.ab-chip`, `.ab-nf-ctrl`, `.ab-theme-toggle` y `.ab-case-close`.
+Los cuatro declaraban borde de 1px y **ninguno lo dibujaba**. El sol/luna del
+header nunca tuvo su anillo. Los tres últimos llevan prefijo `.ab-root` ahora.
+
+**Regla para el futuro: una clase sobre un `<button>` dentro de `.ab-root`
+necesita el prefijo `.ab-root` o pierde tipo, color y borde.**
+
+El 404 **no tenía ni un test**; por eso se pudrió sin que nadie lo viera. Ahora
+tiene tres.
+
+### El toggle de idioma, rehecho (mismo PR)
+
+Era un solo `<button>` que ponía el idioma activo primero, así que al cambiar
+**se movía la mitad que acababas de tocar**, y tocar el idioma en el que ya
+estabas te sacaba de él. Ahora son dos botones en orden fijo `en`-luego-`es`,
+con `aria-current` en el activo y `goToLocale(target)` explícito, de modo que
+tocar el actual es un no-op de verdad.
+
+Dos cosas que **no** hay que deshacer:
+
+- **Los dos segmentos siguen siendo `<button>`.** Hacer `<span>` el activo se ve
+  más limpio en el árbol de accesibilidad, pero el elemento desaparece debajo
+  del usuario al cambiar y el foco de teclado se va con él.
+- **El `refresh` se difiere 300ms a propósito.** `router.refresh()` reemplaza el
+  subárbol completo (medido: cambia la identidad del nodo), así que si aterriza
+  a media animación el fondo se teletransporta el resto del camino. Medido: 9
+  posiciones cortadas a los 105ms antes, 34 posiciones asentando en 289ms
+  después. Con `prefers-reduced-motion` el retraso es 0 y no hay traslado.
+
+---
+
+## Estado: audit 41/41 cerrado (sesión 2026-08-03)
 
 `vitapath-system.mp4` re-grabado — #6 y #30 cerrados. Todo lo demás ya está en
 `develop` (PRs #45, #46 y #47 mergeados).

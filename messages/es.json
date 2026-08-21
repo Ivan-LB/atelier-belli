@@ -5,10 +5,8 @@
     "titleIt": "encontrada.",
     "description": "Lo sentimos, la página que estás buscando no existe o ha sido movida.",
     "backHome": "Volver al Inicio",
-    "themeToggleLight": "Claro",
-    "themeToggleDark": "Oscuro",
     "themeToggleAria": "Cambiar tema",
-    "localeSwitchAria": "Switch to English",
+    "controlsAria": "Controles del sitio",
     "footerMeta": "Software · Oficio digital"
   },
   "layout": {
@@ -606,7 +604,7 @@
       "contact": "Contacto"
     },
     "locale": {
-      "switchAria": "Switch to English"
+      "groupAria": "Idioma"
     },
     "theme": {
       "toggleAria": "Cambiar tema"

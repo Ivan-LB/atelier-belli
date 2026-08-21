@@ -123,7 +123,10 @@ cropped that chrome is gone with it. Savely also has a three-frame gallery under
 `public/cases/gallery/savely-p1..p3.webp`, seeded via the app's DEBUG tour).
 fingo/savely use the `ab-phone-img` phone frame; blip and mezcal render real
 captures inside `ab-browser-frame` via the `.ab-browser-shot` img class
-(16:10, explicit width/height). **briefmark** now uses a real capture of its
+(16:10, explicit width/height). `blip-hero.webp` is **960×600** since plan 012;
+it shipped at 1600×1000 for a ~442 CSS px slot, which is 3.6x its rendered size
+and made it the heaviest image on the site at 158KB (now 96KB, `cwebp -q 88
+-m 6 -sharp_yuv`, SSIM 0.987 at display size). **briefmark** now uses a real capture of its
 onboarding screen (`public/cases/briefmark-hero.webp`, 600×1304) in the
 `.ab-phone-img.briefmark` phone frame — it replaced the fake `ab-mez-site`
 HTML mock, which read as a broken image; that mock's CSS was deleted with it.
@@ -138,7 +141,7 @@ transparent-frame slots collapse to zero height until the lazy image paints
 `.ab-alisio-combo` preview: an `.ab-phone-img.alisio` phone (Live-session
 screen) with an `.ab-alisio-watch` rounded-square watch (Goal-reached screen)
 overlapping the bottom-left corner. Both `public/cases/alisio-hero.webp`
-(953×2109) and `public/cases/alisio-watch.webp` (249×293) were cropped from
+(953×2109) and `public/cases/alisio-watch.webp` (249×317) were cropped from
 the App Store **marketing** frames in
 `~/Projects/Swift/Alisio/marketing/appstore-screenshots/` (headline + device
 bezel stripped so the raw screen sits in the CSS frame). Shipped 2026-07-23:
@@ -265,12 +268,12 @@ sideways on mobile with text clipped. `.ab-case-media img/video` also cap at
   small waits: rapid consecutive taps coalesce, and `type` triggers the iOS
   accent popup. `xcrun simctl privacy <udid> grant <service> <bundle>` skips the
   permission dialogs.
-- `alisio-system.mp4` (1400×760) is two **simultaneous** simctl recordings
+- `alisio-system.mp4` (740×740) is two **simultaneous** simctl recordings
   (iPhone + paired Watch, started together so they stay in sync) composited
   side by side with ffmpeg `overlay` + `drawbox` borders. It shows one live
   session: started on the phone, measured on the Watch, mirrored back, with the
   in-zone/out-of-zone badge flipping. That is the case's whole thesis.
-- `vitapath-system.mp4` (1600×760) is the same trick across a **browser and a
+- `vitapath-system.mp4` (1740×760) is the same trick across a **browser and a
   phone**: a Playwright `recordVideo` of the console started alongside a simctl
   recording of the paramedic app, then the SOS fired by API ~10s in so both
   surfaces capture the same emergency. Cut to the synchronised window and
@@ -353,7 +356,7 @@ Sized to 272px through
 `.ab-vitrine .ab-phone-img.alisio` so the modal's 244px is untouched.
 (`.ab-vit-web-combo`): a 400×260 browser window with the desktop capture and
 a mini phone overlapping its corner with the mobile capture
-(`public/cases/mezcal-{hero,mobile}.webp`). Tilt/hover transforms live on
+(`public/cases/vitapath-{hero,mini}.webp`). Tilt/hover transforms live on
 the combo wrapper, not the browser. The old hand-drawn mock's CSS
 (`.ab-vit-browser .scr`, `.ab-vit-bottle`, …) is orphaned — cleanup PR
 pending.
@@ -481,6 +484,16 @@ parent's `openGraph` wholesale as soon as a child defines one; trimming it to
 just title/description would drop `og:image` from every sub-route. Still no
 `alternates` anywhere: see the note in `layout.tsx`.
 
+**The monogram lives in `components/brand-logo.tsx`.** It used to be inlined
+twice, in the homepage header and in the 404, and the two drifted: the 404's
+copy had **two of the four paths** and had the ink and accent roles swapped, so
+that page rendered a broken hexagon with the turquoise on the wrong facet. Both
+import `<BrandLogo>` now, and the colour roles are keyed to `.ab-logo` rather
+than to one mount, so they cannot diverge again. `public/AtelierBelli.svg` is a
+third copy by necessity (a favicon cannot import a component): **change the
+geometry in one and change it in the other.** `components/theme-icons.tsx` is
+the same arrangement for the sun/moon pair.
+
 **Icons — all four now carry the SAME, CURRENT mark.** They did not before:
 `public/AtelierBelli.png` held the **previous** logo (a blue/purple gradient
 anvil) while `public/AtelierBelli.svg` held the current hexagonal monogram, so
@@ -586,6 +599,75 @@ See gotcha `root-token-scoping`.
 | `.ab-root` | Fraunces (variable, `opsz`+`SOFT`) for display serifs; Inter for UI |
 | `.sup-root`| EB Garamond / Instrument Serif for display; IBM Plex Mono for meta; Inter for body |
 | Global     | `--font-inter` from `next/font` on `<html>`, default sans fallback |
+
+**The nav below 820px (plan 012).** `.ab-nav-inner` is `display: flex;
+flex-wrap: wrap` there, not grid, so the control cluster drops to its own line
+at the width where it genuinely stops fitting beside the brand rather than at a
+number someone guessed: `Contacto` is 10px wider than `Contact`, and each locale
+breaks where it actually breaks. Measured to the pixel: EN is two rows at
+<= 412px and one row from **413px**, ES two rows at <= 422px and one from
+**423px**. Four things in that region are load-bearing:
+
+- **The hidden element is `<nav>`, not `.ab-nav-links`.** The wrapper stays a
+  layout item with its `<ul>` hidden, so it used to consume the second of the
+  two grid columns and strand `.ab-nav-end` on an implicit second row at *every*
+  width <= 820px, tablets included. That was never intentional: the block has
+  declared `1fr auto` since `fe3a590`.
+- **`.ab-nav-inner` must keep its padding in LONGHAND.** The element is also
+  `.ab-wrap`, and a `padding: 14px 0` shorthand resets `.ab-wrap`'s inline
+  padding to zero. It did, for a long time: the brand sat at x=0 while every
+  section below it started at `--ab-pad` (20px on a phone, 51px at 1280px) and
+  the theme toggle touched the right edge.
+- **`.ab-brand-tag` hides at 900px, not 820px.** Once the nav carries that inline
+  padding the brand's 203px no longer fits its `1fr` column between 821 and
+  ~860px, and it wraps to two lines inside a sticky header. Dropping "Est. 2023"
+  is the design's own first concession; the breakpoint just follows the geometry.
+- **A bare class on a `<button>` under `.ab-root` loses `font`, `color` and
+  `border`.** `.ab-root button` (`globals.css:208`) resets all three at
+  specificity (0,1,1), which outranks any single class (0,1,0). It had silently
+  defeated **four** separate components: `.ab-chip` (the language pill),
+  `.ab-nf-ctrl` (the 404 controls), `.ab-theme-toggle` (the sun/moon, on both
+  pages) and `.ab-case-close` (the modal close). All four declared a 1px border
+  and none of them drew one. **Prefix the selector with `.ab-root`** so it
+  reaches (0,2,0), which is what the last three now do; the language pill
+  escapes it instead by putting the chrome on a `<div>` wrapper. Any new
+  button-borne class needs the same care.
+
+`.ab-chip-contact` is the only action in that cluster, so it takes
+`.ab-btn-mail`'s full-strength `--ab-fg` border rather than a fill or an accent,
+which is how the rest of the site marks a primary action. Its label is
+`t("nav.contact")`, the same key the desktop link uses, so the two cannot drift.
+There is deliberately **no hamburger menu** (owner's call).
+
+**The language control is a segmented pill, and four things about it are
+deliberate.** It was one `<button>` rendering the active language first, so
+switching moved the half you had just clicked, and pressing the language you
+were already in switched you away from it.
+
+- **Fixed `en`-then-`es` order**, never by which is active. The active segment
+  carries `aria-current="true"`; `goToLocale(target)` takes an explicit target,
+  so pressing the current one is a real no-op.
+- **Both segments stay `<button>`s** through the switch. Making the active one a
+  `<span>` is tidier in the a11y tree but the element then disappears under the
+  user on switch, and keyboard focus goes with it.
+- **`role="group"` + `locale.groupAria` names the control; the buttons are named
+  by their visible "EN"/"ES"** and carry `lang` so each is announced in its own
+  voice. The old `aria-label="Cambiar a Español"` over a button reading "ES" put
+  the accessible name out of step with the visible one (WCAG 2.5.3).
+- **The pill is `inline-grid` with `1fr auto 1fr`.** "EN" and "ES" differ by
+  1.1px and flex has no free space to even them out, which is what lets
+  `.ab-lang-ind` be a plain 50% translate instead of a measured offset.
+
+**The one authored moment in the nav is that indicator travelling**, and it is
+sequenced against the router on purpose. `switchLocale` writes the cookie and
+calls `router.refresh()`, which **replaces this whole subtree** (measured: the
+pill node identity changes). A refresh landing mid-slide leaves the ground
+teleporting the rest of the way, so the click sets an optimistic `pendingLocale`
+(the indicator moves on the click, not on the response) and the refresh is
+deferred by `LOCALE_SLIDE_MS` (300ms, just over the 280ms transition). Under
+`prefers-reduced-motion` the delay is 0 and the transition is `none`: the state
+still changes, it just does not travel. Verified 34 sampled positions settling
+at 289ms, versus 9 positions truncated at 105ms before the deferral.
 
 **No component library today**: the shadcn scaffold (`components/ui/`,
 50 files), `hooks/`, and `lib/utils.ts` (with `cn()`) were all removed in
@@ -766,6 +848,11 @@ app/
     savely/support/ · fave/support/
                                   # Same shell, data-app="savely" | "fave".
 components/
+  brand-logo.tsx                  # The monogram, shared by the header and the
+                                  #   404. Colour roles via .ab-logo .ab-dark /
+                                  #   .ab-accent. Was inlined twice and drifted.
+  theme-icons.tsx                 # The sun/moon pair, shared by the header's
+                                  #   .ab-theme-toggle and the 404's.
   support-shell.tsx               # Reusable support shell, keyed by data-app.
                                   #   Receives a SupportContent prop built by
                                   #   each page.
@@ -782,8 +869,8 @@ app/favicon.ico                   # Real 3-entry .ico (16/32/48). Next
 public/                           # All static assets, logos, hero images
   apple-touch-icon.png            # 180×180, opaque, from the SVG mark
   cases/                          # Project preview screenshots (blip-hero,
-                                  #   mezcal-hero, mezcal-mobile .webp);
-                                  #   briefmark/pass images land here too
+                                  #   mezcal-hero .webp); briefmark/pass
+                                  #   images land here too
 i18n.ts                           # next-intl config (createNextIntlPlugin)
 middleware.ts                     # next-intl middleware (locale routing)
 .eslintrc.json                    # extends next/core-web-vitals (PR #22)

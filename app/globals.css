@@ -280,7 +280,12 @@
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 24px;
-  padding: 14px 0;
+  /* Longhand on purpose. This element is also .ab-wrap, and the `padding: 14px 0`
+     shorthand that used to live here reset .ab-wrap's inline padding to zero, so
+     the brand sat on the viewport edge while every section below it started at
+     --ab-pad, and the theme toggle touched the right edge. */
+  padding-top: 14px;
+  padding-bottom: 14px;
 }
 .ab-brand {
   display: flex;
@@ -301,13 +306,15 @@
   height: 100%;
   display: block;
 }
-.ab-brand-mark .ab-dark {
+/* Keyed to the shared <BrandLogo>, not to one of its mounts, so the header and
+   the 404 cannot end up with different roles again. */
+.ab-logo .ab-dark {
   fill: currentColor;
 }
-.ab-brand-mark .ab-accent {
+.ab-logo .ab-accent {
   fill: #56b3c2;
 }
-.ab-root[data-theme="dark"] .ab-brand-mark .ab-accent {
+.ab-root[data-theme="dark"] .ab-logo .ab-accent {
   fill: #6bc4d2;
 }
 .ab-brand-name {
@@ -377,19 +384,102 @@
   height: 10px;
   background: var(--line-2);
 }
-.ab-chip-lang b {
+/* Two segments in one pill, in a fixed en-then-es order. The chrome sits on the
+   wrapper, and the wrapper is a <div>, so it escapes the `.ab-root button` reset
+   that has always stripped `.ab-chip` off this control: it renders as a pill at
+   every width now, with no specificity fight. The padding is split between the
+   pill and the segments so the geometry is unchanged (12px from each outer edge,
+   8px either side of the rule) while each segment becomes a 35x28.5px target
+   rather than the ~19x16.5px of bare text. */
+/* Grid, not the inherited flex: "EN" and "ES" are 1.1px apart, and flex has no
+   free space to even them out when the pill is sized by its own content. Two 1fr
+   columns both resolve to the wider label, which is what lets the indicator be a
+   plain 50% translate instead of a measured offset. */
+.ab-chip-lang {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0;
+  padding: 0 4px;
+}
+.ab-chip-lang > button {
+  position: relative;
+  z-index: 1;
+  padding: 6px 8px;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: center;
+  color: var(--ab-muted);
+  transition: color var(--ab-trans);
+}
+/* The authored moment: the ground travels to the language you picked, so the
+   switch is something you watch happen rather than something you find already
+   done. It is the only motion in this cluster. */
+.ab-lang-ind {
+  position: absolute;
+  z-index: 0;
+  top: 3px;
+  bottom: 3px;
+  left: 4px;
+  width: calc((100% - 9px) / 2);
+  border-radius: 999px;
+  /* A tint of the ink rather than --bg-2, which sits 1.09:1 from the page in
+     light and 1.06:1 in dark: a ground you cannot see gives the slide nothing
+     to be watched. One value reads in both themes because it is derived from
+     each theme's own foreground. */
+  background: color-mix(in oklab, var(--ab-fg) 10%, transparent);
+  transform: translateX(0);
+  transition: transform var(--ab-trans);
+  pointer-events: none;
+}
+.ab-chip-lang[data-active="es"] .ab-lang-ind {
+  transform: translateX(calc(100% + 1px));
+}
+.ab-chip-lang > button[aria-current] {
   font-weight: 600;
   color: var(--ab-fg);
+  cursor: default;
 }
-.ab-chip-lang .off {
-  color: var(--muted-2);
+/* --ab-muted, not --muted-2, on the segment you are meant to click: --muted-2
+   renders it at 2.40:1 (light) / 2.52:1 (dark), under the 4.5:1 this project
+   commits to. --ab-muted is 5.41:1 / 5.42:1 and still sits far enough under the
+   active segment's ~15:1 to read as "not where you are". */
+.ab-chip-lang > button:not([aria-current]):hover {
+  color: var(--ab-fg);
 }
-.ab-chip:hover .ab-chip-lang b,
-.ab-chip:hover .off {
-  color: inherit;
+/* The rule sits above the moving ground, so it has to stay visible over it. */
+.ab-chip-lang .ab-sep {
+  position: relative;
+  z-index: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Keep the state change, drop the travel: the ground still marks the current
+     language and the colours still cross, they just do not slide. */
+  .ab-lang-ind {
+    transition: none;
+  }
+}
+/* The pill holds two targets now, so inverting the whole thing on hover would
+   claim it is one. The segment colours carry the state instead. */
+.ab-chip-lang:hover {
+  background: none;
+  color: var(--fg-2);
+  border-color: var(--line-2);
+}
+/* The one action in the nav-end cluster, not a third setting beside language
+   and theme. It takes .ab-btn-mail's full-strength border instead of a fill or
+   an accent, which is how the rest of the site marks a primary action. Shown
+   only below 820px, where the nav links it stands in for are hidden. */
+.ab-chip-contact {
+  display: none;
+  border-color: var(--ab-fg);
+  color: var(--ab-fg);
 }
 
-.ab-theme-toggle {
+/* `.ab-root` prefix required: this is a <button>, and `.ab-root button`
+   (0,1,1) resets `border` and outranks a bare class (0,1,0). It had been doing
+   exactly that, so the sun/moon has never shown its ring on either page. */
+.ab-root .ab-theme-toggle {
   width: 34px;
   height: 34px;
   border-radius: 999px;
@@ -398,7 +488,7 @@
   place-items: center;
   transition: background var(--ab-trans), border-color var(--ab-trans);
 }
-.ab-theme-toggle:hover {
+.ab-root .ab-theme-toggle:hover {
   background: var(--bg-2);
 }
 .ab-theme-toggle svg {
@@ -1315,18 +1405,42 @@
   }
 }
 
-@media (max-width: 820px) {
-  .ab-nav-links {
-    display: none;
-  }
+/* "Est. 2023" is the first thing the brand drops when it runs out of room, and
+   with the nav now carrying .ab-wrap's inline padding that happens at ~900px,
+   not 820px: below it the brand's 203px no longer fits its 1fr column and wraps
+   to two lines inside a sticky header. */
+@media (max-width: 900px) {
   .ab-brand-tag {
     display: none;
   }
+}
+
+@media (max-width: 820px) {
+  /* Hide the <nav> element, not just its <ul>. The wrapper stays a layout item
+     with the list hidden, so it ate the second of the two columns this block
+     used to declare and .ab-nav-end fell to an implicit second row at every
+     width <= 820px, including tablets. */
+  .ab-nav-inner > nav {
+    display: none;
+  }
+  /* Flex, not grid, so the cluster wraps below the brand at the width where it
+     actually stops fitting rather than at a breakpoint we would have to guess
+     and then re-guess per locale ("Contacto" is wider than "Contact"). */
   .ab-nav-inner {
-    grid-template-columns: 1fr auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 16px;
+    row-gap: 10px;
   }
   .ab-nav-end {
     gap: 8px;
+    /* Holds the cluster right whether it shares the brand's line or wraps below
+       it; justify-self does nothing once the parent is flex. */
+    margin-left: auto;
+  }
+  .ab-chip-contact {
+    display: inline-flex;
   }
   /* Carousel: the slot must be WIDER than the card it holds, or neighbours bleed
      in and the cards visually overlap. `%` here resolves against the track's
@@ -1448,7 +1562,8 @@
      token elsewhere, so darken here rather than globally. This is 11px text. */
   color: var(--accent-deep);
 }
-.ab-case-close {
+/* Same reset, same fix: the modal's close button declared a ring it never got. */
+.ab-root .ab-case-close {
   width: 34px;
   height: 34px;
   border-radius: 999px;
@@ -1457,7 +1572,7 @@
   place-items: center;
   transition: background var(--ab-trans), color var(--ab-trans), border-color var(--ab-trans);
 }
-.ab-case-close:hover {
+.ab-root .ab-case-close:hover {
   background: var(--ab-fg);
   color: var(--ab-bg);
   border-color: var(--ab-fg);
@@ -2346,7 +2461,12 @@
   align-items: center;
   gap: 6px;
 }
-.ab-nf-ctrl {
+/* `.ab-root` prefix required: these are <button>s, and `.ab-root button` (0,1,1)
+   otherwise outranks this rule (0,1,0) and resets `font` and `color`. It has
+   been doing exactly that, so the 404 controls rendered at 16px in full
+   foreground with no visible difference between the active language and the
+   other one. Same trap the nav's language pill escaped by sitting on a <div>. */
+.ab-root .ab-nf-ctrl {
   appearance: none;
   background: transparent;
   border: 0;
@@ -2358,10 +2478,12 @@
   cursor: pointer;
   transition: color var(--ab-trans);
 }
-.ab-nf-ctrl:hover {
+.ab-root .ab-nf-ctrl:hover {
   color: var(--ab-fg);
 }
-.ab-nf-ctrl.is-active {
+/* Same attribute the nav's segmented control uses, so the active state has one
+   source of truth instead of a class that has to agree with an aria attribute. */
+.ab-root .ab-nf-ctrl[aria-current] {
   color: var(--ab-fg);
 }
 .ab-nf-ctrl-sep {
