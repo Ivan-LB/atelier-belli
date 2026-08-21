@@ -306,13 +306,15 @@
   height: 100%;
   display: block;
 }
-.ab-brand-mark .ab-dark {
+/* Keyed to the shared <BrandLogo>, not to one of its mounts, so the header and
+   the 404 cannot end up with different roles again. */
+.ab-logo .ab-dark {
   fill: currentColor;
 }
-.ab-brand-mark .ab-accent {
+.ab-logo .ab-accent {
   fill: #56b3c2;
 }
-.ab-root[data-theme="dark"] .ab-brand-mark .ab-accent {
+.ab-root[data-theme="dark"] .ab-logo .ab-accent {
   fill: #6bc4d2;
 }
 .ab-brand-name {
@@ -474,7 +476,10 @@
   color: var(--ab-fg);
 }
 
-.ab-theme-toggle {
+/* `.ab-root` prefix required: this is a <button>, and `.ab-root button`
+   (0,1,1) resets `border` and outranks a bare class (0,1,0). It had been doing
+   exactly that, so the sun/moon has never shown its ring on either page. */
+.ab-root .ab-theme-toggle {
   width: 34px;
   height: 34px;
   border-radius: 999px;
@@ -483,7 +488,7 @@
   place-items: center;
   transition: background var(--ab-trans), border-color var(--ab-trans);
 }
-.ab-theme-toggle:hover {
+.ab-root .ab-theme-toggle:hover {
   background: var(--bg-2);
 }
 .ab-theme-toggle svg {
@@ -1557,7 +1562,8 @@
      token elsewhere, so darken here rather than globally. This is 11px text. */
   color: var(--accent-deep);
 }
-.ab-case-close {
+/* Same reset, same fix: the modal's close button declared a ring it never got. */
+.ab-root .ab-case-close {
   width: 34px;
   height: 34px;
   border-radius: 999px;
@@ -1566,7 +1572,7 @@
   place-items: center;
   transition: background var(--ab-trans), color var(--ab-trans), border-color var(--ab-trans);
 }
-.ab-case-close:hover {
+.ab-root .ab-case-close:hover {
   background: var(--ab-fg);
   color: var(--ab-bg);
   border-color: var(--ab-fg);
@@ -2455,7 +2461,12 @@
   align-items: center;
   gap: 6px;
 }
-.ab-nf-ctrl {
+/* `.ab-root` prefix required: these are <button>s, and `.ab-root button` (0,1,1)
+   otherwise outranks this rule (0,1,0) and resets `font` and `color`. It has
+   been doing exactly that, so the 404 controls rendered at 16px in full
+   foreground with no visible difference between the active language and the
+   other one. Same trap the nav's language pill escaped by sitting on a <div>. */
+.ab-root .ab-nf-ctrl {
   appearance: none;
   background: transparent;
   border: 0;
@@ -2467,10 +2478,12 @@
   cursor: pointer;
   transition: color var(--ab-trans);
 }
-.ab-nf-ctrl:hover {
+.ab-root .ab-nf-ctrl:hover {
   color: var(--ab-fg);
 }
-.ab-nf-ctrl.is-active {
+/* Same attribute the nav's segmented control uses, so the active state has one
+   source of truth instead of a class that has to agree with an aria attribute. */
+.ab-root .ab-nf-ctrl[aria-current] {
   color: var(--ab-fg);
 }
 .ab-nf-ctrl-sep {

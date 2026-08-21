@@ -344,3 +344,79 @@ test("the language toggle is a bordered pill on desktop and on mobile", async ({
     expect(widths[0], `segment widths at ${width}px`).toBe(widths[1]);
   }
 });
+
+// ── Test 15: the custom 404 renders, with the real brand mark ────────────────
+// It had no coverage at all, which is how its inline copy of the monogram lost
+// two of its four paths and had the ink and accent roles swapped without anyone
+// noticing. The mark comes from the shared <BrandLogo> now.
+test("the 404 renders the editorial chrome and the full brand mark", async ({
+  page,
+}) => {
+  const res = await page.goto("/definitely-not-a-real-page");
+  expect(res?.status()).toBe(404);
+
+  // Ours, not Next's default.
+  await expect(page.locator(".ab-nf-root")).toBeVisible();
+  await expect(page.locator("main#main-content")).toHaveCount(1);
+
+  const logo = page.locator(".ab-nf-mark .ab-logo");
+  await expect(logo).toBeVisible();
+  await expect(logo.locator("path.ab-dark")).toHaveCount(2);
+  await expect(logo.locator("path.ab-accent")).toHaveCount(2);
+});
+
+// ── Test 16: the 404's controls speak the same language as the nav ───────────
+test("the 404 language control is fixed-order, marked with aria-current, and the active one is a no-op", async ({
+  page,
+}) => {
+  await page.goto("/definitely-not-a-real-page");
+
+  const langs = page.locator(".ab-nf-controls button.ab-nf-ctrl");
+  await expect(langs).toHaveCount(2);
+  await expect(langs.first()).toHaveText("EN");
+  await expect(langs.last()).toHaveText("ES");
+  await expect(langs.first()).toHaveAttribute("lang", "en");
+  await expect(langs.last()).toHaveAttribute("lang", "es");
+
+  // aria-current, not aria-pressed: one convention across the site.
+  const current = page.locator(".ab-nf-controls button[aria-current]");
+  await expect(current).toHaveCount(1);
+  await expect(current).toHaveText("EN");
+  await expect(page.locator(".ab-nf-controls [aria-pressed]")).toHaveCount(0);
+
+  // Pressing the language you are already in does nothing.
+  await current.click();
+  await page.waitForTimeout(500);
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+
+  // Pressing the other one switches, and stays on the 404.
+  await langs.last().click();
+  await expect(page.locator("html")).toHaveAttribute("lang", "es");
+  await expect(page.locator(".ab-nf-root")).toBeVisible();
+});
+
+// ── Test 17: the theme control is the same icon button everywhere ────────────
+// The 404 used to render a text button reading "Light"/"Dark" while the header
+// used a 34px sun/moon. `.ab-root button` also stripped the ring off both.
+test("the theme toggle is a 34px ringed icon button on the homepage and the 404", async ({
+  page,
+}) => {
+  for (const path of ["/", "/definitely-not-a-real-page"]) {
+    await page.goto(path);
+    const toggle = page.locator("button.ab-theme-toggle");
+    await expect(toggle).toHaveCount(1);
+    await expect(toggle.locator("svg.sun")).toHaveCount(1);
+    await expect(toggle.locator("svg.moon")).toHaveCount(1);
+    await expect(toggle).toHaveText("");
+
+    const chrome = await toggle.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return { w: cs.width, h: cs.height, border: cs.borderTopWidth };
+    });
+    expect(chrome, `theme toggle chrome on ${path}`).toEqual({
+      w: "34px",
+      h: "34px",
+      border: "1px",
+    });
+  }
+});

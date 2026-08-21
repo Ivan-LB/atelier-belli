@@ -5,10 +5,8 @@
     "titleIt": "found.",
     "description": "Sorry, the page you're looking for doesn't exist or has been moved.",
     "backHome": "Back to Home",
-    "themeToggleLight": "Light",
-    "themeToggleDark": "Dark",
     "themeToggleAria": "Toggle theme",
-    "localeSwitchAria": "Cambiar a Español",
+    "controlsAria": "Site controls",
     "footerMeta": "Software · Digital craft"
   },
   "layout": {
