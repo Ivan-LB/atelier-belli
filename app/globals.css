@@ -3404,18 +3404,46 @@
   color: var(--fg-2);
 }
 .ab-jugo .jg-download {
-  transition: background var(--ab-trans), color var(--ab-trans), transform 140ms ease-out;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 26px 10px 10px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #4be274 0%, #2cbf52 55%, #23a847 100%);
+  color: #06140a;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  box-shadow:
+    inset 0 1px 0 #ffffff66,
+    inset 0 -1px 0 #0000001f,
+    0 10px 28px -10px #23a84799;
+  transition: transform 140ms ease-out, box-shadow 200ms var(--jg-ease-out), filter 200ms var(--jg-ease-out);
 }
 .ab-jugo .jg-download:active {
   transform: scale(0.97);
 }
-.ab-jugo .jg-download-arrow {
-  font-size: 16px;
-  transition: transform 200ms var(--jg-ease-out);
+.ab-jugo .jg-download:focus-visible {
+  outline: 2px solid var(--jg-juice-ink);
+  outline-offset: 3px;
+}
+.ab-jugo .jg-download-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px #00000040;
+  transition: transform 260ms var(--jg-ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
-  .ab-jugo .jg-download:hover .jg-download-arrow {
-    transform: translateY(2px);
+  .ab-jugo .jg-download:hover {
+    filter: brightness(1.05) saturate(1.05);
+    box-shadow:
+      inset 0 1px 0 #ffffff66,
+      inset 0 -1px 0 #0000001f,
+      0 14px 34px -10px #23a847b3;
+  }
+  .ab-jugo .jg-download:hover .jg-download-icon {
+    transform: translateY(-1px) rotate(-4deg);
   }
 }
 .ab-jugo .jg-download-meta {

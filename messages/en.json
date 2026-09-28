@@ -876,9 +876,8 @@
       "kicker": "macOS · Free",
       "titleRich": "Your battery, <it>no surprises.</it>",
       "lede": "Jugo turns the notch into a small island that tells you what your battery is doing, right when it matters: when you plug in, when it's full, and before it runs out.",
-      "downloadLabel": "Download",
-      "downloadValue": "Jugo for Mac",
-      "downloadMeta": "Version 1.0 · macOS 26 or later · Apple silicon and Intel · 2.5 MB · Notarized by Apple"
+      "downloadMeta": "Version 1.0 · macOS 26 or later · Apple silicon and Intel · 2.5 MB · Notarized by Apple",
+      "downloadCta": "Download Jugo for Mac"
     },
     "demo": {
       "caption": "The island, live: charging, full, and the one you don't want to miss.",

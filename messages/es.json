@@ -876,9 +876,8 @@
       "kicker": "macOS · Gratis",
       "titleRich": "Tu batería, <it>sin sorpresas.</it>",
       "lede": "Jugo convierte el notch en una pequeña isla que te dice qué está haciendo tu batería justo cuando importa: al conectar, cuando se llena y antes de que se acabe.",
-      "downloadLabel": "Descargar",
-      "downloadValue": "Jugo para Mac",
-      "downloadMeta": "Versión 1.0 · macOS 26 o posterior · Apple silicon e Intel · 2.5 MB · Notarizada por Apple"
+      "downloadMeta": "Versión 1.0 · macOS 26 o posterior · Apple silicon e Intel · 2.5 MB · Notarizada por Apple",
+      "downloadCta": "Descargar Jugo para Mac"
     },
     "demo": {
       "caption": "La isla, en vivo: cargando, llena, y la que no te quieres perder.",

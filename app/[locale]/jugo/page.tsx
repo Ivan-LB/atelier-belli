@@ -54,7 +54,7 @@ export default function JugoPage() {
               {t.rich("hero.titleRich", { it })}
             </h1>
             <p className="jg-lede">{t("hero.lede")}</p>
-            <DownloadButton label={t("hero.downloadLabel")} value={t("hero.downloadValue")} />
+            <DownloadButton label={t("hero.downloadCta")} />
             <p className="jg-download-meta">{t("hero.downloadMeta")}</p>
           </div>
 
@@ -132,7 +132,7 @@ export default function JugoPage() {
           <h2 id="jg-closing" className="ab-serif jg-title">
             {t.rich("closing.titleRich", { it })}
           </h2>
-          <DownloadButton label={t("hero.downloadLabel")} value={t("hero.downloadValue")} />
+          <DownloadButton label={t("hero.downloadCta")} />
           <p className="jg-download-meta">{t("hero.downloadMeta")}</p>
         </section>
       </main>
@@ -152,15 +152,15 @@ export default function JugoPage() {
   )
 }
 
-/** Reuses the homepage's mail pill (label | serif value), filled on hover. */
-function DownloadButton({ label, value }: { label: string; value: string }) {
+/** The one filled button on the page: juice-green, the app's own icon, and a dark
+    label (white on this green would sit near 2:1). Apple's logo is off-limits on
+    a self-hosted download, so the app icon does that job. */
+function DownloadButton({ label }: { label: string }) {
   return (
-    <a className="ab-btn-mail jg-download" href={DOWNLOAD_HREF} download>
-      <span className="lbl">{label}</span>
-      <span className="mail">{value}</span>
-      <span className="jg-download-arrow" aria-hidden="true">
-        ↓
-      </span>
+    <a className="jg-download" href={DOWNLOAD_HREF} download>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className="jg-download-icon" src="/apps/jugo-icon.webp" alt="" width={32} height={32} aria-hidden="true" />
+      <span>{label}</span>
     </a>
   )
 }
