@@ -20,6 +20,7 @@ const paths = [
   "/fave/support",
   "/fingo/privacy",
   "/fingo/support",
+  "/jugo",
   "/savely/privacy",
   "/savely/support",
 ]
