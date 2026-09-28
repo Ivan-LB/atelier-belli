@@ -18,6 +18,7 @@ type Lang = "en" | "es"
 type Theme = "light" | "dark"
 
 type CaseKey =
+  | "jugo"
   | "fingo"
   | "savely"
   | "mezcal"
@@ -33,6 +34,7 @@ type CaseKey =
 const CASE_KEYS: readonly CaseKey[] = [
   "alisio",
   "savely",
+  "jugo",
   "fave",
   "pass",
   "fingo",
@@ -287,8 +289,31 @@ export default function PortfolioPage() {
         },
       ],
     },
-    fave: {
+    jugo: {
       num: "03",
+      kicker: `${caseFacet("jugo")} · 2026`,
+      title: {
+        pre: "Jugo — ",
+        it: t("cases.jugo.titleIt"),
+      },
+      desc: t.rich("cases.jugo.descRich", { it: (chunks) => <em>{chunks}</em> }),
+      meta: [
+        [t("cases.meta.platform"), "macOS 26+"],
+        [t("cases.meta.stack"), "SwiftUI · IOKit · WidgetKit · Sparkle"],
+        [t("cases.meta.status"), t("cases.jugo.metaStatus")],
+        [t("cases.meta.year"), "2026"],
+      ],
+      actions: [
+        {
+          label: t("cases.jugo.actionPrimary"),
+          href: "/jugo",
+          kind: "primary",
+        },
+      ],
+      preview: "jugo",
+    },
+    fave: {
+      num: "04",
       kicker: `${caseFacet("fave")} · 2026`,
       title: {
         pre: "Fave — ",
@@ -324,7 +349,7 @@ export default function PortfolioPage() {
       preview: "fave",
     },
     pass: {
-      num: "04",
+      num: "05",
       kicker: `${caseFacet("pass")} · 2026`,
       title: {
         pre: "Pass — ",
@@ -350,7 +375,7 @@ export default function PortfolioPage() {
       highlights: t.raw("cases.pass.highlights") as string[],
     },
     fingo: {
-      num: "05",
+      num: "06",
       kicker: `${caseFacet("fingo")} · 2025`,
       title: {
         pre: "Fingo — ",
@@ -387,7 +412,7 @@ export default function PortfolioPage() {
       preview: "fingo",
     },
     vitapath: {
-      num: "06",
+      num: "07",
       kicker: `${caseFacet("vitapath")} · 2026`,
       title: {
         pre: "Vitapath — ",
@@ -433,7 +458,7 @@ export default function PortfolioPage() {
       ],
     },
     arrhythmia: {
-      num: "07",
+      num: "08",
       kicker: `${caseFacet("arrhythmia")} · 2026`,
       title: {
         pre: "Arrhythmia Detector — ",
@@ -481,7 +506,7 @@ export default function PortfolioPage() {
       ],
     },
     mezcal: {
-      num: "08",
+      num: "09",
       kicker: `${caseFacet("mezcal")} · 2025`,
       title: {
         pre: "Mi Mezcal — ",
@@ -506,7 +531,7 @@ export default function PortfolioPage() {
       preview: "mezcal",
     },
     briefmark: {
-      num: "09",
+      num: "10",
       kicker: `${caseFacet("briefmark")} · 2026`,
       title: {
         pre: "Briefmark — ",
@@ -579,7 +604,7 @@ export default function PortfolioPage() {
       ],
     },
     blip: {
-      num: "10",
+      num: "11",
       kicker: `${caseFacet("blip")} · 2026`,
       title: {
         pre: "BLIP — ",
@@ -971,6 +996,11 @@ export default function PortfolioPage() {
                   CaseKey,
                   { name: { pre: string; it: string }; tag: string; stack: string[] }
                 > = {
+                  jugo: {
+                    name: { pre: "Jugo", it: ` — ${t("cases.jugo.titleIt")}` },
+                    tag: t("cases.jugo.tag"),
+                    stack: ["SwiftUI", "IOKit", "WidgetKit"],
+                  },
                   fave: {
                     name: { pre: "Fave", it: ` — ${t("cases.fave.titleIt")}` },
                     tag: t("cases.fave.tag"),
@@ -1236,7 +1266,7 @@ export default function PortfolioPage() {
         {activeCase && (
           <div className="ab-case-body">
             <div
-              className={`ab-case-preview${["mezcal", "blip", "pass", "vitapath", "arrhythmia"].includes(activeCase.preview) ? " web-preview" : ""}${["alisio", "savely", "fave", "fingo", "briefmark"].includes(activeCase.preview) ? " tall-preview" : ""}`}
+              className={`ab-case-preview${["mezcal", "blip", "pass", "vitapath", "arrhythmia", "jugo"].includes(activeCase.preview) ? " web-preview" : ""}${["alisio", "savely", "fave", "fingo", "briefmark"].includes(activeCase.preview) ? " tall-preview" : ""}`}
             >
               <CasePreview which={activeCase.preview} />
             </div>
@@ -1515,6 +1545,17 @@ function CaseGallery({ media }: { media: Extract<CaseMedia, { kind: "gallery" }>
 /* No `useTranslations` here on purpose: every URL bar is now a real domain or a
    lowercase product slug, and a slug is an identifier, not copy to translate. */
 function CasePreview({ which }: { which: CaseKey }) {
+  if (which === "jugo") {
+    /* A macOS menu bar app has no window to frame: the capture is the top of a
+       MacBook display, island open out of the notch, so it gets a bezel instead
+       of a browser bar. Rendered from the app's own SwiftUI views. */
+    return (
+      <div className="ab-mac-frame" aria-hidden="true">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="ab-mac-shot" src="/cases/jugo-island.webp" alt="" width={1200} height={340} loading="lazy" />
+      </div>
+    )
+  }
   if (which === "fingo") {
     return (
       <div className="ab-phone-img fingo" aria-hidden="true" style={{ ["--w" as any]: "280px" }}>

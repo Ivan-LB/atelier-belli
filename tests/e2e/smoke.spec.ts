@@ -136,9 +136,9 @@ test("theme toggle flips data-theme and persists to localStorage", async ({
   expect(stored).toBe(flippedTheme);
 });
 
-// ── Test 5: Spanish shows all ten cases ──────────────────────────────────────
-// Bump this count when an 11th case ships (also update CASE_KEYS in page.tsx).
-test("Spanish shows all ten cases", async ({ browser }) => {
+// ── Test 5: Spanish shows all eleven cases ───────────────────────────────────
+// Bump this count when a 12th case ships (also update CASE_KEYS in page.tsx).
+test("Spanish shows all eleven cases", async ({ browser }) => {
   const context = await browser.newContext();
   await context.addCookies([
     { name: "NEXT_LOCALE", value: "es", url: "http://localhost:3100" },
@@ -146,7 +146,7 @@ test("Spanish shows all ten cases", async ({ browser }) => {
   const page = await context.newPage();
   await page.goto("/");
   await expect(page.locator("html")).toHaveAttribute("lang", "es");
-  await expect(page.locator("button.ab-index-row")).toHaveCount(10);
+  await expect(page.locator("button.ab-index-row")).toHaveCount(11);
   await context.close();
 });
 
@@ -419,4 +419,23 @@ test("the theme toggle is a 34px ringed icon button on the homepage and the 404"
       border: "1px",
     });
   }
+});
+
+// ── Jugo landing: the download it advertises must exist ──────────────────────
+// The DMG and appcast are static files beside the page (public/jugo/). A renamed
+// or missing DMG would leave every download button on /jugo/ pointing at a 404.
+test("the Jugo landing's download buttons point at a real DMG", async ({ page, request }) => {
+  await page.goto("/jugo/");
+  await expect(page.locator("main#main-content")).toHaveCount(1);
+  const hrefs = await page.locator('a[href$=".dmg"]').evaluateAll((links) =>
+    links.map((a) => a.getAttribute("href")),
+  );
+  expect(hrefs.length).toBeGreaterThanOrEqual(2);
+  for (const href of new Set(hrefs)) {
+    const response = await request.head(href!);
+    expect(response.status()).toBe(200);
+  }
+  const appcast = await request.get("/jugo/appcast.xml");
+  expect(appcast.status()).toBe(200);
+  expect(await appcast.text()).toContain("sparkle:edSignature");
 });

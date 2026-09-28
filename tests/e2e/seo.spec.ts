@@ -25,6 +25,7 @@ const ROUTES = [
   "/fave/support/",
   "/fingo/privacy/",
   "/fingo/support/",
+  "/jugo/",
   "/savely/privacy/",
   "/savely/support/",
 ];
@@ -52,7 +53,7 @@ function metaContent(page: import("@playwright/test").Page, name: string) {
 
 // ── Sitemap ─────────────────────────────────────────────────────────────────
 
-test("sitemap lists exactly the 11 canonical routes", async ({ request }) => {
+test("sitemap lists exactly the 12 canonical routes", async ({ request }) => {
   const response = await request.get("/sitemap.xml");
   expect(response.status()).toBe(200);
 
