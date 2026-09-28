@@ -10,6 +10,8 @@ import ThemeInit from "@/components/theme-init"
 /* The release lives beside this page as static files (public/jugo/). The appcast
    URL next to it is compiled into every installed copy: never move the folder. */
 const DOWNLOAD_HREF = "/jugo/Jugo-1.0.dmg"
+const FILM_SRC = "/cases/video/jugo-launch.mp4"
+const FILM_POSTER = "/cases/video/jugo-launch-poster.webp"
 
 const it = (chunks: ReactNode) => <em className="ab-it">{chunks}</em>
 
@@ -61,6 +63,23 @@ export default function JugoPage() {
           <figure className="jg-demo">
             <JugoIsland alerts={alerts} label={t("demo.aria")} />
             <figcaption>{t("demo.caption")}</figcaption>
+          </figure>
+        </section>
+
+        {/* The launch film carries its own soundtrack, so unlike the silent case
+            clips it gets native controls and never autoplays. */}
+        <section className="ab-wrap jg-film" aria-label={t("film.aria")}>
+          <figure>
+            <video
+              src={FILM_SRC}
+              poster={FILM_POSTER}
+              width={1920}
+              height={1080}
+              controls
+              playsInline
+              preload="none"
+            />
+            <figcaption>{t("film.caption")}</figcaption>
           </figure>
         </section>
 
