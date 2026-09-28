@@ -74,6 +74,20 @@ getting updates. Both files come out of that repo's `scripts/release.sh`; copy t
 unchanged (the appcast is signed). They bypass the locale middleware because the matcher
 skips paths with a file extension. Keep older DMGs when adding a new one.
 
+### Jugo landing (`/jugo`)
+
+`app/[locale]/jugo/page.tsx` is a product page, not a legal one: it borrows the
+legal chrome (`.ab-legal-nav`, `.ab-legal-foot`) and `.ab-root` themes, and adds a
+local `.ab-jugo` scope in `globals.css` for the app's own voice (island black,
+charging green `--jg-*`, never read outside that scope). Its hero is
+`components/jugo-island.tsx`, a web port of the app's Dynamic-Island alert:
+width and height open on two separate springs sampled as CSS `linear()` from
+SwiftUI's `spring(duration:bounce:)`, so it moves like the real app. It only
+animates while on screen and holds one alert open under reduced motion. The
+case preview reuses `public/cases/jugo-island.webp` in a `.ab-mac-frame` bezel
+(landscape, so `jugo` is in the `web-preview` list). Captures are renders of the
+app's own SwiftUI views with real readings from a Mac, not mockups.
+
 ### Case studies (Selected Work)
 
 **Which repo backs which case.** Derived from the action URLs in `page.tsx` and
@@ -93,6 +107,7 @@ needs a re-capture, since that means booting the real product.
 | `briefmark` | `Swift/Briefmark` + `Backend/briefmark-backend` | `Briefmark`, `Briefmark-backend` |
 | `savely` | `Swift/Savely` | `Ivan-LB/Savely` |
 | `blip` | `_archive/blip` | **none — not a git repo at all** |
+| `jugo` | `Swift/batteryAnimations` | none yet (local repo) |
 
 Two traps in that table. **`blip` is not under version control**: it is the only
 case whose code exists solely as a folder on disk. And **`destileria-lorenzana`
@@ -102,8 +117,10 @@ squashed into a single `Redesing (#13)` on main. The *content* of the two
 branches is byte-identical (verified 2026-08-03); do not "fix" the divergence
 by force-pushing either side.
 
-Ten cases as of 2026-08-18, in this display order: `alisio`, `savely`, `fave`,
-`pass`, `fingo`, `vitapath`, `arrhythmia`, `mezcal`, `briefmark`, `blip`. Savely
+Eleven cases as of 2026-09-28, in this display order: `alisio`, `savely`, `jugo`,
+`fave`, `pass`, `fingo`, `vitapath`, `arrhythmia`, `mezcal`, `briefmark`, `blip`.
+Jugo (macOS) went in at 03 the day 1.0 shipped; it is compact tier and its
+primary action is the internal `/jugo` landing, not an external store link. Savely
 moved from 09 to 02 the day it went into App Store review; it sits ahead of Fave
 by Iván's call (maturity over recency — it is the larger, older project). **Order is
 defined once by the `CASE_KEYS` array** (top of `page.tsx`) — the Selected Work
@@ -220,7 +237,7 @@ gallery-only or story-without-highlights tier: `story` and `highlights` ship
 together or not at all.
 
 - flagship: `alisio`, `savely`, `pass`, `vitapath`, `arrhythmia`
-- compact: `fave`, `fingo`, `mezcal`, `briefmark`, `blip`
+- compact: `fave`, `fingo`, `mezcal`, `briefmark`, `blip`, `jugo`
 - `pass` is deliberately flagship **without** `media`: a serverless platform has
   no screen to capture, so it renders the `.ab-arch` SVG instead.
 - `fave` and `fingo` are the strongest candidates for promotion next; both ship
@@ -705,7 +722,8 @@ labels (`"EN"`/`"ES"`). That is correct; routing is not a translation
 concern.
 
 `messages/*.json` top-level namespaces in use: `notFound`, `layout`,
-`legal`, `home`, `support` (with `support.fingo.*` and `support.savely.*`).
+`legal`, `home`, `support` (with `support.fingo.*` and `support.savely.*`),
+and `jugo` (the `/jugo` landing).
 Adding new copy = pick the right namespace, add the key to BOTH dictionaries
 (EN value matches user-facing English; ES matches Spanish), then consume via
 `useTranslations(namespace)`.

@@ -850,7 +850,119 @@
         "kickerPlatform": "Web",
         "kickerDomain": "ML",
         "mshowStatus": "Demo funcional"
+      },
+      "jugo": {
+        "titleIt": "tu batería, sin sorpresas.",
+        "descRich": "Una app de barra de menús para macOS que convierte el notch en una <it>Dynamic Island</it> para las alertas de batería y reúne AirPods, iPhone y accesorios en un solo lugar. Notarizada, se actualiza sola y es gratis.",
+        "metaStatus": "Descarga gratis",
+        "actionPrimary": "Descargar Jugo",
+        "tag": "El notch, como Dynamic Island de tu batería.",
+        "kickerPlatform": "macOS",
+        "kickerDomain": "Utilidades",
+        "mshowStatus": "Gratis"
       }
+    }
+  },
+  "jugo": {
+    "meta": {
+      "title": "Jugo: alertas de batería para tu Mac",
+      "description": "Jugo convierte el notch de tu Mac en una Dynamic Island para las alertas de batería y vigila tus AirPods, iPhone y accesorios. Gratis para macOS."
+    },
+    "nav": {
+      "back": "Atelier Belli",
+      "download": "Descargar"
+    },
+    "hero": {
+      "kicker": "macOS · Gratis",
+      "titleRich": "Tu batería, <it>sin sorpresas.</it>",
+      "lede": "Jugo convierte el notch en una pequeña isla que te dice qué está haciendo tu batería justo cuando importa: al conectar, cuando se llena y antes de que se acabe.",
+      "downloadLabel": "Descargar",
+      "downloadValue": "Jugo para Mac",
+      "downloadMeta": "Versión 1.0 · macOS 26 o posterior · Apple silicon e Intel · 2.5 MB · Notarizada por Apple"
+    },
+    "demo": {
+      "caption": "La isla, en vivo: cargando, llena, y la que no te quieres perder.",
+      "aria": "Ejemplo animado de las alertas de Jugo saliendo del notch de una MacBook",
+      "chargingTitle": "Cargando",
+      "chargingSub": "72% · lleno en 48 min",
+      "fullTitle": "Carga completa",
+      "fullSub": "Ya puedes desconectar",
+      "lowTitle": "12% restante",
+      "lowSub": "Conecta pronto"
+    },
+    "devices": {
+      "titleRich": "Todas tus baterías, <it>de un vistazo.</it>",
+      "body": "Abre Jugo desde la barra de menús y ve tu Mac junto a tus AirPods (izquierdo, derecho y estuche), tu iPhone y iPad por USB o Wi‑Fi, y tus accesorios Magic. Del más bajo al más alto, para que lo que necesita cargador siempre quede arriba.",
+      "caption": "El menú, capturado en una Mac real.",
+      "alt": "El menú de Jugo: la Mac al 82% con 7 h 40 min restantes y 96% de salud, estadísticas de batería y AirPods Pro al 100%"
+    },
+    "health": {
+      "titleRich": "Salud que <it>sí se entiende.</it>",
+      "body": "Los números que macOS se guarda, a la vista. Son los de la Mac de la captura de arriba.",
+      "stats": [
+        [
+          "96%",
+          "de salud",
+          "La capacidad de hoy contra la de nueva, el mismo dato que muestra Ajustes del Sistema."
+        ],
+        [
+          "144",
+          "de 1,000 ciclos",
+          "Cuánto de su vida útil lleva usada la batería."
+        ],
+        [
+          "6,028",
+          "mAh",
+          "Capacidad real, no solo un porcentaje."
+        ],
+        [
+          "12 W",
+          "de consumo, en vivo",
+          "Lo que entra o sale en este momento."
+        ]
+      ]
+    },
+    "details": {
+      "titleRich": "Detalles, <it>bien hechos.</it>",
+      "items": [
+        "Alertas a tu medida: elige el porcentaje, el sonido, el color y si sale del notch o flota al centro.",
+        "Sabe quién se la come: energía por app de la última hora, día, semana o mes.",
+        "Respeta a macOS: sigue tu límite de carga, muestra el Modo de bajo consumo en amarillo como en iPhone y puede cerrar el aviso de batería baja del sistema.",
+        "Un widget para tu escritorio en tres tamaños, lo más bajo primero.",
+        "Compatible con Reducir movimiento: si lo activas, la isla solo aparece y desaparece suave.",
+        "En español e inglés, según tu Mac."
+      ]
+    },
+    "privacy": {
+      "title": "Se queda en tu Mac.",
+      "body": "Sin cuenta, sin analítica, sin rastreo. Jugo lee tus baterías en tu Mac. Lo único que le pregunta a internet es si hay una versión nueva."
+    },
+    "faq": {
+      "title": "Preguntas",
+      "items": [
+        [
+          "¿Por qué no está en la Mac App Store?",
+          "Leer AirPods, iPhone y la energía por app requiere acceso al sistema que el sandbox de la App Store no permite. En su lugar, Jugo está notarizada por Apple y se actualiza sola."
+        ],
+        [
+          "¿De verdad es gratis?",
+          "Sí. Sin prueba, sin cuenta, sin compras dentro de la app."
+        ],
+        [
+          "¿Mi iPhone necesita cable?",
+          "Solo una vez. Conéctalo, toca Confiar y activa “Mostrar este iPhone cuando esté en Wi‑Fi” en Finder. Desde ahí Jugo lo lee por tu red."
+        ],
+        [
+          "¿Qué necesito?",
+          "Una Mac con macOS 26 o posterior, con Apple silicon o Intel."
+        ]
+      ]
+    },
+    "closing": {
+      "titleRich": "Dale voz <it>a tu batería.</it>"
+    },
+    "foot": {
+      "madeBy": "Hecho en Tijuana por Atelier Belli"
     }
   }
 }

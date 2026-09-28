@@ -850,7 +850,119 @@
         "kickerPlatform": "Web",
         "kickerDomain": "ML",
         "mshowStatus": "Working demo"
+      },
+      "jugo": {
+        "titleIt": "your battery, no surprises.",
+        "descRich": "A macOS menu bar app that turns the notch into a <it>Dynamic Island</it> for battery alerts, and tracks AirPods, iPhone and accessories in one place. Notarized, self-updating and free.",
+        "metaStatus": "Free download",
+        "actionPrimary": "Get Jugo",
+        "tag": "The notch, as a Dynamic Island for your battery.",
+        "kickerPlatform": "macOS",
+        "kickerDomain": "Utility",
+        "mshowStatus": "Free"
       }
+    }
+  },
+  "jugo": {
+    "meta": {
+      "title": "Jugo: battery alerts for your Mac",
+      "description": "Jugo turns your Mac's notch into a Dynamic Island for battery alerts and keeps an eye on your AirPods, iPhone and accessories. Free for macOS."
+    },
+    "nav": {
+      "back": "Atelier Belli",
+      "download": "Download"
+    },
+    "hero": {
+      "kicker": "macOS · Free",
+      "titleRich": "Your battery, <it>no surprises.</it>",
+      "lede": "Jugo turns the notch into a small island that tells you what your battery is doing, right when it matters: when you plug in, when it's full, and before it runs out.",
+      "downloadLabel": "Download",
+      "downloadValue": "Jugo for Mac",
+      "downloadMeta": "Version 1.0 · macOS 26 or later · Apple silicon and Intel · 2.5 MB · Notarized by Apple"
+    },
+    "demo": {
+      "caption": "The island, live: charging, full, and the one you don't want to miss.",
+      "aria": "Animated example of Jugo alerts growing out of a MacBook notch",
+      "chargingTitle": "Charging",
+      "chargingSub": "72% · full in 48 min",
+      "fullTitle": "Fully charged",
+      "fullSub": "Ready to unplug",
+      "lowTitle": "12% left",
+      "lowSub": "Plug in soon"
+    },
+    "devices": {
+      "titleRich": "Every battery, <it>one glance.</it>",
+      "body": "Open Jugo from the menu bar and see your Mac next to your AirPods (left, right and case), your iPhone and iPad over USB or Wi‑Fi, and your Magic accessories. Lowest first, so whatever needs a charger is always on top.",
+      "caption": "The menu, captured on a real Mac.",
+      "alt": "Jugo's menu: the Mac at 82% with 7 h 40 min left and 96% health, battery stats, and AirPods Pro at 100%"
+    },
+    "health": {
+      "titleRich": "Health you can <it>actually read.</it>",
+      "body": "The numbers macOS keeps to itself, in plain view. These are from the Mac in the capture above.",
+      "stats": [
+        [
+          "96%",
+          "health",
+          "Capacity today versus new, the same figure System Settings shows."
+        ],
+        [
+          "144",
+          "of 1,000 cycles",
+          "How much of its rated life the battery has used so far."
+        ],
+        [
+          "6,028",
+          "mAh",
+          "Real capacity, not just a percentage."
+        ],
+        [
+          "12 W",
+          "draw, live",
+          "What's going in or coming out, right now."
+        ]
+      ]
+    },
+    "details": {
+      "titleRich": "Small things, <it>done properly.</it>",
+      "items": [
+        "Alerts you shape: pick the percentage, the sound, the color, and whether it grows from the notch or floats mid-screen.",
+        "Knows who's draining it: energy by app for the last hour, day, week or month.",
+        "Respects macOS: it follows your charge limit, shows Low Power Mode in yellow like iPhone, and can close the system's own low battery pop-up.",
+        "A desktop widget in three sizes, lowest battery first.",
+        "Reduce Motion aware: with it on, the island simply fades in and out.",
+        "In English and Spanish, following your Mac."
+      ]
+    },
+    "privacy": {
+      "title": "It stays on your Mac.",
+      "body": "No account, no analytics, no tracking. Jugo reads your batteries locally. The only thing it ever asks the internet is whether there's a new version."
+    },
+    "faq": {
+      "title": "Questions",
+      "items": [
+        [
+          "Why isn't it on the Mac App Store?",
+          "Reading AirPods, iPhone and per-app energy needs system access the App Store sandbox doesn't allow. Jugo is notarized by Apple instead, and it updates itself."
+        ],
+        [
+          "Is it really free?",
+          "Yes. No trial, no account, no in-app purchases."
+        ],
+        [
+          "Does my iPhone need a cable?",
+          "Only once. Connect it, tap Trust, then turn on “Show this iPhone when on Wi‑Fi” in Finder. From then on Jugo reads it over your network."
+        ],
+        [
+          "What do I need?",
+          "A Mac running macOS 26 or later, with Apple silicon or Intel."
+        ]
+      ]
+    },
+    "closing": {
+      "titleRich": "Give your battery <it>a voice.</it>"
+    },
+    "foot": {
+      "madeBy": "Made in Tijuana by Atelier Belli"
     }
   }
 }
