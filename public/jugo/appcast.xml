@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>Jugo</title>
+        <item>
+            <title>1.0</title>
+            <pubDate>Mon, 28 Sep 2026 10:33:11 -0700</pubDate>
+            <sparkle:version>1</sparkle:version>
+            <sparkle:shortVersionString>1.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>26.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://atelierbelli.com/jugo/Jugo-1.0.dmg" length="2559366" type="application/octet-stream" sparkle:edSignature="fjEIkAhkaji9Q/avVy0R+tIsn9YCsi0x8DNMDzW7/C+RwmIqS+5JrtneMJqO2B6TSmFUJPOYrmfCfbYL6c5ZBg=="/>
+        </item>
+    </channel>
+</rss>

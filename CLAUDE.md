@@ -64,6 +64,16 @@ one Next.js app:
 
 Fully bilingual EN/ES. Static site (no database, no auth, no server actions).
 
+### Jugo downloads (`public/jugo/`)
+
+Static files for Jugo, the macOS battery app (repo `~/Projects/Swift/batteryAnimations`):
+the notarized `Jugo-<version>.dmg` and Sparkle's `appcast.xml`. **The URL
+`https://atelierbelli.com/jugo/appcast.xml` is compiled into every installed copy of the
+app** (`SUFeedURL`), so never move or rename this folder; installed apps would silently stop
+getting updates. Both files come out of that repo's `scripts/release.sh`; copy them here
+unchanged (the appcast is signed). They bypass the locale middleware because the matcher
+skips paths with a file extension. Keep older DMGs when adding a new one.
+
 ### Case studies (Selected Work)
 
 **Which repo backs which case.** Derived from the action URLs in `page.tsx` and
