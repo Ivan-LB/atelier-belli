@@ -889,6 +889,10 @@
       "lowTitle": "12% restante",
       "lowSub": "Conecta pronto"
     },
+    "film": {
+      "caption": "Jugo en veinte segundos, con sonido (en inglés).",
+      "aria": "Video de lanzamiento de Jugo: las alertas del notch, el menú de baterías y la descarga"
+    },
     "devices": {
       "titleRich": "Todas tus baterías, <it>de un vistazo.</it>",
       "body": "Abre Jugo desde la barra de menús y ve tu Mac junto a tus AirPods (izquierdo, derecho y estuche), tu iPhone y iPad por USB o Wi‑Fi, y tus accesorios Magic. Del más bajo al más alto, para que lo que necesita cargador siempre quede arriba.",

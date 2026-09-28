@@ -889,6 +889,10 @@
       "lowTitle": "12% left",
       "lowSub": "Plug in soon"
     },
+    "film": {
+      "caption": "Twenty seconds of Jugo. Sound on.",
+      "aria": "Jugo launch film: the notch alerts, the battery menu and the download"
+    },
     "devices": {
       "titleRich": "Every battery, <it>one glance.</it>",
       "body": "Open Jugo from the menu bar and see your Mac next to your AirPods (left, right and case), your iPhone and iPad over USB or Wi‑Fi, and your Magic accessories. Lowest first, so whatever needs a charger is always on top.",
