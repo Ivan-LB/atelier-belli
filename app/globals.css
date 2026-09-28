@@ -3456,12 +3456,32 @@
   margin: 0;
 }
 .ab-jugo .jg-demo figcaption,
-.ab-jugo .jg-capture figcaption {
+.ab-jugo .jg-capture figcaption,
+.ab-jugo .jg-film figcaption {
   margin-top: 14px;
   font-family: var(--ab-serif);
   font-style: italic;
   font-size: 15px;
   color: var(--ab-muted);
+}
+
+/* Launch film: a 16:9 screen in island black, between the hero and the menu. */
+.ab-jugo .jg-film {
+  padding-bottom: clamp(56px, 8vw, 112px);
+}
+.ab-jugo .jg-film figure {
+  margin: 0;
+}
+.ab-jugo .jg-film video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: clamp(14px, 2vw, 28px);
+  background: #0b0b0c;
+  box-shadow:
+    0 0 0 1px #ffffff12,
+    0 40px 80px -40px #00000066;
 }
 
 /* The stage: the top of a MacBook display. Everything inside is sized in design
