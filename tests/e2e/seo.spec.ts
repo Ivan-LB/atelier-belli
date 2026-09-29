@@ -21,6 +21,7 @@ const ROUTES = [
   "/privacy/choices/",
   "/terms/",
   "/alisio/privacy/",
+  "/alisio/support/",
   "/fave/privacy/",
   "/fave/support/",
   "/fingo/privacy/",

@@ -594,6 +594,109 @@
       "privacyLabel": "Privacidad",
       "termsLabel": "Términos",
       "backLabel": "Atelier Belli"
+    },
+    "alisio": {
+      "name": "Alisio",
+      "metaTitle": "Soporte de Alisio",
+      "metaDescription": "Ayuda con Alisio: un botón Iniciar en Apple Watch que no se activa, un pulso que se queda en cero y cómo se calculan tus zonas. Cada mensaje lo lee quien construyó la app.",
+      "navLabel": "Alisio · Soporte",
+      "footMeta": "Alisio · Mesa de soporte",
+      "hero": {
+        "titleHtml": "Ayuda con tus <em>zonas.</em>",
+        "lede": "Alisio lee tu pulso en el Apple Watch y te da un toque en la muñeca cuando entras o sales de tu zona. Tu iPhone lo configura y lo espeja en vivo. Si los dos dejan de hablarse, un número no te cuadra o algo simplemente no se entiende, escríbenos."
+      },
+      "contact": {
+        "titleHtml": "Háblanos.",
+        "sub": "No hay cuenta que podamos consultar, así que cuéntanos qué viste, en qué dispositivo y qué tocaste.",
+        "cards": {
+          "email": {
+            "label": "Correo",
+            "valueHtml": "ivanlorenzana@outlook.com",
+            "hint": "La mesa principal. Escribe cuando quieras.",
+            "href": "mailto:ivanlorenzana@outlook.com"
+          },
+          "sync": {
+            "label": "iPhone y Watch",
+            "valueHtml": "¿No se <em>conectan?</em>",
+            "hint": "Cuéntanos en qué pantalla estabas y qué mostraba cada dispositivo.",
+            "href": "mailto:ivanlorenzana@outlook.com?subject=Alisio%20iPhone%20and%20Watch"
+          },
+          "feature": {
+            "label": "Ideas",
+            "valueHtml": "¿Te <em>falta</em> algo?",
+            "hint": "Cómo entrenas y qué te lo haría más fácil.",
+            "href": "mailto:ivanlorenzana@outlook.com?subject=Alisio%20idea"
+          },
+          "bug": {
+            "label": "Reportar un error",
+            "valueHtml": "¿Se <em>rompió</em> algo?",
+            "hint": "Qué tocaste, qué pasó y una captura si la tienes.",
+            "href": "mailto:ivanlorenzana@outlook.com?subject=Alisio%20bug%20report"
+          }
+        }
+      },
+      "faq": {
+        "titleHtml": "Preguntas <em>comunes.</em>",
+        "sub": "Las que más nos llegan. Si la tuya no está, escríbenos.",
+        "items": [
+          {
+            "q": "¿Por qué no se activa Iniciar en Apple Watch?",
+            "aHtml": "Porque Alisio todavía no está instalado en tu Watch, y la pestaña Entrenar te lo dice justo debajo del botón: <em>Instala Alisio en tu Apple Watch para iniciar</em>. Abre la app Watch en tu iPhone, entra a <em>Apps disponibles</em> e instala Alisio. En cuanto esté ahí, el botón se pinta del color de tu zona solo. Si el botón está encendido pero la sesión no arranca, casi siempre es que el Watch está dormido o Alisio está cerrado en él: abre Alisio en tu Watch y vuelve a tocar el botón."
+          },
+          {
+            "q": "Mi pulso se queda en cero. ¿Qué hago?",
+            "aHtml": "Significa que el Watch no está recibiendo lecturas. La primera vez que inicias una sesión, el Watch le pide permiso a Apple Salud para leer tu ritmo cardiaco y tu energía activa, y para guardar el entrenamiento. Si lo rechazaste, abre la app Salud en tu iPhone, toca tu foto de perfil, luego <em>Apps</em>, elige Alisio y actívalos. En el iPhone, <em>Sin datos del reloj. ¿Sigue abierto Alisio en tu Watch?</em> quiere decir que el Watch dejó de transmitir: levanta la muñeca y revisa que Alisio siga abierto."
+          },
+          {
+            "q": "¿Cómo se calculan mis zonas?",
+            "aHtml": "Con dos datos que capturas una vez, en <em>Ajustes</em>: tu edad y tu frecuencia cardiaca en reposo. Con tu edad se estima tu frecuencia máxima usando la fórmula de Tanaka (208 menos 0.7 por tu edad). <em>Karvonen</em> reparte las cinco zonas entre tu pulso en reposo y tu máximo, así que tu condición física cuenta; <em>Simple</em> usa porcentajes directos del máximo y solo necesita tu edad. La Zona 1 empieza en 50% y cada zona abarca diez puntos, hasta el 100% de la Zona 5. Si cambias cualquiera de los dos datos, <em>Tus zonas</em> se recalcula al momento y se manda a tu Watch."
+          },
+          {
+            "q": "¿Puedo entrenar sin mi iPhone?",
+            "aHtml": "Sí. Abre Alisio en tu Watch, gira la Digital Crown para elegir zona y toca <em>Iniciar</em>. Recuerda la última zona que usaste. Una sesión iniciada desde el Watch no tiene meta de tiempo: el cronómetro corre libre y los avisos de zona funcionan igual. El Watch necesita tu perfil primero, así que abre Alisio en tu iPhone una vez antes de salir. Al terminar, la sesión llega a tu <em>Historial</em> en cuanto tu iPhone esté cerca."
+          },
+          {
+            "q": "¿Necesito una cuenta? ¿Dónde quedan mis datos?",
+            "aHtml": "Sin cuenta, sin inicio de sesión y sin nada que pagar dentro de la app. Tu perfil y tu historial de sesiones viven en tu iPhone; el Watch recibe una copia de tu perfil directo de él. Nada se va a iCloud y nada nos llega a nosotros. El entrenamiento terminado también se guarda en Apple Salud, y se queda ahí como un entrenamiento más."
+          },
+          {
+            "q": "¿Cómo borro una sesión, o todo?",
+            "aHtml": "Para quitar una sesión, ábrela en <em>Historial</em>, toca el ícono del bote de basura y confirma. Si borras la app, tu perfil y todo tu historial desaparecen del iPhone. Los entrenamientos que Alisio ya guardó en Apple Salud le pertenecen a Salud y se quedan ahí; bórralos desde la app Salud."
+          }
+        ]
+      },
+      "facts": [
+        {
+          "k": "Tus datos",
+          "v": "En tu iPhone y tu Watch"
+        },
+        {
+          "k": "Cuenta Alisio",
+          "v": "Ninguna"
+        },
+        {
+          "k": "Requiere",
+          "v": "iOS 17 y watchOS 10"
+        },
+        {
+          "k": "Respuesta",
+          "v": "Un día o dos"
+        },
+        {
+          "k": "App Store",
+          "v": "Disponible",
+          "ok": true
+        }
+      ],
+      "cta": {
+        "titleHtml": "¿Sigues <em>atorado?</em>",
+        "sub": "Escríbenos directo. Respuestas reales, con paciencia.",
+        "label": "ivanlorenzana@outlook.com",
+        "href": "mailto:ivanlorenzana@outlook.com"
+      },
+      "privacyLabel": "Privacidad",
+      "termsLabel": "Términos",
+      "backLabel": "Atelier Belli"
     }
   },
   "home": {
@@ -625,10 +728,9 @@
     },
     "vitrine": {
       "eyebrow": "Vitrina 2026",
-      "titlePre": "Tres piezas ",
-      "titleIt": "recientes.",
-      "hint": "Pasa el cursor para enfocar",
-      "hintTouch": "Desliza para verlas"
+      "titlePre": "Lanzados ",
+      "titleIt": "este año.",
+      "open": "Abrir el caso {name}"
     },
     "work": {
       "eyebrow": "La obra",
@@ -664,7 +766,10 @@
       "pauseClip": "Pausar clip",
       "playClip": "Reproducir clip",
       "caseStudy": "Caso de estudio",
-      "galleryAria": "Galería de capturas"
+      "galleryAria": "Galería de capturas",
+      "film": "Película de lanzamiento",
+      "playFilm": "Reproducir la película",
+      "story": "La historia"
     },
     "cases": {
       "meta": {
@@ -680,11 +785,11 @@
       },
       "fingo": {
         "titleIt": "decisiones en grupo, fácil.",
-        "descRich": "Una app de iOS para decidir en grupo al instante: ruletas, monedas, flechas giratorias, toque-para-elegir. Totalmente personalizable, con <it>háptics</it> que hacen que cada elección se sienta intencional. Construida con SwiftUI.",
+        "descRich": "Para la mesa que no se pone de acuerdo en quién paga o dónde comer. Todos ponen un dedo en la pantalla y Fingo elige uno; o giras una ruleta con tus propias opciones, sacas un número al azar o echas un volado. Cada resultado cae con una <it>vibración</it> en lugar de un sonido. Sin internet, sin cuenta, sin anuncios.",
         "metaStatus": "Disponible en App Store",
         "actionPrimary": "Ver en App Store",
         "actionGhost": "Soporte",
-        "tag": "Ruletas, monedas, háptics. Decisiones de un toque.",
+        "tag": "Todos ponen el dedo, y uno sale elegido.",
         "kickerPlatform": "iOS",
         "kickerDomain": "Utilidades",
         "mshowStatus": "App Store",
@@ -692,175 +797,175 @@
       },
       "savely": {
         "titleIt": "ahorro personal, en calma.",
-        "descRich": "Una app de ahorro local-first. Metas con un ritmo real, registro diario de ingresos y gastos, un escáner de recibos que lee en el teléfono, y un auto-move de quincena que convierte ingreso en ahorro con un toque. Sin cuentas, sin nube, sin conexiones bancarias: el dinero vive en el teléfono y <it>nunca sale de ahí</it>. SwiftUI y SwiftData, enviada a App Store.",
-        "metaStatus": "En revisión · Próximamente en App Store",
-        "actionPrimary": "Próximamente",
+        "descRich": "Una app de ahorro para quien no quiere entregar el acceso a su banco. Pones metas y ves un ritmo honesto, registras ingresos y gastos en segundos, y escaneas tickets que se leen en el mismo teléfono. En quincena puede ofrecerte un movimiento hacia una meta, limitado a lo que el mes aguanta. Sin cuenta, sin nube, sin conexión bancaria: tus datos de dinero <it>nunca salen del teléfono</it>.",
+        "metaStatus": "Disponible en App Store",
+        "actionPrimary": "Ver en App Store",
         "actionGhost": "Soporte",
-        "tag": "Metas, recibos, auto-move de quincena. Dinero que nunca sale del teléfono.",
-        "mshowStatus": "En revisión",
-        "galleryCaption": "Tres pantallas reales, sembradas con el tour DEBUG de la propia app: una meta con su ritmo, un recibo leído en el dispositivo (la foto nunca sale del teléfono), y el auto-move de quincena de un toque hacia esa meta.",
+        "tag": "Metas de ahorro que te dicen la verdad. Dinero que nunca sale de tu teléfono.",
+        "mshowStatus": "App Store",
+        "galleryCaption": "Tres pantallas reales: una meta con su ritmo, un ticket leído en el teléfono (la foto nunca se guarda) y el movimiento de quincena hacia esa meta.",
         "kickerPlatform": "iOS",
-        "kickerDomain": "Fintech",
+        "kickerDomain": "Finanzas personales",
         "actionPrivacy": "Privacidad",
         "story": {
-          "problem": "Casi toda app de ahorro pide conexión bancaria antes de servir de algo, y luego responde la única pregunta que importa, si la meta todavía llega a tiempo, con una proyección que los depósitos no sostienen. Entregar tus cuentas para que te digan algo cómodo es mal negocio.",
-          "approach": "Todo corre en el teléfono: SwiftData para el dinero, el reconocimiento de texto en el dispositivo de Apple para los recibos, y cero llamadas de red. La matemática del ritmo se niega a adular. Una meta a más de un año muestra 1+ year en vez de una fecha inventada, y el auto-move de quincena solo ofrece lo que el mes de verdad alcanza, ya contando esta quincena, sus gastos y lo que ya se movió a metas.",
-          "result": "Enviada a App Store con la premisa intacta: sin cuenta, sin nube, sin conexión bancaria y sin nada que salga del teléfono a menos que tú lo mandes. Lo único que puede viajar es un PDF semanal que tú entregas a la hoja de compartir de iOS."
+          "problem": "Casi todas las apps de ahorro piden conectar tu banco antes de servir de algo, y luego contestan la única pregunta que importa, si la meta llega a tiempo, con una proyección que tus depósitos no sostienen.",
+          "approach": "Todo corre en el teléfono: SwiftData para el dinero, el reconocimiento de texto de Apple en el dispositivo para los tickets, y ninguna petición de red. Las cuentas no te halagan: usan tus depósitos de las últimas cuatro semanas, y una meta a más de un año muestra 1+ year en lugar de inventar una fecha. La reconstrucción llegó ahí quitando cosas: salieron las cuentas, la nube y los consejos con IA.",
+          "result": "Disponible en App Store con la premisa intacta: sin cuenta, sin nube, sin conexión bancaria. Lo único que puede salir del teléfono es un PDF semanal que tú mismo compartes."
         },
         "highlights": [
-          "Sin cuenta, sin nube, sin conexión bancaria y sin una sola llamada de red",
-          "Los recibos se leen en el dispositivo con el reconocimiento de texto de Apple; la foto nunca se guarda",
-          "El auto-move de quincena ofrece un solo depósito, con tope en lo que el mes alcanza",
-          "El ritmo y el ETA de la meta salen de depósitos reales, sin fechas inventadas"
+          "Sin cuenta, sin nube, sin conexión bancaria, sin peticiones de red",
+          "Los tickets se leen en el dispositivo con el reconocimiento de texto de Apple; la foto nunca se guarda",
+          "El movimiento de quincena ofrece un solo depósito, limitado a lo que el mes aguanta",
+          "Ritmo según tus depósitos de las últimas cuatro semanas; a más de un año dice 1+ year, nunca una fecha inventada"
         ]
       },
       "mezcal": {
-        "descRich": "Tienda e historia para una marca de mezcal artesanal de Oaxaca. Un sitio editorial y tranquilo construido para vender: variedades, origen, pedidos directos. <it>Hecho a mano</it> de la marca al checkout.",
+        "descRich": "El sitio de Destilería Lorenzana, un mezcal familiar hecho en San Bartolo Yautepec, Oaxaca. Cuenta la historia del fundador en capítulos, recorre los seis pasos del horno de tierra al <it>alambique de cobre</it> y presenta tres agaves por su nombre, para compradores y distribuidores que quieren saber de dónde viene la botella.",
         "metaPlatform": "Web · Responsiva",
         "metaStatus": "En línea",
         "actionPrimary": "Visitar sitio",
-        "tag": "Una marca de mezcal artesanal: tienda e historia.",
+        "tag": "Una marca familiar de mezcal: su historia, su proceso, tres agaves.",
         "mshowStatus": "En línea",
         "kickerPlatform": "Web",
-        "kickerDomain": "E-commerce",
-        "titleIt": "venta directa desde Oaxaca."
-      },
-      "blip": {
-        "titleIt": "el radar de restocks.",
-        "descRich": "Un monitor en vivo de producto sellado de Pokémon TCG en Amazon México. Vigila precio, stock y restocks, y dispara un push instantáneo con un deep-link de un toque que llena el carrito, y <it>tú</it> completas la compra. La ventaja es velocidad legítima: enterarte y tocar primero.",
-        "metaPlatform": "Web · PWA",
-        "metaStatus": "En desarrollo",
-        "actionPrimary": "Próximamente",
-        "tag": "Precio, stock, restocks. Alertado antes que el swarm.",
-        "kickerPlatform": "Web",
-        "kickerDomain": "Retail",
-        "mshowStatus": "En desarrollo"
+        "kickerDomain": "Sitio de marca",
+        "titleIt": "desde un palenque en la Sierra Sur."
       },
       "briefmark": {
         "titleIt": "bookmarks que piensan.",
-        "descRich": "Una app de iOS que convierte videos de TikTok en bookmarks inteligentes. Comparte una URL y extrae cada recomendación (recetas, películas, libros, lugares) en tarjetas estructuradas y accionables, con <it>Claude</it> detrás. SwiftUI al frente, backend en TypeScript.",
-        "metaStatus": "En desarrollo",
-        "actionPrimary": "Próximamente",
-        "tag": "TikToks en tarjetas estructuradas y buscables.",
+        "descRich": "Para quien guarda recetas, películas y restaurantes de videos cortos y nunca los vuelve a encontrar. Pegas un link de TikTok o de un Reel de Instagram y Briefmark escucha el audio, lee los cuadros y te devuelve tarjetas limpias: la receta con ingredientes y pasos, la película con <it>dónde verla</it> en México, el lugar con su mapa. Un prototipo, en pausa desde mayo de 2026.",
+        "metaStatus": "En pausa",
+        "tag": "TikToks y Reels convertidos en tarjetas que sí usas.",
         "kickerPlatform": "iOS",
         "kickerDomain": "IA",
-        "mshowStatus": "En desarrollo"
+        "mshowStatus": "En pausa"
       },
-      "pass": {
-        "titleIt": "tarjetas vivas en Wallet.",
-        "descRich": "Una plataforma serverless que emite y actualiza pases de Apple Wallet (membresías de gym, tarjetas de sellos) con cambios en tiempo real directo a la tarjeta. AWS Lambda, DynamoDB y el web service de Apple Wallet, <it>de punta a punta</it>.",
-        "metaPlatform": "AWS · Serverless",
-        "metaStatus": "En producción",
-        "actionPrimary": "Código próximamente",
-        "tag": "Pases de Apple Wallet: emitidos, actualizados, vivos.",
+      "stampi": {
+        "titleIt": "la tarjeta de sellos que no se pierde.",
+        "descRich": "Tarjetas de sellos digitales para cafés y negocios pequeños. El cliente escanea un QR una vez y la tarjeta se guarda en Apple Wallet o Google Wallet: sin app, sin registro, sin correo. El equipo sella desde su propio celular y la tarjeta se actualiza sola en la pantalla de bloqueo. Diseñada, construida y operada por una sola persona, <it>de punta a punta</it>.",
+        "metaPlatform": "Apple Wallet · Google Wallet",
+        "metaStatus": "En vivo · abierto a negocios",
+        "actionPrimary": "Visitar Stampi",
+        "tag": "Tarjetas de lealtad que viven en Apple y Google Wallet.",
         "story": {
-          "problem": "Un pase de Wallet no se refresca desde la app. Sin el web service de pases de Apple, la tarjeta se queda vieja en el Wallet del usuario, y una tarjeta vieja es una tarjeta que borra.",
-          "approach": "Un backend serverless que implementa el protocolo completo: registro de dispositivos, versionado del pase, firma con PassKit y el push que le dice al dispositivo que vuelva por la versión nueva.",
-          "result": "En producción. Las membresías y tarjetas de sellos se emiten por API y cambian en la tarjeta del usuario en tiempo real, sin que él abra nada."
+          "problem": "Las tarjetas de sellos de papel se pierden en la cartera o en la lavadora, y una app de lealtad es una descarga que nadie hace. Cada cliente ya trae un Wallet en el teléfono. La tarjeta solo tiene que vivir ahí y mantenerse al día.",
+          "approach": "Una plataforma que habla con los dos wallets: pases de Apple firmados que se mantienen al día con el web service de pases y push silencioso, la API de Google Wallet, y paneles con PIN para el mostrador, el dueño y el operador. Si un wallet se cae, nunca bloquea un registro ni un sello.",
+          "result": "En vivo en stampi.atelierbelli.com y abierta a negocios. Un sello en el mostrador llega a la tarjeta del cliente unos momentos después sin que abra nada, y la tarjeta completa le llega como aviso en la pantalla de bloqueo."
         },
         "highlights": [
-          "El web service completo de Apple Wallet, no solo generar el .pkpass",
-          "Push por APNs: el pase se actualiza en su lugar, en la tarjeta",
-          "Lambda, API Gateway, DynamoDB y S3, desplegados con SAM",
-          "Emisión por API: membresías de gym y tarjetas de sellos"
+          "Un escaneo para unirse: sin app, sin cuenta, sin correo",
+          "Sigue sellando si se cae el internet, y sincroniza al volver",
+          "Un QR rayado sigue sirviendo: debajo va un código de 8 caracteres",
+          "Hasta tres mensajes al día en la pantalla de bloqueo de tus clientes",
+          "Si un wallet falla, nunca bloquea un registro ni un sello"
         ],
-        "kickerPlatform": "Backend",
+        "kickerPlatform": "Wallet",
         "kickerDomain": "Lealtad",
-        "mshowStatus": "En producción"
+        "mshowStatus": "En vivo"
       },
       "alisio": {
-        "titleIt": "entrena por zonas de frecuencia.",
-        "descRich": "Una app de iOS y Apple Watch para entrenar por zonas. Elige una zona y el reloj <it>te avisa en la muñeca</it> en cuanto te sales, y el entrenamiento vuelve a ser un vistazo de dos segundos, no una pantalla que estudias a media serie. Arranca solo desde el reloj, se refleja en vivo en el iPhone y guarda cada sesión <it>en el dispositivo</it>, sin cuentas. Hecha con SwiftUI y HealthKit.",
+        "titleIt": "siente tu zona, no la mires.",
+        "descRich": "Para quien entrena por frecuencia cardiaca. Eliges una zona y un tiempo; tu Apple Watch te da un toque en la muñeca en cuanto te sales y otro cuando regresas, así que el entrenamiento se <it>siente</it>, no se revisa en la pantalla a mitad de la serie. La meta solo cuenta el tiempo dentro de la zona, cada entrenamiento se guarda en la app Salud y no hay cuenta.",
         "metaStatus": "Disponible en App Store",
         "actionPrimary": "Ver en App Store",
-        "tag": "Zonas de frecuencia que sientes en la muñeca, sin pantallas.",
+        "tag": "Tu reloj te da un toque cuando sales de tu zona cardiaca.",
         "story": {
-          "problem": "Entrenar por zonas implica revisar la muñeca a media serie. A ese ritmo el número llega tarde, y buscarlo rompe justo el esfuerzo que querías sostener.",
-          "approach": "El reloj mide y avisa con vibraciones: al entrar a la zona, al salirte y al cumplir la meta. El iPhone solo refleja lo que el reloj mide. Las zonas salen de tu perfil real (Karvonen sobre la fórmula de Tanaka), no de una tabla genérica.",
-          "result": "Publicada en el App Store. Una sesión corre sin mirar la pantalla: eliges zona y tiempo, y el resto llega a tu muñeca. Todo se queda en el dispositivo, sin cuenta."
+          "problem": "Entrenar por zona obliga a mirar la muñeca a mitad de la serie. A ese ritmo el número llega tarde, y buscarlo rompe el esfuerzo que intentabas sostener.",
+          "approach": "El Watch mide y avisa, con un toque distinto al entrar a la zona, al salir y al cumplir la meta, y solo cuando el estado cambia. El iPhone refleja lo que el Watch registra. Las zonas salen de tu edad y tu frecuencia en reposo, con la frecuencia máxima de la fórmula de Tanaka en lugar del típico 220 menos la edad.",
+          "result": "Disponible en App Store. Eliges zona y tiempo y lo demás te llega a la muñeca; el reloj de la meta se pausa cada vez que te sales. Una complicación en la carátula muestra tu zona y tus pulsaciones sin abrir la app."
         },
         "highlights": [
-          "Avisos hápticos al entrar, salir y cumplir la meta",
-          "Zonas por perfil: Karvonen o Simple (base Tanaka 2001)",
-          "El reloj arranca la sesión solo, sin iPhone cerca",
-          "Perfil e historial se sincronizan entre dispositivos; nada sale de ellos"
+          "Tres toques distintos: al entrar, al salir y al cumplir la meta",
+          "La meta solo cuenta el tiempo dentro de la zona",
+          "Arranca solo desde el Watch: gira la corona, elige zona y listo",
+          "Tu perfil llega al Watch; las sesiones quedan en el historial del iPhone y en Salud",
+          "Sin cuenta y sin servidor: nada sale de tus dispositivos"
         ],
-        "mediaCaption": "Una sesión en vivo en los dos dispositivos: arranca en el iPhone, se mide en el reloj y se refleja de vuelta en el teléfono. Mira el distintivo cambiar cuando el pulso se sale de la Zona 2 y regresa.",
-        "watchCaption": "Solo con el reloj: elegir zona con la corona y la sesión en vivo, con el distintivo saliéndose de zona y regresando, hasta cumplir la meta.",
+        "mediaCaption": "Una sesión en vivo en los dos dispositivos: arranca en el iPhone, se mide en el Watch y se refleja de vuelta en el teléfono. Mira el distintivo cambiar cuando el pulso se sale de la Zona 2 y regresa.",
+        "watchCaption": "En la muñeca: eliges zona con la corona, luego la sesión en vivo saliéndose de zona y regresando, hasta que se cierra el anillo de la meta.",
         "kickerPlatform": "iOS",
         "kickerDomain": "Fitness",
         "mshowStatus": "App Store",
-        "actionPrivacy": "Privacidad"
+        "actionPrivacy": "Privacidad",
+        "actionGhost": "Soporte"
       },
       "fave": {
         "titleIt": "todo lo que pruebas, rankeado.",
-        "descRich": "Una app de iOS para quien ya lleva listas mentales de cada bebida, cafetería y película que ha probado. Haces una lista de lo que sea, vas palomeando lo que pruebas, y les pones estrellas <it>solo cuando se te antoja</it>, porque calificar nunca es tarea. Una cafetería guarda sus propias órdenes y se califica sola con el promedio. Películas, series y libros traen su propia portada desde TMDB y Open Library. Todo vive en tu iCloud privado y en ningún otro lado: sin cuentas, sin analytics, sin servidores míos.",
-        "metaStatus": "Próximamente en App Store",
-        "actionPrimary": "Próximamente",
+        "descRich": "Una libreta para quien lleva listas de cada bebida, café, película y libro que ha probado. Palomeas conforme avanzas y pones estrellas <it>solo cuando te nace</it>, porque calificar nunca es tarea. Un café se califica solo con el promedio de lo que pediste ahí, y las películas y libros traen su propia portada, en la edición de tu idioma. Tus listas viven en tu iCloud privado: sin cuentas, sin analíticas.",
+        "metaStatus": "Disponible en App Store",
+        "actionPrimary": "Ver en App Store",
         "actionGhost": "Soporte",
         "actionPrivacy": "Privacidad",
-        "tag": "Rankea las bebidas, cafés y películas que pruebas.",
-        "mshowStatus": "Próximamente",
+        "tag": "Rankea las bebidas, cafés, películas y libros que pruebas.",
+        "mshowStatus": "App Store",
         "kickerPlatform": "iOS",
         "kickerDomain": "Lifestyle"
       },
       "vitapath": {
-        "titleIt": "respuesta a emergencias, de punta a punta.",
-        "descRich": "Una plataforma de respuesta médica de emergencia. Un paciente con una condición seria dispara un SOS; el paramédico más cercano de una <it>red privada</it> es despachado y rastreado en vivo; el paciente se rutea al hospital correcto por seguro, proximidad y capacidad; una consola hospitalaria maneja despacho, llegada y recepción. Dos apps SwiftUI, una consola React y un backend <it>Spring Boot + PostGIS</it> con una máquina de estados en tiempo real.",
-        "metaStatus": "MVP · verificado e2e",
-        "actionPrimary": "Beta privada",
-        "tag": "Del SOS al hospital: despacho, tracking, ruteo.",
+        "titleIt": "del SOS al hospital, en un solo sistema.",
+        "descRich": "Un sistema de respuesta a emergencias para pacientes con condiciones graves. Un toque en SOS le ofrece el caso a los paramédicos disponibles más cercanos, y el primero que acepta se sigue en vivo por la ruta real. El paciente va a un hospital que su <it>seguro cubre</it> y que puede atenderlo, mientras la consola del hospital lleva el despacho, la llegada y la recepción.",
+        "metaStatus": "Prototipo funcional",
+        "tag": "Un toque manda un paramédico y elige el hospital correcto.",
         "story": {
-          "problem": "En una emergencia los minutos se van decidiendo quién responde y a dónde se lleva al paciente. Si el hospital no cubre su seguro o no puede con el caso, el traslado se hace dos veces.",
-          "approach": "Una sola máquina de estados de la emergencia en Spring Boot. PostGIS elige al paramédico disponible más cercano con barrido de escalación, STOMP mantiene el mapa y el ETA vivos en las tres superficies, y el ruteo hospitalario pondera seguro, proximidad y capacidad con ETAs reales de manejo (OSRM).",
-          "result": "Un MVP verificado de punta a punta: SOS, oferta, aceptación, traslado, handshake con el hospital y recepción, en dos apps SwiftUI y una consola React, con 207 pruebas unitarias detrás."
+          "problem": "En una emergencia los minutos se van en decidir quién responde y a dónde llevar al paciente. Si llega a un hospital que no acepta su seguro, o que no puede con el caso, el traslado se hace dos veces.",
+          "approach": "Una sola máquina de estados de la emergencia dentro de transacciones de base de datos, para que exactamente un paramédico gane la oferta. PostGIS encuentra a los cinco más cercanos a 5 km y amplía la búsqueda cada 30 segundos, STOMP mantiene el mapa y la hora de llegada en vivo en las tres superficies, y el ruteo hospitalario pondera seguro, distancia y capacidad con tiempos reales de manejo.",
+          "result": "Un sistema funcionando entre dos apps en SwiftUI, una consola en React y un backend en Spring Boot, respaldado por 338 pruebas unitarias. Al agregar el triaje, un paciente con seguro público llegó a mandarse a un hospital privado a 340 m en lugar de uno público a 730 m; ahora el ruteo prefiere hospitales públicos para cobertura pública."
         },
         "highlights": [
-          "Despacho geoespacial: PostGIS nearest-N más barrido de escalación",
-          "Tiempo real por STOMP: mapa y ETA vivos en ambas apps y la consola",
-          "Ruteo hospitalario por seguro, proximidad y capacidad",
-          "Auth JWT con refresh rotativo y bitácora de acceso a PHI"
+          "La oferta se amplía de 5 km a 25 km hasta que alguien acepta",
+          "Solo un paramédico puede ganar una emergencia, garantizado en la base de datos",
+          "Ruteo hospitalario por seguro, distancia y capacidad",
+          "Cada hospital ve solo a sus pacientes, con bitácora de acceso a datos médicos"
         ],
-        "mediaCaption": "Una emergencia real en las tres superficies al mismo tiempo. La oferta llega al teléfono de la paramédica, ella acepta, y la consola resuelve el hospital por seguro y red mientras la paciente ve esa misma ruta acercarse en su propio mapa.",
-        "galleryCaption": "La app del paciente: el botón SOS, el tracking en vivo con la ruta vial real del paramédico y su ETA, y la tarjeta de emergencia que leen los rescatistas al llegar.",
+        "mediaCaption": "Una emergencia corrida en vivo por las tres superficies a la vez. La oferta llega al teléfono del paramédico, la acepta, y la consola resuelve el hospital por seguro y red mientras el paciente ve la misma ruta acercarse.",
+        "galleryCaption": "La app del paciente: el botón de SOS, el seguimiento en vivo con la ruta real del paramédico y su hora de llegada, y la tarjeta de emergencia que leen al llegar.",
         "kickerPlatform": "Sistema",
         "kickerDomain": "Healthtech",
-        "mshowStatus": "Beta privada"
+        "mshowStatus": "Prototipo"
       },
       "arrhythmia": {
         "titleIt": "lee el ECG, latido a latido.",
-        "descRich": "Un front end web para un clasificador de arritmias en ECG con <it>FastAPI</it>. Subes un registro WFDB y renderiza la señal completa de una vez, luego clasifica cada latido por clase AAMI (N/S/V/F/Q) con la confianza del modelo, y entras a cualquier latido marcado en una ventana real de 60 segundos. Hecho para demostrar un pipeline de ML real, no un notebook: Next.js y TanStack Query al frente, un servicio de modelo en FastAPI detrás.",
+        "descRich": "Subes un registro del corazón y ves cada latido detectado etiquetado como normal o como uno de cuatro tipos anormales, con qué tan seguro está el modelo. La reconstrucción encontró que el 98% original venía de mezclar pacientes entre entrenamiento y prueba; medido honestamente con pacientes que nunca vio, da <it>63.22%</it>. Una herramienta de investigación, no un dispositivo médico.",
         "metaPlatform": "Web · Responsiva",
         "metaStatus": "Demo funcional",
         "actionPrimary": "Ver el backend ML",
-        "tag": "Sube un ECG, clasifica cada latido (AAMI).",
+        "tag": "Sube un ECG y ve cada latido clasificado.",
         "story": {
-          "problem": "El original era una app de escritorio que graficaba los primeros cuatro segundos del registro y diagnosticaba un latido por clic. Peor: evaluaba mezclando pacientes entre particiones, lo que infla todas las métricas que reportaba.",
-          "approach": "Un pipeline de features por ventana alrededor de cada latido (FFT/PSD, wavelets, estadísticas) alimenta una red neuronal entrenada con MIT-BIH, servida detrás de FastAPI. Reconstruido con un protocolo inter-paciente sin fuga de datos, para que el baseline sea honesto en lugar de halagador.",
-          "result": "Una demo funcional: subes un registro WFDB y lees la traza completa de un jalón, con cada latido clasificado en su clase AAMI y la confianza del modelo al lado. 168 pruebas, y el backend es público."
+          "problem": "El original era una app de escritorio que graficaba los primeros cuatro segundos de un registro y clasificaba un latido por cada clic. Peor aún, evaluaba mezclando pacientes entre conjuntos, lo que inflaba cada número que reportaba.",
+          "approach": "Un solo pipeline compartido entre el entrenamiento y la API en vivo, un detector de latidos que ya no se topa en 86 lpm, y el protocolo de evaluación entre pacientes de la literatura. Una clase con solo dos ejemplos reales se dejó honesta en lugar de rellenarla con 38,000 sintéticos.",
+          "result": "Un demo funcional: subes un registro y lees el trazo completo de una vez, cada latido clasificado con su confianza. 63.22% en 49,687 latidos de pacientes no vistos, 168 pruebas en el backend, y los dos repositorios son públicos."
         },
         "highlights": [
-          "5 clases AAMI EC57 (N/S/V/F/Q) con confianza por latido",
-          "Evaluación inter-paciente sin fuga: un baseline honesto",
+          "5 clases AAMI (N/S/V/F/Q) con confianza por latido",
+          "Evaluado con pacientes que el modelo nunca vio: un 63% honesto contra un 98% contaminado",
           "El registro completo de 30 minutos, no una rebanada de cuatro segundos",
-          "FastAPI y Next.js, con el modelo versionado de forma explícita"
+          "Un modelo versionado que comparten el entrenamiento y la API"
         ],
-        "mediaCaption": "Registro 230 de MIT-BIH: 2,464 latidos, 123 marcados, clasificados contra el modelo en vivo.",
-        "galleryCaption": "La subida del registro, y un latido marcado abierto en su ventana real de 60 segundos.",
+        "mediaCaption": "Registro 230 de MIT-BIH: 2,464 latidos, 123 marcados, clasificados con el modelo en vivo.",
+        "galleryCaption": "Subiendo el registro, y un latido marcado abierto en su ventana real de 60 segundos de contexto.",
         "kickerPlatform": "Web",
         "kickerDomain": "ML",
         "mshowStatus": "Demo funcional"
       },
       "jugo": {
         "titleIt": "tu batería, sin sorpresas.",
-        "descRich": "Una app de barra de menús para macOS que convierte el notch en una <it>Dynamic Island</it> para las alertas de batería y reúne AirPods, iPhone y accesorios en un solo lugar. Notarizada, se actualiza sola y es gratis.",
+        "descRich": "Una app gratis para Mac para que la batería nunca te agarre desprevenido. Las alertas salen del notch como una <it>Dynamic Island</it>, el aviso de batería baja de macOS se cierra solo porque Jugo ya te lo dijo, y tus AirPods, tu iPhone y tu mouse viven en un solo lugar, hasta el desgaste de la batería de tu iPhone y 30 días de qué apps gastaron tu Mac.",
         "metaStatus": "Descarga gratis",
         "actionPrimary": "Descargar Jugo",
-        "tag": "El notch, como Dynamic Island de tu batería.",
+        "tag": "Alertas de batería que salen del notch de tu Mac.",
         "kickerPlatform": "macOS",
         "kickerDomain": "Utilidades",
         "mshowStatus": "Gratis"
       }
+    },
+    "reel": {
+      "lede": "Seis productos en vivo este año, cada uno en el corte de su propia película de lanzamiento. Toca uno para abrir su caso.",
+      "roleCarousel": "carrusel",
+      "roleSlide": "diapositiva",
+      "slideAria": "{n} de {total}: {name}",
+      "goTo": "Mostrar {name}",
+      "dotsAria": "Elige un producto",
+      "play": "Reproducir la vitrina",
+      "pause": "Pausar la vitrina"
     }
   },
   "jugo": {
