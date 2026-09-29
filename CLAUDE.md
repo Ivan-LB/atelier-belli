@@ -10,9 +10,13 @@ Portfolio site of Ivan Lorenzana (Atelier Belli). **Two themed sub-sites** share
 one Next.js app:
 
 - **Homepage** at `/[locale]` — editorial redesign, `.ab-root` scope, light/dark
-  theme toggle, custom vitrine/selected-work/workbench sections, case modal.
-- **Support pages** at `/[locale]/fingo/support`, `/[locale]/savely/support`
-  and `/[locale]/fave/support` (the last added by plan 007, PR #57) —
+  theme toggle, showcase reel, selected-work index, workbench, and the case sheet.
+  The homepage's parts live in `app/[locale]/_home/` (`cases.tsx` data,
+  `showcase.tsx`, `case-sheet.tsx`, `case-media.tsx`); `page.tsx` composes them.
+- **Support pages** at `/[locale]/fingo/support`, `/[locale]/savely/support`,
+  `/[locale]/fave/support` (plan 007, PR #57) and `/[locale]/alisio/support`
+  (2026-09-28, written from the Alisio repo; its skin is the app's own
+  phosphor-on-black tokens) —
   reusable `SupportShell` keyed by `data-app`, `.sup-root` scope, per-app skin.
   Each consumes `useTranslations("support.<app>")` and builds a
   `SupportContent` adapter via `useMemo` (PRs #23 + #25). The previous
@@ -91,7 +95,7 @@ app's own SwiftUI views with real readings from a Mac, not mockups.
 ### Case studies (Selected Work)
 
 **Which repo backs which case.** Derived from the action URLs in `page.tsx` and
-each repo's `origin`, not from folder names — several do not match (`pass` →
+each repo's `origin`, not from folder names — several do not match (`stampi` →
 `loyalty-cards`, `mezcal` → `destileria-lorenzana`). Useful whenever a case
 needs a re-capture, since that means booting the real product.
 
@@ -99,81 +103,69 @@ needs a re-capture, since that means booting the real product.
 |---|---|---|
 | `alisio` | `Swift/Alisio` | `Ivan-LB/alisio` |
 | `fave` | `Swift/Fave` | `Ivan-LB/fave` (private) |
-| `pass` | `Backend/pass` | `Ivan-LB/loyalty-cards` (private) |
+| `stampi` | `Backend/pass` | `Ivan-LB/loyalty-cards` (private) |
 | `fingo` | `Swift/Fingo` | `Ivan-LB/Fingo` |
 | `vitapath` | `vitapath/{backend-spring, web-hospital, ios-patient, ios-paramedic}` | `Vitapath_Backend`, `Vitapath_Web`, `Vitapath`, `Vitapath_Paramedic` — **four independent repos**, default branch `v2.1` |
 | `arrhythmia` | `Python/Arrhythmia-Detector` + `Python/arrhythmia-detector-web` | `arrhythmia-detector-backend` (public), `arrhythmia-detector-web` |
 | `mezcal` | `React/destileria-lorenzana` | `Ivan-LB/destileria-lorenzana` |
 | `briefmark` | `Swift/Briefmark` + `Backend/briefmark-backend` | `Briefmark`, `Briefmark-backend` |
 | `savely` | `Swift/Savely` | `Ivan-LB/Savely` |
-| `blip` | `_archive/blip` | **none — not a git repo at all** |
 | `jugo` | `Swift/batteryAnimations` | none yet (local repo) |
 
-Two traps in that table. **`blip` is not under version control**: it is the only
-case whose code exists solely as a folder on disk. And **`destileria-lorenzana`
+One trap in that table. **`destileria-lorenzana`
 has divergent history on purpose-ish** — `develop` is 7 commits ahead of `main`
 and `main` 1 ahead of `develop`, because the redesign's individual PRs were
 squashed into a single `Redesing (#13)` on main. The *content* of the two
 branches is byte-identical (verified 2026-08-03); do not "fix" the divergence
 by force-pushing either side.
 
-Eleven cases as of 2026-09-28, in this display order: `alisio`, `savely`, `jugo`,
-`fave`, `pass`, `fingo`, `vitapath`, `arrhythmia`, `mezcal`, `briefmark`, `blip`.
-Jugo (macOS) went in at 03 the day 1.0 shipped; it is compact tier and its
-primary action is the internal `/jugo` landing, not an external store link. Savely
-moved from 09 to 02 the day it went into App Store review; it sits ahead of Fave
-by Iván's call (maturity over recency — it is the larger, older project). **Order is
-defined once by the `CASE_KEYS` array** (top of `page.tsx`) — the Selected Work
-list maps over it, and each `CASES` entry's `num` must match its position
-(01–10). All case data lives in `app/[locale]/page.tsx` — there are NO per-case
-route files. To add (or reorder) a case:
+Ten cases as of 2026-09-28, in this display order: `stampi`, `alisio`, `savely`,
+`jugo`, `fave`, `fingo`, `vitapath`, `arrhythmia`, `mezcal`, `briefmark`.
+**BLIP was retired** that day at Iván's request; `?case=blip` now opens nothing.
+**Stampi is the case formerly keyed `pass`** (renamed 2026-09-28 and moved to 01 by
+Iván's call, the day its public site went live). Its primary action is the site,
+`stampi.atelierbelli.com`. Old `?case=pass` links resolve through
+`LEGACY_CASE_KEYS` and rewrite the param. Copy is written from
+`Backend/pass/PORTFOLIO.md`: never claim clients, revenue or usage, and never call
+it an app (the wallet pass is the client). Fave and Savely are live on the App
+Store; their primary actions are store links. Jugo's primary action is the
+internal `/jugo` landing. The `mezcal` case displays as **Destilería Lorenzana**,
+the real brand, since its live URL names it anyway.
 
-1. Extend the `CaseKey` union.
-2. Add an entry to the `CASES` record (inside `useMemo`) — num, kicker, title,
-   `t.rich` desc, meta rows, actions.
-3. Add an entry to `indexInfo` in the Selected Work list (name/tag/stack/mshow).
-4. Add a branch to `CasePreview` at the bottom of the file.
-5. Add `cases.<key>` to **both** `messages/en.json` and `messages/es.json`
-   (titleIt, descRich with `<it>` tags, metaStatus, actionPrimary, tag,
-   metaPlatform when not iOS).
-6. Insert the key into `CASE_KEYS` at the desired display position (it is BOTH
-   the render order AND the deep-link allowlist), then fix every `num` so it
-   matches its position. Bump the ten-case count assertion **and** the
-   first-case (`alisio`) deep-link check in `tests/e2e/smoke.spec.ts`
-   (Tests 5 and 7).
+**Order is defined once by `CASE_KEYS`** in `app/[locale]/_home/cases.tsx`, and
+`num` is derived from the position, so it can no longer drift. All case data is
+in that file's `DEFS` record (name, year, literal platform, stack, index chips,
+actions, flagship flag, media) plus `cases.<key>.*` in both dictionaries. To add
+or reorder a case:
 
-**Previews:** project screenshots live in `public/cases/` (fingo/savely
-predate the folder and keep their root-level `public/*-hero.*` files —
-`savely-hero.webp` is a raw simulator capture as of 2026-08-18; it used to be a
-design-tool mockup with tool chrome baked in, and the negative-margin CSS that
-cropped that chrome is gone with it. Savely also has a three-frame gallery under
-`public/cases/gallery/savely-p1..p3.webp`, seeded via the app's DEBUG tour).
-fingo/savely use the `ab-phone-img` phone frame; blip and mezcal render real
-captures inside `ab-browser-frame` via the `.ab-browser-shot` img class
-(16:10, explicit width/height). `blip-hero.webp` is **960×600** since plan 012;
-it shipped at 1600×1000 for a ~442 CSS px slot, which is 3.6x its rendered size
-and made it the heaviest image on the site at 158KB (now 96KB, `cwebp -q 88
--m 6 -sharp_yuv`, SSIM 0.987 at display size). **briefmark** now uses a real capture of its
-onboarding screen (`public/cases/briefmark-hero.webp`, 600×1304) in the
-`.ab-phone-img.briefmark` phone frame — it replaced the fake `ab-mez-site`
-HTML mock, which read as a broken image; that mock's CSS was deleted with it.
-**pass** has no UI at all, so it renders the `.ab-arch` architecture SVG. The modal wrapper adds `web-preview` for every browser-frame
-preview via an `includes([...])` check — keep that list in sync (alisio is a
-device combo, NOT web, so it stays OUT of that list). **All
-preview imgs must carry explicit `width`/`height`** — without them the
-transparent-frame slots collapse to zero height until the lazy image paints
-(this bit Savely once; fixed in `5f8e600`).
+1. Extend `CaseKey` and add a `DEFS` entry.
+2. Add `cases.<key>` to **both** `messages/en.json` and `messages/es.json`
+   (titleIt, tag, descRich with `<it>` tags, metaStatus, mshowStatus,
+   kickerPlatform, kickerDomain, action labels, metaPlatform when `platform` is
+   null; story + highlights when flagship).
+3. Insert the key into `CASE_KEYS` (it is BOTH the render order AND the
+   deep-link allowlist). Bump the ten-case count **and** the first-case
+   (`stampi`) deep-link check in `tests/e2e/smoke.spec.ts`.
+4. Give it a film in `FILMS`, or a still in `CasePreview` (`case-media.tsx`).
+   A shipped product also goes in `REEL_KEYS` with a 12s cut in `public/cases/reel/`.
 
-**alisio** is the first iOS + Apple Watch case and uses a bespoke
-`.ab-alisio-combo` preview: an `.ab-phone-img.alisio` phone (Live-session
-screen) with an `.ab-alisio-watch` rounded-square watch (Goal-reached screen)
-overlapping the bottom-left corner. Both `public/cases/alisio-hero.webp`
-(953×2109) and `public/cases/alisio-watch.webp` (249×317) were cropped from
-the App Store **marketing** frames in
-`~/Projects/Swift/Alisio/marketing/appstore-screenshots/` (headline + device
-bezel stripped so the raw screen sits in the CSS frame). Shipped 2026-07-23:
-the primary action links to `apps.apple.com/mx/app/alisio/id6793006694`
-(`kind: "primary"`, external) and `metaStatus` reads "Live on the App Store".
+**Case copy is written from the repos, client first** (Iván's call,
+2026-09-28). Each `descRich` opens with what the product does and for whom, in
+plain words; the engineering sits in story and highlights for the hiring manager.
+The facts behind every sentence were checked against each repo that day. Things
+that are **false** and must not come back: Stripe, a storefront or checkout on the
+mezcal site (it sells nothing); "private beta" for Vitapath (nothing is hosted);
+"spinning arrows" in Fingo; Briefmark share-sheet input or search (you paste a
+link, and there is no search); the old 98% for Arrhythmia except as the leaky
+number it was. Vitapath and Briefmark carry **no action** rather than a disabled
+one: an honest link does not exist yet.
+
+**Previews.** A case with a film shows the film as the sheet's hero. The two
+without one show a still in `CasePreview`: `mezcal` (a real capture in
+`ab-browser-frame`) and `briefmark` (its onboarding screen in
+`.ab-phone-img.briefmark`). The per-case preview captures and device combos the
+old two-column modal used are gone with it. **All imgs must carry explicit
+`width`/`height`.**
 
 Its **watch gallery** (`public/cases/gallery/alisio-w1..w4.webp`, 416×496) is
 four raw watchOS captures taken with `xcrun simctl io <watch-udid> screenshot`
@@ -195,20 +187,9 @@ the summary lives on the phone. A `Alisio Watch Complication` target does exist,
 but the simulator's default face has no complication slots, so the gallery does
 not show one — do not re-add that claim to `watchCaption`.
 
-**arrhythmia** (web · ML, num `05`) uses a REAL screenshot
-(`public/cases/arrhythmia-hero.webp`, 900×562, 16:10, cropped from that repo's
-`docs/screenshots/02-trace-overview.png`) in the `ab-browser-frame has-shot`
-treatment; its primary action links to the **public** backend repo
-`github.com/Ivan-LB/arrhythmia-detector-backend` (verified 200 unauth).
-**vitapath** (iOS + Web + Spring, num `04`, private repos, MVP) uses a REAL
-screenshot of the hospital console's **live dispatch map** (Baja California with
-paramedic markers) — `public/cases/vitapath-hero.webp`, 1200×750, 16:10 — in
-`ab-browser-frame has-shot`. Captured with Playwright by logging into the
-`web-hospital` Vite dev server (:5173) against the full local stack (Spring Boot
-on :8080 + PostGIS/MinIO via `backend-spring` → `docker compose up`; seeded admin
-`hospital@example.com`). To re-capture: bring that stack up, then rerun the
-login+screenshot Playwright script against `/mapa`. Its action is a disabled
-"Private beta". Both vitapath and arrhythmia are in the `web-preview` list.
+**arrhythmia**'s primary action links to the **public** backend repo
+`github.com/Ivan-LB/arrhythmia-detector-backend` (verified 200 unauth; the web
+repo is public too).
 
 **Case taxonomy (plan 011, 2026-08-20). One rule per axis, all ten cases.**
 Before this the modals drifted: the kicker's middle slot was a domain on five
@@ -223,10 +204,10 @@ summarize. The rules now are:
 | Platform meta | `iOS N+`, the real deployment target read from that app's `project.pbxproj`. Backend frameworks belong in Stack, never here |
 | Stack row | 3 to 4 core frameworks. `Node.js` is canonical, never `Node`; never bare `Swift` beside `SwiftUI` |
 | Index chips | a **strict subset** of that case's Stack row |
-| Disabled labels | exactly three families: `Coming soon` (product not released), `Code coming soon` (product live, repo private), `Private beta`. Every disabled action carries `icon: "clock"` |
+| Actions | only real links. A case with nothing honest to link carries no action at all; disabled placeholder pills were retired 2026-09-28 |
 | Preview frames | every plain phone is `--w: 280px`; a URL bar is the real domain when the site is live, otherwise a lowercase product slug, and is never localized |
 
-**The kicker and the index line are built from the same `caseFacet(key)` helper**
+**The kicker and the index line are built from the same `facet` value** (`useCases`)
 so they cannot diverge again: the modal appends the year, the index appends the
 status. Do not re-author either as a literal string. A static check of these
 invariants (clock count, orphan chips, phone widths) lives in plan 011's tail.
@@ -236,10 +217,21 @@ invariants (clock count, orphan chips, phone widths) lives in plan 011's tail.
 gallery-only or story-without-highlights tier: `story` and `highlights` ship
 together or not at all.
 
-- flagship: `alisio`, `savely`, `pass`, `vitapath`, `arrhythmia`
-- compact: `fave`, `fingo`, `mezcal`, `briefmark`, `blip`, `jugo`
-- `pass` is deliberately flagship **without** `media`: a serverless platform has
-  no screen to capture, so it renders the `.ab-arch` SVG instead.
+- flagship: `stampi`, `alisio`, `savely`, `vitapath`, `arrhythmia`
+- compact: `fave`, `fingo`, `mezcal`, `briefmark`, `jugo`
+- `stampi` is flagship **without** `media`; its launch film carries the visuals.
+
+**Launch films (`film`, 2026-09-28).** Eight cases carry a 16:9 launch film with
+sound (`FILMS` in `cases.tsx`; files in `public/cases/film/`, Jugo reuses
+`public/cases/video/jugo-launch.mp4`). It is the **sheet's hero**. Separate from
+`media` on purpose: those are silent looping demo clips, these never play unasked.
+`<CaseFilm>` is a poster plus one play button, `preload="none"`, native controls
+once started, and it calls `play()` **inside the click handler** because Safari
+refuses an unmuted `play()` outside a user gesture; do not move that call into an
+effect. No duration labels anywhere (Iván: every case has one, so it says
+nothing). Sources were encoded `libx264 -crf 27 -preset slow`, AAC 112k,
+`+faststart`, 1080p.
+
 - `fave` and `fingo` are the strongest candidates for promotion next; both ship
   a support page and a privacy page already, so only the copy is missing.
 
@@ -258,7 +250,7 @@ on a Spanish device.
 
 **Case-study depth (`story` / `highlights` / `media`)** — added 2026-07-30. A
 `CaseData` entry may carry three optional fields that render as full-width bands
-**inside the modal's existing scroll area**, below the two-column fold. The fold
+**inside the sheet's scroll area**, below the hero and the pitch. The pitch
 stays the 30-second glance; the bands are the 5-minute read (PRODUCT.md
 principle 2). The five flagship cases listed above carry them; the other five
 degrade gracefully to the compact modal, so narrative can be added later
@@ -268,7 +260,7 @@ without touching code.
   inside the `CASES` `useMemo`, reading `cases.storyLabels.*` (shared) plus
   `cases.<key>.story.{problem,approach,result}`. Rendered with **serif-italic
   run-in lead-ins** (`.ab-case-beats h4`), deliberately NOT another tracked-caps
-  eyebrow — the modal already spends that idiom once in `.ab-case-head .eye`.
+  eyebrow — the sheet already spends that idiom once in `.ab-sheet-bar .eye`.
 - `highlights`: `t.raw("cases.<key>.highlights")` string array; a typographic
   list with accent dashes, two roomy columns via
   `minmax(min(100%, 400px), 1fr)`. Not a card grid.
@@ -280,11 +272,10 @@ without touching code.
   (`.ab-phone-img`), or `bare` (no chrome, natural aspect — for multi-surface
   composites, rendered with the `wide` figure).
 
-**Gotcha (fixed, do not regress):** `.ab-case-body > * { min-width: 0 }` is
-load-bearing. Without it the intrinsic width of the media (a 1400px composite, a
-1200px capture) sets the grid track's min-content and the whole modal scrolls
-sideways on mobile with text clipped. `.ab-case-media img/video` also cap at
-`max-width: 100%`.
+**Gotcha (fixed, do not regress):** `.ab-case-media img/video` cap at
+`max-width: 100%` and `.ab-case-media > figure` carries `min-width: 0`. Without
+them the intrinsic width of the media (a 1740px composite, a 1200px capture) sets
+the sheet's width and the whole sheet scrolls sideways on a phone.
 
 **Demo media capture recipes** (all assets are real captures, never mockups):
 - Web surfaces: Playwright `recordVideo` against the running app, then ffmpeg
@@ -318,79 +309,43 @@ sideways on mobile with text clipped. `.ab-case-media img/video` also cap at
   (6 steps for the patient profile). Accounts and the full runbook live in
   `~/Projects/vitapath/DEMO.md`.
 
-**Case modal accessibility invariants (2026-08-02).** All four were measured
-broken and are now covered by e2e tests — if a test named for them fails, the
-regression is real, not the test being fussy.
+**Case sheet invariants.** The case opens as a bottom sheet
+(`_home/case-sheet.tsx`, `.ab-case-modal` + `.ab-sheet-*`): it rises on a drawer
+curve (`cubic-bezier(0.32, 0.72, 0, 1)`, 560ms in, 380ms out) and its top bar can be
+dragged down to dismiss: 1:1 while held, rubber-banded upward, dismissed on
+distance (140px) or velocity (0.55 px/ms). The drag writes `transform` directly,
+never a CSS variable, and clearing it hands the motion back to the transition from
+where the finger left. The a11y invariants from 2026-08-02 carry over and stay
+covered by e2e tests:
 
-- The modal **traps focus**: the `openCaseKey` effect handles `Tab`/`Shift+Tab`
-  and wraps inside `modalRef`, and it sets `inert` on `<main>` + `header.ab-nav`
+- It **traps focus** and sets `inert` on `main#main-content` + `header.ab-nav`
   while open. Without the `inert` half, `aria-modal="true"` is a lie.
-- `.ab-case-modal` closed carries **`visibility: hidden`** (with a 320 ms-delayed
-  transition so the exit fade still plays). `opacity: 0` alone left its close
-  button in the tab order as the last stop on every homepage load.
-- Rows carry **`data-case`**, and a `?case=` deep link seeds `lastFocusRef` from
-  it, so closing lands on the matching row instead of stranding focus.
-- `renderedCaseKey` lags `openCaseKey` on purpose so the modal keeps painting the
-  last case through the 320 ms exit. Nulling it immediately collapsed the dialog
-  to a 73 px bar showing the English fallback — on `/es` too. Because the body
-  stays mounted, the close path explicitly pauses any `<video>` inside.
-- Disabled case actions are **`<button disabled>`**, never `<a href="#">` dimmed
-  with `pointer-events: none` — that stops the mouse and nothing else.
+- Closed, it carries **`visibility: hidden`** (delayed so the exit plays), or its
+  close button stays in the tab order on every homepage load.
+- Rows carry **`data-case`**, and a `?case=` deep link seeds the return focus from
+  it, so closing lands on the matching row.
+- `renderedKey` lags `openKey` so the sheet keeps painting the last case through
+  its exit; because the body stays mounted, closing pauses every `<video>` inside.
+- Never ship an `<a href="#">` dimmed with `pointer-events: none` as a "disabled"
+  action: it stops the mouse and nothing else.
 
-**Vitrine composition below 820px (do not revert to centring).** The carousel
-row is sized by its tallest slide, and the slides cannot be equalised: the
-Alisio card is a portrait phone (aspect 0.4601, so height = width × 2.1733)
-while the other two are landscape browser frames (400:260). Even with the phone
-at its legibility floor (~150px wide) and a combo at the widest the
-`min(88%, 330px)` slot allows, the heights still differ ~1.5×. That slack is
-structural. `.ab-phones` therefore uses **`align-items: end`** and
-`.ab-phone-slot` **`justify-content: flex-end`**, so all three captions land on
-one baseline. The desktop grid (`.ab-phones`, >820px) now uses `align-items: end`
-for the same reason: its slots' `min-height: 640px` exists to share a caption
-baseline, but Alisio's slot measures 659.8px, so `center` lifted the two side
-captions ~10px and defeated it and the whole slack sits as one band above the short cards. It
-previously used `center`, which halved the slack: that stranded the combo cards
-mid-row and put their captions **116px** off the phone's, so a swipe made the
-caption jump. The old comment justified centring with "you only ever see one
-card at a time" — measured and false: a neighbour always peeks and at 820px two
-full cards show. Do **not** reinstate the desktop's `min-height: 640px` here; it
-would add ~140px of dead space to every slide, and `align-items: end` already
-buys the shared baseline. Do **not** shrink `.ab-phone-img.alisio` to close the
-gap either — Alisio is the emphasized slot (`1.15fr`, `.center`, `scale(1.06)`,
-`z-index: 2`, its own 272px vitrine override), so shrinking it trades the
-hierarchy for whitespace. Verified capSpread 0 at 320/375/414/500/640/723/820 in
-both locales and both themes, with ≥821px bit-identical to before.
+**Showcase reel (2026-09-28, replaced the three-piece vitrine).** Six shipped
+products (`REEL_KEYS`: stampi, alisio, savely, fave, fingo, jugo), each a silent
+12s cut of its own launch film in `public/cases/reel/` (1280x720, CRF 29, no
+audio, 170 to 320 KB). One plays at a time; on `ended` the track advances.
+The track is **native scroll with snap points**, so a swipe has the platform's own
+momentum and can be caught mid-flight; an IntersectionObserver rooted on the
+track decides which slide is centred. Dots are the same state as a remote: the
+active one opens into a pill whose fill is a `scaleX` written from the clip's own
+clock each frame (the width transition on the dots is deliberate: the neighbours
+must slide aside). A peeking neighbour comes to the centre on click; only the
+centred piece opens its case. Only the centred clip loads, everything pauses off
+screen or in a hidden tab, and reduced motion starts paused on posters with the
+same toggle. The Vitapath and Arrhythmia captures the old vitrine used are
+deleted; neither is a shipped product.
 
-**Vitrine (hero showcase):** three pieces, all 2026 as of 2026-07-30 —
-**Vitapath** (`.ab-vit-web-combo tilt-l`: console capture in the browser frame
-plus the patient app's live-tracking screen as the mini phone, so the hero shows
-the multi-surface nature at a glance), **Alisio** (center, emphasized slot) and
-**Arrhythmia Detector** (`.ab-vit-web-combo tilt-r`, browser only). This
-replaced Fingo (2024) and Destilería (2025) — the trio now leads with the
-strongest recent work. Alisio renders a **raw device capture** of the Train
-screen in the rounded `.ab-phone-img.alisio` card, via
-`public/cases/alisio-vitrine.webp` (600×1304). It used to be the full App Store
-marketing frame `iphone_01_train.png`, but that poster carried crop marks, an
-"ALISIO" slug, a sliced tab bar and — inside the screenshot itself — a
-**disabled** "Start on Apple Watch" CTA under an amber "Install Alisio on your
-Apple Watch to start" warning: the hero of the vitrine advertised a broken
-state. The replacement is `xcrun simctl io … screenshot` of the real app with
-the Watch app installed (CTA green, no warning), resized 1320×2868 → 600×1304.
-That resize is exact — the App Store 6.9" poster has the same aspect as the
-device screen — so **no CSS or `page.tsx` change was needed**, and the vitrine
-is now three real product captures instead of two captures plus one ad.
-Sized to 272px through
-`.ab-vitrine .ab-phone-img.alisio` so the modal's 244px is untouched.
-(`.ab-vit-web-combo`): a 400×260 browser window with the desktop capture and
-a mini phone overlapping its corner with the mobile capture
-(`public/cases/vitapath-{hero,mini}.webp`). Tilt/hover transforms live on
-the combo wrapper, not the browser. The old hand-drawn mock's CSS
-(`.ab-vit-browser .scr`, `.ab-vit-bottle`, …) is orphaned — cleanup PR
-pending.
-
-**Pending:** `github.com/Ivan-LB/loyalty-cards` is private, so the `pass`
-action ships disabled ("Code coming soon"); if the repo goes public, restore
-the GitHub link in the `CASES` record + both dictionaries.
+**Pending:** `github.com/Ivan-LB/loyalty-cards` is private, so the Stampi case
+links only its public site; if the repo goes public, add a GitHub ghost action.
 
 ## 2. Commands
 
@@ -530,16 +485,18 @@ its path data is byte-identical to the inline `BRAND_LOGO` the header renders
 
 | file | role | form |
 |---|---|---|
-| `public/AtelierBelli.svg` | `icons.icon`, the primary favicon | transparent, **theme-aware** |
+| `public/AtelierBelli.svg` | `icons.icon`, the primary favicon | cream tile (`#faf8f3`, rx 112), fixed ink |
 | `app/favicon.ico` | `/favicon.ico`, legacy + agents | real 3-entry .ico (16/32/48), cream ground |
 | `public/AtelierBelli.png` | `icons.shortcut` | 192×192, cream ground |
 | `public/apple-touch-icon.png` | iOS home screen | 180×180, **opaque** (iOS composites black behind alpha) |
 
-The SVG carries an embedded `<style>` using the same `.ab-dark` / `.ab-accent`
-role names as `BRAND_LOGO`, with a `prefers-color-scheme: dark` rule that flips
-the ink to `#EDE6D8`. Without it the near-black paths all but vanished in a
-dark browser tab strip and only the turquoise facet read. The raster three take
-a cream ground instead, since a file cannot re-colour itself.
+The SVG carries an embedded `<style>` with the same `.ab-dark` / `.ab-accent`
+role names as `BRAND_LOGO`, on an **opaque cream tile**. It used to be
+transparent with a `prefers-color-scheme: dark` rule flipping the ink to cream,
+but that query reports the OS setting, not the tab strip: a dark OS with a light
+tab strip rendered a cream mark on a light tab with only the turquoise visible
+(reported 2026-09-28). **Do not reintroduce a colour-scheme query in a favicon.**
+All four icons now share the cream ground.
 
 To regenerate: `rsvg-convert -w 1024 public/AtelierBelli.svg` for the master,
 then `magick` to resize, centre on `#faf8f3` and `-alpha remove`; build the .ico
@@ -896,9 +853,9 @@ app/favicon.ico                   # Real 3-entry .ico (16/32/48). Next
                                   #   serves it at /favicon.ico.
 public/                           # All static assets, logos, hero images
   apple-touch-icon.png            # 180×180, opaque, from the SVG mark
-  cases/                          # Project preview screenshots (blip-hero,
-                                  #   mezcal-hero .webp); briefmark/pass
-                                  #   images land here too
+  cases/                          # film/ (launch films), reel/ (12s showcase
+                                  #   cuts), video/ + gallery/ (case media),
+                                  #   and the mezcal/briefmark stills
 i18n.ts                           # next-intl config (createNextIntlPlugin)
 middleware.ts                     # next-intl middleware (locale routing)
 .eslintrc.json                    # extends next/core-web-vitals (PR #22)

@@ -5,7 +5,7 @@ import type { ReactNode } from "react"
 
 import ThemeInit from "@/components/theme-init"
 
-export type SupportApp = "fingo" | "savely" | "fave"
+export type SupportApp = "fingo" | "savely" | "fave" | "alisio"
 
 export type ContactKind =
   | "email"

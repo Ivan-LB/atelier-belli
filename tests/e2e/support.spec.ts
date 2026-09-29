@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const SUPPORT_PAGES = ["/fingo/support/", "/savely/support/", "/fave/support/"];
+const SUPPORT_PAGES = ["/fingo/support/", "/savely/support/", "/fave/support/", "/alisio/support/"];
 
 // ── /fave/support exists in both languages ──────────────────────────────────
 // App Store Connect requires a Support URL at submission, and Fave is
@@ -85,6 +85,7 @@ for (const [support, privacy] of [
   ["/fave/support/", "/fave/privacy"],
   ["/fingo/support/", "/fingo/privacy"],
   ["/savely/support/", "/savely/privacy"],
+  ["/alisio/support/", "/alisio/privacy"],
 ] as const) {
   test(`${support} links its own privacy policy`, async ({ page }) => {
     await page.goto(support);
@@ -100,6 +101,7 @@ for (const [path, app] of [
   ["/fingo/support/", "fingo"],
   ["/savely/support/", "savely"],
   ["/fave/support/", "fave"],
+  ["/alisio/support/", "alisio"],
 ] as const) {
   test(`${path} renders the real ${app} app icon`, async ({ page }) => {
     await page.goto(path);
