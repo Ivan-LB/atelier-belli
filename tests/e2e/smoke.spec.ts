@@ -137,8 +137,8 @@ test("theme toggle flips data-theme and persists to localStorage", async ({
 });
 
 // ── Test 5: Spanish shows all eleven cases ───────────────────────────────────
-// Bump this count when a 12th case ships (also update CASE_KEYS in page.tsx).
-test("Spanish shows all eleven cases", async ({ browser }) => {
+// Bump this count when a case ships or retires (also update CASE_KEYS in _home/cases.tsx).
+test("Spanish shows all ten cases", async ({ browser }) => {
   const context = await browser.newContext();
   await context.addCookies([
     { name: "NEXT_LOCALE", value: "es", url: "http://localhost:3100" },
@@ -146,20 +146,20 @@ test("Spanish shows all eleven cases", async ({ browser }) => {
   const page = await context.newPage();
   await page.goto("/");
   await expect(page.locator("html")).toHaveAttribute("lang", "es");
-  await expect(page.locator("button.ab-index-row")).toHaveCount(11);
+  await expect(page.locator("button.ab-index-row")).toHaveCount(10);
   await context.close();
 });
 
 // ── Test 6: deep link opens the right case ────────────────────────────────────
-test("?case=blip deep link opens the BLIP modal; Escape clears the param", async ({
+test("?case=mezcal deep link opens the Destilería Lorenzana sheet; Escape clears the param", async ({
   page,
 }) => {
-  await page.goto("/?case=blip");
+  await page.goto("/?case=mezcal");
 
-  // Modal should be visible and contain the case title
+  // Sheet should be visible and contain the case title
   const modal = page.locator(".ab-case-modal.open");
   await expect(modal).toBeVisible();
-  await expect(modal).toContainText("BLIP");
+  await expect(modal).toContainText("Destilería Lorenzana");
 
   // Escape closes the modal and removes the param
   await page.keyboard.press("Escape");
@@ -168,20 +168,69 @@ test("?case=blip deep link opens the BLIP modal; Escape clears the param", async
 });
 
 // ── Test 7: opening a case writes the ?case= param ───────────────────────────
-test("clicking a case row adds ?case=alisio to the URL", async ({ page }) => {
+test("clicking a case row adds ?case=stampi to the URL", async ({ page }) => {
   await page.goto("/");
 
   const firstRow = page.locator("button.ab-index-row").first();
   await firstRow.click();
 
-  // URL should now contain ?case=alisio (alisio is the first case)
-  await expect(page).toHaveURL(/[?&]case=alisio/);
+  // URL should now contain ?case=stampi (stampi is the first case)
+  await expect(page).toHaveURL(/[?&]case=stampi/);
 
   // Escape removes the param
   await page.keyboard.press("Escape");
   await expect(async () => {
     expect(page.url()).not.toContain("case=");
   }).toPass();
+});
+
+// ── Test 7b: the case formerly keyed `pass` still opens from old links ───────
+test("?case=pass opens Stampi and rewrites the param", async ({ page }) => {
+  await page.goto("/?case=pass");
+  const modal = page.locator(".ab-case-modal.open");
+  await expect(modal).toContainText("Stampi");
+  await expect(page).toHaveURL(/[?&]case=stampi/);
+  await expect(modal.locator('a[href="https://stampi.atelierbelli.com/"]')).toHaveCount(1);
+});
+
+// ── Test 7c: launch films play only on request, with sound ───────────────────
+test("the sheet's film plays only when its play button is pressed", async ({ page }) => {
+  await page.goto("/?case=alisio");
+  const modal = page.locator(".ab-case-modal.open");
+  // Not scoped to `.open`: that class is gone once the dialog closes.
+  const video = page.locator(".ab-case-modal video.ab-case-film-video");
+  // preload="none" and no autoplay: nothing plays until asked.
+  await expect(video).toHaveAttribute("preload", "none");
+  expect(await video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
+
+  await modal.locator("button.ab-film-play").click();
+  await expect(modal.locator('.ab-case-film[data-started="true"]')).toHaveCount(1);
+  await expect(video).toHaveAttribute("controls", "");
+  await expect(video).toBeFocused();
+
+  // Closing the dialog must stop it, sound included.
+  await page.keyboard.press("Escape");
+  await expect.poll(() => video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
+});
+
+// ── Test 7d: the showcase reel opens the case it is showing ──────────────────
+test("the reel's centred piece opens its case; a dot moves the reel", async ({ page }) => {
+  await page.goto("/");
+  const reel = page.locator(".ab-reel");
+  await reel.scrollIntoViewIfNeeded();
+  // A dot recentres the track on that product without opening anything.
+  await reel.locator("button.ab-reel-dot").nth(1).click();
+  await expect(reel.locator('.ab-reel-slide[data-active="true"]')).toHaveAttribute("data-index", "1");
+  await expect(page.locator(".ab-case-modal.open")).toHaveCount(0);
+  await reel.locator('.ab-reel-slide[data-active="true"] button.ab-reel-media').click();
+  await expect(page).toHaveURL(/[?&]case=alisio/);
+  await expect(page.locator(".ab-case-modal.open")).toContainText("Alisio");
+});
+
+// ── Test 7e: a retired case key opens nothing ────────────────────────────────
+test("?case=blip no longer opens a sheet", async ({ page }) => {
+  await page.goto("/?case=blip");
+  await expect(page.locator(".ab-case-modal.open")).toHaveCount(0);
 });
 
 // ── Test 8: invalid ?case= key is silently ignored ───────────────────────────
