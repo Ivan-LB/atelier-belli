@@ -128,8 +128,8 @@ Ten cases as of 2026-09-28, in this display order: `scanandtap`, `alisio`, `save
 param. `stampi.atelierbelli.com` still exists as the pass web service for issued passes
 and must not be touched. The film, reel cut and posters still show the old "stampi."
 wordmark and need a new capture; their files keep the `stampi` names on disk and
-`FILMS` / `showcase.tsx` map the new key onto them. Status copy: live site, free first
-month, zero paying clients ("Pre-revenue"), never "Pre-launch". Copy is written from
+`FILMS` / `showcase.tsx` map the new key onto them. Status copy: metaStatus is "Live site" / "Sitio en línea" (Iván dropped the "no paying
+clients yet" clause on 2026-10-18); never "Pre-launch". Copy is written from
 `docs/scanandtap-brief.md` and the live site: never claim clients, revenue or usage, and never call
 it an app (the wallet pass is the client). Fave and Savely are live on the App
 Store; their primary actions are store links. Jugo's primary action is the

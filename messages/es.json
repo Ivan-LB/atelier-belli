@@ -843,7 +843,7 @@
         "titleIt": "la tarjeta de sellos que vive en el wallet.",
         "descRich": "Tarjetas de lealtad digitales para cafés, salones y negocios de mostrador en Tijuana. El cliente escanea un QR una vez y la tarjeta se guarda en Apple Wallet o Google Wallet con el nombre, los colores y los sellos del negocio: sin app, sin cuenta, sin correo. El cajero sella desde un celular o una tablet y la tarjeta se actualiza sola en la pantalla de bloqueo. Diseñada, construida y operada por una sola persona, <it>de punta a punta</it>.",
         "metaPlatform": "Apple Wallet · Google Wallet",
-        "metaStatus": "Sitio en línea · aún sin clientes de pago",
+        "metaStatus": "Sitio en línea",
         "actionPrimary": "Visitar Scan&Tap",
         "tag": "Tarjetas de lealtad que viven en Apple y Google Wallet.",
         "story": {

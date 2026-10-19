@@ -843,7 +843,7 @@
         "titleIt": "the stamp card that lives in the wallet.",
         "descRich": "Digital loyalty cards for cafés, salons and counter businesses in Tijuana. A customer scans a QR once and the card saves to Apple Wallet or Google Wallet with the business's own name, colours and stamps: no app, no account, no email. The cashier stamps from a phone or tablet, and the card updates itself on the lock screen. Designed, built and run by one person, <it>end to end</it>.",
         "metaPlatform": "Apple Wallet · Google Wallet",
-        "metaStatus": "Live site · no paying clients yet",
+        "metaStatus": "Live site",
         "actionPrimary": "Visit Scan&Tap",
         "tag": "Loyalty cards that live in Apple and Google Wallet.",
         "story": {
