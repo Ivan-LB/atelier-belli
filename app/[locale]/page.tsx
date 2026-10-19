@@ -5,21 +5,127 @@ import { useParams, useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { LOCALE_COOKIE } from "@/i18n"
-import { BrandLogo } from "@/components/brand-logo"
 import { ThemeIcons } from "@/components/theme-icons"
+import ThemeInit from "@/components/theme-init"
 
-import { CASE_KEYS, LEGACY_CASE_KEYS, useCases, type CaseKey } from "./_home/cases"
-import { CaseSheet } from "./_home/case-sheet"
+import {
+  CASE_KEYS,
+  LEGACY_CASE_KEYS,
+  StatusPill,
+  useCases,
+  type CaseData,
+  type CaseKey,
+} from "./_home/cases"
+import { CaseSheet, pullClose, pullOpen, type CloseMode } from "./_home/case-sheet"
 import { Showcase } from "./_home/showcase"
 
 type Lang = "en" | "es"
 type Theme = "light" | "dark"
-
-const BRAND_LOGO = <BrandLogo />
+type SectionId = "hero" | "reel" | "work" | "biz" | "contact"
+type KeyDef = { href: string; label: string; kind: "primary" | "ghost"; external?: boolean }
 
 // Slightly over the .ab-lang-ind transition in globals.css (280ms), so the
 // language indicator lands before router.refresh() replaces the node.
 const LOCALE_SLIDE_MS = 300
+
+/* Section order depends on the language, and it lives here rather than in the
+   dictionaries because it is layout, not copy: English leads with the work,
+   Spanish leads with the business lane. The nav links follow the same order. */
+const SECTION_ORDER: Record<Lang, readonly SectionId[]> = {
+  en: ["hero", "reel", "work", "biz", "contact"],
+  es: ["hero", "biz", "reel", "work", "contact"],
+}
+const NAV_SECTIONS = ["work", "biz", "contact"] as const
+
+/* WhatsApp number for wa.me links: digits only, with country code. While it is
+   null, NO WhatsApp key renders anywhere and the Spanish hero's primary key
+   reads "Escríbeme" and goes to #contact. Never ship a made-up wa.me link. */
+const WHATSAPP_NUMBER: string | null = null
+
+const EMAIL = "ivanlorenzana@outlook.com"
+
+const SOCIAL_LINKS = [
+  { label: "GitHub", href: "https://github.com/Ivan-LB" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/ivan-lorenzana-belli/" },
+  { label: "Instagram", href: "https://www.instagram.com/_ivanlb" },
+] as const
+
+/* The poster a case grows from (and settles back into): a card's well, or
+   the reel slide itself. */
+const posterOf = (host: HTMLElement | null) =>
+  host?.closest<HTMLElement>(".ab-card")?.querySelector<HTMLElement>(".ab-well") ?? host
+
+function Keys({ keys }: { keys: KeyDef[] }) {
+  return (
+    <div className="ab-keys">
+      {keys.map((k) => (
+        <a
+          key={`${k.kind}-${k.href}`}
+          className={`ab-key ${k.kind}`}
+          href={k.href}
+          {...(k.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+        >
+          {k.label}
+        </a>
+      ))}
+    </div>
+  )
+}
+
+/* One object per project. The heading's button stretches over the whole card
+   (`::after { inset: 0 }`), so the case name is its accessible name while the
+   tag, status and stack stay readable. It keeps `ab-index-row` and `data-case`
+   because the sheet's focus-return logic and the e2e suite look them up. */
+function CaseCard({
+  c,
+  small,
+  headingLevel = 3,
+  onOpen,
+}: {
+  c: CaseData
+  small?: boolean
+  /** h4 under the "More projects" h3, so the outline tells the two tiers apart. */
+  headingLevel?: 3 | 4
+  onOpen: (key: CaseKey, trigger: HTMLElement) => void
+}) {
+  const p = c.poster
+  const Heading = headingLevel === 4 ? "h4" : "h3"
+  return (
+    <article className={`ab-card${small ? " sm" : ""}`}>
+      <span className={`ab-well${p.portrait ? " portrait" : ""}`}>
+        {/* images.unoptimized is load-bearing on Amplify, so next/image buys nothing. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={p.src} alt="" width={p.w} height={p.h} loading="lazy" decoding="async" />
+      </span>
+      <div className="ab-plate">
+        <div className="ab-card-head">
+          <Heading className="ab-card-name ab-display">
+            <button
+              type="button"
+              className="ab-index-row"
+              aria-haspopup="dialog"
+              data-case={c.key}
+              onClick={(e) => onOpen(c.key, e.currentTarget)}
+            >
+              {c.name}
+            </button>
+          </Heading>
+          <span className="ab-card-year ab-mono">{c.year}</span>
+        </div>
+        <p className="ab-card-tag">{c.tag}</p>
+        <div className="ab-card-foot">
+          <StatusPill status={c.status} label={c.statusLabel} />
+          {!small &&
+            c.chips.map((chip) => (
+              <span key={chip} className="ab-chip-stack ab-mono">
+                {chip}
+              </span>
+            ))}
+        </div>
+      </div>
+    </article>
+  )
+}
 
 export default function PortfolioPage() {
   const params = useParams()
@@ -32,17 +138,14 @@ export default function PortfolioPage() {
   const [hydrated, setHydrated] = useState(false)
   const [openCaseKey, setOpenCaseKey] = useState<CaseKey | null>(null)
   const lastFocusRef = useRef<HTMLElement | null>(null)
-  const mainRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
-    let initial: Theme
+    // Light is the default. A saved choice wins; the OS preference does not.
+    let initial: Theme = "light"
     try {
-      const saved = localStorage.getItem("ab_theme") as Theme | null
+      const saved = localStorage.getItem("ab_theme")
       if (saved === "light" || saved === "dark") initial = saved
-      else initial = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
-    } catch {
-      initial = "light"
-    }
+    } catch {}
     setTheme(initial)
     setHydrated(true)
   }, [])
@@ -97,73 +200,156 @@ export default function PortfolioPage() {
     window.setTimeout(() => router.refresh(), reduced ? 0 : LOCALE_SLIDE_MS)
   }
 
-  // Reveal-on-scroll
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("in")
-            io.unobserve(e.target)
-          }
-        })
-      },
-      { threshold: 0.12 },
-    )
-    const nodes = mainRef.current?.querySelectorAll(".ab-reveal") ?? []
-    nodes.forEach((n) => io.observe(n))
-    return () => io.disconnect()
-  }, [])
-
   const openCase = useCallback((key: CaseKey, trigger?: HTMLElement) => {
     lastFocusRef.current = trigger ?? (document.activeElement as HTMLElement | null)
-    setOpenCaseKey(key)
-    const url = new URL(window.location.href)
-    url.searchParams.set("case", key)
-    window.history.replaceState(null, "", url)
+    // The Pull runs only when there is a poster to lift; deep links and
+    // reduced motion fall through to a plain state change.
+    pullOpen(trigger ? posterOf(trigger) : null, () => {
+      setOpenCaseKey(key)
+      const url = new URL(window.location.href)
+      url.searchParams.set("case", key)
+      window.history.replaceState(null, "", url)
+    })
   }, [])
 
-  const closeCase = useCallback(() => {
-    setOpenCaseKey(null)
-    const url = new URL(window.location.href)
-    url.searchParams.delete("case")
-    window.history.replaceState(null, "", url)
+  const closeCase = useCallback((mode: CloseMode = "pull") => {
+    const commit = () => {
+      setOpenCaseKey(null)
+      const url = new URL(window.location.href)
+      url.searchParams.delete("case")
+      window.history.replaceState(null, "", url)
+    }
+    // A drag has already moved the sheet by hand; it leaves from where the
+    // finger let go instead of replaying the Pull.
+    if (mode === "drag") commit()
+    else pullClose(posterOf(lastFocusRef.current), commit)
   }, [])
 
   const year = new Date().getFullYear()
+  const waHref = WHATSAPP_NUMBER ? `https://wa.me/${WHATSAPP_NUMBER}` : null
+
+  const navLabels: Record<(typeof NAV_SECTIONS)[number], string> = {
+    work: t("nav.work"),
+    biz: t("biz.title"),
+    contact: t("nav.contact"),
+  }
+  const navSections = SECTION_ORDER[locale].filter((id): id is (typeof NAV_SECTIONS)[number] =>
+    (NAV_SECTIONS as readonly string[]).includes(id),
+  )
+
+  // Spanish has no hero keys: the business lane sits right under the hero and
+  // owns the action, and two identical button pairs on one screen read as a
+  // duplicate (owner decision, 2026-10-18). English leads to the work instead.
+  const heroKeys: KeyDef[] =
+    locale === "es"
+      ? []
+      : [
+          { href: "#work", label: t("hero.ctaWork"), kind: "primary" },
+          { href: "#contact", label: t("hero.ctaEmail"), kind: "ghost" },
+        ]
+
+  const whatsappBiz: KeyDef[] = waHref
+    ? [{ href: waHref, label: t("biz.ctaWhatsApp"), kind: "ghost", external: true }]
+    : []
+  const emailBiz: KeyDef = { href: "#contact", label: t("biz.ctaEmail"), kind: "primary" }
+  // Spanish leads with WhatsApp; with no number the email key is the only one,
+  // so it stays the primary.
+  const bizKeys: KeyDef[] =
+    locale === "es" && waHref
+      ? [{ ...whatsappBiz[0], kind: "primary" }, { ...emailBiz, kind: "ghost" }]
+      : [emailBiz, ...whatsappBiz]
+
+  const flagship = CASE_KEYS.map((k) => cases[k]).filter((c) => c.flagship)
+  const compact = CASE_KEYS.map((k) => cases[k]).filter((c) => !c.flagship)
+
+  const sections: Record<Exclude<SectionId, "reel">, React.ReactNode> = {
+    hero: (
+      <section key="hero" className="ab-hero" aria-labelledby="hero-heading">
+        <div className="ab-wrap ab-hero-in">
+          <h1 id="hero-heading" className="ab-hero-title ab-display">
+            {t("hero.title")}
+          </h1>
+          <p className="ab-hero-sub">{t.rich("hero.sub", { b: (chunks) => <b>{chunks}</b> })}</p>
+          {heroKeys.length > 0 && <Keys keys={heroKeys} />}
+        </div>
+      </section>
+    ),
+    work: (
+      <section key="work" id="work" className="ab-sec" aria-labelledby="work-title">
+        <div className="ab-wrap">
+          <h2 id="work-title" className="ab-h2 ab-display">
+            {t("work.title")}
+          </h2>
+          <ul className="ab-grid-f" role="list">
+            {flagship.map((c, i) => (
+              <li key={c.key} className={i === flagship.length - 1 ? "wide" : undefined}>
+                <CaseCard c={c} onOpen={openCase} />
+              </li>
+            ))}
+          </ul>
+          <h3 className="ab-subh">{t("work.moreTitle")}</h3>
+          <ul className="ab-grid-c" role="list">
+            {compact.map((c) => (
+              <li key={c.key}>
+                <CaseCard c={c} small headingLevel={4} onOpen={openCase} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    ),
+    biz: (
+      <section key="biz" id="biz" className="ab-sec" aria-labelledby="biz-title">
+        <div className="ab-wrap">
+          <div className="ab-biz">
+            <h2 id="biz-title" className="ab-h2 ab-display">
+              {t("biz.title")}
+            </h2>
+            <div>
+              <p>{t("biz.body")}</p>
+              <Keys keys={bizKeys} />
+            </div>
+          </div>
+        </div>
+      </section>
+    ),
+    contact: (
+      <section key="contact" id="contact" className="ab-sec ab-contact" aria-labelledby="contact-title">
+        <div className="ab-wrap">
+          <h2 id="contact-title" className="ab-h2 ab-display">
+            {t("contact.title")}
+          </h2>
+          <a className="ab-contact-mail ab-display" href={`mailto:${EMAIL}`}>
+            {EMAIL}
+          </a>
+          {waHref && (
+            <Keys keys={[{ href: waHref, label: t("contact.whatsapp"), kind: "ghost", external: true }]} />
+          )}
+        </div>
+      </section>
+    ),
+  }
 
   return (
     <div className="ab-root" data-theme={theme} suppressHydrationWarning>
+      {/* Paints a saved dark choice before first paint, like every other root.
+          React leaves the attribute alone during hydration (suppressHydrationWarning)
+          and the effect above then syncs `theme` to the same value. */}
+      <ThemeInit />
       {/* NAV */}
       <header className="ab-nav" role="banner">
         <div className="ab-wrap ab-nav-inner">
-          <a href="#top" className="ab-brand" aria-label="Atelier Belli — home">
-            <span className="ab-brand-mark" aria-hidden="true">
-              {BRAND_LOGO}
-            </span>
-            <span>
-              <span className="ab-brand-name">Atelier Belli</span>
-              <span className="ab-brand-tag">Est. 2023</span>
-            </span>
+          <a href="#top" className="ab-brand ab-display">
+            Atelier Belli
           </a>
 
           <nav aria-label="Primary">
             <ul className="ab-nav-links">
-              <li>
-                <a href="#top">{t("nav.home")}</a>
-              </li>
-              <li>
-                <a href="#work">{t("nav.work")}</a>
-              </li>
-              <li>
-                <a href="#stack">Stack</a>
-              </li>
-              <li>
-                <a href="#studio">{t("nav.about")}</a>
-              </li>
-              <li>
-                <a href="#contact">{t("nav.contact")}</a>
-              </li>
+              {navSections.map((id) => (
+                <li key={id}>
+                  <a href={`#${id}`}>{navLabels[id]}</a>
+                </li>
+              ))}
             </ul>
           </nav>
 
@@ -171,7 +357,7 @@ export default function PortfolioPage() {
             {/* Stands in for the primary links below 820px, where they are
                 hidden. Same label as the link it replaces, so the two never
                 drift apart. */}
-            <a className="ab-chip ab-chip-contact" href="#contact">
+            <a className="ab-chip-contact ab-key ghost sm" href="#contact">
               {t("nav.contact")}
             </a>
             {/* Two segments in a FIXED en-then-es order. This was one <button>
@@ -184,7 +370,7 @@ export default function PortfolioPage() {
                 "Cambiar a Español" while it reads "ES" put the accessible name
                 out of step with the visible one. */}
             <div
-              className="ab-chip ab-chip-lang"
+              className="ab-chip-lang"
               data-active={shownLocale}
               role="group"
               aria-label={t("locale.groupAria")}
@@ -198,7 +384,6 @@ export default function PortfolioPage() {
               >
                 EN
               </button>
-              <span className="ab-sep" aria-hidden="true" />
               <button
                 type="button"
                 lang="es"
@@ -219,267 +404,31 @@ export default function PortfolioPage() {
         </div>
       </header>
 
-      <main id="main-content" ref={mainRef}>
+      <main id="main-content">
         <span id="top" />
 
-        {/* HERO */}
-        <section className="ab-hero" aria-labelledby="hero-heading">
-          <div className="ab-wrap">
-            <div className="ab-hero-grid">
-              <div className="ab-reveal">
-                <div className="ab-eyebrow-row">
-                  <span className="num-xs">01</span>
-                  <span className="ab-smallcaps">{t("hero.eyebrow")}</span>
-                </div>
-                <h1 id="hero-heading" className="ab-h-title ab-serif">
-                  <span>{t("hero.titleLine1")}</span>
-                  <br />
-                  <span>{t("hero.titleLine2")}</span>
-                  <span className="ab-it">{t("hero.titleIt")}</span>
-                </h1>
-                <p className="ab-h-sub">
-                  {t.rich("hero.subtitle", { it: (chunks) => <em>{chunks}</em> })}
-                </p>
-              </div>
+        {SECTION_ORDER[locale].map((id) =>
+          id === "reel" ? (
+            <Showcase key="reel" cases={cases} onOpen={openCase} />
+          ) : (
+            sections[id]
+          ),
+        )}
 
-              <aside
-                className="ab-reveal"
-                aria-label="Colophon"
-                style={{ transitionDelay: "120ms" }}
-              >
-                <div className="ab-colophon">
-                  <div className="row">
-                    <span className="k">{t("colophon.locationLabel")}</span>
-                    <span className="v">Tijuana · BC</span>
-                  </div>
-                  <hr className="ab-hair" />
-                  <div className="row">
-                    <span className="k">{t("colophon.statusLabel")}</span>
-                    <span className="v avail">
-                      <span className="ab-dot" aria-hidden="true" />{" "}
-                      <em>{t("colophon.status")}</em>
-                    </span>
-                  </div>
-                  <hr className="ab-hair" />
-                  <div className="row">
-                    <span className="k">Est.</span>
-                    <span className="v">2023 — {t("colophon.ongoing")}</span>
-                  </div>
-                  <hr className="ab-hair" />
-                  <div className="row">
-                    <span className="k">{t("colophon.signed")}</span>
-                    <span className="v ab-sig">— Ivan Lorenzana</span>
-                  </div>
-                </div>
-              </aside>
-            </div>
-          </div>
-
-        </section>
-
-        {/* SHOWCASE */}
-        <Showcase cases={cases} onOpen={openCase} />
-
-        {/* SELECTED WORK */}
-        <section id="work" className="ab-sec" aria-labelledby="work-title">
-          <div className="ab-wrap">
-            <div className="ab-sec-cap">
-              <div>
-                <div className="s-eye">
-                  <span className="num-xs">02</span>
-                  <span className="ab-smallcaps">{t("work.eyebrow")}</span>
-                </div>
-                <h2 id="work-title" className="s-title">
-                  <span>{t("work.titlePre")}</span>
-                  <span className="ab-it">{t("work.titleIt")}</span>
-                </h2>
-              </div>
-              <div className="s-meta">{t("work.indexMeta")}</div>
-            </div>
-
-            {/* No role="list": the children are <button>, not listitem, which axe
-                flags as aria-required-children and some screen readers announce as
-                "list, 0 items". The visual list needs no role. */}
-            <div className="ab-index-list">
-              {CASE_KEYS.map((key) => {
-                const c = cases[key]
-                /* Built from the case's own facet, so the index line and the
-                   sheet kicker differ only in their last segment: the year
-                   there, the status here. */
-                const mshow = `${c.facet} · ${t(`cases.${key}.mshowStatus`)} →`
-                return (
-                  <button
-                    key={key}
-                    type="button"
-                    className="ab-index-row"
-                    /* Lets a ?case= deep link find the row this sheet belongs
-                       to, so closing restores focus like the click path. */
-                    data-case={key}
-                    onClick={(e) => openCase(key, e.currentTarget)}
-                  >
-                    <span className="n ab-num">{c.num}</span>
-                    <div className="p-main">
-                      <div className="p-name">
-                        {c.name}
-                        <span className="ab-it"> — {c.titleIt}</span>
-                      </div>
-                      <div className="p-tag">{c.tag}</div>
-                      <div className="mshow">{mshow}</div>
-                    </div>
-                    <div className="p-stack">
-                      {c.chips.map((s) => (
-                        <span key={s}>{s}</span>
-                      ))}
-                    </div>
-                    <div className="p-plat">{t("work.viewCase")}</div>
-                    <div className="arr">→</div>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* WORKBENCH */}
-        <section id="stack" className="ab-sec" style={{ paddingTop: 0 }} aria-labelledby="wb-title">
-          <div className="ab-wrap">
-            <div className="ab-workbench ab-reveal">
-              <div>
-                <div className="s-eye ab-wb-eye">
-                  <span className="num-xs">03</span>
-                  <span className="ab-smallcaps">{t("workbench.eyebrow")}</span>
-                </div>
-                <h2 id="wb-title" className="ab-wb-title">
-                  <span>{t("workbench.titlePre")}</span>
-                  <span className="ab-it">{t("workbench.titleIt")}</span>
-                </h2>
-                <p className="ab-wb-desc">
-                  {t.rich("workbench.desc", { it: (chunks) => <em>{chunks}</em> })}
-                </p>
-                <a
-                  href="https://github.com/Ivan-LB"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="ab-wb-link"
-                  aria-label="GitHub profile"
-                >
-                  <span className="ab-dot" aria-hidden="true" />
-                  <span>
-                    <i>github.com/</i>Ivan-LB →
-                  </span>
-                </a>
-              </div>
-
-              <div className="ab-wb-groups">
-                <div className="ab-wb-group">
-                  <h3>
-                    {t("workbench.groups.frontend")}{" "}
-                    <span className="gn">i.</span>
-                  </h3>
-                  <div className="ab-pills">
-                    {["SwiftUI", "Swift", "React", "Next.js", "TypeScript", "Tailwind"].map(
-                      (p, i) => (
-                        <span key={p} className="ab-pill">
-                          <span className="pi">{toRoman(i + 1)}.</span>
-                          {p}
-                        </span>
-                      ),
-                    )}
-                  </div>
-                </div>
-                <div className="ab-wb-group">
-                  <h3>
-                    {t("workbench.groups.backend")}{" "}
-                    <span className="gn">ii.</span>
-                  </h3>
-                  <div className="ab-pills">
-                    {["Node.js", "PostgreSQL", "Supabase", "Vercel", "Edge Functions"].map((p, i) => (
-                      <span key={p} className="ab-pill">
-                        <span className="pi">{toRoman(i + 1)}.</span>
-                        {p}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className="ab-wb-group">
-                  <h3>
-                    {t("workbench.groups.craft")} <span className="gn">iii.</span>
-                  </h3>
-                  <div className="ab-pills">
-                    {["Figma", "Xcode", "Claude Code", "Git"].map((p, i) => (
-                      <span key={p} className="ab-pill">
-                        <span className="pi">{toRoman(i + 1)}.</span>
-                        {p}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* STUDIO / CTA */}
-        <section id="studio" className="ab-cta" aria-labelledby="cta-title">
-          <div className="ab-wrap">
-            <div className="eye ab-smallcaps">
-              — <em>{t("cta.eyebrow")}</em> —
-            </div>
-            <h2 id="cta-title">
-              <span>{t("cta.titlePre")}</span>
-              <span className="ab-it">{t("cta.titleIt")}</span>
-            </h2>
-
-            <div className="ab-cta-actions" id="contact">
-              <a className="ab-btn-mail" href="mailto:ivanlorenzana@outlook.com">
-                <span className="lbl">{t("cta.writeTo")}</span>
-                <span className="mail">ivanlorenzana@outlook.com</span>
-              </a>
-              <span />
-              <div className="ab-cta-links">
-                <span className="s">Atelier Belli</span>
-                <span>
-                  Tijuana ⇄ <span>{t("cta.worldwide")}</span>
-                </span>
-                <span>
-                  <a href="https://github.com/Ivan-LB" target="_blank" rel="noopener noreferrer">
-                    GitHub
-                  </a>{" "}
-                  ·{" "}
-                  <a
-                    href="https://www.linkedin.com/in/ivan-lorenzana-belli/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    LinkedIn
-                  </a>{" "}
-                  ·{" "}
-                  <a
-                    href="https://www.instagram.com/_ivanlb"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Instagram
-                  </a>
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="ab-wrap" style={{ marginTop: "clamp(56px, 7vw, 112px)" }}>
-            <footer className="ab-colofon-foot" role="contentinfo">
-              <div>
-                © <span suppressHydrationWarning>{year}</span> — Atelier Belli
-              </div>
-              <div className="mid">Atelier Belli</div>
-              <div className="right">
-                <Link href="/privacy">{t("footer.privacy")}</Link>
-                &nbsp;·&nbsp;
-                <Link href="/terms">{t("footer.terms")}</Link>
-              </div>
-            </footer>
-          </div>
-        </section>
+        {/* Inside <main> on purpose: the case sheet sets `inert` on main and the
+            header, and a footer outside both would stay reachable behind it. */}
+        <footer className="ab-wrap ab-foot" role="contentinfo">
+          <Link href="/privacy">{t("footer.privacy")}</Link>
+          <Link href="/terms">{t("footer.terms")}</Link>
+          {SOCIAL_LINKS.map((s) => (
+            <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer">
+              {s.label}
+            </a>
+          ))}
+          <span className="copy">
+            © <span suppressHydrationWarning>{year}</span> Atelier Belli
+          </span>
+        </footer>
       </main>
 
       <CaseSheet
@@ -490,20 +439,4 @@ export default function PortfolioPage() {
       />
     </div>
   )
-}
-
-function toRoman(n: number) {
-  const map: Record<number, string> = {
-    1: "i",
-    2: "ii",
-    3: "iii",
-    4: "iv",
-    5: "v",
-    6: "vi",
-    7: "vii",
-    8: "viii",
-    9: "ix",
-    10: "x",
-  }
-  return map[n] ?? String(n)
 }

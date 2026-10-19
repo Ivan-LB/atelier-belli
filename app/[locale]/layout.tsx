@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import { Fraunces, Inter } from "next/font/google"
+import { Archivo, Atkinson_Hyperlegible_Next, Fraunces, Inter, Martian_Mono } from "next/font/google"
 import { notFound } from "next/navigation"
 import { NextIntlClientProvider } from "next-intl"
 import { getTranslations, getMessages, unstable_setRequestLocale } from "next-intl/server"
@@ -8,25 +8,55 @@ import { locales } from "@/i18n"
 import { TITLE_TEMPLATE } from "./_route-metadata"
 import "../globals.css"
 
+/* Three faces carry the "objects" identity. All load through next/font so they
+   are self-hosted same-origin (no fonts.googleapis hop) and get a metric-matched
+   fallback, which is what keeps the swap from re-wrapping headings.
+
+   - Archivo (axis wdth) is the display face and the LCP element. The page sets it
+     at font-variation-settings "wdth" 118, weight 760, so the wdth axis has to be
+     in the file. Preloaded.
+   - Atkinson Hyperlegible Next is the text face (body, nav, buttons). Preloaded.
+   - Martian Mono (axis wdth, used at 90) is for facts, chips and years only, so it
+     is not preloaded. */
+const archivo = Archivo({
+  subsets: ["latin"],
+  axes: ["wdth"],
+  display: "swap",
+  variable: "--font-archivo",
+})
+
+const atkinson = Atkinson_Hyperlegible_Next({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  display: "swap",
+  variable: "--font-atkinson",
+})
+
+const martianMono = Martian_Mono({
+  subsets: ["latin"],
+  axes: ["wdth"],
+  display: "swap",
+  preload: false,
+  variable: "--font-martian",
+})
+
+/* Legacy faces, kept ONLY because the support skins read them: Fave's skin sets
+   its display type with var(--font-fraunces), and the support pages fall back to
+   var(--font-inter). Neither is on the homepage critical path any more, so
+   neither is preloaded. Do not point new work at them. */
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
+  preload: false,
   variable: "--font-inter",
 })
 
-/* Fraunces sets every display heading, so it IS the LCP element — and it used to
-   arrive through a 3-hop dependent chain (HTML -> layout.css -> fonts.googleapis
-   -> fonts.gstatic) with no preconnect on either cross-origin host: measured
-   1410ms to even request the woff2 on a 150ms-RTT connection. next/font
-   self-hosts it same-origin, which removes all three hops, and its generated
-   size-adjust fallback matches Fraunces' metrics so the swap stops re-wrapping
-   the headings. Keep it out of the globals.css @import (the other four families
-   still load there). */
 const fraunces = Fraunces({
   subsets: ["latin"],
   axes: ["SOFT", "opsz"],
   style: ["normal", "italic"],
   display: "swap",
+  preload: false,
   variable: "--font-fraunces",
 })
 
@@ -77,14 +107,15 @@ export async function generateMetadata({
   }
 }
 
-/* theme-color used to be a single hardcoded cream value in <head>, so a
-   reader in dark mode got a light browser chrome. These two track the OS
-   setting. Known gap: the in-page theme toggle does NOT update them, because a
-   media-query'd theme-color follows prefers-color-scheme only. Accepted. */
+/* theme-color tracks the OS setting, not the in-page choice, because a
+   media-query'd theme-color follows prefers-color-scheme only. Known gap, accepted:
+   the site defaults to light regardless of the OS, so a dark-OS reader who has not
+   toggled still sees light content under dark browser chrome. The values are the
+   --ab-bg ground of each theme. */
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#faf8f3" },
-    { media: "(prefers-color-scheme: dark)", color: "#141311" },
+    { media: "(prefers-color-scheme: light)", color: "#e8e7e2" },
+    { media: "(prefers-color-scheme: dark)", color: "#151619" },
   ],
 }
 
@@ -111,7 +142,7 @@ export default async function LocaleLayout({
   const messages = await getMessages()
 
   return (
-    <html lang={locale} className={`${inter.variable} ${fraunces.variable}`}>
+    <html lang={locale} className={`${archivo.variable} ${atkinson.variable} ${martianMono.variable} ${inter.variable} ${fraunces.variable}`}>
       <body className="antialiased font-sans">
         <a href="#main-content" className="skip-link">
           {t("skipToContent")}
