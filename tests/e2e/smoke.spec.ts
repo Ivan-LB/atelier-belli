@@ -123,6 +123,8 @@ test("theme toggle flips data-theme and persists to localStorage", async ({
   await page.goto("/");
 
   const root = page.locator(".ab-root");
+  // Light is the default: no saved choice means light, whatever the OS prefers.
+  await expect(root).toHaveAttribute("data-theme", "light");
   const initialTheme = await root.getAttribute("data-theme");
 
   // The aria-label value comes from messages/en.json home.theme.toggleAria
@@ -134,6 +136,113 @@ test("theme toggle flips data-theme and persists to localStorage", async ({
 
   const stored = await page.evaluate(() => localStorage.getItem("ab_theme"));
   expect(stored).toBe(flippedTheme);
+});
+
+// ── Rebrand: light is the default, even when the OS prefers dark ─────────────
+test("with no saved choice the theme is light, even under prefers-color-scheme: dark", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({ colorScheme: "dark" });
+  const page = await context.newPage();
+  await page.goto("/");
+  await expect(page.locator(".ab-root")).toHaveAttribute("data-theme", "light");
+  expect(await page.evaluate(() => localStorage.getItem("ab_theme"))).toBeNull();
+  await context.close();
+});
+
+test("a saved dark choice is honoured on the next load", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Toggle theme" }).click();
+  await expect(page.locator(".ab-root")).toHaveAttribute("data-theme", "dark");
+  await page.reload();
+  await expect(page.locator(".ab-root")).toHaveAttribute("data-theme", "dark");
+});
+
+// ── Rebrand: section order is layout, and it depends on the locale ───────────
+async function sectionOrder(page: import("@playwright/test").Page): Promise<string[]> {
+  return page.evaluate(() =>
+    Array.from(document.querySelectorAll("main#main-content > section"))
+      .map((el) => el.id || (el.classList.contains("ab-reel") ? "reel" : el.classList.contains("ab-hero") ? "hero" : ""))
+      .filter(Boolean),
+  );
+}
+
+test("English orders the sections hero, reel, work, biz, contact", async ({ page }) => {
+  await page.goto("/");
+  expect(await sectionOrder(page)).toEqual(["hero", "reel", "work", "biz", "contact"]);
+  const links = await page.locator(".ab-nav-links a").evaluateAll((as) =>
+    as.map((a) => a.getAttribute("href")),
+  );
+  expect(links).toEqual(["#work", "#biz", "#contact"]);
+});
+
+test("Spanish puts #biz before #work, and the nav follows", async ({ browser }) => {
+  const context = await browser.newContext();
+  await context.addCookies([{ name: "NEXT_LOCALE", value: "es", url: "http://localhost:3100" }]);
+  const page = await context.newPage();
+  await page.goto("/");
+  await expect(page.locator("html")).toHaveAttribute("lang", "es");
+  expect(await sectionOrder(page)).toEqual(["hero", "biz", "reel", "work", "contact"]);
+  const links = await page.locator(".ab-nav-links a").evaluateAll((as) =>
+    as.map((a) => a.getAttribute("href")),
+  );
+  expect(links).toEqual(["#biz", "#work", "#contact"]);
+  await context.close();
+});
+
+// ── Rebrand: no WhatsApp key while no number is configured ───────────────────
+test("no WhatsApp key or wa.me link renders while no number is configured", async ({
+  browser,
+}) => {
+  for (const cookie of ["en", "es"]) {
+    const context = await browser.newContext();
+    await context.addCookies([{ name: "NEXT_LOCALE", value: cookie, url: "http://localhost:3100" }]);
+    const page = await context.newPage();
+    await page.goto("/");
+    await expect(page.locator('a[href*="wa.me"]')).toHaveCount(0);
+    await expect(page.getByRole("link", { name: /whatsapp/i })).toHaveCount(0);
+    if (cookie === "es") {
+      // Spanish puts no keys in the hero: the business lane right under it owns
+      // the action, so the same button pair never shows twice on one screen.
+      await expect(page.locator(".ab-hero a.ab-key")).toHaveCount(0);
+      await expect(page.locator("#biz a.ab-key.primary")).toHaveAttribute("href", "#contact");
+    }
+    await context.close();
+  }
+});
+
+// ── Rebrand: the retired workshop pieces stay gone ───────────────────────────
+test("the nav is a text wordmark and the colophon and workbench are gone", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("header.ab-nav .ab-brand")).toHaveText("Atelier Belli");
+  await expect(page.locator("header.ab-nav svg.ab-logo")).toHaveCount(0);
+  await expect(page.locator(".ab-brand-tag")).toHaveCount(0);
+  await expect(page.locator("main")).not.toContainText(/colophon|workbench|tools of the trade/i);
+});
+
+// ── Rebrand: cards are objects named by their case ───────────────────────────
+test("each project card exposes the case name as its button name", async ({ page }) => {
+  await page.goto("/");
+  const cards = page.locator("article.ab-card");
+  await expect(cards).toHaveCount(10);
+  for (const [key, name] of [
+    ["scanandtap", "Scan&Tap"],
+    ["alisio", "Alisio"],
+    ["jugo", "Jugo"],
+  ] as const) {
+    const btn = page.getByRole("button", { name, exact: true }).first();
+    await expect(btn).toHaveAttribute("data-case", key);
+    // No aria-label override: the visible text is the name.
+    await expect(btn).not.toHaveAttribute("aria-label", /.+/);
+  }
+  // Five flagship cards, then the compact tier under "More projects".
+  await expect(page.locator(".ab-grid-f article.ab-card")).toHaveCount(5);
+  await expect(page.locator(".ab-grid-c article.ab-card")).toHaveCount(5);
+  // Opening is by the card's one button; every img carries explicit dimensions.
+  const unsized = await page.locator("article.ab-card img").evaluateAll(
+    (imgs) => imgs.filter((i) => !i.getAttribute("width") || !i.getAttribute("height")).length,
+  );
+  expect(unsized).toBe(0);
 });
 
 // ── Test 5: Spanish shows all eleven cases ───────────────────────────────────
@@ -372,10 +481,11 @@ test("the other language segment switches the page and carries the indicator", a
   await expect(page.locator(".ab-chip-lang button[aria-current]")).toHaveText("ES");
 });
 
-// ── Test 14: the pill renders as a pill at every width ───────────────────────
-// `.ab-root button` used to outrank `.ab-chip` and strip the border off this
-// control above 820px. The wrapper is a <div> now, so the chrome survives.
-test("the language toggle is a bordered pill on desktop and on mobile", async ({
+// ── Test 14: the language control is a recessed track at every width ─────────
+// Rebrand: it is no longer a bordered pill. The track is a raised-ground well
+// (key radius, no border) with an amber key that travels; the chrome sits on a
+// <div> wrapper so `.ab-root button` cannot strip it.
+test("the language toggle is a recessed track with equal segments on desktop and mobile", async ({
   page,
 }) => {
   for (const width of [375, 1280]) {
@@ -385,15 +495,15 @@ test("the language toggle is a bordered pill on desktop and on mobile", async ({
     await expect(box).toBeVisible();
     const style = await box.evaluate((el) => {
       const cs = getComputedStyle(el);
-      return { border: cs.borderTopWidth, radius: cs.borderTopLeftRadius, size: cs.fontSize };
+      return { border: cs.borderTopWidth, radius: cs.borderTopLeftRadius, shadow: cs.boxShadow };
     });
-    expect(style, `language pill chrome at ${width}px`).toEqual({
-      border: "1px",
-      radius: "999px",
-      size: "11px",
+    expect(style, `language track chrome at ${width}px`).toMatchObject({
+      border: "0px",
+      radius: "10px",
     });
+    expect(style.shadow, `recessed shadow at ${width}px`).not.toBe("none");
     // Both segments are the same width, which is what lets the indicator be a
-    // plain 50% translate.
+    // plain 100% translate.
     const widths = await box.locator("button").evaluateAll((els) =>
       els.map((e) => Math.round(e.getBoundingClientRect().width * 100) / 100),
     );
