@@ -9,8 +9,23 @@ Guidance for Claude Code (claude.ai/code) when working in this repository.
 Portfolio site of Ivan Lorenzana (Atelier Belli). **Two themed sub-sites** share
 one Next.js app:
 
-- **Homepage** at `/[locale]` — editorial redesign, `.ab-root` scope, light/dark
-  theme toggle, showcase reel, selected-work index, workbench, and the case sheet.
+- **Homepage** at `/[locale]`: the "objects" rebrand (owner decision
+  2026-10-18), `.ab-root` scope, light by default with a light/dark toggle. The
+  name stays Atelier Belli; the workshop ("taller") concept is retired. Sections
+  are hero, showcase reel, work, business lane (`#biz`) and contact (`#contact`),
+  plus the case sheet. **Section order depends on the locale** and lives in a
+  constant in `page.tsx`, never in the dictionaries: en is hero, reel, work, biz,
+  contact; es is hero, biz, reel, work, contact (the nav links follow the same
+  order). The es hero carries **no keys**: the business lane sits right under it
+  and owns the action, so `#biz` has no top padding there. Work is **two tiers of
+  cards**: the five `flagship` cases in a 12-col grid at span 6 (the last one
+  spans the full width as a horizontal card), then an h3 "More projects" and the
+  five compact cases. Every card is a raised `<article>` with a poster well and
+  one stretched button (see §4). Business lane and contact use a single constant,
+  **`WHATSAPP_NUMBER`** (`null` today) in `page.tsx`: every WhatsApp key renders
+  only when it is set, and while null the es primary key reads "Escríbeme" and
+  goes to `#contact`. Never ship a fake `wa.me` link. There is no eyebrow, no
+  colophon, no "Est. 2023" tag and no workbench section any more.
   The homepage's parts live in `app/[locale]/_home/` (`cases.tsx` data,
   `showcase.tsx`, `case-sheet.tsx`, `case-media.tsx`); `page.tsx` composes them.
 - **Support pages** at `/[locale]/fingo/support`, `/[locale]/savely/support`,
@@ -263,9 +278,10 @@ without touching code.
 
 - `story`: exactly three `[label, body]` beats built by the `storyOf(key)` helper
   inside the `CASES` `useMemo`, reading `cases.storyLabels.*` (shared) plus
-  `cases.<key>.story.{problem,approach,result}`. Rendered with **serif-italic
-  run-in lead-ins** (`.ab-case-beats h4`), deliberately NOT another tracked-caps
-  eyebrow — the sheet already spends that idiom once in `.ab-sheet-bar .eye`.
+  `cases.<key>.story.{problem,approach,result}`. Rendered as paragraphs with
+  **bold run-in labels** (`.ab-case-beats`) under the "The story" heading; the
+  sheet bar carries only the mono facet (`.ab-sheet-kick`). No italics, no
+  tracked caps anywhere in the sheet (rebrand, 2026-10-18).
 - `highlights`: `t.raw("cases.<key>.highlights")` string array; a typographic
   list with accent dashes, two roomy columns via
   `minmax(min(100%, 400px), 1fr)`. Not a card grid.
@@ -429,7 +445,9 @@ catch-all `app/[locale]/[...rest]/page.tsx`, which Next reports as
 that reads `getTranslations("notFound")`, then renders the `.ab-nf-*` editorial
 404. Its theme + locale toggles live in `app/[locale]/_not-found-controls.tsx`
 (a Client island) and a small inline script bootstraps `data-theme` from
-`localStorage`/`prefers-color-scheme` before paint. PR #17 shipped this as a
+`localStorage`/`prefers-color-scheme` before paint (known gap since the rebrand:
+`ThemeInit` now falls back to light, but this inline script still falls back to
+the OS setting, so a first-time dark-OS visitor sees the 404 dark). PR #17 shipped this as a
 single Client Component and broke on production; PR #18 split it into the
 current Server + island shape.
 
@@ -471,7 +489,9 @@ parent's `openGraph` wholesale as soon as a child defines one; trimming it to
 just title/description would drop `og:image` from every sub-route. Still no
 `alternates` anywhere: see the note in `layout.tsx`.
 
-**The monogram lives in `components/brand-logo.tsx`.** It used to be inlined
+**The monogram lives in `components/brand-logo.tsx`.** (Since the rebrand the
+homepage nav shows a text wordmark instead; the monogram remains in the 404 and
+as the favicon, still turquoise and undecided.) It used to be inlined
 twice, in the homepage header and in the 404, and the two drifted: the 404's
 copy had **two of the four paths** and had the ink and accent roles swapped, so
 that page rendered a broken hexagon with the turquoise on the wrong facet. Both
@@ -508,27 +528,36 @@ then `magick` to resize, centre on `#faf8f3` and `-alpha remove`; build the .ico
 from 16/32/48 PNGs. **`sips` cannot produce a real .ico** — do not ship a
 renamed PNG. `out/` holds stale 2025 exports of the OLD logo; ignore it.
 
-**Hybrid font loading** (intentional — see gotcha `google-fonts-hybrid-loading`,
-but note the split changed 2026-08-02):
+**Hybrid font loading** (intentional, see gotcha `google-fonts-hybrid-loading`;
+the split changed again in the 2026-10-18 rebrand):
 
-- `next/font/google` in `app/[locale]/layout.tsx` loads **Inter** as
-  `--font-inter` **and Fraunces** as `--font-fraunces` (axes `SOFT` + `opsz`,
-  normal + italic), both applied via `<html className={...}>`.
+- `next/font/google` in `app/[locale]/layout.tsx` loads the homepage's three
+  faces, all applied via `<html className={...}>`:
+  **Archivo** as `--font-archivo` (axis `wdth`, used at `font-variation-settings:
+  "wdth" 118`, weight 760, display), **Atkinson Hyperlegible Next** as
+  `--font-atkinson` (400/600/700, body 17px/1.55) and **Martian Mono** as
+  `--font-martian` (axis `wdth`, used at 90, facts, chips and years only).
+  `--ab-serif` and `--ab-sans` point at these, so legal, 404 and /jugo inherit
+  them without changes.
+- **Fraunces** stays in `next/font` (`--font-fraunces`, `preload: false`) for one
+  reason only: the Fave support skin reads `var(--font-fraunces)`. It no longer
+  sets any homepage heading. **Inter** stays as `--font-inter` for the support
+  pages that reference it.
 - `@import` at the top of `app/globals.css` ships only **Inter, EB Garamond,
-  Instrument Serif, IBM Plex Mono** for CSS-level `font-family` references.
+  Instrument Serif, IBM Plex Mono** for the `.sup-root` skins' CSS-level
+  `font-family` references. Do not touch it.
 
-**Do not move Fraunces back into the `@import`.** It sets every display heading,
-so it is the LCP element, and the `@import` reaches it through three dependent
-hops — HTML → `layout.css` → `fonts.googleapis.com` → `fonts.gstatic.com` — with
-no `preconnect` on either cross-origin host. Measured on a 150 ms-RTT link the
-woff2 was not even *requested* until 1410 ms. It was also the site's CLS: the
-swap from the fallback re-wrapped the headings. `next/font` self-hosts it under
-`/_next/static/media` (same origin as the document, so all three hops go away)
-and emits a metric-matched `"Fraunces Fallback"` face, which is what removes the
-reflow. `--ab-serif` therefore reads `var(--font-fraunces)`, **not** a literal
-`"Fraunces"` — a literal would silently fall through to Cormorant/Georgia.
-Verified in dev: 0 cross-origin Fraunces requests, 0 `googleapis` CSS requests.
-**Amplify-smoke this region before merging** (same rule as the i18n provider).
+**Do not move the display face into the `@import`.** Archivo sets every display
+heading, so it is the LCP element, and the `@import` reaches a font through three
+dependent hops (HTML → `layout.css` → `fonts.googleapis.com` → `fonts.gstatic.com`),
+with no `preconnect` on either cross-origin host. That was measured on Fraunces
+(150 ms-RTT link, woff2 not even *requested* until 1410 ms, and the swap was the
+site's CLS); the argument is the same for any face. `next/font` self-hosts it
+under `/_next/static/media` (same origin as the document) and emits a
+metric-matched fallback, which is what removes the reflow. `--ab-serif` therefore
+reads `var(--font-archivo)`, **not** a literal `"Archivo"`.
+**Amplify-smoke this region before merging** (same rule as the i18n provider);
+the rebrand changed the layout fonts, so it applies to that branch.
 
 **Deploy**: AWS Amplify. No `amplify.yml` in the repo — build config is in the
 Amplify console. **CI does exist**: `.github/workflows/build-check.yml` runs
@@ -563,10 +592,16 @@ The load-bearing rule: **two scoped roots, tokens do not cross.**
 See gotcha `root-token-scoping`.
 
 - **`.ab-root`** — homepage, legal trio, AND the 404. Attribute
-  `data-theme="light"` or `"dark"` drives cream/turquoise (light) vs.
-  ink/turquoise (dark). Tokens prefixed `--ab-*` (`--ab-bg`, `--ab-fg`,
-  `--ab-muted`, `--accent-color`, `--accent-soft`, `--accent-deep`, etc.)
-  live under `.ab-root` only.
+  `data-theme="light"` or `"dark"` drives the "objects" palette: warm grey
+  ground with raised surfaces (light) vs. near-black with the same layout
+  (dark). **Light is the default**: `ThemeInit` no longer falls back to
+  `prefers-color-scheme`, so no saved `ab_theme` means light. Tokens prefixed
+  `--ab-*` (`--ab-bg`, `--ab-raised`, `--ab-fg`, `--ab-muted`, `--ab-fill`,
+  `--ab-ink-on-fill`, `--accent-color`, `--accent-soft`, `--accent-deep`, etc.)
+  live under `.ab-root` only. Light / dark values: ground `#e8e7e2` / `#151619`,
+  raised `#f5f4f0` / `#1c1e22`, deep `--bg-2` `#dcdbd5` / `#0c0d0f`, fg
+  `#151514` / `#e9e9e6`, muted `#595852` / `#9a9ca1`, accent text and focus ring
+  `#9a5600` / `#f29a3a`, primary-key fill `#f2a93b` / `#f29a3a`.
 - **`.sup-root`** — support pages. Attribute `data-app="fingo" | "savely"`
   swaps the skin. Tokens prefixed `--sup-*` live under `.sup-root` only.
   (A `lorenzana` theme existed but was unused by any route; removed in
@@ -585,9 +620,56 @@ See gotcha `root-token-scoping`.
 
 | Scope      | Fonts |
 |------------|-------|
-| `.ab-root` | Fraunces (variable, `opsz`+`SOFT`) for display serifs; Inter for UI |
+| `.ab-root` | Archivo (`wdth` 118, 760) for display; Atkinson Hyperlegible Next for text; Martian Mono (`wdth` 90) for facts, chips and years |
 | `.sup-root`| EB Garamond / Instrument Serif for display; IBM Plex Mono for meta; Inter for body |
-| Global     | `--font-inter` from `next/font` on `<html>`, default sans fallback |
+| Global     | `--font-inter` and `--font-fraunces` (Fave support skin only) from `next/font` on `<html>`, default sans fallback |
+
+**Objects system rules (rebrand, 2026-10-18).** The mockup the owner approved is
+the reference for look and motion; these are the rules that must survive edits.
+
+- **Accent is reserved for interaction.** Amber appears on links, focus rings,
+  hover name colour, the active state of controls and the primary key's fill. It
+  never decorates. No hard-coded turquoise (`#2f8a99`, `#277684`, `#56b3c2`) is
+  allowed in `.ab-root` scope, the global focus ring or the skip link: use the
+  tokens. The monogram and favicon are still turquoise and undecided (see
+  `HANDOFF.md`); they are the only turquoise left.
+- **Radius rule** (also a comment in `globals.css`): cards 18px, media inside a
+  card 10px, keys 10px, pills full, sheet 22px.
+- **Elevation** is three tinted shadows, `--e1` (card at rest), `--e2`, `--e3`
+  (hover and the centred reel tile). In dark they become 1px rings of rising
+  brightness instead of shadows.
+- **Status pill rule.** Live is unmarked, `pre` (pre-revenue, prototype, demo)
+  gets a solid dot, `paused` a ring; text is `cases.<key>.mshowStatus`,
+  `min-height: 26px`. Live: scanandtap, alisio, savely, jugo, fave, fingo, mezcal;
+  pre: vitapath, arrhythmia; paused: briefmark. Colours are `--st-live`,
+  `--st-pre`, `--st-paused` on `--pill-bg`.
+- **Card / hit-button pattern.** A case card is `<article class="card">` (raised,
+  radius 18, padding 8) → 16:9 poster well (radius 10, hairline inset, explicit
+  `width`/`height` on the img) → plate. The plate's head row is an `<h3>` holding
+  the ONE button, which keeps class `ab-index-row` (tests and return focus find
+  it) and stretches over the whole card with `::after { inset: 0 }`. Its
+  accessible name is the case name: no `aria-label`, no "Open case" label. The
+  focus ring is drawn on the card via `.card:has(button:focus-visible)`.
+- **Card hover** is gated `(hover:hover) and (pointer:fine)`: `translateY(-3px)`
+  at 200ms ease-out plus a pre-drawn `::before` layer carrying `--e3` that fades
+  in. Press is `translateY(1px) scale(.99)` at 100ms. Never animate `box-shadow`
+  directly and never zoom the poster. Motion tokens: `--ease-out:
+  cubic-bezier(0.23,1,0.32,1)`; drawer `cubic-bezier(0.32,0.72,0,1)`.
+- **House lights** (case sheet). When the sheet's film fires `play`, the modal
+  gets `data-house="down"`; `pause` and `ended` clear it. Down: backdrop
+  `rgba(6,7,9,.93)`, panel and bar `#0d0d0e`, body and bar at opacity .28, a 1px
+  amber ring on the film, over 500ms `cubic-bezier(.4,0,.2,1)`. Up: 200ms
+  ease-out. A tap outside the film while down only brings the lights up; Escape
+  while playing pauses first and the second Escape closes.
+- **The Pull** (opening a case). From a card or a reel slide the open uses
+  `document.startViewTransition` with `flushSync` around the state update, so the
+  clicked poster well morphs into the sheet's film frame
+  (`view-transition-name: case-film`) while the panel rises (`case-sheet`). Open:
+  group 500ms, rise 480ms. Close: group 320ms, sink 280ms, picked by
+  `data-vt="close"` on `<html>`. Any leftover view-transition-name is cleared
+  before starting, focus moves inside the update callback, and the transition is
+  skipped when unsupported or under `prefers-reduced-motion` (there the dim and
+  sheet only fade, 150ms).
 
 **The nav below 820px (plan 012).** `.ab-nav-inner` is `display: flex;
 flex-wrap: wrap` there, not grid, so the control cluster drops to its own line
@@ -609,8 +691,10 @@ breaks where it actually breaks. Measured to the pixel: EN is two rows at
   the theme toggle touched the right edge.
 - **`.ab-brand-tag` hides at 900px, not 820px.** Once the nav carries that inline
   padding the brand's 203px no longer fits its `1fr` column between 821 and
-  ~860px, and it wraps to two lines inside a sticky header. Dropping "Est. 2023"
-  is the design's own first concession; the breakpoint just follows the geometry.
+  ~860px, and it wraps to two lines inside a sticky header. (Historical: the
+  rebrand removed the tag and the hexagon from the nav, which is now a text
+  wordmark "Atelier Belli" in the display face; the geometry lesson stands for
+  any brand block that sits in a `1fr` column.)
 - **A bare class on a `<button>` under `.ab-root` loses `font`, `color` and
   `border`.** `.ab-root button` (`globals.css:208`) resets all three at
   specificity (0,1,1), which outranks any single class (0,1,0). It had silently
@@ -622,9 +706,9 @@ breaks where it actually breaks. Measured to the pixel: EN is two rows at
   escapes it instead by putting the chrome on a `<div>` wrapper. Any new
   button-borne class needs the same care.
 
-`.ab-chip-contact` is the only action in that cluster, so it takes
-`.ab-btn-mail`'s full-strength `--ab-fg` border rather than a fill or an accent,
-which is how the rest of the site marks a primary action. Its label is
+`.ab-chip-contact` is the only action in that cluster, so it takes a
+full-strength `--ab-fg` border rather than a fill or an accent (accent is
+reserved for interaction state). Its label is
 `t("nav.contact")`, the same key the desktop link uses, so the two cannot drift.
 There is deliberately **no hamburger menu** (owner's call).
 
