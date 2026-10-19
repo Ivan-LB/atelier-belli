@@ -26,7 +26,7 @@ export function NotFoundControls({
     try {
       const saved = localStorage.getItem("ab_theme") as Theme | null
       if (saved === "light" || saved === "dark") initial = saved
-      else initial = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      else initial = "light" // light is the default; the OS preference does not decide it
     } catch {
       initial = "light"
     }

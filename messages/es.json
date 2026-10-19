@@ -1,13 +1,12 @@
 {
   "notFound": {
     "eye": "Perdido · Error 404",
-    "titlePre": "Página no ",
-    "titleIt": "encontrada.",
+    "title": "Página no encontrada.",
     "description": "Lo sentimos, la página que estás buscando no existe o ha sido movida.",
-    "backHome": "Volver al Inicio",
+    "backHome": "Volver al inicio",
     "themeToggleAria": "Cambiar tema",
     "controlsAria": "Controles del sitio",
-    "footerMeta": "Software · Oficio digital"
+    "footerMeta": "Tijuana"
   },
   "layout": {
     "skipToContent": "Ir al contenido principal",
@@ -701,9 +700,7 @@
   },
   "home": {
     "nav": {
-      "home": "Inicio",
-      "work": "Proyectos",
-      "about": "Sobre mí",
+      "work": "Trabajo",
       "contact": "Contacto"
     },
     "locale": {
@@ -713,49 +710,14 @@
       "toggleAria": "Cambiar tema"
     },
     "hero": {
-      "eyebrow": "Software · Oficio digital",
-      "titleLine1": "Apps hechas",
-      "titleLine2": "con ",
-      "titleIt": "intención.",
-      "subtitle": "Un pequeño <it>atelier</it> de software desde Tijuana. Forma minimalista, y la paciencia de terminar las cosas. Diseño y construyo apps de iOS y la web que las acompaña."
-    },
-    "colophon": {
-      "locationLabel": "Ubicación",
-      "statusLabel": "Estado",
-      "status": "Disponible para encargos",
-      "ongoing": "En curso",
-      "signed": "Firmado"
-    },
-    "vitrine": {
-      "eyebrow": "Vitrina 2026",
-      "titlePre": "Lanzados ",
-      "titleIt": "este año.",
-      "open": "Abrir el caso {name}"
+      "title": "Software que diseño, programo y publico.",
+      "sub": "Soy <b>Iván Lorenzana</b>, desarrollador en Tijuana. Cada video de abajo es el producto de verdad, funcionando.",
+      "ctaWork": "Ver el trabajo",
+      "ctaEmail": "Escríbeme por correo"
     },
     "work": {
-      "eyebrow": "La obra",
-      "titlePre": "Obra ",
-      "titleIt": "selecta.",
-      "indexMeta": "Índice 2023 / 2026",
-      "viewCase": "Ver proyecto"
-    },
-    "workbench": {
-      "eyebrow": "El taller",
-      "titlePre": "Herramientas del ",
-      "titleIt": "oficio.",
-      "desc": "Un conjunto pequeño y opinado. Swift y SwiftUI para el teléfono; <it>Next.js</it> y TypeScript para la web; Postgres para lo que debe durar. Figma, Xcode, Claude Code. El banco se mantiene limpio.",
-      "groups": {
-        "frontend": "Frontend & Móvil",
-        "backend": "Backend & Infra",
-        "craft": "Oficio"
-      }
-    },
-    "cta": {
-      "eyebrow": "Encargos abiertos",
-      "titlePre": "Hagamos algo ",
-      "titleIt": "bien hecho.",
-      "writeTo": "Escribe a",
-      "worldwide": "Todo el mundo"
+      "title": "Diez proyectos",
+      "moreTitle": "Más proyectos"
     },
     "footer": {
       "privacy": "Privacidad",
@@ -769,7 +731,8 @@
       "galleryAria": "Galería de capturas",
       "film": "Película de lanzamiento",
       "playFilm": "Reproducir la película",
-      "story": "La historia"
+      "story": "La historia",
+      "detail": "A detalle"
     },
     "cases": {
       "meta": {
@@ -785,7 +748,7 @@
       },
       "fingo": {
         "titleIt": "decisiones en grupo, fácil.",
-        "descRich": "Para la mesa que no se pone de acuerdo en quién paga o dónde comer. Todos ponen un dedo en la pantalla y Fingo elige uno; o giras una ruleta con tus propias opciones, sacas un número al azar o echas un volado. Cada resultado cae con una <it>vibración</it> en lugar de un sonido. Sin internet, sin cuenta, sin anuncios.",
+        "descRich": "Para la mesa que no se pone de acuerdo en quién paga o dónde comer. Todos ponen un dedo en la pantalla y Fingo elige uno, con una <it>vibración</it>. Sin internet, sin cuenta, sin anuncios.",
         "metaStatus": "Disponible en App Store",
         "actionPrimary": "Ver en App Store",
         "actionGhost": "Soporte",
@@ -793,11 +756,12 @@
         "kickerPlatform": "iOS",
         "kickerDomain": "Utilidades",
         "mshowStatus": "App Store",
-        "actionPrivacy": "Privacidad"
+        "actionPrivacy": "Privacidad",
+        "highlights": null
       },
       "savely": {
         "titleIt": "ahorro personal, en calma.",
-        "descRich": "Una app de ahorro para quien no quiere entregar el acceso a su banco. Pones metas y ves un ritmo honesto, registras ingresos y gastos en segundos, y escaneas tickets que se leen en el mismo teléfono. En quincena puede ofrecerte un movimiento hacia una meta, limitado a lo que el mes aguanta. Sin cuenta, sin nube, sin conexión bancaria: tus datos de dinero <it>nunca salen del teléfono</it>.",
+        "descRich": "Una app de ahorro para quien no quiere entregar el acceso a su banco. Pones metas, registras ingresos y gastos y escaneas tickets. Tus datos de dinero <it>nunca salen del teléfono</it>.",
         "metaStatus": "Disponible en App Store",
         "actionPrimary": "Ver en App Store",
         "actionGhost": "Soporte",
@@ -813,14 +777,13 @@
           "result": "Disponible en App Store con la premisa intacta: sin cuenta, sin nube, sin conexión bancaria. Lo único que puede salir del teléfono es un PDF semanal que tú mismo compartes."
         },
         "highlights": [
-          "Sin cuenta, sin nube, sin conexión bancaria, sin peticiones de red",
           "Los tickets se leen en el dispositivo con el reconocimiento de texto de Apple; la foto nunca se guarda",
           "El movimiento de quincena ofrece un solo depósito, limitado a lo que el mes aguanta",
           "Ritmo según tus depósitos de las últimas cuatro semanas; a más de un año dice 1+ year, nunca una fecha inventada"
         ]
       },
       "mezcal": {
-        "descRich": "El sitio de Destilería Lorenzana, un mezcal familiar hecho en San Bartolo Yautepec, Oaxaca. Cuenta la historia del fundador en capítulos, recorre los seis pasos del horno de tierra al <it>alambique de cobre</it> y presenta tres agaves por su nombre, para compradores y distribuidores que quieren saber de dónde viene la botella.",
+        "descRich": "El sitio de Destilería Lorenzana, mezcal familiar de Oaxaca, para compradores que quieren saber de dónde viene la botella: la historia del fundador y seis pasos del horno de tierra al <it>alambique de cobre</it>.",
         "metaPlatform": "Web · Responsiva",
         "metaStatus": "En línea",
         "actionPrimary": "Visitar sitio",
@@ -828,43 +791,44 @@
         "mshowStatus": "En línea",
         "kickerPlatform": "Web",
         "kickerDomain": "Sitio de marca",
-        "titleIt": "desde un palenque en la Sierra Sur."
+        "titleIt": "desde un palenque en la Sierra Sur.",
+        "highlights": null
       },
       "briefmark": {
         "titleIt": "bookmarks que piensan.",
-        "descRich": "Para quien guarda recetas, películas y restaurantes de videos cortos y nunca los vuelve a encontrar. Pegas un link de TikTok o de un Reel de Instagram y Briefmark escucha el audio, lee los cuadros y te devuelve tarjetas limpias: la receta con ingredientes y pasos, la película con <it>dónde verla</it> en México, el lugar con su mapa. Un prototipo, en pausa desde mayo de 2026.",
+        "descRich": "Para quien guarda recetas, películas y restaurantes de videos cortos. Pegas un link de TikTok o Reel y Briefmark escucha el audio, lee los cuadros y te devuelve tarjetas, con <it>dónde verla</it> en México.",
         "metaStatus": "En pausa",
         "tag": "TikToks y Reels convertidos en tarjetas que sí usas.",
         "kickerPlatform": "iOS",
         "kickerDomain": "IA",
-        "mshowStatus": "En pausa"
+        "mshowStatus": "En pausa",
+        "highlights": null
       },
-      "stampi": {
-        "titleIt": "la tarjeta de sellos que no se pierde.",
-        "descRich": "Tarjetas de sellos digitales para cafés y negocios pequeños. El cliente escanea un QR una vez y la tarjeta se guarda en Apple Wallet o Google Wallet: sin app, sin registro, sin correo. El equipo sella desde su propio celular y la tarjeta se actualiza sola en la pantalla de bloqueo. Diseñada, construida y operada por una sola persona, <it>de punta a punta</it>.",
+      "scanandtap": {
+        "titleIt": "la tarjeta de sellos que vive en el wallet.",
+        "descRich": "Tarjetas de lealtad para cafés, salones y negocios de mostrador en Tijuana. El cliente escanea un QR y la tarjeta se guarda en Apple o Google Wallet: <it>sin app</it>, sin cuenta, sin correo.",
         "metaPlatform": "Apple Wallet · Google Wallet",
-        "metaStatus": "En vivo · abierto a negocios",
-        "actionPrimary": "Visitar Stampi",
+        "metaStatus": "Sitio en línea",
+        "actionPrimary": "Visitar Scan&Tap",
         "tag": "Tarjetas de lealtad que viven en Apple y Google Wallet.",
         "story": {
-          "problem": "Las tarjetas de sellos de papel se pierden en la cartera o en la lavadora, y una app de lealtad es una descarga que nadie hace. Cada cliente ya trae un Wallet en el teléfono. La tarjeta solo tiene que vivir ahí y mantenerse al día.",
-          "approach": "Una plataforma que habla con los dos wallets: pases de Apple firmados que se mantienen al día con el web service de pases y push silencioso, la API de Google Wallet, y paneles con PIN para el mostrador, el dueño y el operador. Si un wallet se cae, nunca bloquea un registro ni un sello.",
-          "result": "En vivo en stampi.atelierbelli.com y abierta a negocios. Un sello en el mostrador llega a la tarjeta del cliente unos momentos después sin que abra nada, y la tarjeta completa le llega como aviso en la pantalla de bloqueo."
+          "problem": "Las tarjetas de sellos de papel se pierden, y pedirle al cliente que descargue una app de lealtad es un paso que mucha gente se salta. Casi todos los clientes ya traen un Wallet en el celular. La tarjeta solo tiene que vivir ahí y mantenerse al día.",
+          "approach": "Una plataforma multi-negocio que habla con los dos wallets. El personal sella las visitas desde un panel con PIN en su propio celular, los premios se desbloquean solos y el pase se actualiza solo en la pantalla de bloqueo. El dueño tiene su panel con métricas y campañas push, y el operador tiene uno de administración para dar de alta negocios, poner su marca y manejar los certificados de Apple. Google Wallet falla sin estorbar: si Google se cae, nunca se bloquea un registro ni un sello.",
+          "result": "El sitio del producto ya está en línea con el primer mes gratis, y la plataforma corre en producción en AWS con 768 pruebas automatizadas."
         },
         "highlights": [
-          "Un escaneo para unirse: sin app, sin cuenta, sin correo",
-          "Sigue sellando si se cae el internet, y sincroniza al volver",
-          "Un QR rayado sigue sirviendo: debajo va un código de 8 caracteres",
-          "Hasta tres mensajes al día en la pantalla de bloqueo de tus clientes",
-          "Si un wallet falla, nunca bloquea un registro ni un sello"
+          "Sigue contando visitas aunque se vaya el internet un rato",
+          "El póster ya viene hecho, con el logo y el QR del negocio, para ponerlo junto a la caja",
+          "Una auditoría con varios agentes sobre 63 endpoints encontró cómo darse premios solo; se cerró antes de que existiera un negocio real",
+          "Tres paneles (admin, caja, dueño), cada uno con su propio PIN, secreto de sesión y llaves CSRF, más un flujo de alta por invitación aparte"
         ],
         "kickerPlatform": "Wallet",
         "kickerDomain": "Lealtad",
-        "mshowStatus": "En vivo"
+        "mshowStatus": "En línea"
       },
       "alisio": {
         "titleIt": "siente tu zona, no la mires.",
-        "descRich": "Para quien entrena por frecuencia cardiaca. Eliges una zona y un tiempo; tu Apple Watch te da un toque en la muñeca en cuanto te sales y otro cuando regresas, así que el entrenamiento se <it>siente</it>, no se revisa en la pantalla a mitad de la serie. La meta solo cuenta el tiempo dentro de la zona, cada entrenamiento se guarda en la app Salud y no hay cuenta.",
+        "descRich": "Para quien entrena por frecuencia cardiaca. Eliges una zona y un tiempo; tu Apple Watch te da un toque en la muñeca cuando te sales y otro cuando regresas, así que <it>sientes</it> el entrenamiento.",
         "metaStatus": "Disponible en App Store",
         "actionPrimary": "Ver en App Store",
         "tag": "Tu reloj te da un toque cuando sales de tu zona cardiaca.",
@@ -875,7 +839,6 @@
         },
         "highlights": [
           "Tres toques distintos: al entrar, al salir y al cumplir la meta",
-          "La meta solo cuenta el tiempo dentro de la zona",
           "Arranca solo desde el Watch: gira la corona, elige zona y listo",
           "Tu perfil llega al Watch; las sesiones quedan en el historial del iPhone y en Salud",
           "Sin cuenta y sin servidor: nada sale de tus dispositivos"
@@ -890,7 +853,7 @@
       },
       "fave": {
         "titleIt": "todo lo que pruebas, rankeado.",
-        "descRich": "Una libreta para quien lleva listas de cada bebida, café, película y libro que ha probado. Palomeas conforme avanzas y pones estrellas <it>solo cuando te nace</it>, porque calificar nunca es tarea. Un café se califica solo con el promedio de lo que pediste ahí, y las películas y libros traen su propia portada, en la edición de tu idioma. Tus listas viven en tu iCloud privado: sin cuentas, sin analíticas.",
+        "descRich": "Una libreta para quien lleva listas de cada bebida, café, película y libro que ha probado. Pon estrellas <it>solo cuando te nace</it>. Tus listas viven en tu iCloud privado: sin cuentas, sin analíticas.",
         "metaStatus": "Disponible en App Store",
         "actionPrimary": "Ver en App Store",
         "actionGhost": "Soporte",
@@ -898,11 +861,12 @@
         "tag": "Rankea las bebidas, cafés, películas y libros que pruebas.",
         "mshowStatus": "App Store",
         "kickerPlatform": "iOS",
-        "kickerDomain": "Lifestyle"
+        "kickerDomain": "Lifestyle",
+        "highlights": null
       },
       "vitapath": {
         "titleIt": "del SOS al hospital, en un solo sistema.",
-        "descRich": "Un sistema de respuesta a emergencias para pacientes con condiciones graves. Un toque en SOS le ofrece el caso a los paramédicos disponibles más cercanos, y el primero que acepta se sigue en vivo por la ruta real. El paciente va a un hospital que su <it>seguro cubre</it> y que puede atenderlo, mientras la consola del hospital lleva el despacho, la llegada y la recepción.",
+        "descRich": "Para pacientes con condiciones graves: un toque en SOS ofrece el caso a los paramédicos cercanos, el primero que acepta se sigue en vivo y el paciente va a un hospital que su <it>seguro cubre</it>.",
         "metaStatus": "Prototipo funcional",
         "tag": "Un toque manda un paramédico y elige el hospital correcto.",
         "story": {
@@ -913,7 +877,6 @@
         "highlights": [
           "La oferta se amplía de 5 km a 25 km hasta que alguien acepta",
           "Solo un paramédico puede ganar una emergencia, garantizado en la base de datos",
-          "Ruteo hospitalario por seguro, distancia y capacidad",
           "Cada hospital ve solo a sus pacientes, con bitácora de acceso a datos médicos"
         ],
         "mediaCaption": "Una emergencia corrida en vivo por las tres superficies a la vez. La oferta llega al teléfono del paramédico, la acepta, y la consola resuelve el hospital por seguro y red mientras el paciente ve la misma ruta acercarse.",
@@ -924,7 +887,7 @@
       },
       "arrhythmia": {
         "titleIt": "lee el ECG, latido a latido.",
-        "descRich": "Subes un registro del corazón y ves cada latido detectado etiquetado como normal o como uno de cuatro tipos anormales, con qué tan seguro está el modelo. La reconstrucción encontró que el 98% original venía de mezclar pacientes entre entrenamiento y prueba; medido honestamente con pacientes que nunca vio, da <it>63.22%</it>. Una herramienta de investigación, no un dispositivo médico.",
+        "descRich": "Subes un registro del corazón y ves cada latido etiquetado como normal o como uno de cuatro tipos anormales, con su confianza. Con pacientes que nunca vio, da <it>63.22%</it>, no el 98% original. Una herramienta de investigación, no un dispositivo médico.",
         "metaPlatform": "Web · Responsiva",
         "metaStatus": "Demo funcional",
         "actionPrimary": "Ver el backend ML",
@@ -936,7 +899,6 @@
         },
         "highlights": [
           "5 clases AAMI (N/S/V/F/Q) con confianza por latido",
-          "Evaluado con pacientes que el modelo nunca vio: un 63% honesto contra un 98% contaminado",
           "El registro completo de 30 minutos, no una rebanada de cuatro segundos",
           "Un modelo versionado que comparten el entrenamiento y la API"
         ],
@@ -948,24 +910,36 @@
       },
       "jugo": {
         "titleIt": "tu batería, sin sorpresas.",
-        "descRich": "Una app gratis para Mac para que la batería nunca te agarre desprevenido. Las alertas salen del notch como una <it>Dynamic Island</it>, el aviso de batería baja de macOS se cierra solo porque Jugo ya te lo dijo, y tus AirPods, tu iPhone y tu mouse viven en un solo lugar, hasta el desgaste de la batería de tu iPhone y 30 días de qué apps gastaron tu Mac.",
+        "descRich": "Una app gratis para Mac para que la batería nunca te agarre desprevenido. Las alertas salen del notch como una <it>Dynamic Island</it>, y tus AirPods, tu iPhone y tu mouse viven en un solo lugar.",
         "metaStatus": "Descarga gratis",
         "actionPrimary": "Descargar Jugo",
         "tag": "Alertas de batería que salen del notch de tu Mac.",
         "kickerPlatform": "macOS",
         "kickerDomain": "Utilidades",
-        "mshowStatus": "Gratis"
+        "mshowStatus": "Gratis",
+        "highlights": null
       }
     },
     "reel": {
-      "lede": "Seis productos en vivo este año, cada uno en el corte de su propia película de lanzamiento. Toca uno para abrir su caso.",
+      "lede": "Seis productos publicados. Toca uno para abrirlo.",
       "roleCarousel": "carrusel",
       "roleSlide": "diapositiva",
       "slideAria": "{n} de {total}: {name}",
       "goTo": "Mostrar {name}",
       "dotsAria": "Elige un producto",
-      "play": "Reproducir la vitrina",
-      "pause": "Pausar la vitrina"
+      "play": "Reproducir los videos",
+      "pause": "Pausar los videos",
+      "open": "Abrir el caso {name}"
+    },
+    "biz": {
+      "title": "Para negocios",
+      "body": "Páginas web y apps para negocios de Tijuana y del otro lado. Cuéntame qué necesitas y te digo cómo lo haría.",
+      "ctaEmail": "Mándame un correo",
+      "ctaWhatsApp": "Escríbeme por WhatsApp"
+    },
+    "contact": {
+      "title": "Escríbeme",
+      "whatsapp": "WhatsApp"
     }
   },
   "jugo": {

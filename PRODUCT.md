@@ -26,11 +26,15 @@ the portfolio looks generic, it contradicts its own pitch.
 
 ## Brand Personality
 
-**Editorial · cálido · audaz.** The base identity (Tijuana atelier, serif with
-character, cream/turquoise, bilingual EN/es-MX) stays — but the dial moves
-toward **bolder and more experimental** (Iván's explicit direction, 2026-07-04):
-more visual risk, more expressive motion, more memorable moments. Confidence
-of a studio that designs, not a template that hosts projects.
+**Preciso · tangible · seguro.** Owner decision, 2026-10-18: the name stays
+Atelier Belli, but the workshop concept is retired (no "taller", no colophon,
+no crafted-with-intention voice). The world is **objects**: a warm grey
+ground, raised surfaces with tinted shadows, real device posters as things you
+can pick up, amber reserved for interaction. Light is the default theme; dark
+keeps the same type and layout. Archivo for display, Atkinson Hyperlegible for
+text, Martian Mono for facts. Still bilingual EN/es-MX and still bold with
+craft (Iván's 2026-07-04 direction), but the boldness now lives in type, scale
+and a few authored moments (the Pull, house lights), not in ornament.
 
 ## Anti-references
 
@@ -38,6 +42,7 @@ of a studio that designs, not a template that hosts projects.
   "Hi, I'm X 👋" hero, skills-as-progress-bars.
 - AI-slop landing grammar: gradient text, glassmorphism-by-default, tiny
   uppercase tracked eyebrows above every section, purple/blue gradients.
+  (The rebrand removed our own eyebrows too.)
 - Corporate-sober CV-site: stripping the warmth/character to look "serious".
 - Anything that makes a visitor say "AI made that" — the site is the proof
   of taste; genericness is self-defeating.
@@ -52,8 +57,11 @@ of a studio that designs, not a template that hosts projects.
    honors reduced-motion, performance budgets, and the editorial base.
 4. **Bilingual is first-class.** EN and es-MX ship together, always (dict
    parity is enforced by `pnpm verify:i18n`).
-5. **Identity over trend.** The cream/turquoise + Fraunces system is committed
-   brand identity — evolve it, never swap it for the aesthetic of the month.
+5. **Identity over trend.** The "objects" system (warm grey, raised surfaces,
+   amber for interaction only, Archivo + Atkinson + Martian Mono, light by
+   default) is the committed brand identity as of 2026-10-18. Evolve it, never
+   swap it for the aesthetic of the month, and do not bring back the retired
+   workshop language.
 
 ## Accessibility & Inclusion
 

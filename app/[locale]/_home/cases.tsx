@@ -4,7 +4,7 @@ import { useCallback, useMemo } from "react"
 import { useTranslations } from "next-intl"
 
 export type CaseKey =
-  | "stampi"
+  | "scanandtap"
   | "alisio"
   | "savely"
   | "jugo"
@@ -18,7 +18,7 @@ export type CaseKey =
 // Display order of Selected Work (also the deep-link allowlist). This array is
 // the single source of order: the index maps over it and `num` follows it.
 export const CASE_KEYS: readonly CaseKey[] = [
-  "stampi",
+  "scanandtap",
   "alisio",
   "savely",
   "jugo",
@@ -30,9 +30,10 @@ export const CASE_KEYS: readonly CaseKey[] = [
   "briefmark",
 ]
 
-/** Old keys that shared links may still carry. `pass` was renamed to Stampi;
-    `blip` was retired and falls through to "no case". */
-export const LEGACY_CASE_KEYS: Record<string, CaseKey> = { pass: "stampi" }
+/** Old keys that shared links may still carry. `pass` was renamed to Stampi,
+    and Stampi to Scan&Tap on 2026-10-18; `blip` was retired and falls through
+    to "no case". */
+export const LEGACY_CASE_KEYS: Record<string, CaseKey> = { pass: "scanandtap", stampi: "scanandtap" }
 
 export type CaseAction = {
   label: string
@@ -71,7 +72,8 @@ const film = (key: string): CaseFilmData => ({
 })
 
 export const FILMS = {
-  stampi: film("stampi"),
+  // The files still show the old "stampi." wordmark and need a new capture.
+  scanandtap: film("stampi"),
   alisio: film("alisio"),
   savely: film("savely"),
   // The /jugo landing already ships this film; one copy serves both pages.
@@ -83,15 +85,56 @@ export const FILMS = {
 } satisfies Partial<Record<CaseKey, CaseFilmData>>
 
 /** The showcase reel: shipped products only, each a silent 12s cut of its film. */
-export const REEL_KEYS = ["stampi", "alisio", "savely", "fave", "fingo", "jugo"] as const
+export const REEL_KEYS = ["scanandtap", "alisio", "savely", "fave", "fingo", "jugo"] as const
 export type ReelKey = (typeof REEL_KEYS)[number]
 
+/** Status kind behind the card's pill: live is unmarked, `pre` (pre-revenue,
+    prototype, demo) gets a solid dot, `paused` a ring. The pill's TEXT is
+    `cases.<key>.mshowStatus`; this only picks the mark. */
+export type CaseStatus = "live" | "pre" | "paused"
+
+/** The 16:9 (or portrait) image a card shows in its poster well. */
+export type CasePoster = { src: string; w: number; h: number; portrait?: boolean }
+
+/** Cases without a launch film show a still instead. */
+const STILLS = {
+  mezcal: { src: "/cases/mezcal-hero.webp", w: 1600, h: 1000 },
+  briefmark: { src: "/cases/briefmark-hero.webp", w: 600, h: 1304, portrait: true },
+} satisfies Partial<Record<CaseKey, CasePoster>>
+
+/** Film posters are 1280x720 except Jugo's shared launch poster. */
+const FILM_POSTER_SIZE: Partial<Record<CaseKey, { w: number; h: number }>> = {
+  jugo: { w: 1600, h: 900 },
+}
+
+function posterOf(key: CaseKey): CasePoster {
+  const still = (STILLS as Partial<Record<CaseKey, CasePoster>>)[key]
+  if (still) return still
+  const f = (FILMS as Partial<Record<CaseKey, CaseFilmData>>)[key]
+  const size = FILM_POSTER_SIZE[key] ?? { w: 1280, h: 720 }
+  return { src: f?.poster ?? "", ...size }
+}
+
+/** The status mark shared by the cards and the reel caption. */
+export function StatusPill({ status, label }: { status: CaseStatus; label: string }) {
+  return <span className={`ab-status ${status}`}>{label}</span>
+}
+
 export type CaseData = {
+  key: CaseKey
   num: string
-  /** Display name, e.g. "Stampi". The modal and index append `titleIt`. */
+  /** Display name, e.g. "Scan&Tap". The modal and index append `titleIt`. */
   name: string
   titleIt: string
   tag: string
+  year: string
+  flagship: boolean
+  status: CaseStatus
+  /** Pill text (`cases.<key>.mshowStatus`). */
+  statusLabel: string
+  /** Platform for the reel caption, comma-separated (no middle-dot runs). */
+  platformText: string
+  poster: CasePoster
   kicker: string
   facet: string
   desc: React.ReactNode
@@ -113,6 +156,7 @@ type Def = {
   stack: string
   chips: string[]
   actions: Array<Omit<CaseAction, "label"> & { labelKey: string }>
+  status: CaseStatus
   flagship?: boolean
   media?: (t: (k: string) => string) => CaseMedia[]
 }
@@ -138,17 +182,19 @@ const privacy = (app: string) => ({
 })
 
 const DEFS: Record<CaseKey, Def> = {
-  stampi: {
-    name: "Stampi",
+  scanandtap: {
+    name: "Scan&Tap",
+    status: "live",
     year: "2026",
     platform: null,
     stack: "Node.js · AWS Lambda · DynamoDB · PassKit",
     chips: ["AWS Lambda", "DynamoDB", "PassKit"],
-    actions: [store("https://stampi.atelierbelli.com/")],
+    actions: [store("https://usescanandtap.com/")],
     flagship: true,
   },
   alisio: {
     name: "Alisio",
+    status: "live",
     year: "2026",
     platform: "iOS 17+ · watchOS 10+",
     stack: "SwiftUI · HealthKit · WatchConnectivity",
@@ -178,6 +224,7 @@ const DEFS: Record<CaseKey, Def> = {
   },
   savely: {
     name: "Savely",
+    status: "live",
     year: "2026",
     platform: "iOS 26+",
     stack: "SwiftUI · SwiftData · Vision",
@@ -198,6 +245,7 @@ const DEFS: Record<CaseKey, Def> = {
   },
   jugo: {
     name: "Jugo",
+    status: "live",
     year: "2026",
     platform: "macOS 26+",
     stack: "SwiftUI · IOKit · WidgetKit · Sparkle",
@@ -207,6 +255,7 @@ const DEFS: Record<CaseKey, Def> = {
   },
   fave: {
     name: "Fave",
+    status: "live",
     year: "2026",
     platform: "iOS 17+",
     stack: "SwiftUI · SwiftData · CloudKit",
@@ -219,6 +268,7 @@ const DEFS: Record<CaseKey, Def> = {
   },
   fingo: {
     name: "Fingo",
+    status: "live",
     year: "2025",
     platform: "iOS 26+",
     stack: "SwiftUI · Combine · Core Haptics",
@@ -231,6 +281,7 @@ const DEFS: Record<CaseKey, Def> = {
   },
   vitapath: {
     name: "Vitapath",
+    status: "pre",
     year: "2026",
     platform: "iOS 26+ · iOS 17+ · Web",
     stack: "SwiftUI · Spring Boot · PostGIS · STOMP",
@@ -257,6 +308,7 @@ const DEFS: Record<CaseKey, Def> = {
   },
   arrhythmia: {
     name: "Arrhythmia Detector",
+    status: "pre",
     year: "2026",
     platform: null,
     stack: "TensorFlow · FastAPI · Next.js · TypeScript",
@@ -287,6 +339,7 @@ const DEFS: Record<CaseKey, Def> = {
   },
   mezcal: {
     name: "Destilería Lorenzana",
+    status: "live",
     year: "2025",
     platform: null,
     stack: "Next.js · TypeScript · Tailwind",
@@ -295,6 +348,7 @@ const DEFS: Record<CaseKey, Def> = {
   },
   briefmark: {
     name: "Briefmark",
+    status: "paused",
     year: "2026",
     platform: "iOS 26.2+",
     stack: "SwiftUI · Node.js · Claude API",
@@ -317,16 +371,24 @@ export function useCases(): Record<CaseKey, CaseData> {
     const entries = CASE_KEYS.map((key, i): [CaseKey, CaseData] => {
       const d = DEFS[key]
       const k = (field: string) => `cases.${key}.${field}`
+      const platform = d.platform ?? t(k("metaPlatform"))
       const data: CaseData = {
+        key,
         num: String(i + 1).padStart(2, "0"),
         name: d.name,
         titleIt: t(k("titleIt")),
         tag: t(k("tag")),
+        year: d.year,
+        flagship: Boolean(d.flagship),
+        status: d.status,
+        statusLabel: t(k("mshowStatus")),
+        platformText: platform.split(" · ").join(", "),
+        poster: posterOf(key),
         facet: facetOf(key),
         kicker: `${facetOf(key)} · ${d.year}`,
         desc: t.rich(k("descRich"), { it: (chunks) => <em>{chunks}</em> }),
         meta: [
-          [t("cases.meta.platform"), d.platform ?? t(k("metaPlatform"))],
+          [t("cases.meta.platform"), platform],
           [t("cases.meta.stack"), d.stack],
           [t("cases.meta.status"), t(k("metaStatus"))],
           [t("cases.meta.year"), d.year],

@@ -1,13 +1,12 @@
 {
   "notFound": {
     "eye": "Lost · Error 404",
-    "titlePre": "Page not ",
-    "titleIt": "found.",
+    "title": "Page not found.",
     "description": "Sorry, the page you're looking for doesn't exist or has been moved.",
-    "backHome": "Back to Home",
+    "backHome": "Back to home",
     "themeToggleAria": "Toggle theme",
     "controlsAria": "Site controls",
-    "footerMeta": "Software · Digital craft"
+    "footerMeta": "Tijuana"
   },
   "layout": {
     "skipToContent": "Skip to main content",
@@ -701,9 +700,7 @@
   },
   "home": {
     "nav": {
-      "home": "Home",
       "work": "Work",
-      "about": "About",
       "contact": "Contact"
     },
     "locale": {
@@ -713,49 +710,14 @@
       "toggleAria": "Toggle theme"
     },
     "hero": {
-      "eyebrow": "Software · Digital craft",
-      "titleLine1": "Apps crafted",
-      "titleLine2": "with ",
-      "titleIt": "intention.",
-      "subtitle": "A small <it>atelier</it> for software out of Tijuana. Minimalist form, and the patience to finish things. I design and build iOS apps and the web around them."
-    },
-    "colophon": {
-      "locationLabel": "Location",
-      "statusLabel": "Status",
-      "status": "Available for commissions",
-      "ongoing": "Ongoing",
-      "signed": "Signed"
-    },
-    "vitrine": {
-      "eyebrow": "Showcase 2026",
-      "titlePre": "Shipped ",
-      "titleIt": "this year.",
-      "open": "Open the {name} case"
+      "title": "Software I design, build and ship.",
+      "sub": "I'm <b>Iván Lorenzana</b>, a developer in Tijuana. Every film below is the real product, running.",
+      "ctaWork": "See the work",
+      "ctaEmail": "Email me"
     },
     "work": {
-      "eyebrow": "The work",
-      "titlePre": "Selected ",
-      "titleIt": "work.",
-      "indexMeta": "Index 2023 / 2026",
-      "viewCase": "View case"
-    },
-    "workbench": {
-      "eyebrow": "The workbench",
-      "titlePre": "Tools of the ",
-      "titleIt": "trade.",
-      "desc": "A small, opinionated set. Swift and SwiftUI for the phone; <it>Next.js</it> and TypeScript for the web; Postgres for things that must last. Figma, Xcode, Claude Code. The bench stays tidy.",
-      "groups": {
-        "frontend": "Frontend & Mobile",
-        "backend": "Backend & Infra",
-        "craft": "Craft"
-      }
-    },
-    "cta": {
-      "eyebrow": "Commissions open",
-      "titlePre": "Let's build something ",
-      "titleIt": "well-made.",
-      "writeTo": "Write to",
-      "worldwide": "Worldwide"
+      "title": "Ten projects",
+      "moreTitle": "More projects"
     },
     "footer": {
       "privacy": "Privacy",
@@ -769,7 +731,8 @@
       "galleryAria": "Screenshot gallery",
       "film": "Launch film",
       "playFilm": "Play the film",
-      "story": "The story"
+      "story": "The story",
+      "detail": "In detail"
     },
     "cases": {
       "meta": {
@@ -785,7 +748,7 @@
       },
       "fingo": {
         "titleIt": "group choice, made easy.",
-        "descRich": "For the table that cannot decide who pays or where to eat. Everyone puts a finger on the screen and Fingo picks one; or spin a wheel of your own options, pick a random number, flip a coin. Each pick lands with a <it>haptic thump</it> instead of a sound. Offline, no account, no ads.",
+        "descRich": "For the table that cannot decide who pays or where to eat. Everyone puts a finger on the screen and Fingo picks one, with a <it>haptic thump</it>. Offline, no account, no ads.",
         "metaStatus": "Live on the App Store",
         "actionPrimary": "View on App Store",
         "actionGhost": "Support",
@@ -793,11 +756,12 @@
         "kickerPlatform": "iOS",
         "kickerDomain": "Utility",
         "mshowStatus": "App Store",
-        "actionPrivacy": "Privacy"
+        "actionPrivacy": "Privacy",
+        "highlights": null
       },
       "savely": {
         "titleIt": "personal savings, quietly.",
-        "descRich": "A savings app for people who do not want to hand over their bank login. Set goals and see an honest pace, log income and spending in seconds, and scan receipts that are read right on the phone. On payday it can offer one move into a goal, capped by what the month can afford. No account, no cloud, no bank connection: your money data <it>never leaves the phone</it>.",
+        "descRich": "A savings app for people who do not want to hand over their bank login. Set goals, log income and spending, and scan receipts. Your money data <it>never leaves the phone</it>.",
         "metaStatus": "Live on the App Store",
         "actionPrimary": "View on App Store",
         "actionGhost": "Support",
@@ -813,14 +777,13 @@
           "result": "Live on the App Store with the premise intact: no account, no cloud, no bank connection. The one thing that can leave the phone is a weekly PDF you share yourself."
         },
         "highlights": [
-          "No account, no cloud, no bank connection, no network requests",
           "Receipts read on device by Apple's text recognition; the photo is never saved",
           "The payday move offers one deposit, capped by what the month can afford",
           "Pace from your last four weeks of deposits; past a year it says 1+ year, never a made-up date"
         ]
       },
       "mezcal": {
-        "descRich": "The website for Destilería Lorenzana, a family mezcal made in San Bartolo Yautepec, Oaxaca. It tells the founder's story in chapters, walks through the six steps from earth oven to <it>copper still</it>, and presents three agaves by their names, for buyers and distributors who want to know where the bottle comes from.",
+        "descRich": "The website for Destilería Lorenzana, a family mezcal from Oaxaca, for buyers who want to know where the bottle comes from: the founder's story and six steps from earth oven to <it>copper still</it>.",
         "metaPlatform": "Web · Responsive",
         "metaStatus": "Live",
         "actionPrimary": "Visit site",
@@ -828,35 +791,36 @@
         "mshowStatus": "Live",
         "kickerPlatform": "Web",
         "kickerDomain": "Brand site",
-        "titleIt": "from a palenque in the Sierra Sur."
+        "titleIt": "from a palenque in the Sierra Sur.",
+        "highlights": null
       },
       "briefmark": {
         "titleIt": "bookmarks that think.",
-        "descRich": "For people who save recipes, movies and restaurants from short videos and never find them again. Paste a TikTok or Instagram Reel link and Briefmark hears the audio, reads the frames and hands back tidy cards: the recipe with its ingredients and steps, the movie with <it>where it streams</it> in Mexico, the place with its map. A prototype, paused since May 2026.",
+        "descRich": "For people who save recipes, movies and restaurants from short videos. Paste a TikTok or Reel link and Briefmark hears the audio, reads the frames and hands back cards, including <it>where it streams</it> in Mexico.",
         "metaStatus": "Paused",
         "tag": "TikToks and Reels, turned into cards you can act on.",
         "kickerPlatform": "iOS",
         "kickerDomain": "AI",
-        "mshowStatus": "Paused"
+        "mshowStatus": "Paused",
+        "highlights": null
       },
-      "stampi": {
-        "titleIt": "the stamp card that never gets lost.",
-        "descRich": "Digital stamp cards for cafés and small shops. A customer scans a QR once and the card saves to Apple Wallet or Google Wallet: no app, no sign-up, no email. Staff stamp it from their own phone, and the card updates itself on the lock screen. Designed, built and run by one person, <it>end to end</it>.",
+      "scanandtap": {
+        "titleIt": "the stamp card that lives in the wallet.",
+        "descRich": "Loyalty cards for cafés, salons and counter businesses in Tijuana. A customer scans a QR and the card saves to Apple or Google Wallet: <it>no app</it>, no account, no email.",
         "metaPlatform": "Apple Wallet · Google Wallet",
-        "metaStatus": "Live · open to businesses",
-        "actionPrimary": "Visit Stampi",
+        "metaStatus": "Live site",
+        "actionPrimary": "Visit Scan&Tap",
         "tag": "Loyalty cards that live in Apple and Google Wallet.",
         "story": {
-          "problem": "Paper stamp cards get lost in wallets and washing machines, and a loyalty app is one more download nobody makes. Every customer already carries a wallet on their phone. The card just has to live there and stay current.",
-          "approach": "One platform that speaks both wallets: signed Apple passes kept fresh through Apple's pass web service and silent push, the Google Wallet API, and PIN-protected panels for the counter, the owner and the operator. A wallet outage never blocks a sign-up or a stamp.",
-          "result": "Live at stampi.atelierbelli.com and open to businesses. A stamp at the counter reaches the customer's card moments later without them opening anything, and a finished card arrives as a notice on the lock screen."
+          "problem": "Paper stamp cards get lost, and asking customers to download a loyalty app adds a step many will skip. Most customers already carry a wallet on their phone. The card only has to live there and stay current.",
+          "approach": "One multi-tenant platform for both wallets. Staff stamp visits from a PIN-protected panel on their own phone, rewards unlock on their own, and the pass updates itself on the lock screen. Owners get a panel with metrics and push campaigns, and the operator gets an admin panel to onboard businesses, set branding and manage Apple certificates. Google Wallet is fail-open, so a Google outage never blocks a sign-up or a stamp.",
+          "result": "The product site is live with the first month free, and the platform runs in production on AWS with 768 automated tests."
         },
         "highlights": [
-          "One scan to join: no app, no account, no email",
-          "Keeps stamping through an internet outage, then syncs",
-          "A scratched QR still works: an 8-character code is printed under it",
-          "Up to three lock-screen messages a day to your customers",
-          "A wallet failure never blocks a sign-up or a stamp"
+          "Keeps counting visits through a short internet outage",
+          "A ready-made poster with the business's logo and QR goes next to the register",
+          "A multi-agent audit of 63 endpoints found a way to self-grant rewards; it was closed before any real tenant existed",
+          "Three panels (admin, cashier, owner), each with its own PIN login, session secret and CSRF keys, plus a separate invite-token onboarding flow"
         ],
         "kickerPlatform": "Wallet",
         "kickerDomain": "Loyalty",
@@ -864,7 +828,7 @@
       },
       "alisio": {
         "titleIt": "feel your zone, don't watch it.",
-        "descRich": "For anyone who trains by heart rate. Pick a zone and a time; your Apple Watch taps your wrist the moment you drift out and again when you are back, so the workout is something you <it>feel</it>, not a screen you study mid-set. The goal counts only the time you spend in the zone, every workout is saved to Apple Health, and there is no account.",
+        "descRich": "For anyone who trains by heart rate. Pick a zone and a time; your Apple Watch taps your wrist when you drift out and again when you are back, so you <it>feel</it> the workout.",
         "metaStatus": "Live on the App Store",
         "actionPrimary": "View on App Store",
         "tag": "Your watch taps your wrist when you leave your heart-rate zone.",
@@ -875,7 +839,6 @@
         },
         "highlights": [
           "Three distinct taps: into the zone, out of it, goal reached",
-          "The goal clock counts only time spent in the zone",
           "Start from the Watch alone: turn the crown to a zone and go",
           "Your profile reaches the Watch; sessions land in your iPhone history and Apple Health",
           "No account and no server: nothing leaves your devices"
@@ -890,7 +853,7 @@
       },
       "fave": {
         "titleIt": "everything you try, ranked.",
-        "descRich": "A notebook for anyone who keeps lists of every drink, café, movie and book they have tried. Tick things off as you go and give stars <it>only when you feel like it</it>, because rating is never homework. A café scores itself from the orders you rated there, and movies and books bring their own covers, in your language's edition. Your lists live in your private iCloud: no accounts, no analytics.",
+        "descRich": "A notebook for anyone who lists every drink, café, movie and book they have tried. Give stars <it>only when you feel like it</it>. Your lists live in your private iCloud: no accounts, no analytics.",
         "metaStatus": "Live on the App Store",
         "actionPrimary": "View on App Store",
         "actionGhost": "Support",
@@ -898,11 +861,12 @@
         "tag": "Rank the drinks, cafés, movies and books you try.",
         "mshowStatus": "App Store",
         "kickerPlatform": "iOS",
-        "kickerDomain": "Lifestyle"
+        "kickerDomain": "Lifestyle",
+        "highlights": null
       },
       "vitapath": {
         "titleIt": "from SOS to hospital, in one system.",
-        "descRich": "An emergency response system for patients with serious conditions. One tap on SOS offers the case to the nearest available paramedics, and the first to accept is tracked live on the real road route. The patient is routed to a hospital their <it>insurance covers</it> and that can treat them, while the hospital console runs dispatch, arrival and reception.",
+        "descRich": "Emergency response for patients with serious conditions. One tap on SOS offers the case to the nearest paramedics, the first to accept is tracked live, and the patient goes to a hospital their <it>insurance covers</it>.",
         "metaStatus": "Working prototype",
         "tag": "One tap sends a paramedic and picks the right hospital.",
         "story": {
@@ -913,7 +877,6 @@
         "highlights": [
           "Offers widen from 5 km to 25 km until someone accepts",
           "Exactly one paramedic can win an emergency, enforced in the database",
-          "Hospital routing by insurance, distance and capability",
           "Each hospital sees only its own patients, with a PHI access audit trail"
         ],
         "mediaCaption": "One emergency, run live through all three surfaces at once. The offer lands on the paramedic's phone, the paramedic accepts, and the console resolves the hospital by insurance and network while the patient watches the same road route close in.",
@@ -924,7 +887,7 @@
       },
       "arrhythmia": {
         "titleIt": "read the ECG, beat by beat.",
-        "descRich": "Upload a heart recording and see every detected heartbeat labelled normal or one of four abnormal types, with how sure the model is. The rebuild found that the original's 98% came from mixing patients between training and testing; measured honestly on patients it never saw, it scores <it>63.22%</it>. A research tool, not a medical device.",
+        "descRich": "Upload a heart recording and see every detected heartbeat labelled normal or one of four abnormal types, with the model's confidence. Measured on patients it never saw, it scores <it>63.22%</it>, not the original's 98%. A research tool, not a medical device.",
         "metaPlatform": "Web · Responsive",
         "metaStatus": "Working demo",
         "actionPrimary": "View the ML backend",
@@ -936,7 +899,6 @@
         },
         "highlights": [
           "5 AAMI classes (N/S/V/F/Q) with per-beat confidence",
-          "Evaluated on patients the model never saw: an honest 63% over a leaky 98%",
           "The full 30-minute record, not a four-second slice",
           "One versioned model shared by training and the API"
         ],
@@ -948,24 +910,36 @@
       },
       "jugo": {
         "titleIt": "your battery, no surprises.",
-        "descRich": "A free Mac app so your battery never catches you out. Alerts grow out of the notch like a <it>Dynamic Island</it>, macOS's own low-battery pop-up is closed for you since Jugo already said it, and your AirPods, iPhone and mouse sit in one place, down to your iPhone's battery wear and 30 days of which apps drained the Mac.",
+        "descRich": "A free Mac app so your battery never catches you out. Alerts grow out of the notch like a <it>Dynamic Island</it>, and your AirPods, iPhone and mouse sit in one place.",
         "metaStatus": "Free download",
         "actionPrimary": "Get Jugo",
         "tag": "Battery alerts that grow out of your Mac's notch.",
         "kickerPlatform": "macOS",
         "kickerDomain": "Utility",
-        "mshowStatus": "Free"
+        "mshowStatus": "Free",
+        "highlights": null
       }
     },
     "reel": {
-      "lede": "Six products live this year, each in the cut of its own launch film. Tap one to open its case.",
+      "lede": "Six shipped products. Tap one to open it.",
       "roleCarousel": "carousel",
       "roleSlide": "slide",
       "slideAria": "{n} of {total}: {name}",
       "goTo": "Show {name}",
       "dotsAria": "Choose a product",
       "play": "Play the reel",
-      "pause": "Pause the reel"
+      "pause": "Pause the reel",
+      "open": "Open the {name} case"
+    },
+    "biz": {
+      "title": "For businesses",
+      "body": "Websites and apps for businesses in Tijuana and across the border. Tell me what you need and I'll tell you how I'd build it.",
+      "ctaEmail": "Email me",
+      "ctaWhatsApp": "WhatsApp"
+    },
+    "contact": {
+      "title": "Write to me",
+      "whatsapp": "WhatsApp"
     }
   },
   "jugo": {

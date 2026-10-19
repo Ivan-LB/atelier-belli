@@ -1,5 +1,23 @@
 # HANDOFF — atelier-belli-portfolio
 
+> **2026-10-18, rebrand "objects" (rama `feat/rebrand-objects`, commits en la rama, sin PR).** Se queda el nombre Atelier Belli; se retira el concepto
+> de taller. Cambió: tokens y tipografía (Archivo, Atkinson Hyperlegible Next,
+> Martian Mono vía `next/font`; Fraunces sólo para el skin de soporte de Fave),
+> luz por defecto, hero nuevo, carril "Para negocios" (`#biz`), contacto, tarjetas
+> en dos niveles, hoja de caso con house lights y The Pull, copy de los casos
+> afinado. Orden de secciones por idioma, en una constante de `page.tsx`.
+> Detalle en `CLAUDE.md` §1, §3 y §4. **Pendiente:**
+> 1. `WHATSAPP_NUMBER` en `page.tsx` es `null`; sin número no se renderiza
+>    ninguna tecla de WhatsApp. En es el hero no lleva teclas: la tarjeta
+>    "Para negocios" justo debajo es la única acción (decisión de Iván: dos pares
+>    iguales en la misma pantalla se sentían duplicados).
+> 2. El film, el reel y los posters de Scan&Tap todavía muestran "stampi."
+>    en pantalla; hay que recapturarlos.
+> 3. El monograma y el favicon siguen turquesa y sin decisión. El 404, las
+>    páginas legales y /jugo ya hablan el idioma nuevo (sin itálicas sintéticas,
+>    sin etiquetas en mayúsculas espaciadas, títulos con el display de la marca).
+> 4. **Smoke de Amplify antes de mergear:** cambiaron las fuentes del layout.
+
 > Updated **2026-08-20** (ola 2 de planes: 007 a 012, seis PRs). Lee
 > `CLAUDE.md` para el contexto estable y `plans/README.md` para el registro
 > plan por plan; este archivo es el estado vivo.
