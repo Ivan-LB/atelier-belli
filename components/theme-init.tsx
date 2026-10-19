@@ -3,10 +3,11 @@
 import { useEffect, useRef } from "react"
 
 /* Runs during HTML parse, before first paint, so a reader who chose dark on the
-   homepage never sees this page flash white. It sets the attribute on its own
+   homepage never sees this page flash light. Light is the default: with no saved
+   choice the theme is light, whatever the OS prefers (rebrand, 2026-10). It sets the attribute on its own
    parent element, which is deliberately NOT given `data-theme` in JSX: React
    then never manages that attribute and there is no hydration mismatch to lose. */
-const SCRIPT = `(function(){try{var t=localStorage.getItem("ab_theme");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}var s=document.currentScript,r=s&&s.parentElement;if(r){r.setAttribute("data-theme",t);}}catch(e){}})();`
+const SCRIPT = `(function(){try{var t=localStorage.getItem("ab_theme");if(t!=="light"&&t!=="dark"){t="light";}var s=document.currentScript,r=s&&s.parentElement;if(r){r.setAttribute("data-theme",t);}}catch(e){}})();`
 
 /**
  * Mirrors the homepage's `ab_theme` choice onto whatever root it is rendered
@@ -24,12 +25,7 @@ export default function ThemeInit() {
     let theme = "light"
     try {
       const saved = localStorage.getItem("ab_theme")
-      theme =
-        saved === "light" || saved === "dark"
-          ? saved
-          : window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light"
+      theme = saved === "light" || saved === "dark" ? saved : "light"
     } catch {
       theme = "light"
     }

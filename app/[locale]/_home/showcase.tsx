@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useTranslations } from "next-intl"
 
-import { REEL_KEYS, type CaseData, type CaseKey } from "./cases"
+import { REEL_KEYS, StatusPill, type CaseData, type CaseKey } from "./cases"
 
 type Props = {
   cases: Record<CaseKey, CaseData>
@@ -145,23 +145,17 @@ export function Showcase({ cases, onOpen }: Props) {
   }
 
   const total = REEL_KEYS.length
+  const current = cases[REEL_KEYS[active] ?? REEL_KEYS[0]]
 
   return (
     <section
       ref={sectionRef}
       className="ab-reel"
       aria-roledescription={t("reel.roleCarousel")}
-      aria-labelledby="reel-title"
+      aria-label={t("reel.lede")}
     >
-      <div className="ab-wrap ab-reel-cap">
-        <div>
-          <span className="eye">{t("vitrine.eyebrow")}</span>
-          <h2 id="reel-title">
-            <span>{t("vitrine.titlePre")}</span>
-            <em>{t("vitrine.titleIt")}</em>
-          </h2>
-        </div>
-        <p className="lede">{t("reel.lede")}</p>
+      <div className="ab-wrap">
+        <p className="ab-reel-lede">{t("reel.lede")}</p>
       </div>
 
       <div ref={trackRef} className="ab-reel-track">
@@ -182,7 +176,7 @@ export function Showcase({ cases, onOpen }: Props) {
                 type="button"
                 className="ab-reel-media"
                 onClick={(e) => onSlideClick(i, key, e.currentTarget)}
-                aria-label={isActive ? t("vitrine.open", { name: c.name }) : t("reel.goTo", { name: c.name })}
+                aria-label={isActive ? t("reel.open", { name: c.name }) : t("reel.goTo", { name: c.name })}
                 tabIndex={isActive ? 0 : -1}
               >
                 <video
@@ -200,18 +194,23 @@ export function Showcase({ cases, onOpen }: Props) {
                   aria-hidden="true"
                 />
               </button>
-              <div className="ab-reel-meta" aria-hidden={isActive ? undefined : "true"}>
-                <div>
-                  <h3>{c.name}</h3>
-                  <p>{c.tag}</p>
-                </div>
-                <span className="go">
-                  {t("work.viewCase")} <span className="arr">→</span>
-                </span>
-              </div>
             </div>
           )
         })}
+      </div>
+
+      {/* One caption for the whole reel, following the centred slide. Not a live
+          region: the reel advances on its own every 12 seconds and announcing
+          each turn would talk over the page. Each slide's group label already
+          carries the name. Plain paragraph, not a heading: the reel has no title
+          of its own, and a name here would sit between the h1 and the h2. */}
+      <div className="ab-reel-caption">
+        <p className="ab-reel-name ab-display">{current.name}</p>
+        <p className="ab-reel-tag">{current.tag}</p>
+        <div className="ab-reel-facts">
+          <StatusPill status={current.status} label={current.statusLabel} />
+          <span className="ab-mono">{current.platformText}</span>
+        </div>
       </div>
 
       <div className="ab-reel-controls">
