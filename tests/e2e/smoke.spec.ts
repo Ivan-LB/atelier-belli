@@ -168,14 +168,14 @@ test("?case=mezcal deep link opens the Destilería Lorenzana sheet; Escape clear
 });
 
 // ── Test 7: opening a case writes the ?case= param ───────────────────────────
-test("clicking a case row adds ?case=stampi to the URL", async ({ page }) => {
+test("clicking a case row adds ?case=scanandtap to the URL", async ({ page }) => {
   await page.goto("/");
 
   const firstRow = page.locator("button.ab-index-row").first();
   await firstRow.click();
 
-  // URL should now contain ?case=stampi (stampi is the first case)
-  await expect(page).toHaveURL(/[?&]case=stampi/);
+  // URL should now contain ?case=scanandtap (scanandtap is the first case)
+  await expect(page).toHaveURL(/[?&]case=scanandtap/);
 
   // Escape removes the param
   await page.keyboard.press("Escape");
@@ -185,12 +185,19 @@ test("clicking a case row adds ?case=stampi to the URL", async ({ page }) => {
 });
 
 // ── Test 7b: the case formerly keyed `pass` still opens from old links ───────
-test("?case=pass opens Stampi and rewrites the param", async ({ page }) => {
+test("?case=pass opens Scan&Tap and rewrites the param", async ({ page }) => {
   await page.goto("/?case=pass");
   const modal = page.locator(".ab-case-modal.open");
-  await expect(modal).toContainText("Stampi");
-  await expect(page).toHaveURL(/[?&]case=stampi/);
-  await expect(modal.locator('a[href="https://stampi.atelierbelli.com/"]')).toHaveCount(1);
+  await expect(modal).toContainText("Scan&Tap");
+  await expect(page).toHaveURL(/[?&]case=scanandtap/);
+  await expect(modal.locator('a[href="https://usescanandtap.com/"]')).toHaveCount(1);
+});
+
+test("?case=stampi opens Scan&Tap and rewrites the param", async ({ page }) => {
+  await page.goto("/?case=stampi");
+  const modal = page.locator(".ab-case-modal.open");
+  await expect(modal).toContainText("Scan&Tap");
+  await expect(page).toHaveURL(/[?&]case=scanandtap/);
 });
 
 // ── Test 7c: launch films play only on request, with sound ───────────────────
