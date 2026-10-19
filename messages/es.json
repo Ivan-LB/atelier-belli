@@ -849,7 +849,7 @@
         "story": {
           "problem": "Las tarjetas de sellos de papel se pierden, y pedirle al cliente que descargue una app de lealtad es un paso que mucha gente se salta. Casi todos los clientes ya traen un Wallet en el celular. La tarjeta solo tiene que vivir ahí y mantenerse al día.",
           "approach": "Una plataforma multi-negocio que habla con los dos wallets. El personal sella las visitas desde un panel con PIN en su propio celular, los premios se desbloquean solos y el pase se actualiza solo en la pantalla de bloqueo. El dueño tiene su panel con métricas y campañas push, y el operador tiene uno de administración para dar de alta negocios, poner su marca y manejar los certificados de Apple. Google Wallet falla sin estorbar: si Google se cae, nunca se bloquea un registro ni un sello.",
-          "result": "El sitio del producto ya está en línea con el primer mes gratis, y la plataforma corre en producción en AWS con 768 pruebas automatizadas. Tiene dos negocios, los dos de demostración o de prueba, y todavía no hay clientes que paguen. Se hizo en solitario, como infraestructura de producción antes del primer cliente, no como un prototipo que luego se refuerza."
+          "result": "El sitio del producto ya está en línea con el primer mes gratis, y la plataforma corre en producción en AWS con 768 pruebas automatizadas."
         },
         "highlights": [
           "Un escaneo para unirse: sin app, sin cuenta, sin correo",
@@ -861,7 +861,7 @@
         ],
         "kickerPlatform": "Wallet",
         "kickerDomain": "Lealtad",
-        "mshowStatus": "Aún sin ingresos"
+        "mshowStatus": "En línea"
       },
       "alisio": {
         "titleIt": "siente tu zona, no la mires.",

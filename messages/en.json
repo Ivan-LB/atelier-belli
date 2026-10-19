@@ -849,7 +849,7 @@
         "story": {
           "problem": "Paper stamp cards get lost, and asking customers to download a loyalty app adds a step many will skip. Most customers already carry a wallet on their phone. The card only has to live there and stay current.",
           "approach": "One multi-tenant platform for both wallets. Staff stamp visits from a PIN-protected panel on their own phone, rewards unlock on their own, and the pass updates itself on the lock screen. Owners get a panel with metrics and push campaigns, and the operator gets an admin panel to onboard businesses, set branding and manage Apple certificates. Google Wallet is fail-open, so a Google outage never blocks a sign-up or a stamp.",
-          "result": "The product site is live with the first month free, and the platform runs in production on AWS with 768 automated tests. It has two tenants, both demo or test accounts, and no paying clients yet. It was built solo, as production infrastructure ahead of the first customer rather than a prototype to harden later."
+          "result": "The product site is live with the first month free, and the platform runs in production on AWS with 768 automated tests."
         },
         "highlights": [
           "One scan to join: no app, no account, no email",
@@ -861,7 +861,7 @@
         ],
         "kickerPlatform": "Wallet",
         "kickerDomain": "Loyalty",
-        "mshowStatus": "Pre-revenue"
+        "mshowStatus": "Live"
       },
       "alisio": {
         "titleIt": "feel your zone, don't watch it.",
