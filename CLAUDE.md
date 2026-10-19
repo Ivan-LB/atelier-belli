@@ -95,7 +95,7 @@ app's own SwiftUI views with real readings from a Mac, not mockups.
 ### Case studies (Selected Work)
 
 **Which repo backs which case.** Derived from the action URLs in `page.tsx` and
-each repo's `origin`, not from folder names — several do not match (`stampi` →
+each repo's `origin`, not from folder names — several do not match (`scanandtap` →
 `loyalty-cards`, `mezcal` → `destileria-lorenzana`). Useful whenever a case
 needs a re-capture, since that means booting the real product.
 
@@ -103,7 +103,7 @@ needs a re-capture, since that means booting the real product.
 |---|---|---|
 | `alisio` | `Swift/Alisio` | `Ivan-LB/alisio` |
 | `fave` | `Swift/Fave` | `Ivan-LB/fave` (private) |
-| `stampi` | `Backend/pass` | `Ivan-LB/loyalty-cards` (private) |
+| `scanandtap` | `Backend/pass` | `Ivan-LB/loyalty-cards` (private) |
 | `fingo` | `Swift/Fingo` | `Ivan-LB/Fingo` |
 | `vitapath` | `vitapath/{backend-spring, web-hospital, ios-patient, ios-paramedic}` | `Vitapath_Backend`, `Vitapath_Web`, `Vitapath`, `Vitapath_Paramedic` — **four independent repos**, default branch `v2.1` |
 | `arrhythmia` | `Python/Arrhythmia-Detector` + `Python/arrhythmia-detector-web` | `arrhythmia-detector-backend` (public), `arrhythmia-detector-web` |
@@ -119,14 +119,18 @@ squashed into a single `Redesing (#13)` on main. The *content* of the two
 branches is byte-identical (verified 2026-08-03); do not "fix" the divergence
 by force-pushing either side.
 
-Ten cases as of 2026-09-28, in this display order: `stampi`, `alisio`, `savely`,
+Ten cases as of 2026-09-28, in this display order: `scanandtap`, `alisio`, `savely`,
 `jugo`, `fave`, `fingo`, `vitapath`, `arrhythmia`, `mezcal`, `briefmark`.
 **BLIP was retired** that day at Iván's request; `?case=blip` now opens nothing.
-**Stampi is the case formerly keyed `pass`** (renamed 2026-09-28 and moved to 01 by
-Iván's call, the day its public site went live). Its primary action is the site,
-`stampi.atelierbelli.com`. Old `?case=pass` links resolve through
-`LEGACY_CASE_KEYS` and rewrite the param. Copy is written from
-`Backend/pass/PORTFOLIO.md`: never claim clients, revenue or usage, and never call
+**Scan&Tap is the case formerly keyed `pass`, then `stampi`** (renamed to Scan&Tap on
+2026-10-18; it holds position 01). Its primary action is `usescanandtap.com`. Old
+`?case=pass` and `?case=stampi` links resolve through `LEGACY_CASE_KEYS` and rewrite the
+param. `stampi.atelierbelli.com` still exists as the pass web service for issued passes
+and must not be touched. The film, reel cut and posters still show the old "stampi."
+wordmark and need a new capture; their files keep the `stampi` names on disk and
+`FILMS` / `showcase.tsx` map the new key onto them. Status copy: live site, free first
+month, zero paying clients ("Pre-revenue"), never "Pre-launch". Copy is written from
+`docs/scanandtap-brief.md` and the live site: never claim clients, revenue or usage, and never call
 it an app (the wallet pass is the client). Fave and Savely are live on the App
 Store; their primary actions are store links. Jugo's primary action is the
 internal `/jugo` landing. The `mezcal` case displays as **Destilería Lorenzana**,
@@ -145,7 +149,7 @@ or reorder a case:
    null; story + highlights when flagship).
 3. Insert the key into `CASE_KEYS` (it is BOTH the render order AND the
    deep-link allowlist). Bump the ten-case count **and** the first-case
-   (`stampi`) deep-link check in `tests/e2e/smoke.spec.ts`.
+   (`scanandtap`) deep-link check in `tests/e2e/smoke.spec.ts`.
 4. Give it a film in `FILMS`, or a still in `CasePreview` (`case-media.tsx`).
    A shipped product also goes in `REEL_KEYS` with a 12s cut in `public/cases/reel/`.
 
@@ -217,9 +221,9 @@ invariants (clock count, orphan chips, phone widths) lives in plan 011's tail.
 gallery-only or story-without-highlights tier: `story` and `highlights` ship
 together or not at all.
 
-- flagship: `stampi`, `alisio`, `savely`, `vitapath`, `arrhythmia`
+- flagship: `scanandtap`, `alisio`, `savely`, `vitapath`, `arrhythmia`
 - compact: `fave`, `fingo`, `mezcal`, `briefmark`, `jugo`
-- `stampi` is flagship **without** `media`; its launch film carries the visuals.
+- `scanandtap` is flagship **without** `media`; its launch film carries the visuals.
 
 **Launch films (`film`, 2026-09-28).** Eight cases carry a 16:9 launch film with
 sound (`FILMS` in `cases.tsx`; files in `public/cases/film/`, Jugo reuses
@@ -330,7 +334,7 @@ covered by e2e tests:
   action: it stops the mouse and nothing else.
 
 **Showcase reel (2026-09-28, replaced the three-piece vitrine).** Six shipped
-products (`REEL_KEYS`: stampi, alisio, savely, fave, fingo, jugo), each a silent
+products (`REEL_KEYS`: scanandtap, alisio, savely, fave, fingo, jugo), each a silent
 12s cut of its own launch film in `public/cases/reel/` (1280x720, CRF 29, no
 audio, 170 to 320 KB). One plays at a time; on `ended` the track advances.
 The track is **native scroll with snap points**, so a swipe has the platform's own
@@ -344,7 +348,7 @@ screen or in a hidden tab, and reduced motion starts paused on posters with the
 same toggle. The Vitapath and Arrhythmia captures the old vitrine used are
 deleted; neither is a shipped product.
 
-**Pending:** `github.com/Ivan-LB/loyalty-cards` is private, so the Stampi case
+**Pending:** `github.com/Ivan-LB/loyalty-cards` is private, so the Scan&Tap case
 links only its public site; if the repo goes public, add a GitHub ghost action.
 
 ## 2. Commands

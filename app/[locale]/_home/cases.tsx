@@ -4,7 +4,7 @@ import { useCallback, useMemo } from "react"
 import { useTranslations } from "next-intl"
 
 export type CaseKey =
-  | "stampi"
+  | "scanandtap"
   | "alisio"
   | "savely"
   | "jugo"
@@ -18,7 +18,7 @@ export type CaseKey =
 // Display order of Selected Work (also the deep-link allowlist). This array is
 // the single source of order: the index maps over it and `num` follows it.
 export const CASE_KEYS: readonly CaseKey[] = [
-  "stampi",
+  "scanandtap",
   "alisio",
   "savely",
   "jugo",
@@ -30,9 +30,10 @@ export const CASE_KEYS: readonly CaseKey[] = [
   "briefmark",
 ]
 
-/** Old keys that shared links may still carry. `pass` was renamed to Stampi;
-    `blip` was retired and falls through to "no case". */
-export const LEGACY_CASE_KEYS: Record<string, CaseKey> = { pass: "stampi" }
+/** Old keys that shared links may still carry. `pass` was renamed to Stampi,
+    and Stampi to Scan&Tap on 2026-10-18; `blip` was retired and falls through
+    to "no case". */
+export const LEGACY_CASE_KEYS: Record<string, CaseKey> = { pass: "scanandtap", stampi: "scanandtap" }
 
 export type CaseAction = {
   label: string
@@ -71,7 +72,8 @@ const film = (key: string): CaseFilmData => ({
 })
 
 export const FILMS = {
-  stampi: film("stampi"),
+  // The files still show the old "stampi." wordmark and need a new capture.
+  scanandtap: film("stampi"),
   alisio: film("alisio"),
   savely: film("savely"),
   // The /jugo landing already ships this film; one copy serves both pages.
@@ -83,12 +85,12 @@ export const FILMS = {
 } satisfies Partial<Record<CaseKey, CaseFilmData>>
 
 /** The showcase reel: shipped products only, each a silent 12s cut of its film. */
-export const REEL_KEYS = ["stampi", "alisio", "savely", "fave", "fingo", "jugo"] as const
+export const REEL_KEYS = ["scanandtap", "alisio", "savely", "fave", "fingo", "jugo"] as const
 export type ReelKey = (typeof REEL_KEYS)[number]
 
 export type CaseData = {
   num: string
-  /** Display name, e.g. "Stampi". The modal and index append `titleIt`. */
+  /** Display name, e.g. "Scan&Tap". The modal and index append `titleIt`. */
   name: string
   titleIt: string
   tag: string
@@ -138,13 +140,13 @@ const privacy = (app: string) => ({
 })
 
 const DEFS: Record<CaseKey, Def> = {
-  stampi: {
-    name: "Stampi",
+  scanandtap: {
+    name: "Scan&Tap",
     year: "2026",
     platform: null,
     stack: "Node.js · AWS Lambda · DynamoDB · PassKit",
     chips: ["AWS Lambda", "DynamoDB", "PassKit"],
-    actions: [store("https://stampi.atelierbelli.com/")],
+    actions: [store("https://usescanandtap.com/")],
     flagship: true,
   },
   alisio: {

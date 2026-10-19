@@ -10,8 +10,11 @@ type Props = {
   onOpen: (key: CaseKey, trigger: HTMLElement) => void
 }
 
-const reelSrc = (key: string) => `/cases/reel/${key}.mp4`
-const reelPoster = (key: string) => `/cases/reel/${key}-poster.webp`
+// Scan&Tap's cut still lives under its old file name (it shows the old "stampi."
+// wordmark and needs a new capture).
+const reelFile = (key: string) => (key === "scanandtap" ? "stampi" : key)
+const reelSrc = (key: string) => `/cases/reel/${reelFile(key)}.mp4`
+const reelPoster = (key: string) => `/cases/reel/${reelFile(key)}-poster.webp`
 
 /**
  * The shipped work, as a reel. One silent 12-second cut of each launch film
