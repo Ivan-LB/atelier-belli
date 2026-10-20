@@ -530,6 +530,10 @@ then `magick` to resize, centre on `#faf8f3` and `-alpha remove`; build the .ico
 from 16/32/48 PNGs. **`sips` cannot produce a real .ico** — do not ship a
 renamed PNG. `out/` holds stale 2025 exports of the OLD logo; ignore it.
 
+**Share images are baked** (gotcha `og-image-is-baked-brand`): `public/og.png` and
+`public/og-jugo.png` are rendered from `scripts/og/*.html` with `pnpm og:render`. A visual
+change to the site does not reach them; re-render on any identity change.
+
 **Hybrid font loading** (intentional, see gotcha `google-fonts-hybrid-loading`;
 the split changed again in the 2026-10-18 rebrand):
 

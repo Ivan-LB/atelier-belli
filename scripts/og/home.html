@@ -1,0 +1,39 @@
+<!doctype html>
+<!-- Share card for atelierbelli.com (public/og.png). Render with `pnpm og:render`.
+     Objects identity: warm grey ground, raised tiles, Archivo wide for display,
+     Atkinson Hyperlegible Next for text. Amber is reserved for interaction on the
+     site, so a static card carries none. Posters are the real launch-film frames. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Atkinson+Hyperlegible+Next:wght@400;600;700&display=block">
+<style>
+  :root { --bg: #e8e7e2; --raised: #f5f4f0; --fg: #151514; --mu: #595852;
+          --e2: 0 1px 0 rgba(21,21,20,.05), 0 10px 22px -10px rgba(21,21,20,.32); }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; background: var(--bg); color: var(--fg); }
+  body { padding: 60px 64px 0; font-family: "Atkinson Hyperlegible Next", sans-serif; -webkit-font-smoothing: antialiased; }
+  .disp { font-family: "Archivo", sans-serif; font-variation-settings: "wdth" 118; font-weight: 760; letter-spacing: -0.035em; }
+  .top { display: flex; justify-content: space-between; align-items: baseline; }
+  .brand { font-size: 30px; }
+  .url { font-size: 22px; color: var(--mu); }
+  h1 { margin-top: 44px; font-size: 82px; line-height: 0.96; }
+  .sub { margin-top: 20px; font-size: 28px; color: var(--mu); }
+  .sub b { color: var(--fg); font-weight: 700; }
+  .shelf { position: absolute; left: 64px; right: 64px; bottom: 56px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .tile { background: var(--raised); border-radius: 16px; padding: 6px; box-shadow: var(--e2); }
+  .tile img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 10px; }
+</style>
+</head>
+<body>
+  <div class="top"><span class="brand disp">Atelier Belli</span><span class="url">atelierbelli.com</span></div>
+  <h1 class="disp">Software I design,<br>build and ship.</h1>
+  <p class="sub"><b>Iván Lorenzana</b>, developer in Tijuana</p>
+  <div class="shelf">
+    <div class="tile"><img src="../../public/cases/film/alisio-poster.webp" alt=""></div>
+    <div class="tile"><img src="../../public/cases/film/savely-poster.webp" alt=""></div>
+    <div class="tile"><img src="../../public/cases/film/fave-poster.webp" alt=""></div>
+    <div class="tile"><img src="../../public/cases/film/fingo-poster.webp" alt=""></div>
+  </div>
+</body>
+</html>

@@ -7,6 +7,7 @@ export const generateMetadata = routeMetadata({
   namespace: "jugo",
   titleKey: "meta.title",
   descriptionKey: "meta.description",
+  ogImage: { url: "/og-jugo.png", altKey: "meta.ogAlt" },
 })
 
 export default function JugoLayout({ children }: { children: React.ReactNode }) {

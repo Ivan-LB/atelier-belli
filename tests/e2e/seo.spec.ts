@@ -177,6 +177,43 @@ test("theme-color is a light/dark pair rather than one hardcoded value", async (
   expect(media).toContain("(prefers-color-scheme: dark)");
 });
 
+// ── Share images ────────────────────────────────────────────────────────────
+
+/* Next replaces a parent's openGraph wholesale, so _route-metadata.ts restates
+   it on every sub-route. These pin which card each route shares: /jugo has its
+   own (public/og-jugo.png), every other route the site's (public/og.png). Both
+   are rendered by `pnpm og:render`, never edited by hand. */
+function ogContent(page: import("@playwright/test").Page, property: string) {
+  return page.locator(`meta[property="${property}"]`).first().getAttribute("content");
+}
+
+for (const path of ROUTES) {
+  const expected = path === "/jugo/" ? "/og-jugo.png" : "/og.png";
+
+  test(`${path} shares ${expected}`, async ({ page, request }) => {
+    await page.goto(path);
+
+    const image = await ogContent(page, "og:image");
+    expect(new URL(image ?? "", "https://atelierbelli.com").pathname).toBe(expected);
+    expect(await ogContent(page, "og:image:width")).toBe("1200");
+    expect(await ogContent(page, "og:image:height")).toBe("630");
+    expect((await ogContent(page, "og:image:alt"))?.length ?? 0).toBeGreaterThan(10);
+
+    const response = await request.get(expected);
+    expect(response.status()).toBe(200);
+    expect(response.headers()["content-type"]).toContain("image/png");
+  });
+}
+
+test("Jugo's share image alt text is localized", async ({ browser }) => {
+  const { context, page } = await spanishPage(browser);
+  await page.goto("/jugo/");
+  const alt = await ogContent(page, "og:image:alt");
+  await context.close();
+
+  expect(alt).toBe("Jugo: alertas de batería que salen del notch de tu Mac");
+});
+
 // ── Alternates stay removed ─────────────────────────────────────────────────
 
 test("no route emits hreflang or a canonical link", async ({ page }) => {

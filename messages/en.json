@@ -945,7 +945,8 @@
   "jugo": {
     "meta": {
       "title": "Jugo: battery alerts for your Mac",
-      "description": "Jugo turns your Mac's notch into a Dynamic Island for battery alerts and keeps an eye on your AirPods, iPhone and accessories. Free for macOS."
+      "description": "Jugo turns your Mac's notch into a Dynamic Island for battery alerts and keeps an eye on your AirPods, iPhone and accessories. Free for macOS.",
+      "ogAlt": "Jugo: battery alerts that grow out of your Mac's notch"
     },
     "nav": {
       "back": "Atelier Belli",
