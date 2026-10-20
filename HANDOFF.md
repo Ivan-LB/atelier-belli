@@ -1,3 +1,38 @@
+# HANDOFF
+
+> Estado vivo. Léelo antes que nada. Contexto estable: `CLAUDE.md`.
+
+<!-- context-handoff: hechos recogidos automáticamente. La narrativa la escribe el modelo. -->
+## Estado mecánico (2026-10-19 20:57 UTC, contexto ~95%)
+- Rama: `feat/og-image-objects` (base `main`)
+- Versión en package.json: `0.1.0`
+### Sin commitear
+
+```
+M package.json
+ M public/og.png
+?? atelierbelli/
+?? public/og-jugo.png
+?? scripts/og/
+```
+### Narrativa (2026-10-20)
+
+**Share images (`feat/og-image-objects`, PR contra `develop`).** `public/og.png` era la marca vieja ("DIGITAL CRAFT · PORTFOLIO", turquesa, "Mi Mezcal") y salía en cada link compartido. Ahora es una tarjeta en la identidad objects, y /jugo tiene la suya (`public/og-jugo.png`). Las dos salen de `pnpm og:render` (`scripts/og/home.html`, `jugo.html`, `render.mjs`; usa el Chromium de Playwright, necesita red para Google Fonts y falla a propósito si la fuente o una imagen no cargan). `routeMetadata()` acepta `ogImage: { url, altKey }` y `jugo/layout.tsx` lo usa; `jugo.meta.ogAlt` existe en ambos diccionarios; `tests/e2e/seo.spec.ts` fija qué tarjeta comparte cada ruta.
+
+**Falta, ya fuera del código:** tras el release a `main`, Iván pasa `atelierbelli.com` y `atelierbelli.com/jugo/` por linkedin.com/post-inspector, porque LinkedIn cachea la vista previa vieja. Debe estar antes del lunes 26 de octubre: los posts de Vitapath (26) y Jugo (27) sólo enlazan ahí.
+
+**Decisiones:** tarjeta en inglés para ambos idiomas (los crawlers llegan sin cookie y el middleware sirve en); sin ámbar en la del home (en el sitio el ámbar marca interacción); la de Jugo usa su voz propia (negro isla, verde carga) y su eslogan real, con la captura de la isla difuminada hacia el fondo.
+
+**Copy de los casos (PR #74, mergeado a `develop` el 2026-10-20).** Un fact-check contra los repos corrigió Arrhythmia (el original dio 97 %, no 98 %; las clases son normal, tres anormales y desconocido), Vitapath (la elección de hospital es por distancia en línea recta, el bug de triaje lo atrapó una revisión antes del merge, más de 300 tests), Scan&Tap (más de 6,000 tests, no 768), Destilería (los seis pasos van de la cosecha al embotellado), Savely (los AI tips están apagados, no quitados; etiquetas es-419 reales), el soporte de Fingo y /jugo. Fuera de este repo siguen viejos: `docs/portfolio-brief.md` y `docs/progress.md` de Arrhythmia-Detector (~98-99 %) y el HANDOFF del backend de Vitapath (338 tests).
+
+**LinkedIn (fuera del repo).** Serie de diez posts, uno por día hábil: Alisio salió el lunes 19 de octubre; los otros nueve van del martes 20 al viernes 30 (Arrhythmia, Savely, Fingo, Fave, Vitapath, Jugo, Destilería, Briefmark, Scan&Tap). Textos verificados contra los repos el 2026-10-20 en el artifact "Ten Builds, Ten Days" (https://claude.ai/artifact/13SFv3jmcjsZ7hwLmgCZCY). Pendientes de Iván: la razón de la pausa de Briefmark, si Destilería es su familia, un corte de ~30 s del film de Vitapath, media de Scan&Tap sin "stampi.". El formulario de contacto del sitio de Destilería no envía nada (`components/contacto.tsx` en ese repo). En el perfil siguen pendientes: sección Featured vacía, banner genérico, título de Exact Sciences distinto entre titular y experiencia, Dexcom (renombrar "VnV Software Trainee", describir iOS Dev Trainee), idioma del perfil en Español y Combine en el proyecto de Fingo.
+
+
+---
+
+<details>
+<summary>Handoff anterior</summary>
+
 # HANDOFF — atelier-belli-portfolio
 
 > **2026-10-18, rebrand "objects" (rama `feat/rebrand-objects`, commits en la rama, sin PR).** Se queda el nombre Atelier Belli; se retira el concepto
@@ -471,3 +506,5 @@ sesiones, incluida ésta.
 - **Rama nueva desde `develop` recién mergeado** antes de cada tanda. Un commit
   llegó a quedar colgado sobre una rama ya cerrada (PR #45) y hubo que moverlo
   con cherry-pick; verifica con `git log origin/develop..HEAD`.
+
+</details>

@@ -346,3 +346,25 @@
     `rm -rf .next`, and restart `pnpm dev`. The error is always recoverable
     that way — it is cache corruption, not a code problem.
   source: "session 2026-06-10 — build during live dev broke the user's server"
+
+- id: og-image-is-baked-brand
+  triggers:
+    files:
+      - "public/og.png"
+      - "public/og-*.png"
+      - "scripts/og/**"
+      - "app/[locale]/_route-metadata.ts"
+      - "app/globals.css"
+    keywords:
+      - "og:image"
+      - "openGraph"
+      - "rebrand"
+      - "palette"
+      - "share card"
+  rule: >-
+    public/og.png (and public/og-jugo.png) are baked images of the brand, so a
+    visual change to the site does not reach them. The 2026-10-18 rebrand shipped
+    with the old-brand og.png still live and every shared atelierbelli.com link on
+    LinkedIn and WhatsApp showed it. Regenerate them from scripts/og/*.html with
+    `pnpm og:render` whenever the identity changes, and tell the owner to refresh
+    LinkedIn's cache at linkedin.com/post-inspector after the release.

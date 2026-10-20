@@ -1,0 +1,33 @@
+<!doctype html>
+<!-- Share card for /jugo (public/og-jugo.png). Render with `pnpm og:render`.
+     Jugo's own voice (island black, charging green), the same tokens the /jugo
+     page scopes under .ab-jugo. The island is the real capture of the app's alert. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Atkinson+Hyperlegible+Next:wght@400;600;700&display=block">
+<style>
+  :root { --bg: #0b0d0c; --fg: #eef1ee; --mu: #9aa39c; --juice: #34d35b; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; background: var(--bg); color: var(--fg); }
+  body { font-family: "Atkinson Hyperlegible Next", sans-serif; -webkit-font-smoothing: antialiased; }
+  /* The capture fades into the ground so there is no seam where it ends. */
+  .island { display: block; width: 1200px; height: 340px; -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent); mask-image: linear-gradient(to bottom, #000 62%, transparent); }
+  .copy { padding: 34px 64px 0; }
+  .disp { font-family: "Archivo", sans-serif; font-variation-settings: "wdth" 118; font-weight: 760; letter-spacing: -0.035em; }
+  h1 { font-size: 64px; line-height: 1; }
+  h1 span { color: var(--juice); }
+  .sub { margin-top: 18px; font-size: 28px; color: var(--mu); }
+  .foot { position: absolute; left: 64px; right: 64px; bottom: 44px; display: flex; justify-content: space-between; font-size: 22px; color: var(--mu); }
+  .foot .brand { font-size: 22px; color: var(--fg); }
+</style>
+</head>
+<body>
+  <img class="island" src="../../public/cases/jugo-island.webp" alt="">
+  <div class="copy">
+    <h1 class="disp">Your battery, <span>no surprises.</span></h1>
+    <p class="sub">Battery alerts that grow out of your Mac's notch. Free for macOS.</p>
+  </div>
+  <div class="foot"><span class="brand disp">Jugo</span><span>atelierbelli.com/jugo</span></div>
+</body>
+</html>

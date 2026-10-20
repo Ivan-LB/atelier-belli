@@ -8,14 +8,25 @@ export const TITLE_TEMPLATE = `%s — ${SITE_NAME}`
 
 type RouteParams = { params: Promise<{ locale: string }> }
 
+type OgImage = {
+  /** Public path of a 1200x630 card rendered by `pnpm og:render`. */
+  url: string
+  /** Key for the card's alt text, in the same namespace as the title. */
+  altKey: string
+}
+
 type RouteMeta = {
   /** URL path as it is actually served: no locale prefix, trailing slash. */
   path: string
-  /** Dictionary namespace holding both keys below. */
+  /** Dictionary namespace holding the keys below. */
   namespace: string
   titleKey: string
   descriptionKey: string
+  /** A route's own share card. Omitted, the route shares the site's /og.png. */
+  ogImage?: OgImage
 }
+
+const OG_SIZE = { width: 1200, height: 630 }
 
 /**
  * Builds the `generateMetadata` export for one sub-route.
@@ -39,7 +50,7 @@ type RouteMeta = {
  * absolute here makes every route correct on its own and keeps the next nested
  * route from reintroducing the same bug.
  */
-export function routeMetadata({ path, namespace, titleKey, descriptionKey }: RouteMeta) {
+export function routeMetadata({ path, namespace, titleKey, descriptionKey, ogImage }: RouteMeta) {
   return async function generateMetadata({ params }: RouteParams): Promise<Metadata> {
     const { locale } = await params
     const [t, tLayout] = await Promise.all([
@@ -49,6 +60,9 @@ export function routeMetadata({ path, namespace, titleKey, descriptionKey }: Rou
 
     const title = t(titleKey)
     const description = t(descriptionKey)
+    const image = ogImage
+      ? { url: ogImage.url, alt: t(ogImage.altKey) }
+      : { url: "/og.png", alt: tLayout("ogAlt") }
 
     return {
       title: { absolute: TITLE_TEMPLATE.replace("%s", title) },
@@ -64,7 +78,7 @@ export function routeMetadata({ path, namespace, titleKey, descriptionKey }: Rou
         url: path,
         title,
         description,
-        images: [{ url: "/og.png", width: 1200, height: 630, alt: tLayout("ogAlt") }],
+        images: [{ ...image, ...OG_SIZE }],
       },
     }
   }
