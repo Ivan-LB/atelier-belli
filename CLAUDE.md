@@ -176,8 +176,9 @@ The facts behind every sentence were checked against each repo that day. Things
 that are **false** and must not come back: Stripe, a storefront or checkout on the
 mezcal site (it sells nothing); "private beta" for Vitapath (nothing is hosted);
 "spinning arrows" in Fingo; Briefmark share-sheet input or search (you paste a
-link, and there is no search); the old 98% for Arrhythmia except as the leaky
-number it was. Vitapath and Briefmark carry **no action** rather than a disabled
+link, and there is no search); the old 98% for Arrhythmia (no artifact backs it; the
+original's saved beat report says 97% on 417 beats, and that is the number to
+quote, only ever as the leaky one). Vitapath and Briefmark carry **no action** rather than a disabled
 one: an honest link does not exist yet.
 
 **Previews.** A case with a film shows the film as the sheet's hero. The two
@@ -263,10 +264,11 @@ only makes that goal eligible, logging income may offer one move, and the
 deposit is written only when the user taps YES. The app asks for **two**
 permissions (camera and notifications), receipts arrive through an
 out-of-process `PhotosPicker` that never grants photo-library access, and the
-only export is a current-week PDF. The app is localized to es-419 and only
-partly, so never invent Spanish for an in-app label: `Auto-move on payday` has
-an empty localizations entry in `Localizable.xcstrings` and renders in English
-on a Spanish device.
+only export is a current-week PDF. The app is localized to es-419 (the catalog was completed 2026-09-28 and CI
+gates it with `scripts/check-l10n.py`), so read the real string from
+`Localizable.xcstrings` before quoting an in-app label in Spanish instead of
+inventing one: `Auto-move on payday` reads "Mover al ahorro en día de pago" and
+"1+ year" reads "1+ año".
 
 **Case-study depth (`story` / `highlights` / `media`)** — added 2026-07-30. A
 `CaseData` entry may carry three optional fields that render as full-width bands
