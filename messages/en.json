@@ -454,11 +454,11 @@
           },
           {
             "q": "What can Fingo actually decide?",
-            "aHtml": "Four things, one per tab. <em>Chooser</em> picks a finger: everyone holds the screen, and with two or more fingers down a short countdown runs before one is chosen, up to five at a time. <em>Roulette</em> spins a wheel you built yourself. <em>Random</em> gives you a number inside a range you set. <em>Coin Flip</em> is heads or tails."
+            "aHtml": "Four things, one per tab. <em>Finger</em> picks a finger: everyone holds the screen, and with two or more fingers down a short countdown runs before one is chosen, up to ten at a time. <em>Wheel</em> spins a wheel you built yourself. <em>Number</em> gives you a number inside a range you set. <em>Coin</em> is heads or tails."
           },
           {
-            "q": "I deleted a roulette and it came back. Why?",
-            "aHtml": "So the tab is never empty. If you delete every wheel, Fingo puts the starter one back the next time you open the app: <em>My First Roulette</em>, with the options Yes, No and Maybe. Edit it into something you actually want and it will stay that way."
+            "q": "Why can't I delete my last wheel?",
+            "aHtml": "So the Wheel tab always has something to spin. You can delete any wheel while you have two or more, but the last one stays. The first time you open Fingo it gives you <em>My first wheel</em>, with the options Yes, No and Maybe. Edit it into something you actually want and it will stay that way."
           },
           {
             "q": "Can I turn the vibration off?",
@@ -466,7 +466,7 @@
           },
           {
             "q": "Can I save or share a result?",
-            "aHtml": "No, and nothing is kept. A roulette winner appears in a card you dismiss by tapping the background around it, the Chooser clears its result after a moment, and no mode keeps a history. Fingo is built to settle the moment and then get out of the way."
+            "aHtml": "No. There is no share button, and nothing is sent anywhere. A wheel result appears in a card you close with Done or by swiping it down, and the Finger tab clears when you tap to go again. The only things Fingo keeps are your wheels, your number range and your last five coin flips; the Number tab also lists your last three numbers until you change the range or close the app. It is built to settle the moment and then get out of the way."
           }
         ]
       },
@@ -773,7 +773,7 @@
         "actionPrivacy": "Privacy",
         "story": {
           "problem": "Most savings apps want a bank connection before they are useful, then answer the only question that matters, whether the goal still lands on time, with a projection your deposits do not support.",
-          "approach": "Everything runs on the phone: SwiftData for the money, Apple's on-device text recognition for receipts, and no network requests. The pace math refuses to flatter: it uses your last four weeks of deposits, and a goal more than a year out reads 1+ year instead of an invented date. The rebuild got there by removing things: accounts, the cloud and the AI tips all came out.",
+          "approach": "Everything runs on the phone: SwiftData for the money, Apple's on-device text recognition for receipts, and no network requests. The pace math refuses to flatter: it uses your last four weeks of deposits, and a goal more than a year out reads 1+ year instead of an invented date. The rebuild got there by removing things: accounts and the cloud came out, and the AI tips are switched off.",
           "result": "Live on the App Store with the premise intact: no account, no cloud, no bank connection. The one thing that can leave the phone is a weekly PDF you share yourself."
         },
         "highlights": [
@@ -783,7 +783,7 @@
         ]
       },
       "mezcal": {
-        "descRich": "The website for Destilería Lorenzana, a family mezcal from Oaxaca, for buyers who want to know where the bottle comes from: the founder's story and six steps from earth oven to <it>copper still</it>.",
+        "descRich": "The website for Destilería Lorenzana, a family mezcal from Oaxaca, for buyers who want to know where the bottle comes from: the founder's story and the six steps of the craft, from harvest to <it>bottling</it>.",
         "metaPlatform": "Web · Responsive",
         "metaStatus": "Live",
         "actionPrimary": "Visit site",
@@ -814,7 +814,7 @@
         "story": {
           "problem": "Paper stamp cards get lost, and asking customers to download a loyalty app adds a step many will skip. Most customers already carry a wallet on their phone. The card only has to live there and stay current.",
           "approach": "One multi-tenant platform for both wallets. Staff stamp visits from a PIN-protected panel on their own phone, rewards unlock on their own, and the pass updates itself on the lock screen. Owners get a panel with metrics and push campaigns, and the operator gets an admin panel to onboard businesses, set branding and manage Apple certificates. Google Wallet is fail-open, so a Google outage never blocks a sign-up or a stamp.",
-          "result": "The product site is live with the first month free, and the platform runs in production on AWS with 768 automated tests."
+          "result": "The product site is live with the first month free, and the platform runs in production on AWS with more than 6,000 automated tests."
         },
         "highlights": [
           "Keeps counting visits through a short internet outage",
@@ -866,13 +866,13 @@
       },
       "vitapath": {
         "titleIt": "from SOS to hospital, in one system.",
-        "descRich": "Emergency response for patients with serious conditions. One tap on SOS offers the case to the nearest paramedics, the first to accept is tracked live, and the patient goes to a hospital their <it>insurance covers</it>.",
+        "descRich": "Emergency response for patients with serious conditions. One tap on SOS offers the case to the nearest paramedics, the first to accept is tracked live, and the patient goes to a hospital that can handle the case, preferably one their <it>insurance covers</it>.",
         "metaStatus": "Working prototype",
         "tag": "One tap sends a paramedic and picks the right hospital.",
         "story": {
           "problem": "In an emergency the minutes go to deciding who responds and where the patient is taken. Send them to a hospital that does not take their insurance, or cannot handle the case, and the transfer happens twice.",
-          "approach": "One emergency state machine inside database transactions, so exactly one paramedic wins the offer. PostGIS finds the nearest five within 5 km and widens the search every 30 seconds, STOMP keeps the map and ETA live on all three surfaces, and hospital routing weighs insurance, distance and capability with real driving times.",
-          "result": "A working system across two SwiftUI apps, a React console and a Spring Boot backend, behind 338 unit tests. Adding triage once sent a public-insurance patient to a private hospital 340 m away instead of a public one at 730 m; the routing now prefers public hospitals for public coverage."
+          "approach": "One emergency state machine inside database transactions, so exactly one paramedic wins the offer. PostGIS finds the nearest five within 5 km and widens the search every 30 seconds, STOMP keeps the map and ETA live on all three surfaces, and hospital routing weighs insurance, distance and capability.",
+          "result": "A working system across two SwiftUI apps, a React console and a Spring Boot backend, behind more than 300 backend tests. An adversarial review of the triage change caught a bug before it merged: it would have sent a public-insurance patient to a private hospital 340 m away instead of a public one at 730 m; the routing now prefers public hospitals for public coverage."
         },
         "highlights": [
           "Offers widen from 5 km to 25 km until someone accepts",
@@ -887,7 +887,7 @@
       },
       "arrhythmia": {
         "titleIt": "read the ECG, beat by beat.",
-        "descRich": "Upload a heart recording and see every detected heartbeat labelled normal or one of four abnormal types, with the model's confidence. Measured on patients it never saw, it scores <it>63.22%</it>, not the original's 98%. A research tool, not a medical device.",
+        "descRich": "Upload a heart recording and see every detected heartbeat labelled normal, one of three abnormal types, or unknown, with the model's confidence. Measured on patients it never saw, it scores <it>63.22%</it>, not the original's 97%. A research tool, not a medical device.",
         "metaPlatform": "Web · Responsive",
         "metaStatus": "Working demo",
         "actionPrimary": "View the ML backend",
@@ -1009,7 +1009,7 @@
       "items": [
         "Alerts you shape: pick the percentage, the sound, the color, and whether it grows from the notch or floats mid-screen.",
         "Knows who's draining it: energy by app for the last hour, day, week or month.",
-        "Respects macOS: it follows your charge limit, shows Low Power Mode in yellow like iPhone, and can close the system's own low battery pop-up.",
+        "Respects macOS: it follows your charge limit, shows Low Power Mode in yellow like iPhone, and, as an opt-in, can close the system's own low battery pop-up (it needs the Accessibility permission).",
         "A desktop widget in three sizes, lowest battery first.",
         "Reduce Motion aware: with it on, the island simply fades in and out.",
         "In English and Spanish, following your Mac."
@@ -1036,7 +1036,7 @@
         ],
         [
           "What do I need?",
-          "A Mac running macOS 26 or later, with Apple silicon or Intel."
+          "A Mac running macOS 26 or later, with Apple silicon or Intel. A notch is not required: on a Mac without one, alerts open just below the menu bar."
         ]
       ]
     },
